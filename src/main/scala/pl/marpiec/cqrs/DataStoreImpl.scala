@@ -26,7 +26,12 @@ class DataStoreImpl (val eventStore:EventStore, val entityCache:EntityCache) ext
   def getNewOrCachedEntity(entityClass: Class[_ <: CqrsEntity], id: Int):CqrsEntity = {
     entityCache.get(entityClass, id) match {
       case Some(entity) => entity
-      case None => entityClass.newInstance
+      case None => {
+        val entity: CqrsEntity = entityClass.newInstance
+        entity.id = id
+        entity.version = 0
+        entity
+      }
     }
   }
   

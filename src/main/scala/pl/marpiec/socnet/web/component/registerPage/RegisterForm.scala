@@ -1,4 +1,4 @@
-package pl.marpiec.socnet.web.page.registerPage
+package pl.marpiec.socnet.web.component.registerPage
 
 import pl.marpiec.di.Factory
 import org.apache.wicket.model.{CompoundPropertyModel, Model}

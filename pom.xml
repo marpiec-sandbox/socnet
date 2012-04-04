@@ -95,6 +95,21 @@
             <version>1.2.16</version>
         </dependency>
 
+        <!-- Language -->
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>2.1</version>
+        </dependency>
+        <!-- Required because of scala-->
+        <dependency>
+            <groupId>org.joda</groupId>
+            <artifactId>joda-convert</artifactId>
+            <version>1.2</version>
+            <scope>provided</scope>
+        </dependency>
+
+
         <!-- testing -->
         <dependency>
             <groupId>org.testng</groupId>

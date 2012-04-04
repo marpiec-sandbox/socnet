@@ -14,5 +14,7 @@ class DefaultFactoryTest {
 
      assertNotNull(Factory.userCommand)
      assertNotNull(Factory.userQuery)
+
+     assertNotNull(Factory.articleCommand)
    }
 }
