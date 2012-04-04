@@ -1,19 +1,33 @@
 package pl.marpiec.cqrs
 
-class DataStoreImpl (val eventStore:EventStore) extends DataStore {
+class DataStoreImpl (val eventStore:EventStore, val entityCache:EntityCache) extends DataStore {
+
+  
 
   def getEntity(entityClass:Class[_ <: CqrsEntity], id: Int) = {
+    val entity = getNewOrCachedEntity(entityClass, id)
+
+    //TODO doadac wyciaganie zakresu eventow
     val events = eventStore.getEventsForEntity(entityClass, id)
 
-    val entity = entityClass.newInstance
-
     events.foreach((event) => {
-        event.asInstanceOf[CqrsEvent].applyEvent(entity)
-        entity.version = entity.version + 1
+        if(event.expectedVersion == entity.version) {
+          event.applyEvent(entity)
+          entity.version = entity.version + 1
+        }
       }
     )
 
     entity
 
   }
+
+
+  def getNewOrCachedEntity(entityClass: Class[_ <: CqrsEntity], id: Int):CqrsEntity = {
+    entityCache.get(entityClass, id) match {
+      case Some(entity) => entity
+      case None => entityClass.newInstance
+    }
+  }
+  
 }

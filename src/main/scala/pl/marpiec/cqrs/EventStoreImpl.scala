@@ -25,10 +25,10 @@ class EventStoreImpl extends EventStore {
       get(id).getOrElse(throw new NoEventsForEntityException)
   }
 
-  def addEvent(id: Int, version: Int, event: CqrsEvent) {
+  def addEvent(event: CqrsEvent) {
     var eventsForType = eventsByType.getOrElse(event.entityClass, null)
-    var eventsForEntity = eventsForType.getOrElseUpdate(id, new ListBuffer[CqrsEvent])
-    if (eventsForEntity.size > version) {
+    var eventsForEntity = eventsForType.getOrElseUpdate(event.entityId, new ListBuffer[CqrsEvent])
+    if (eventsForEntity.size > event.expectedVersion) {
       throw new ConcurrentAggregateModificationException
     }
     eventsForEntity += event

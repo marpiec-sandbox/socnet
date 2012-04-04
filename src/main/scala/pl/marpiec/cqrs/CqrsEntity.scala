@@ -1,3 +1,3 @@
 package pl.marpiec.cqrs
 
-class CqrsEntity(var version:Int)
+class CqrsEntity(var id:Int, var version:Int)

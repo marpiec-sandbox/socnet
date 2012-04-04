@@ -1,12 +1,14 @@
 package pl.marpiec.di
 
-import pl.marpiec.cqrs.{DataStoreImpl, EventStoreImpl}
 import pl.marpiec.socnet.database.UserDatabaseMockImpl
 import pl.marpiec.socnet.service.user.{UserQueryImpl, UserCommandImpl}
+import pl.marpiec.cqrs.{EntityCacheSimpleImpl, EntityCache, DataStoreImpl, EventStoreImpl}
 
 class DefaultFactory {
   val eventStore: EventStoreImpl = new EventStoreImpl
-  val dataStore: DataStoreImpl = new DataStoreImpl(eventStore)
+  val entityCache: EntityCache = new EntityCacheSimpleImpl
+
+  val dataStore: DataStoreImpl = new DataStoreImpl(eventStore, entityCache)
 
   val userDatabase:UserDatabaseMockImpl = new UserDatabaseMockImpl
 

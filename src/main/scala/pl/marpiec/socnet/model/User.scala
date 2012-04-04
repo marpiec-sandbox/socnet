@@ -2,8 +2,7 @@ package pl.marpiec.socnet.model
 
 import pl.marpiec.cqrs.CqrsEntity
 
-class User extends CqrsEntity(0) {
-  var id: Int = 0
+class User extends CqrsEntity(0, 0) {
   var name: String = null
   var password: String = null
   var email: String = null

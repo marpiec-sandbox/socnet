@@ -8,7 +8,7 @@ trait EventStore {
 
   def getEventsForEntity(entityClass: Class[_], i: Int):ListBuffer[CqrsEvent]
 
-  def addEvent(id: Int, version:Int, event: CqrsEvent)
+  def addEvent(event: CqrsEvent)
 
   def addEventForNewAggregate(event: CqrsEvent): Int
 
