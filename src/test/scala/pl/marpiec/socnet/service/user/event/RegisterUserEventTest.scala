@@ -7,7 +7,7 @@ import pl.marpiec.socnet.model.User
 @Test
 class RegisterUserEventTest {
   def testApplyingEvent() {
-    val event = new RegisterUserEvent(0, 0, "Marcin", "m.pieciukiewicz@socnet", "Haslo")
+    val event = new RegisterUserEvent("Marcin", "m.pieciukiewicz@socnet", "Haslo")
     val user = new User
 
     event.applyEvent(user)

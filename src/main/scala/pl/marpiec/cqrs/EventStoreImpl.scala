@@ -13,6 +13,7 @@ class EventStoreImpl extends EventStore {
 
     var eventsForType = eventsByType.getOrElseUpdate(event.entityClass, new HashMap[Int, ListBuffer[CqrsEvent]])
     val newKey = eventsForType.size + 1
+    event.entityId = newKey
     var eventsForEntity = eventsForType.getOrElseUpdate(newKey, new ListBuffer[CqrsEvent])
     eventsForEntity += event
     newKey

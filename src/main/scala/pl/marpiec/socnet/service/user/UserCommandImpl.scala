@@ -13,7 +13,7 @@ import pl.marpiec.socnet.database.UserDatabase
 class UserCommandImpl(val eventStore:EventStore, val dataStore:DataStore, val userDatabase:UserDatabase) extends UserCommand {
 
   override def registerUser(name:String, email:String, password:String):Int = {
-    val registerUser = new RegisterUserEvent(0, 0, name, email, password)
+    val registerUser = new RegisterUserEvent(name, email, password)
     val id = eventStore.addEventForNewAggregate(registerUser)
     updateUser(id)
     id
