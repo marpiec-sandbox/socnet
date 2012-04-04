@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:wicket="http://wicket.apache.org">
+    <wicket:panel>
+        <form wicket:id="form" id="registerForm">
+            <span wicket:id="warningMessage"></span>
+
+            <div>
+                <span>User name</span>
+                <input wicket:id="username" type="text" size="40"/>
+            </div>
+            <div>
+                <span>Email</span>
+                <input wicket:id="email" type="text" size="40"/>
+            </div>
+            <div>
+                <span>Password</span>
+                <input wicket:id="password" type="text" size="40"/>
+            </div>
+            <div>
+                <span>Repeat password</span>
+                <input wicket:id="repeatPassword" type="text" size="40"/>
+            </div>
+            <div>
+                <input type="submit" wicket:id="saveButton" value="save"/>
+                <input type="submit" wicket:id="cancelButton" value="reset"/>
+            </div>
+        </form>
+        <div id="feedbackPanel">
+            <span wicket:id="feedback"/>
+        </div>
+    </wicket:panel>
+</html>
