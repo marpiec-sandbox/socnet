@@ -13,7 +13,7 @@ class CreateCommentEvent(entityId:Int, expectedVersion:Int, val commentContent: 
   
   def applyEvent(entity: CqrsEntity) {
     val article = entity.asInstanceOf[Article]
-    val comment = new ArticleComment(commentContent, LocalDateTime.now(), commentAuthorUserId)
+    val comment = new ArticleComment(commentContent, new LocalDateTime, commentAuthorUserId)
     article.comments += comment
   }
 }

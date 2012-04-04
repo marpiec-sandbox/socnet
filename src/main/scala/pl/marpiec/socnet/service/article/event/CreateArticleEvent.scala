@@ -13,6 +13,6 @@ class CreateArticleEvent(val content:String, val authorUserId:Int) extends CqrsE
     val article = entity.asInstanceOf[Article]
     article.content = content
     article.authorUserId = authorUserId
-    article.creationTime = LocalDateTime.now
+    article.creationTime = new LocalDateTime
   }
 }
