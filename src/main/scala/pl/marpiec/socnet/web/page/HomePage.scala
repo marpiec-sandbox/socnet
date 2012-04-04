@@ -25,12 +25,7 @@ class HomePage(parameters: PageParameters) extends WebPage {
 
   add(createSignInPanel);
 
-  val userId = userCommand.registerUser("Marcin Pieciukiewicz", "m.pieciukiewicz", "Haslo")
-
-  val user = userQuery.getUserById(userId)
-
   add(new Label("userName", getSession.asInstanceOf[SocnetSession].userName))
-  add(new Label("userNameCQRS", user.name))
 
 
   def createSignInPanel: SignInPanel = {

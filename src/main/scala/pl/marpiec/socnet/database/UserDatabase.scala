@@ -11,5 +11,7 @@ trait UserDatabase {
 
   def addUser(user:User)
 
-  def getUserByEmail(email:String):User
+  def getUserByEmail(email:String):Option[User]
+
+  def getUserByd(id: Int):Option[User]
 }

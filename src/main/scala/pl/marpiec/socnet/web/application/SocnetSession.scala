@@ -24,10 +24,10 @@ class SocnetSession(request: Request) extends AuthenticatedWebSession(request) {
 
     println("Trying to authenticate "+userName+" "+password)
 
-    val user = userQuery.getUserByCredentials(username, password)
+    val userOption = userQuery.getUserByCredentials(username, password)
     
-    if(user!=null) {
-      initSessionData(user)
+    if(userOption.isDefined) {
+      initSessionData(userOption.get)
       return true
     } else {
       return false

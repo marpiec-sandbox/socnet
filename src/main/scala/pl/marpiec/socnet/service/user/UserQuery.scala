@@ -11,5 +11,5 @@ trait UserQuery {
 
   def getUserById(id:Int):User
 
-  def getUserByCredentials(username:String, password:String):User
+  def getUserByCredentials(username:String, password:String):Option[User]
 }

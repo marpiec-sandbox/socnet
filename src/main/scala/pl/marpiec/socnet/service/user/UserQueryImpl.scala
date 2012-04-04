@@ -16,15 +16,16 @@ class UserQueryImpl(val socnetDatabase:UserDatabase, val dataStore:DataStore) ex
     dataStore.getEntity(classOf[User], id).asInstanceOf[User]
   }
 
-  def getUserByCredentials(username: String, password: String):User = {
+  def getUserByCredentials(username: String, password: String):Option[User] = {
 
-    val user: User = socnetDatabase.getUserByEmail(username)
-    if(user!=null && Strings.equal(user.password, password)) {
-      user
-    } else {
-      null
+    val userOption = socnetDatabase.getUserByEmail(username)
+    
+    if (userOption.isDefined) {
+      if (Strings.equal(userOption.get.password, password)) {
+        return userOption
+      }
     }
+    None
   }
-
 
 }

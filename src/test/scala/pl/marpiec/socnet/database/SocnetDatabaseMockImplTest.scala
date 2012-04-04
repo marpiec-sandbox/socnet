@@ -23,9 +23,11 @@ class SocnetDatabaseMockImplTest {
     user.email = "m.pieciukiewicz@socnet"
 
     socnetDatabase.addUser(user)
-    val userFromDatabase: User = socnetDatabase.getUserByEmail(user.email)
+    val userOption = socnetDatabase.getUserByEmail(user.email)
 
-    assertNotNull(userFromDatabase)
+    assertTrue(userOption.isDefined)
+    val userFromDatabase = userOption.get
+
     assertTrue(user != userFromDatabase)
     assertEquals(userFromDatabase.name, user.name)
     assertEquals(userFromDatabase.password, user.password)
