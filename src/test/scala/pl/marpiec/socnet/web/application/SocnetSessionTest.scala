@@ -15,9 +15,21 @@ class SocnetSessionTest {
 
      userCommand.registerUser("Marcin Pieciukiewicz", "m.pieciukiewicz@socnet", "Haslo")
 
-     socnetSession.authenticate("m.pieciukiewicz@socnet", "Haslo")
+     var authenticationResult = socnetSession.authenticate("m.pieciukiewicz@socnet", "nie znam hasla")
+     
+     assertFalse(authenticationResult, "user shuldn't be able to authenticate")
+
+     assertNull(socnetSession.userName, "There shoudn't be user data if authentication failed")
+
+     authenticationResult = socnetSession.authenticate("m.pieciukiewicz@socnet", "Haslo")
+
+     assertTrue(authenticationResult, "user should be able to authenticate")
 
      assertEquals(socnetSession.userName, "Marcin Pieciukiewicz")
+
+     socnetSession.clearSessionData
+
+     assertNull(socnetSession.userName, "there should be no data in the session now")
 
    }
 }

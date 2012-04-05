@@ -10,7 +10,7 @@ import pl.marpiec.socnet.database.UserDatabase
 
 class ArticleCommandImpl(val eventStore:EventStore, val dataStore:DataStore, val userDatabase:UserDatabase) extends ArticleCommand {
 
-  override def createArticle(content: String, authorUserId: Int):Int = {
+  def createArticle(content: String, authorUserId: Int):Int = {
     val createArticle = new CreateArticleEvent(content, authorUserId)
     eventStore.addEventForNewAggregate(createArticle)
   }

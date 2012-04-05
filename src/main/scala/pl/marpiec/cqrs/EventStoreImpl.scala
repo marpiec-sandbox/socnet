@@ -5,7 +5,7 @@ import collection.mutable.{ListBuffer, Map, HashMap}
 
 class EventStoreImpl extends EventStore {
 
-  val eventsByType = new HashMap[Class[_], Map[Int, ListBuffer[CqrsEvent]]]
+  private val eventsByType = new HashMap[Class[_], Map[Int, ListBuffer[CqrsEvent]]]
 
   def getEvents(entityClass: Class[_]) = eventsByType.getOrElse(entityClass, null)
 

@@ -9,7 +9,7 @@ import collection.mutable.{ListBuffer, HashMap, WeakHashMap}
 
 class EntityCacheSimpleImpl extends EntityCache {
   
-  val cache = new WeakHashMap[Class[_], WeakHashMap[Int, CqrsEntity]]
+  private val cache = new WeakHashMap[Class[_], WeakHashMap[Int, CqrsEntity]]
   
   def get(entityClass: Class[_ <: CqrsEntity], id: Int):Option[CqrsEntity] = {
     var entitiesForType = cache.get(entityClass)

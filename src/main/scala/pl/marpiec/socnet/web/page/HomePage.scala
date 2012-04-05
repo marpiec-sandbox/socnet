@@ -11,10 +11,6 @@ import pl.marpiec.di.Factory
 
 class HomePage extends WebPage {
 
-  val userCommand:UserCommand = Factory.userCommand
-
-  val userQuery:UserQuery = Factory.userQuery
-
   add(new Label("welcomeMessage", "Hello World by Wicket version " + getApplication.getFrameworkSettings.getVersion))
 
   add(new BookmarkablePageLink("signoutLink", classOf[SignOutPage]))

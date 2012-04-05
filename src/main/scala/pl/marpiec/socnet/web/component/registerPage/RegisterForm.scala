@@ -12,12 +12,11 @@ import org.apache.wicket.markup.html.panel.{Panel, FeedbackPanel}
 class RegisterForm(id: String) extends Panel(id) {
 
   add(new FeedbackPanel("feedback"))
-
   add(new Form[RegisterFormModel]("form") {
 
-    val userCommand = Factory.userCommand
+    private val userCommand = Factory.userCommand
 
-    val warningMessage: Model[String] = new Model[String]("");
+    private val warningMessage: Model[String] = new Model[String]("");
 
     setModel(new CompoundPropertyModel[RegisterFormModel](new RegisterFormModel))
 

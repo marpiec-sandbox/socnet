@@ -12,8 +12,8 @@ import pl.marpiec.util.Strings
 
 class UserDatabaseMockImpl extends UserDatabase {
 
-  val userDatabase = new HashMap[Int, User]
-  val userByEmail = new HashMap[String, User]
+  private val userDatabase = new HashMap[Int, User]
+  private val userByEmail = new HashMap[String, User]
 
   def getUserById(id: Int):Option[User] = {
     userDatabase.get(id) match {

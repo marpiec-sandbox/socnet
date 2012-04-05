@@ -14,7 +14,7 @@ import pl.marpiec.socnet.model.User
 
 class SocnetSession(request: Request) extends AuthenticatedWebSession(request) {
 
-  val userQuery = Factory.userQuery
+  private val userQuery = Factory.userQuery
   
   var userName:String = null
 
