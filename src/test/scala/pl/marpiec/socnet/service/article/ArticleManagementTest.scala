@@ -2,10 +2,9 @@ package pl.marpiec.socnet.service.article
 
 import org.testng.annotations.Test
 import pl.marpiec.cqrs._
-import pl.marpiec.socnet.database.{UserDatabaseMockImpl, UserDatabase}
-import pl.marpiec.socnet.service.user.{UserCommandImpl, UserCommand}
 import pl.marpiec.socnet.model.Article
 import org.testng.Assert._
+import pl.marpiec.socnet.database.{ArticleDatabaseMockImpl, ArticleDatabase}
 
 /**
  * @author Marcin Pieciukiewicz
@@ -15,12 +14,12 @@ import org.testng.Assert._
 class ArticleManagementTest {
 
   def testSimpleArticleCreationAndCommentsAdding() {
-    val eventStore:EventStore = new EventStoreImpl
-    val entityCache:EntityCache = new EntityCacheSimpleImpl
-    val dataStore:DataStore = new DataStoreImpl(eventStore, entityCache)
-    val userDatabase:UserDatabase = new UserDatabaseMockImpl
+    val eventStore: EventStore = new EventStoreImpl
+    val entityCache: EntityCache = new EntityCacheSimpleImpl
+    val dataStore: DataStore = new DataStoreImpl(eventStore, entityCache)
+    val articleDatabase: ArticleDatabase = new ArticleDatabaseMockImpl
 
-    val articleCommand:ArticleCommand = new ArticleCommandImpl(eventStore, dataStore, userDatabase)
+    val articleCommand: ArticleCommand = new ArticleCommandImpl(eventStore, dataStore, articleDatabase)
 
 
     val articleId = articleCommand.createArticle("Tresc artykulu", 1)

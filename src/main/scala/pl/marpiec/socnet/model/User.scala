@@ -10,6 +10,7 @@ class User extends CqrsEntity(0, 0) {
   def createCopy:User = {
     val user = new User
     user.id = this.id
+    user.version = this.version
     user.name = this.name
     user.password = this.password
     user.email = this.email

@@ -1,20 +1,21 @@
 package pl.marpiec.di
 
-import pl.marpiec.socnet.database.UserDatabaseMockImpl
-import pl.marpiec.socnet.service.user.{UserQueryImpl, UserCommandImpl}
-import pl.marpiec.cqrs.{EntityCacheSimpleImpl, EntityCache, DataStoreImpl, EventStoreImpl}
 import pl.marpiec.socnet.service.article.{ArticleCommandImpl, ArticleCommand}
+import pl.marpiec.socnet.database.{UserDatabase, ArticleDatabaseMockImpl, ArticleDatabase, UserDatabaseMockImpl}
+import pl.marpiec.cqrs._
+import pl.marpiec.socnet.service.user.{UserQuery, UserCommand, UserQueryImpl, UserCommandImpl}
 
 class DefaultFactory {
-  val eventStore: EventStoreImpl = new EventStoreImpl
+  val eventStore: EventStore = new EventStoreImpl
   val entityCache: EntityCache = new EntityCacheSimpleImpl
 
-  val dataStore: DataStoreImpl = new DataStoreImpl(eventStore, entityCache)
+  val dataStore: DataStore = new DataStoreImpl(eventStore, entityCache)
 
-  val userDatabase:UserDatabaseMockImpl = new UserDatabaseMockImpl
+  val userDatabase:UserDatabase = new UserDatabaseMockImpl
+  val articleDatabase:ArticleDatabase = new ArticleDatabaseMockImpl
 
-  val userCommand: UserCommandImpl = new UserCommandImpl(eventStore, dataStore, userDatabase)
-  val userQuery:UserQueryImpl = new UserQueryImpl(userDatabase, dataStore)
+  val userCommand: UserCommand = new UserCommandImpl(eventStore, dataStore, userDatabase)
+  val userQuery:UserQuery = new UserQueryImpl(userDatabase, dataStore)
 
-  val articleCommand:ArticleCommand = new ArticleCommandImpl(eventStore, dataStore, userDatabase)
+  val articleCommand:ArticleCommand = new ArticleCommandImpl(eventStore, dataStore, articleDatabase)
 }

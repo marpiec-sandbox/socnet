@@ -15,20 +15,20 @@ import pl.marpiec.socnet.model.User
 class SocnetDatabaseMockImplTest {
 
   def testBasicDatabaseOperations() {
-    val socnetDatabase: UserDatabase = new UserDatabaseMockImpl
+    val userDatabase: UserDatabase = new UserDatabaseMockImpl
 
     val user:User = new User
     user.name = "Marcin Pieciukiewicz"
     user.password = "Haslo"
     user.email = "m.pieciukiewicz@socnet"
 
-    socnetDatabase.addUser(user)
-    val userOption = socnetDatabase.getUserByEmail(user.email)
+    userDatabase.addUser(user)
+    val userOption = userDatabase.getUserByEmail(user.email)
 
     assertTrue(userOption.isDefined)
     val userFromDatabase = userOption.get
 
-    assertTrue(user != userFromDatabase)
+    assertTrue(user ne userFromDatabase)
     assertEquals(userFromDatabase.name, user.name)
     assertEquals(userFromDatabase.password, user.password)
     assertEquals(userFromDatabase.email, user.email)
