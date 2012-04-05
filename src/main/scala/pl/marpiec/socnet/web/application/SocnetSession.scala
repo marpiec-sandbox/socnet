@@ -3,8 +3,8 @@ package pl.marpiec.socnet.web.application
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession
 import org.apache.wicket.request.Request
 import org.apache.wicket.authroles.authorization.strategies.role.Roles
-import pl.marpiec.di.Factory
 import pl.marpiec.socnet.model.User
+import pl.marpiec.socnet.di.Factory
 
 /**
  * Session class.
@@ -28,9 +28,9 @@ class SocnetSession(request: Request) extends AuthenticatedWebSession(request) {
 
     if (userOption.isDefined) {
       initSessionData(userOption.get)
-      return true
+      true
     } else {
-      return false
+      false
     }
   }
 
@@ -42,13 +42,13 @@ class SocnetSession(request: Request) extends AuthenticatedWebSession(request) {
 
   }
 
-  def clearSessionData {
+  def clearSessionData() {
     user = null
     roles.clear()
   }
 
   override def invalidate {
-    super.invalidate
+    super.invalidate()
     clearSessionData
   }
 

@@ -8,8 +8,8 @@ import org.apache.wicket.authroles.authentication.panel.SignInPanel
 import pl.marpiec.socnet.web.application.SocnetSession
 import pl.marpiec.socnet.web.authorization.AuthorizeUser
 import pl.marpiec.socnet.web.component.articleList.ArticleList
-import pl.marpiec.di.Factory
 import pl.marpiec.socnet.database.ArticleDatabase
+import pl.marpiec.socnet.di.Factory
 
 class HomePage extends WebPage {
 

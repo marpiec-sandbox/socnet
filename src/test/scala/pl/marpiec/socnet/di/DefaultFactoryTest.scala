@@ -1,4 +1,4 @@
-package pl.marpiec.di
+package pl.marpiec.socnet.di
 
 import org.testng.annotations.Test
 import org.testng.Assert._

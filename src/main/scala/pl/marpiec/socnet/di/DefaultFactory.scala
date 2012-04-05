@@ -1,4 +1,4 @@
-package pl.marpiec.di
+package pl.marpiec.socnet.di
 
 import pl.marpiec.socnet.service.article.{ArticleCommandImpl, ArticleCommand}
 import pl.marpiec.socnet.database.{UserDatabase, ArticleDatabaseMockImpl, ArticleDatabase, UserDatabaseMockImpl}

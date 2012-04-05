@@ -1,7 +1,7 @@
 package pl.marpiec.socnet.web.application
 
-import pl.marpiec.di.Factory
 import pl.marpiec.socnet.service.user.UserCommand
+import pl.marpiec.socnet.di.Factory
 
 /**
  * @author Marcin Pieciukiewicz

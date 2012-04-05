@@ -4,7 +4,7 @@ import org.testng.annotations.Test
 import org.testng.Assert._
 import org.apache.wicket.mock.MockWebRequest
 import org.apache.wicket.request.Url
-import pl.marpiec.di.Factory
+import pl.marpiec.socnet.di.Factory
 
 @Test
 class SocnetSessionTest {

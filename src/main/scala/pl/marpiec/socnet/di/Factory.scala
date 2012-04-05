@@ -1,3 +1,3 @@
-package pl.marpiec.di
+package pl.marpiec.socnet.di
 
 object Factory extends DefaultFactory

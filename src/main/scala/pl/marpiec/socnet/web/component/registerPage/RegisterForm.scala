@@ -1,6 +1,6 @@
 package pl.marpiec.socnet.web.component.registerPage
 
-import pl.marpiec.di.Factory
+import pl.marpiec.socnet.di.Factory
 import org.apache.wicket.model.{CompoundPropertyModel, Model}
 import org.apache.wicket.markup.html.basic.Label
 import pl.marpiec.socnet.web.page.HomePage

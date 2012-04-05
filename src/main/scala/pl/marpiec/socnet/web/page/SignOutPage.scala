@@ -11,7 +11,7 @@ import org.apache.wicket.RestartResponseAtInterceptPageException
 
 class SignOutPage(parameters: PageParameters) extends WebPage {
 
-  getSession.invalidate
+  getSession.invalidate()
 
   override def onBeforeRender {
     throw new RestartResponseAtInterceptPageException(classOf[HomePage])
