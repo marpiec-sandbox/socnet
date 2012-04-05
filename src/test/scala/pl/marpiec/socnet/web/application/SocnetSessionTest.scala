@@ -19,17 +19,17 @@ class SocnetSessionTest {
      
      assertFalse(authenticationResult, "user shuldn't be able to authenticate")
 
-     assertNull(socnetSession.userName, "There shoudn't be user data if authentication failed")
+     assertNull(socnetSession.user, "There shoudn't be user data if authentication failed")
 
      authenticationResult = socnetSession.authenticate("m.pieciukiewicz@socnet", "Haslo")
 
      assertTrue(authenticationResult, "user should be able to authenticate")
 
-     assertEquals(socnetSession.userName, "Marcin Pieciukiewicz")
+     assertEquals(socnetSession.user.name, "Marcin Pieciukiewicz")
 
      socnetSession.clearSessionData
 
-     assertNull(socnetSession.userName, "there should be no data in the session now")
+     assertNull(socnetSession.user, "there should be no data in the session now")
 
    }
 }

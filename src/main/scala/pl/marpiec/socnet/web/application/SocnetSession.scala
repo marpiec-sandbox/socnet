@@ -3,7 +3,6 @@ package pl.marpiec.socnet.web.application
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession
 import org.apache.wicket.request.Request
 import org.apache.wicket.authroles.authorization.strategies.role.Roles
-import pl.marpiec.util.Strings
 import pl.marpiec.di.Factory
 import pl.marpiec.socnet.model.User
 
@@ -15,18 +14,19 @@ import pl.marpiec.socnet.model.User
 class SocnetSession(request: Request) extends AuthenticatedWebSession(request) {
 
   private val userQuery = Factory.userQuery
-  
-  var userName:String = null
 
-  override def getRoles: Roles = null
+  private val roles: Roles = new Roles
 
-  override def authenticate(username: String, password: String):Boolean = {
+  var user: User = null
 
-    println("Trying to authenticate "+userName+" "+password)
 
-    val userOption = userQuery.getUserByCredentials(username, password)
-    
-    if(userOption.isDefined) {
+  override def getRoles: Roles = roles
+
+  override def authenticate(login: String, password: String): Boolean = {
+
+    val userOption = userQuery.getUserByCredentials(login, password)
+
+    if (userOption.isDefined) {
       initSessionData(userOption.get)
       return true
     } else {
@@ -34,12 +34,17 @@ class SocnetSession(request: Request) extends AuthenticatedWebSession(request) {
     }
   }
 
-  def initSessionData(user:User) {
-    userName = user.name
+  def initSessionData(registeredUser: User) {
+    this.user = registeredUser
+
+    roles.add(SocnetRoles.USER)
+    roles.add(SocnetRoles.ARTICLE_AUTHOR)
+
   }
 
   def clearSessionData {
-    userName = null
+    user = null
+    roles.clear()
   }
 
   override def invalidate {
