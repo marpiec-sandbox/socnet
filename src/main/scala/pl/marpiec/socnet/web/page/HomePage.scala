@@ -7,9 +7,14 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink
 import org.apache.wicket.authroles.authentication.panel.SignInPanel
 import pl.marpiec.socnet.web.application.SocnetSession
 import pl.marpiec.socnet.web.authorization.AuthorizeUser
+import pl.marpiec.socnet.web.component.articleList.ArticleList
+import pl.marpiec.di.Factory
+import pl.marpiec.socnet.database.ArticleDatabase
 
 class HomePage extends WebPage {
 
+  private val articleDatabase:ArticleDatabase = Factory.articleDatabase
+  
   add(new Label("welcomeMessage", "Hello World by Wicket version " + getApplication.getFrameworkSettings.getVersion))
 
   add(new BookmarkablePageLink("signoutLink", classOf[SignOutPage]))
@@ -17,7 +22,9 @@ class HomePage extends WebPage {
   add(new BookmarkablePageLink("registerLink", classOf[RegisterPage]))
   add(AuthorizeUser(new BookmarkablePageLink("newArticleLink", classOf[NewArticlePage])))
 
-  add(createSignInPanel)
+  add(new SignInPanel("signInPanel", false))
+  
+  add(AuthorizeUser(new ArticleList("articleList", articleDatabase.getAllArticles)))
 
 
   val session: SocnetSession = getSession.asInstanceOf[SocnetSession]
@@ -29,8 +36,4 @@ class HomePage extends WebPage {
 
 
 
-  def createSignInPanel: SignInPanel = {
-    val signInPanel = new SignInPanel("signInPanel", false)
-    signInPanel
-  }
 }
