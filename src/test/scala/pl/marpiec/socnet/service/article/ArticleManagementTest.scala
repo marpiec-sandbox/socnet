@@ -17,7 +17,7 @@ class ArticleManagementTest {
     val eventStore: EventStore = new EventStoreImpl
     val entityCache: EntityCache = new EntityCacheSimpleImpl
     val dataStore: DataStore = new DataStoreImpl(eventStore, entityCache)
-    val articleDatabase: ArticleDatabase = new ArticleDatabaseMockImpl
+    val articleDatabase: ArticleDatabase = new ArticleDatabaseMockImpl(dataStore)
 
     val articleCommand: ArticleCommand = new ArticleCommandImpl(eventStore, dataStore, articleDatabase)
 

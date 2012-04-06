@@ -7,6 +7,8 @@ class EventStoreImpl extends EventStore {
 
   private val eventsByType = new HashMap[Class[_], Map[Int, ListBuffer[CqrsEvent]]]
 
+  private val listeners = new ListBuffer[EventStoreListener]
+
   def getEvents(entityClass: Class[_]) = eventsByType.getOrElse(entityClass, null)
 
   def addEventForNewAggregate(event: CqrsEvent) = {
@@ -16,6 +18,7 @@ class EventStoreImpl extends EventStore {
     event.entityId = newKey
     var eventsForEntity = eventsForType.getOrElseUpdate(newKey, new ListBuffer[CqrsEvent])
     eventsForEntity += event
+    callAllListenersAboutNewEvent(event)
     newKey
   }
 
@@ -33,5 +36,13 @@ class EventStoreImpl extends EventStore {
       throw new ConcurrentAggregateModificationException
     }
     eventsForEntity += event
+  }
+
+  def addListener(listener: EventStoreListener) {
+    listeners += listener
+  }
+  
+  private def callAllListenersAboutNewEvent(event: CqrsEvent) {
+    listeners.foreach(listener => listener.onNewEvent(event))
   }
 }

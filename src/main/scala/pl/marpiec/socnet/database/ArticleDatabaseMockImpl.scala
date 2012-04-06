@@ -1,17 +1,29 @@
 package pl.marpiec.socnet.database
 
-import pl.marpiec.socnet.model.Article
 import collection.mutable.HashMap
 import pl.marpiec.socnet.service.article.exception.ArticleAlreadyExistsException
+import pl.marpiec.cqrs.{CqrsEntity, DataStoreListener, DataStore}
+import pl.marpiec.socnet.model.{User, Article}
 
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
-class ArticleDatabaseMockImpl extends ArticleDatabase {
+class ArticleDatabaseMockImpl(dataStore:DataStore) extends DataStoreListener with ArticleDatabase {
 
   private val articleDatabase = new HashMap[Int, Article]
+
+  startListeningToDataStore(dataStore, classOf[Article])
+
+  def onEntityChanged(entity: CqrsEntity) {
+    val article = entity.asInstanceOf[Article]
+    if(article.version==1) {
+      addArticle(article)
+    } else {
+      updateArticle(article)
+    }
+  }
 
   def addArticle(article: Article) {
     this.synchronized {
@@ -45,4 +57,5 @@ class ArticleDatabaseMockImpl extends ArticleDatabase {
   def getAllArticles: List[Article] = {
     articleDatabase.values.toList
   }
+
 }

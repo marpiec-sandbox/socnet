@@ -16,7 +16,7 @@ class ArticleCommandImpl(val eventStore: EventStore, val dataStore: DataStore, v
     val createArticle = new CreateArticleEvent(content, authorUserId)
     val id = eventStore.addEventForNewAggregate(createArticle)
 
-    articleDatabase.addArticle(loadArticleFromStore(id))
+   // articleDatabase.addArticle(loadArticleFromStore(id))
     id
   }
 
@@ -24,7 +24,7 @@ class ArticleCommandImpl(val eventStore: EventStore, val dataStore: DataStore, v
     val createComment = new CreateCommentEvent(articleId, articleVersion, commentContent, commentAuthorUserId)
     eventStore.addEvent(createComment)
 
-    articleDatabase.updateArticle(loadArticleFromStore(articleId))
+ //   articleDatabase.updateArticle(loadArticleFromStore(articleId))
   }
 
 

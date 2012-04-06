@@ -15,7 +15,7 @@ class EventStoreImplTest {
     val eventStore:EventStore = new EventStoreImpl
     val entityCache:EntityCache = new EntityCacheSimpleImpl
     val dataStore:DataStore = new DataStoreImpl(eventStore, entityCache)
-    val userDatabase:UserDatabase = new UserDatabaseMockImpl
+    val userDatabase:UserDatabase = new UserDatabaseMockImpl(dataStore)
 
     val userCommand:UserCommand = new UserCommandImpl(eventStore, dataStore, userDatabase)
 

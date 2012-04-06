@@ -4,17 +4,29 @@ import pl.marpiec.socnet.model.User
 import collection.mutable.HashMap
 import pl.marpiec.socnet.service.user.exception.UserAlreadyRegisteredException
 import pl.marpiec.util.Strings
+import pl.marpiec.cqrs.{CqrsEntity, DataStoreListener, DataStore}
 
 /**
  * ...
  * @author Marcin Pieciukiewicz
  */
 
-class UserDatabaseMockImpl extends UserDatabase {
+class UserDatabaseMockImpl(dataStore:DataStore) extends DataStoreListener with UserDatabase {
 
   private val userDatabase = new HashMap[Int, User]
   private val userByEmailIndex = new HashMap[String, User]
 
+  startListeningToDataStore(dataStore, classOf[User])
+
+  def onEntityChanged(entity: CqrsEntity) {
+    val user = entity.asInstanceOf[User]
+    if(user.version==1) {
+      addUser(user)
+    } else {
+      updateUser(user)
+    }
+  }
+  
   def getUserById(id: Int):Option[User] = {
     userDatabase.get(id) match {
       case Some(user) => Option.apply(user.createCopy)
@@ -61,4 +73,6 @@ class UserDatabaseMockImpl extends UserDatabase {
 
     }
   }
+
+
 }

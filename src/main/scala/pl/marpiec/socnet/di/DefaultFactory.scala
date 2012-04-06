@@ -11,8 +11,8 @@ class DefaultFactory {
 
   val dataStore: DataStore = new DataStoreImpl(eventStore, entityCache)
 
-  val userDatabase:UserDatabase = new UserDatabaseMockImpl
-  val articleDatabase:ArticleDatabase = new ArticleDatabaseMockImpl
+  val userDatabase:UserDatabase = new UserDatabaseMockImpl(dataStore)
+  val articleDatabase:ArticleDatabase = new ArticleDatabaseMockImpl(dataStore)
 
   val userCommand: UserCommand = new UserCommandImpl(eventStore, dataStore, userDatabase)
   val userQuery:UserQuery = new UserQueryImpl(userDatabase, dataStore)

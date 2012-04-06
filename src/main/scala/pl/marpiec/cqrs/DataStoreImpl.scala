@@ -1,10 +1,15 @@
 package pl.marpiec.cqrs
 
-class DataStoreImpl (val eventStore:EventStore, val entityCache:EntityCache) extends DataStore {
+import collection.mutable.{ListBuffer, HashMap}
 
-  
 
-  def getEntity(entityClass:Class[_ <: CqrsEntity], id: Int) = {
+class DataStoreImpl (val eventStore:EventStore, val entityCache:EntityCache) extends EventStoreListener with DataStore {
+
+  private val listeners = new HashMap[Class[_ <: CqrsEntity], ListBuffer[DataStoreListener]]
+
+  startListeningToEventStore(eventStore)
+
+  def getEntity(entityClass:Class[_ <: CqrsEntity], id: Int):CqrsEntity = {
     val entity = getNewOrCachedEntity(entityClass, id)
 
     //TODO doadac wyciaganie zakresu eventow
@@ -22,8 +27,7 @@ class DataStoreImpl (val eventStore:EventStore, val entityCache:EntityCache) ext
 
   }
 
-
-  def getNewOrCachedEntity(entityClass: Class[_ <: CqrsEntity], id: Int):CqrsEntity = {
+  private def getNewOrCachedEntity(entityClass: Class[_ <: CqrsEntity], id: Int):CqrsEntity = {
     entityCache.get(entityClass, id) match {
       case Some(entity) => entity
       case None => {
@@ -34,5 +38,19 @@ class DataStoreImpl (val eventStore:EventStore, val entityCache:EntityCache) ext
       }
     }
   }
-  
+
+  def addListener(entityClass: Class[_ <: CqrsEntity], listener: DataStoreListener) {
+    val entityListeners = listeners.getOrElseUpdate(entityClass, new ListBuffer[DataStoreListener])
+    entityListeners += listener
+  }
+
+  def onNewEvent(event: CqrsEvent) {
+    val entity = getEntity(event.entityClass, event.entityId)
+
+    val entityListenersOption = listeners.get(event.entityClass)
+    
+    if(entityListenersOption.isDefined) {
+      entityListenersOption.get.foreach(listener => listener.onEntityChanged(entity))
+    }
+  }
 }
