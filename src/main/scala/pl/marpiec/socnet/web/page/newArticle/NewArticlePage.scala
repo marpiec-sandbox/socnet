@@ -14,13 +14,13 @@ import pl.marpiec.socnet.di.Factory
  */
 
 class NewArticlePage extends WebPage {
-  add(new Form[NewArticlePageModel]("newArticleForm") {
+  add(new Form[NewArticleFormModel]("newArticleForm") {
 
     private val articleCommand = Factory.articleCommand
 
     private val warningMessage: Model[String] = new Model[String]("");
 
-    setModel(new CompoundPropertyModel[NewArticlePageModel](new NewArticlePageModel))
+    setModel(new CompoundPropertyModel[NewArticleFormModel](new NewArticleFormModel))
 
     add(new Label("warningMessage", warningMessage))
     add(new TextArea[String]("content").setRequired(true))
@@ -37,7 +37,7 @@ class NewArticlePage extends WebPage {
 
 
     override def onSubmit() {
-      val model: NewArticlePageModel = getDefaultModelObject.asInstanceOf[NewArticlePageModel]
+      val model: NewArticleFormModel = getDefaultModelObject.asInstanceOf[NewArticleFormModel]
       val user:User = getSession.asInstanceOf[SocnetSession].user
       
       articleCommand.createArticle(model.content, user.id)

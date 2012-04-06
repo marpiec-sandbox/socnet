@@ -63,8 +63,9 @@
         <!-- Wicket -->
         <dependency>
             <groupId>org.apache.wicket</groupId>
-            <artifactId>wicket-core</artifactId>
+            <artifactId>wicket</artifactId>
             <version>${wicket.version}</version>
+            <type>pom</type>
         </dependency>
         <dependency>
             <groupId>org.apache.wicket</groupId>
