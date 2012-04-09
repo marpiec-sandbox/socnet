@@ -5,6 +5,7 @@ import org.apache.wicket.request.Request
 import org.apache.wicket.authroles.authorization.strategies.role.Roles
 import pl.marpiec.socnet.model.User
 import pl.marpiec.socnet.di.Factory
+import org.apache.wicket.authroles.authorization.strategies.role.metadata.MetaDataRoleAuthorizationStrategy
 
 /**
  * Session class.
@@ -15,10 +16,16 @@ class SocnetSession(request: Request) extends AuthenticatedWebSession(request) {
 
   private val userQuery = Factory.userQuery
 
-  private val roles: Roles = new Roles
+  private var roles: Roles = initDefaultRoles
 
   var user: User = null
-
+  
+  
+  private def initDefaultRoles:Roles = {
+    val r = new Roles
+    r.add(MetaDataRoleAuthorizationStrategy.NO_ROLE)
+    r
+  }
 
   override def getRoles: Roles = roles
 
@@ -34,9 +41,10 @@ class SocnetSession(request: Request) extends AuthenticatedWebSession(request) {
     }
   }
 
-  def initSessionData(registeredUser: User) {
+  private def initSessionData(registeredUser: User) {
     this.user = registeredUser
 
+    roles.clear
     roles.add(SocnetRoles.USER)
     roles.add(SocnetRoles.ARTICLE_AUTHOR)
 
@@ -44,7 +52,7 @@ class SocnetSession(request: Request) extends AuthenticatedWebSession(request) {
 
   def clearSessionData() {
     user = null
-    roles.clear()
+    roles = initDefaultRoles
   }
 
   override def invalidate {

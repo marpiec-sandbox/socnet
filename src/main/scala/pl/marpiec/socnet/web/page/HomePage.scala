@@ -6,10 +6,10 @@ import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.markup.html.link.BookmarkablePageLink
 import org.apache.wicket.authroles.authentication.panel.SignInPanel
 import pl.marpiec.socnet.web.application.SocnetSession
-import pl.marpiec.socnet.web.authorization.AuthorizeUser
 import pl.marpiec.socnet.web.component.articleList.ArticleList
 import pl.marpiec.socnet.database.ArticleDatabase
 import pl.marpiec.socnet.di.Factory
+import pl.marpiec.socnet.web.authorization.{UnauthorizeAll, AuthorizeUser}
 
 class HomePage extends WebPage {
 
@@ -17,12 +17,12 @@ class HomePage extends WebPage {
   
   add(new Label("welcomeMessage", "Hello World by Wicket version " + getApplication.getFrameworkSettings.getVersion))
 
-  add(new BookmarkablePageLink("signoutLink", classOf[SignOutPage]))
+  add(AuthorizeUser(new BookmarkablePageLink("signoutLink", classOf[SignOutPage])))
   add(new BookmarkablePageLink("homeLink", classOf[HomePage]))
-  add(new BookmarkablePageLink("registerLink", classOf[RegisterPage]))
+  add(UnauthorizeAll(new BookmarkablePageLink("registerLink", classOf[RegisterPage])))
   add(AuthorizeUser(new BookmarkablePageLink("newArticleLink", classOf[NewArticlePage])))
 
-  add(new SignInPanel("signInPanel", false))
+  add(UnauthorizeAll(new SignInPanel("signInPanel", false)))
   
   add(AuthorizeUser(new ArticleList("articleList", articleDatabase.getAllArticles)))
 
