@@ -5,9 +5,9 @@ import org.apache.wicket.model.{CompoundPropertyModel, Model}
 import org.apache.wicket.markup.html.basic.Label
 import pl.marpiec.socnet.web.page.HomePage
 import pl.marpiec.util.Strings
-import pl.marpiec.socnet.service.user.exception.UserAlreadyRegisteredException
 import org.apache.wicket.markup.html.form._
 import org.apache.wicket.markup.html.panel.{Panel, FeedbackPanel}
+import pl.marpiec.socnet.database.exception.EntryAlreadyExistsException
 
 class RegisterForm(id: String) extends Panel(id) {
 
@@ -49,7 +49,7 @@ class RegisterForm(id: String) extends Panel(id) {
           warningMessage.setObject("Passwords does not match")
         }
       } catch {
-        case e: UserAlreadyRegisteredException => warningMessage.setObject("User already registered")
+        case e: EntryAlreadyExistsException => warningMessage.setObject("User already registered")
       }
     }
   })

@@ -1,10 +1,10 @@
 package pl.marpiec.socnet.service.user
 
 import event.{ChangeEmailEvent, RegisterUserEvent}
-import exception.UserAlreadyRegisteredException
 import pl.marpiec.cqrs.{DataStore, EventStore}
 import pl.marpiec.socnet.database.UserDatabase
 import pl.marpiec.socnet.model.User
+import pl.marpiec.socnet.database.exception.EntryAlreadyExistsException
 
 /**
  * ...
@@ -15,7 +15,7 @@ class UserCommandImpl(val eventStore: EventStore, val dataStore: DataStore, val 
 
   override def registerUser(name: String, email: String, password: String): Int = {
     if (userDatabase.getUserByEmail(email).isDefined) {
-      throw new UserAlreadyRegisteredException
+      throw new EntryAlreadyExistsException
     }
     //TODO pomyslec o synchronizacji
     val registerUser = new RegisterUserEvent(name, email, password)

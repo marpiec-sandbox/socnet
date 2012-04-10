@@ -1,8 +1,8 @@
 package pl.marpiec.socnet.database
 
+import exception.EntryAlreadyExistsException
 import pl.marpiec.socnet.model.User
 import collection.mutable.HashMap
-import pl.marpiec.socnet.service.user.exception.UserAlreadyRegisteredException
 import pl.marpiec.util.Strings
 import pl.marpiec.cqrs.{CqrsEntity, DataStoreListener, DataStore}
 
@@ -44,9 +44,9 @@ class UserDatabaseMockImpl(dataStore:DataStore) extends DataStoreListener with U
   def addUser(user: User) {
     this.synchronized {
       if(userByEmailIndex.get(user.email).isDefined || userDatabase.get(user.id).isDefined) {
-        throw new UserAlreadyRegisteredException
+        throw new EntryAlreadyExistsException
       } else {
-        val userCopy: User = user.createCopy
+        val userCopy = user.createCopy
         userDatabase += user.id -> userCopy;
         userByEmailIndex += user.email -> userCopy;
       }
@@ -55,7 +55,7 @@ class UserDatabaseMockImpl(dataStore:DataStore) extends DataStoreListener with U
 
   def updateUser(user: User) {
     this.synchronized {
-      val userOption: Option[User] = userDatabase.get(user.id)
+      val userOption = userDatabase.get(user.id)
       if(userOption.isEmpty) {
         throw new IllegalStateException("No user defined in database, userId="+user.id)
       }
@@ -66,7 +66,7 @@ class UserDatabaseMockImpl(dataStore:DataStore) extends DataStoreListener with U
         userByEmailIndex.remove(previousUser.email)
       }
 
-      val userCopy: User = user.createCopy
+      val userCopy = user.createCopy
       
       userByEmailIndex += user.email -> userCopy;
       userDatabase += user.id -> userCopy;

@@ -1,7 +1,7 @@
 package pl.marpiec.socnet.database
 
 import collection.mutable.HashMap
-import pl.marpiec.socnet.service.article.exception.ArticleAlreadyExistsException
+import exception.EntryAlreadyExistsException
 import pl.marpiec.cqrs.{CqrsEntity, DataStoreListener, DataStore}
 import pl.marpiec.socnet.model.{User, Article}
 
@@ -28,9 +28,9 @@ class ArticleDatabaseMockImpl(dataStore:DataStore) extends DataStoreListener wit
   def addArticle(article: Article) {
     this.synchronized {
       if (articleDatabase.get(article.id).isDefined) {
-        throw new ArticleAlreadyExistsException
+        throw new EntryAlreadyExistsException
       } else {
-        val articleCopy: Article = article.createCopy
+        val articleCopy = article.createCopy
         articleDatabase += article.id -> articleCopy;
       }
     }
@@ -41,7 +41,7 @@ class ArticleDatabaseMockImpl(dataStore:DataStore) extends DataStoreListener wit
       if (articleDatabase.get(article.id).isEmpty) {
         throw new IllegalStateException("No article defined in database, articleId=" + article.id)
       } else {
-        val articleCopy: Article = article.createCopy
+        val articleCopy = article.createCopy
         articleDatabase += article.id -> articleCopy;
       }
     }

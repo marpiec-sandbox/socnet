@@ -1,16 +1,17 @@
 package pl.marpiec.socnet.service.article.event
 
 import pl.marpiec.cqrs.{CqrsEntity, CqrsEvent}
-import pl.marpiec.socnet.model.{ArticleComment, Article, User}
+import pl.marpiec.socnet.model.article.ArticleComment
+import pl.marpiec.socnet.model.Article
 import org.joda.time.LocalDateTime
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
-class CreateCommentEvent(entityId:Int, expectedVersion:Int, val commentContent: String, val commentAuthorUserId:Int)
-  extends CqrsEvent(entityId, expectedVersion, classOf[Article]){
-  
+class CreateCommentEvent(entityId: Int, expectedVersion: Int, val commentContent: String, val commentAuthorUserId: Int)
+  extends CqrsEvent(entityId, expectedVersion, classOf[Article]) {
+
   def applyEvent(entity: CqrsEntity) {
     val article = entity.asInstanceOf[Article]
     val comment = new ArticleComment(commentContent, new LocalDateTime, commentAuthorUserId)

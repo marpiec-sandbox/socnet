@@ -1,1 +1,1 @@
-..\..\apache-tomcat-7.0.26\bin\startup.bat
+..\..\Srodowisko\apache-tomcat-7.0.26\\bin\startup.bat
