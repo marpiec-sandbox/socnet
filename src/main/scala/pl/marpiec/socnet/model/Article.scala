@@ -1,5 +1,6 @@
 package pl.marpiec.socnet.model
 
+import article.ArticleComment
 import org.joda.time.LocalDateTime
 import pl.marpiec.cqrs.CqrsEntity
 import collection.mutable.ListBuffer
@@ -21,7 +22,7 @@ class Article extends CqrsEntity(0, 0) {
     article.content = this.content
     article.creationTime = this.creationTime
     article.authorUserId = this.authorUserId
-    article.comments = this.comments.clone()
+    article.comments = this.comments.clone
     //TODO zrobic lepsze kopiowanie komentarzy
     article
   }
