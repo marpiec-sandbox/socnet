@@ -1,0 +1,93 @@
+package pl.marpiec.socnet.web.page.userProfile.component
+
+import pl.marpiec.socnet.model.User
+import pl.marpiec.socnet.model.userprofile.JobExperience
+import org.apache.wicket.markup.html.panel.Panel
+import org.apache.wicket.markup.html.basic.Label
+import org.apache.wicket.markup.html.WebMarkupContainer
+import org.apache.wicket.ajax.markup.html.AjaxFallbackLink
+import org.apache.wicket.ajax.AjaxRequestTarget
+import org.apache.wicket.model.{CompoundPropertyModel, PropertyModel}
+import pl.marpiec.socnet.service.userprofile.input.JobExperienceParam
+import org.apache.wicket.markup.html.form.{TextArea, TextField, Form}
+import org.apache.wicket.ajax.markup.html.form.AjaxButton
+
+/**
+ * ...
+ * @author Marcin Pieciukiewicz
+ */
+
+class JobExperiencePanel(id: String, val user: User, val jobExperience: JobExperience)
+  extends Panel(id) {
+
+  var edit = false
+
+  setOutputMarkupId(true)
+
+  add(new WebMarkupContainer("experiencePreview") {
+    add(new Label("companyName", new PropertyModel[String](jobExperience, "companyName")))
+    add(new Label("position", new PropertyModel[String](jobExperience, "position")))
+    add(new Label("description", new PropertyModel[String](jobExperience, "description")))
+
+    add(new AjaxFallbackLink("editButton") {
+      def onClick(target: AjaxRequestTarget) {
+        edit = true
+        target.add(JobExperiencePanel.this)
+      }
+    })
+
+    override def onConfigure() {
+      setVisible(!edit)
+    }
+  })
+
+
+  add(new Form[JobExperienceParam]("experienceForm") {
+
+    val jobExperienceModel = new JobExperienceParam
+    jobExperienceModel.companyName = jobExperience.companyName
+    jobExperienceModel.position = jobExperience.position
+    jobExperienceModel.description = jobExperience.description
+    setModel(new CompoundPropertyModel[JobExperienceParam](jobExperienceModel))
+
+    add(new TextField[String]("companyName"))
+    add(new TextField[String]("position"))
+    add(new TextArea[String]("description"))
+
+
+    add(new AjaxButton("cancelButton") {
+      def onSubmit(target: AjaxRequestTarget, form: Form[_]) {
+        val model = form.getModel.asInstanceOf[CompoundPropertyModel[JobExperienceParam]].getObject
+        model.companyName = jobExperience.companyName
+        model.position = jobExperience.position
+        model.description = jobExperience.description
+        edit = false
+        target.add(JobExperiencePanel.this)
+      }
+
+      def onError(target: AjaxRequestTarget, form: Form[_]) {
+        throw new IllegalStateException("Problem processing AJAX request")
+      }
+    })
+
+    add(new AjaxButton("submitButton") {
+      def onSubmit(target: AjaxRequestTarget, form: Form[_]) {
+        val model = form.getModel.asInstanceOf[CompoundPropertyModel[JobExperienceParam]].getObject
+        jobExperience.companyName = model.companyName
+        jobExperience.position = model.position
+        jobExperience.description = model.description
+        edit = false
+        target.add(JobExperiencePanel.this)
+      }
+
+      def onError(target: AjaxRequestTarget, form: Form[_]) {
+        throw new IllegalStateException("Problem processing AJAX request")
+      }
+    })
+
+    override def onConfigure() {
+      setVisible(edit)
+    }
+  });
+
+}

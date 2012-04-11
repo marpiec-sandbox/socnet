@@ -1,5 +1,6 @@
 package pl.marpiec.socnet.web.page.userProfile
 
+import component.{JobExperienceListPanel, PersonalSummaryPanel, PersonalSummaryFormModel}
 import pl.marpiec.socnet.web.application.SocnetSession
 import org.apache.wicket.markup.html.basic.Label
 import pl.marpiec.socnet.database.UserProfileDatabase
@@ -11,6 +12,8 @@ import org.apache.wicket.ajax.markup.html.AjaxFallbackLink
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.model.CompoundPropertyModel
 import org.apache.wicket.ajax.markup.html.form.AjaxButton
+import pl.marpiec.socnet.service.userprofile.UserProfileCommand
+import pl.marpiec.socnet.model.userprofile.JobExperience
 
 /**
  * ...
@@ -19,91 +22,37 @@ import org.apache.wicket.ajax.markup.html.form.AjaxButton
 
 class EditUserProfilePage extends WebPage {
 
+  setVersioned(false)
+
+
+  val userProfileCommand: UserProfileCommand = Factory.userProfileCommand
+  val userProfileDatabase: UserProfileDatabase = Factory.userProfileDatabase
   val session: SocnetSession = getSession.asInstanceOf[SocnetSession]
 
-  val userProfileDatabase: UserProfileDatabase = Factory.userProfileDatabase
-
   val userProfileOption = userProfileDatabase.getUserProfileByUserId(session.user.id)
+  val userProfile = userProfileOption.getOrElse(createUserProfile)
 
-  val userProfile = userProfileOption.getOrElse(new UserProfile)
+  var jobExperience = new JobExperience
+  jobExperience.companyName = "Socnet"
+  jobExperience.position = "Programmer"
+  jobExperience.description = "Writing code"
+  userProfile.jobExperience += jobExperience
 
-  userProfile.professionalTitle = "Programista"
+  jobExperience = new JobExperience
+  jobExperience.companyName = "MacDon"
+  jobExperience.position = "Server"
+  jobExperience.description = "serving food"
 
-  var edit = false
+  userProfile.jobExperience += jobExperience
 
+  add(new PersonalSummaryPanel("personalSummaryPanel", session.user, userProfile));
+  add(new JobExperienceListPanel("jobExperienceListPanel", session.user, userProfile.jobExperience))
 
-
-
-  val panel: WebMarkupContainer = new WebMarkupContainer("personalSummaryPanel") {
-
-    setOutputMarkupId(true)
-
-    add(new WebMarkupContainer("personalSummaryPreview") {
-
-
-      add(new Label("professionalTitle", userProfile.professionalTitle))
-      add(new Label("city", userProfile.city))
-      add(new Label("province", userProfile.province))
-      add(new Label("wwwPage", userProfile.wwwPage))
-      add(new Label("blogPage", userProfile.blogPage))
-
-      add(new AjaxFallbackLink("editButton") {
-        def onClick(target: AjaxRequestTarget) {
-          edit = true
-          target.add(panel)
-        }
-      })
-
-      override def onConfigure() {
-        setVisible(!edit)
-      }
-    })
-
-    add(new Form[PersonalSummaryFormModel]("personalSummaryForm") {
-
-      setModel(new CompoundPropertyModel[PersonalSummaryFormModel](new PersonalSummaryFormModel))
-
-      add(new TextField[String]("professionalTitle"))
-      add(new TextField[String]("city"))
-      add(new TextField[String]("province"))
-      add(new TextField[String]("wwwPage"))
-      add(new TextField[String]("blogPage"))
-
-      add(new Label("userName", session.user.name))
-
-      add(new AjaxButton("cancelButton") {
-        def onSubmit(target: AjaxRequestTarget, form: Form[_]) {
-          edit = false
-          target.add(panel)
-        }
-
-        def onError(target: AjaxRequestTarget, form: Form[_]) {
-          throw new IllegalStateException("Problem processing AJAX request")
-        }
-      })
-
-      add(new AjaxButton("cancelButton") {
-        def onSubmit(target: AjaxRequestTarget, form: Form[_]) {
-
-        edit = false
-          target.add(panel)
-        }
-
-        def onError(target: AjaxRequestTarget, form: Form[_]) {
-          throw new IllegalStateException("Problem processing AJAX request")
-        }
-      })
-      
-      override def onConfigure() {
-        setVisible(edit)
-      }
-    })
-
-
+  def createUserProfile:UserProfile = {
+    val userProfileId = userProfileCommand.createUserProfile(session.user.id)
+    val userProfile = new UserProfile
+    userProfile.id = userProfileId;
+    userProfile.version = 1
+    userProfile
   }
-
-
-  add(panel);
-
-
 }

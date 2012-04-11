@@ -36,6 +36,7 @@ class EventStoreImpl extends EventStore {
       throw new ConcurrentAggregateModificationException
     }
     eventsForEntity += event
+    callAllListenersAboutNewEvent(event)
   }
 
   def addListener(listener: EventStoreListener) {

@@ -11,7 +11,7 @@ import pl.marpiec.socnet.service.article.event.CreateArticleEvent
 
 class UserProfileCommandImpl(val eventStore: EventStore, val dataStore: DataStore) extends UserProfileCommand {
   def createUserProfile(userId: Int) = {
-    val createUserProfile = new CreateUserProfileEvent
+    val createUserProfile = new CreateUserProfileEvent(userId)
     val id = eventStore.addEventForNewAggregate(createUserProfile)
     id
   }

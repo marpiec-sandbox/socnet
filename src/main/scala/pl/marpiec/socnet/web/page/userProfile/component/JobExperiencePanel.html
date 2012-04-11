@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:wicket="http://wicket.apache.org">
+<wicket:panel>
+    <div wicket:id="experiencePreview">
+        <div>
+            Nazwa firmy: <span wicket:id="companyName">companyName</span>
+        </div>
+
+        <div>
+            Stanowisko: <span wicket:id="position">position</span>
+        </div>
+        <div>
+            Opis: <span wicket:id="description">description</span>
+        </div>
+        <input type="submit" wicket:id="editButton" value="edytuj"/>
+    </div>
+    <form wicket:id="experienceForm">
+        <div>
+            Nazwa firmy: <input wicket:id="companyName" />
+        </div>
+
+        <div>
+            Stanowisko: <input wicket:id="position" />
+        </div>
+        <div>
+            Opis: <textarea wicket:id="description"/>
+        </div>
+        <div>
+            <input type="submit" wicket:id="cancelButton" value="anuluj"/>
+            <input type="submit" wicket:id="submitButton" value="zapisz"/>
+        </div>
+    </form>
+</wicket:panel>
+</html>

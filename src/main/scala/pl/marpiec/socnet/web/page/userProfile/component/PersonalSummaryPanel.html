@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:wicket="http://wicket.apache.org">
+<wicket:panel>
+    <div wicket:id="personalSummaryPreview">
+
+        <div>
+            Tytuł zawodowy: <span wicket:id="professionalTitle">professionalTitle</span>
+        </div>
+        <div>
+            Miasto: <span wicket:id="city">city</span>
+        </div>
+        <div>
+            Województwo: <span wicket:id="province">province</span>
+        </div>
+        <div>
+            Strona WWW: <span wicket:id="wwwPage">wwwPage</span>
+        </div>
+        <div>
+            Blog: <span wicket:id="blogPage">blogPage</span>
+        </div>
+        <div>
+            Podsumowanie: <span wicket:id="summary">summary</span>
+        </div>
+        <input type="submit" wicket:id="editButton" value="edytuj"/>
+
+    </div>
+
+    <form wicket:id="personalSummaryForm">
+
+        <div>
+            Edycja profilu użytkownika <span wicket:id="userName">noname</span>
+        </div>
+
+        <div>
+            Tytuł zawodowy:
+            <input wicket:id="professionalTitle"/>
+        </div>
+
+        <div>
+            Miasto:
+            <input wicket:id="city"/>
+        </div>
+
+        <div>
+            Województwo:
+            <input wicket:id="province"/>
+        </div>
+
+        <div>
+            Strona WWW:
+            <input wicket:id="wwwPage"/>
+        </div>
+
+        <div>
+            Blog:
+            <input wicket:id="blogPage"/>
+        </div>
+        <div>
+            Podsumowanie:
+            <textarea wicket:id="summary"/>
+        </div>
+
+        <div>
+            <input type="submit" wicket:id="submitButton" value="zapisz"/>
+            <input type="submit" wicket:id="cancelButton" value="cancel"/>
+        </div>
+    </form>
+</wicket:panel>
+</html>

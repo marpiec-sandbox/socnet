@@ -11,4 +11,5 @@ class PersonalSummary {
   var province: String = _
   var wwwPage: String = _
   var blogPage: String = _
+  var summary: String = _
 }

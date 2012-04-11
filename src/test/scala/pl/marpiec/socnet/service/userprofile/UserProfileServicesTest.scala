@@ -22,8 +22,9 @@ class UserProfileServicesTest {
     val userProfileDatabase: ArticleDatabase = new ArticleDatabaseMockImpl(dataStore)
 
     val userProfileCommand: UserProfileCommand = new UserProfileCommandImpl(eventStore, dataStore)
-    
-    val userProfileId = userProfileCommand.createUserProfile(1)
+
+    val userId = 1
+    val userProfileId = userProfileCommand.createUserProfile(userId)
 
     var userProfile = dataStore.getEntity(classOf[UserProfile], userProfileId).asInstanceOf[UserProfile]
 
@@ -39,6 +40,7 @@ class UserProfileServicesTest {
 
     userProfile = dataStore.getEntity(classOf[UserProfile], userProfileId).asInstanceOf[UserProfile]
 
+    assertEquals(userProfile.userId, userId)
     assertEquals(userProfile.professionalTitle, personalSummary.professionalTitle)
     assertEquals(userProfile.city, personalSummary.city)
     assertEquals(userProfile.province, personalSummary.province)

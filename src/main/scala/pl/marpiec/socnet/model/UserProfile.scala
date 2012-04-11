@@ -18,6 +18,7 @@ class UserProfile extends CqrsEntity(0, 0) {
   var education = new ListBuffer[Education]
   var wwwPage:String = _
   var blogPage:String = _
+  var summary:String = _
 
   def createCopy:UserProfile = {
     val profile = new UserProfile
@@ -30,6 +31,7 @@ class UserProfile extends CqrsEntity(0, 0) {
     profile.education = this.education.clone
     profile.wwwPage = this.wwwPage
     profile.blogPage = this.blogPage
+    profile.summary = this.summary
     profile
   }
 }
