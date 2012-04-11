@@ -10,6 +10,7 @@ import org.apache.wicket.markup.html.form.{TextField, Form}
 import org.apache.wicket.ajax.markup.html.AjaxFallbackLink
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.model.CompoundPropertyModel
+import org.apache.wicket.ajax.markup.html.form.AjaxButton
 
 /**
  * ...
@@ -67,6 +68,18 @@ class EditUserProfilePage extends WebPage {
 
       add(new Label("userName", session.user.name))
 
+      add(new AjaxButton("cancelButton") {
+        def onSubmit(target: AjaxRequestTarget, form: Form[_]) {
+          edit = false
+          target.add(panel)
+        }
+
+        def onError(target: AjaxRequestTarget, form: Form[_]) {
+          edit = false
+          target.add(panel)
+        }
+      })
+      
       override def onConfigure() {
         setVisible(edit)
       }
