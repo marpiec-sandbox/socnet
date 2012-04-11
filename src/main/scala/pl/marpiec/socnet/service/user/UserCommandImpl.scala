@@ -20,15 +20,12 @@ class UserCommandImpl(val eventStore: EventStore, val dataStore: DataStore, val 
     //TODO pomyslec o synchronizacji
     val registerUser = new RegisterUserEvent(name, email, password)
     val id = eventStore.addEventForNewAggregate(registerUser)
-    //userDatabase.addUser(loadUserFromStore(id))
     id
   }
 
   def changeUserEmail(id: Int, version: Int, email: String) {
     val changeEmail = new ChangeEmailEvent(id, version, email)
     eventStore.addEvent(changeEmail);
-    //userDatabase.updateUser(loadUserFromStore(id))
-
   }
 
   def loadUserFromStore(id: Int): User = {

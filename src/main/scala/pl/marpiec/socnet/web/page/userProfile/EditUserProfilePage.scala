@@ -31,6 +31,9 @@ class EditUserProfilePage extends WebPage {
 
   var edit = false
 
+
+
+
   val panel: WebMarkupContainer = new WebMarkupContainer("personalSummaryPanel") {
 
     setOutputMarkupId(true)
@@ -75,8 +78,19 @@ class EditUserProfilePage extends WebPage {
         }
 
         def onError(target: AjaxRequestTarget, form: Form[_]) {
-          edit = false
+          throw new IllegalStateException("Problem processing AJAX request")
+        }
+      })
+
+      add(new AjaxButton("cancelButton") {
+        def onSubmit(target: AjaxRequestTarget, form: Form[_]) {
+
+        edit = false
           target.add(panel)
+        }
+
+        def onError(target: AjaxRequestTarget, form: Form[_]) {
+          throw new IllegalStateException("Problem processing AJAX request")
         }
       })
       

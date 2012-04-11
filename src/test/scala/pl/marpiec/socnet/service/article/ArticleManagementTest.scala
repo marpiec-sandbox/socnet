@@ -1,9 +1,10 @@
 package pl.marpiec.socnet.service.article
 
 import org.testng.annotations.Test
+import org.testng.Assert._
 import pl.marpiec.cqrs._
 import pl.marpiec.socnet.model.Article
-import org.testng.Assert._
+
 import pl.marpiec.socnet.database.{ArticleDatabaseMockImpl, ArticleDatabase}
 
 /**
@@ -17,9 +18,8 @@ class ArticleManagementTest {
     val eventStore: EventStore = new EventStoreImpl
     val entityCache: EntityCache = new EntityCacheSimpleImpl
     val dataStore: DataStore = new DataStoreImpl(eventStore, entityCache)
-    val articleDatabase: ArticleDatabase = new ArticleDatabaseMockImpl(dataStore)
 
-    val articleCommand: ArticleCommand = new ArticleCommandImpl(eventStore, dataStore, articleDatabase)
+    val articleCommand: ArticleCommand = new ArticleCommandImpl(eventStore, dataStore)
 
 
     val articleId = articleCommand.createArticle("Tresc artykulu", 1)

@@ -18,5 +18,5 @@ class DefaultFactory {
   val userCommand: UserCommand = new UserCommandImpl(eventStore, dataStore, userDatabase)
   val userQuery:UserQuery = new UserQueryImpl(userDatabase, dataStore)
 
-  val articleCommand:ArticleCommand = new ArticleCommandImpl(eventStore, dataStore, articleDatabase)
+  val articleCommand:ArticleCommand = new ArticleCommandImpl(eventStore, dataStore)
 }
