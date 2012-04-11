@@ -1,10 +1,69 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-        "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns:wicket="http://wicket.apache.org">
 <head>
-    <title></title>
+    <title>Edit user profile page</title>
 </head>
 <body>
+
+<div wicket:id="personalSummaryPanel">
+
+
+    <div wicket:id="personalSummaryPreview">
+
+        <div>
+            Tytuł zawodowy: <span wicket:id="professionalTitle">professionalTitle</span>
+        </div>
+        <div>
+            Miasto: <span wicket:id="city">city</span>
+        </div>
+        <div>
+            Województwo: <span wicket:id="province">province</span>
+        </div>
+        <div>
+            Strona WWW: <span wicket:id="wwwPage">wwwPage</span>
+        </div>
+        <div>
+            Blog: <span wicket:id="blogPage">blogPage</span>
+        </div>
+        <input type="submit" wicket:id="editButton" value="edytuj"/>
+
+    </div>
+
+    <form wicket:id="personalSummaryForm">
+
+        <div>
+            Edycja profilu użytkownika <span wicket:id="userName">noname</span>
+        </div>
+
+        <div>
+            Tytuł zawodowy:
+            <input wicket:id="professionalTitle"/>
+        </div>
+
+        <div>
+            Miasto:
+            <input wicket:id="city"/>
+        </div>
+
+        <div>
+            Województwo:
+            <input wicket:id="province"/>
+        </div>
+
+        <div>
+            Strona WWW:
+            <input wicket:id="wwwPage"/>
+        </div>
+
+        <div>
+            Blog:
+            <input wicket:id="blogPage"/>
+        </div>
+    </form>
+
+</div>
+
 
 </body>
 </html>

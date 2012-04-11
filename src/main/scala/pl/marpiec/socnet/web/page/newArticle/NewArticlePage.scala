@@ -14,6 +14,9 @@ import pl.marpiec.socnet.di.Factory
  */
 
 class NewArticlePage extends WebPage {
+
+  setStatelessHint(false)
+
   add(new Form[NewArticleFormModel]("newArticleForm") {
 
     private val articleCommand = Factory.articleCommand

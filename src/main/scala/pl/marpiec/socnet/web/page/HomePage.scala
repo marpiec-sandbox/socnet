@@ -10,8 +10,11 @@ import pl.marpiec.socnet.web.component.articleList.ArticleList
 import pl.marpiec.socnet.database.ArticleDatabase
 import pl.marpiec.socnet.di.Factory
 import pl.marpiec.socnet.web.authorization.{UnauthorizeAll, AuthorizeUser}
+import userProfile.EditUserProfilePage
 
 class HomePage extends WebPage {
+
+  setStatelessHint(false)
 
   private val articleDatabase:ArticleDatabase = Factory.articleDatabase
   
@@ -21,6 +24,7 @@ class HomePage extends WebPage {
   add(new BookmarkablePageLink("homeLink", classOf[HomePage]))
   add(UnauthorizeAll(new BookmarkablePageLink("registerLink", classOf[RegisterPage])))
   add(AuthorizeUser(new BookmarkablePageLink("newArticleLink", classOf[NewArticlePage])))
+  add(AuthorizeUser(new BookmarkablePageLink("editProfileLink", classOf[EditUserProfilePage])))
 
   add(UnauthorizeAll(new SignInPanel("signInPanel", false)))
   

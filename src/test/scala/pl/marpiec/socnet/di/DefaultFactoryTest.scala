@@ -11,6 +11,8 @@ class DefaultFactoryTest {
      assertNotNull(Factory.eventStore)
 
      assertNotNull(Factory.userDatabase)
+     assertNotNull(Factory.articleDatabase)
+     assertNotNull(Factory.userProfileDatabase)
 
      assertNotNull(Factory.userCommand)
      assertNotNull(Factory.userQuery)
