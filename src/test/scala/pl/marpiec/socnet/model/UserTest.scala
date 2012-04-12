@@ -18,7 +18,7 @@ class UserTest {
     user.password = "Haslo"
     user.email = "m.pieciukiewicz@socnet"
     
-    val userCopy = user.createCopy
+    val userCopy = user.copy.asInstanceOf[User]
 
     assertNotSame(userCopy, user)
 

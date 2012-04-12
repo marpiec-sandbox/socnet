@@ -7,7 +7,7 @@ class User extends CqrsEntity(0, 0) {
   var password: String = _
   var email: String = _
   
-  def createCopy:User = {
+  def copy:CqrsEntity = {
     val user = new User
     user.id = this.id
     user.version = this.version

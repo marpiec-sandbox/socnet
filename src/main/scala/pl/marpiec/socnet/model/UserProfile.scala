@@ -23,7 +23,7 @@ class UserProfile extends CqrsEntity(0, 0) {
   
   def jobExperienceByUuid(uuid:UUID):Option[JobExperience] = jobExperience.find(exp => exp.uuid == uuid)
 
-  def createCopy:UserProfile = {
+  def copy:CqrsEntity = {
     val profile = new UserProfile
     profile.id = this.id
     profile.version = this.version

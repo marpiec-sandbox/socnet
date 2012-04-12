@@ -15,7 +15,7 @@ class ArticleTest {
   article.authorUserId = 1
   article.creationTime = new LocalDateTime()
 
-  val articleCopy = article.createCopy
+  val articleCopy = article.copy.asInstanceOf[Article]
 
   assertTrue(articleCopy ne article)
 

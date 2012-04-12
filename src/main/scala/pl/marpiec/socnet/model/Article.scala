@@ -15,7 +15,7 @@ class Article extends CqrsEntity(0, 0) {
   var creationTime:LocalDateTime = _
   var authorUserId:Int = _
 
-  def createCopy:Article = {
+  def copy:CqrsEntity = {
     val article = new Article
     article.id = this.id
     article.version = this.version
