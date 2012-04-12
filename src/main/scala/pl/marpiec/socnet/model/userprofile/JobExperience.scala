@@ -1,6 +1,7 @@
 package pl.marpiec.socnet.model.userprofile
 
 import org.joda.time.LocalDate
+import java.util.UUID
 
 /**
  * ...
@@ -8,9 +9,11 @@ import org.joda.time.LocalDate
  */
 
 class JobExperience {
+  var uuid:UUID = _
   var companyName: String = _
-  var startDate: Option[LocalDate] = None
+  var startDateOption: Option[LocalDate] = None
   var endDateOption: Option[LocalDate] = None
+  var durationMonthsOption: Option[Int] = None
   var position: String = _
   var description: String = _
 }

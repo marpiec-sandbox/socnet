@@ -1,17 +1,11 @@
 package pl.marpiec.socnet.web.page.userProfile
 
-import component.{JobExperienceListPanel, PersonalSummaryPanel, PersonalSummaryFormModel}
+import component.{JobExperienceListPanel, PersonalSummaryPanel}
 import pl.marpiec.socnet.web.application.SocnetSession
-import org.apache.wicket.markup.html.basic.Label
 import pl.marpiec.socnet.database.UserProfileDatabase
 import pl.marpiec.socnet.di.Factory
 import pl.marpiec.socnet.model.UserProfile
-import org.apache.wicket.markup.html.{WebMarkupContainer, WebPage}
-import org.apache.wicket.markup.html.form.{TextField, Form}
-import org.apache.wicket.ajax.markup.html.AjaxFallbackLink
-import org.apache.wicket.ajax.AjaxRequestTarget
-import org.apache.wicket.model.CompoundPropertyModel
-import org.apache.wicket.ajax.markup.html.form.AjaxButton
+import org.apache.wicket.markup.html.WebPage
 import pl.marpiec.socnet.service.userprofile.UserProfileCommand
 import pl.marpiec.socnet.model.userprofile.JobExperience
 
@@ -48,7 +42,7 @@ class EditUserProfilePage extends WebPage {
   add(new PersonalSummaryPanel("personalSummaryPanel", session.user, userProfile));
   add(new JobExperienceListPanel("jobExperienceListPanel", session.user, userProfile.jobExperience))
 
-  def createUserProfile:UserProfile = {
+  def createUserProfile: UserProfile = {
     val userProfileId = userProfileCommand.createUserProfile(session.user.id)
     val userProfile = new UserProfile
     userProfile.id = userProfileId;
