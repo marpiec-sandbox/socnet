@@ -22,7 +22,7 @@ class UserDatabaseMockImpl(dataStore: DataStore) extends AbstractDatabase[User](
 
   def addUser(user: User) = add(user)
 
-  def updateUser(user: User) = update(user)
+  def updateUser(user: User) = addOrUpdate(user)
 
   def getUserByEmail(email: String) = getByIndex(NAME_INDEX, email)
 

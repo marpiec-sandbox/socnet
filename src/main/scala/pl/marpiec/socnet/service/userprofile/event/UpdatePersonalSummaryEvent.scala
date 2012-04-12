@@ -22,5 +22,6 @@ class UpdatePersonalSummaryEvent(entityId: UID, expectedVersion: Int, val person
     userProfile.province = personalSummary.province
     userProfile.blogPage = personalSummary.blogPage
     userProfile.wwwPage = personalSummary.wwwPage
+    userProfile.summary = personalSummary.summary
   }
 }

@@ -19,7 +19,7 @@ import pl.marpiec.util.UID
 class UserProfileServicesTest {
 
   def testProfileCreationAndModification() {
-    val eventStore: EventStore = new EventStoreImpl
+    val eventStore: EventStore = new EventStoreMockImpl
     val entityCache: EntityCache = new EntityCacheSimpleImpl
     val dataStore: DataStore = new DataStoreImpl(eventStore, entityCache)
     val userProfileCommand: UserProfileCommand = new UserProfileCommandImpl(eventStore, dataStore)
@@ -52,7 +52,7 @@ class UserProfileServicesTest {
   
   
   def testExperienceModification() {
-    val eventStore: EventStore = new EventStoreImpl
+    val eventStore: EventStore = new EventStoreMockImpl
     val entityCache: EntityCache = new EntityCacheSimpleImpl
     val dataStore: DataStore = new DataStoreImpl(eventStore, entityCache)
     val userProfileCommand: UserProfileCommand = new UserProfileCommandImpl(eventStore, dataStore)

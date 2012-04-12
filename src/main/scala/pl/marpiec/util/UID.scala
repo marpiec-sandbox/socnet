@@ -34,4 +34,8 @@ object UID {
     new UID(UUID.fromString(str))
   }
 
+  def fromUUID(uuid:UUID): UID = {
+    new UID(uuid)
+  }
+
 }

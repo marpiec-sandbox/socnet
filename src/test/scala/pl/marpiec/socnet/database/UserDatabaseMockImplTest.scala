@@ -20,7 +20,7 @@ class UserDatabaseMockImplTest {
 
 
   def testBasicDatabaseOperations() {
-    val userDatabase: UserDatabase = new UserDatabaseMockImpl(new DataStoreImpl(new EventStoreImpl, new EntityCacheSimpleImpl))
+    val userDatabase: UserDatabase = new UserDatabaseMockImpl(new DataStoreImpl(new EventStoreMockImpl, new EntityCacheSimpleImpl))
 
     val user:User = new User
     user.name = "Marcin Pieciukiewicz"
@@ -41,7 +41,7 @@ class UserDatabaseMockImplTest {
   }
 
   def testDataStoreListening() {
-    val eventStore:EventStore = new EventStoreImpl
+    val eventStore:EventStore = new EventStoreMockImpl
     val entityCache:EntityCache = new EntityCacheSimpleImpl
     val dataStore:DataStore = new DataStoreImpl(eventStore, entityCache)
     val userDatabase: UserDatabase = new UserDatabaseMockImpl(dataStore)

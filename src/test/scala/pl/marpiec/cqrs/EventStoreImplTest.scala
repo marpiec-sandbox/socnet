@@ -12,7 +12,7 @@ import pl.marpiec.socnet.database.{UserDatabaseMockImpl, UserDatabase}
 class EventStoreImplTest {
 
   def testbasicEventLog () {
-    val eventStore:EventStore = new EventStoreImpl
+    val eventStore:EventStore = new EventStoreMockImpl
     val entityCache:EntityCache = new EntityCacheSimpleImpl
     val dataStore:DataStore = new DataStoreImpl(eventStore, entityCache)
     val userDatabase:UserDatabase = new UserDatabaseMockImpl(dataStore)
@@ -20,10 +20,6 @@ class EventStoreImplTest {
     val userCommand:UserCommand = new UserCommandImpl(eventStore, dataStore, userDatabase)
 
     val userId = userCommand.registerUser("Marcin", "m.pieciukiewicz@socnet", "Haslo");
-
-    val userAggregateEvents = eventStore.getEvents(classOf[User])
-
-    assertEquals(userAggregateEvents.size, 1)
 
     var user = dataStore.getEntity(classOf[User], userId).asInstanceOf[User]
 

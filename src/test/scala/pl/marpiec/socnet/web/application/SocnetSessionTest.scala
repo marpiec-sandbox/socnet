@@ -6,14 +6,14 @@ import org.apache.wicket.mock.MockWebRequest
 import org.apache.wicket.request.Url
 import pl.marpiec.socnet.di.Factory
 import pl.marpiec.socnet.service.user.UserCommandImpl
-import pl.marpiec.cqrs.{EntityCacheSimpleImpl, DataStoreImpl, DataStore, EventStoreImpl}
+import pl.marpiec.cqrs.{EntityCacheSimpleImpl, DataStoreImpl, DataStore, EventStoreMockImpl}
 import pl.marpiec.socnet.database.UserDatabaseMockImpl
 
 @Test
 class SocnetSessionTest {
 
    def testSimpleLogin() {
-    /* val eventStore = new EventStoreImpl
+    /* val eventStore = new EventStoreMockImpl
      val entityCache = new EntityCacheSimpleImpl
      val dataStore = new DataStoreImpl(eventStore, entityCache)
      val userDatabase = new UserDatabaseMockImpl(dataStore)

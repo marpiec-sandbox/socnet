@@ -12,8 +12,10 @@ trait EventStore {
 
   def addEventForNewAggregate(id:UID, event: CqrsEvent)
 
-  def getEvents(entityClass: Class[_]): Map[UID, ListBuffer[CqrsEvent]]
-
   def addListener(listener: EventStoreListener)
+
+  def callListenersForAllAggregates
+
+  def initDatabaseIfNotExists
 
 }

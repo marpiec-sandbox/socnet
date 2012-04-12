@@ -45,10 +45,10 @@ class DataStoreImpl (val eventStore:EventStore, val entityCache:EntityCache) ext
     entityListeners += listener
   }
 
-  def onNewEvent(event: CqrsEvent) {
-    val entity = getEntity(event.entityClass, event.entityId)
+  def onEntityChanged(entityClass:Class[_ <: CqrsEntity], entityId:UID) {
+    val entity = getEntity(entityClass, entityId:UID)
 
-    val entityListenersOption = listeners.get(event.entityClass)
+    val entityListenersOption = listeners.get(entityClass)
     
     if(entityListenersOption.isDefined) {
       entityListenersOption.get.foreach(listener => listener.onEntityChanged(entity))

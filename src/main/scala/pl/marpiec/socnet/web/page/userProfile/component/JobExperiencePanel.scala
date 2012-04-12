@@ -22,7 +22,6 @@ class JobExperiencePanel(id: String, val user: User, val jobExperience: JobExper
 
   var edit = false
 
-
   setOutputMarkupId(true)
 
   add(new WebMarkupContainer("experiencePreview") {

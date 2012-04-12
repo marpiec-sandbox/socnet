@@ -26,11 +26,7 @@ class AbstractDatabase[E <: CqrsEntity](dataStore: DataStore) extends DataStoreL
   
   def onEntityChanged(cqrsEntity: CqrsEntity) {
     val entity = cqrsEntity.asInstanceOf[E]
-    if (entity.version == 1) {
-      add(entity)
-    } else {
-      update(entity)
-    }
+    addOrUpdate(entity)
   }
 
   def add(entity: E) {
@@ -48,26 +44,24 @@ class AbstractDatabase[E <: CqrsEntity](dataStore: DataStore) extends DataStoreL
     }
   }
 
-  def update(entity: E) {
+  def addOrUpdate(entity: E) {
     this.synchronized {
-      val entityOption = entityDatabase.get(entity.id)
-      if (entityOption.isEmpty) {
-        throw new IllegalStateException("No entity defined in database, entityId=" + entity.id)
-      } else {
+      val previousEntityOption = entityDatabase.get(entity.id)
 
-        val previousEntity = entityOption.get
+      val copy = entity.copy.asInstanceOf[E]
+      entityDatabase += entity.id -> copy
 
-        val copy = entity.copy.asInstanceOf[E]
-        entityDatabase += entity.id -> copy
+      indexes.values.foreach[Unit]((index:DatabaseIndex) => {
 
-        indexes.values.foreach[Unit]((index:DatabaseIndex) => {
-
+        if (previousEntityOption.isDefined) {
+          val previousEntity = previousEntityOption.get
           val key = index.indexFunction(previousEntity)
           index.index.remove(key)
+        }
 
-          index.index += index.indexFunction(entity) -> copy
-        })
-      }
+        index.index += index.indexFunction(entity) -> copy
+      })
+
     }
   }
 

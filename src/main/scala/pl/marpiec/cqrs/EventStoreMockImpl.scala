@@ -4,20 +4,18 @@ import exception.{NoEventsForEntityException, NoEventsForTypeException, Concurre
 import collection.mutable.{ListBuffer, Map, HashMap}
 import pl.marpiec.util.UID
 
-class EventStoreImpl extends EventStore {
+class EventStoreMockImpl extends EventStore {
 
   private val eventsByType = new HashMap[Class[_], Map[UID, ListBuffer[CqrsEvent]]]
 
   private val listeners = new ListBuffer[EventStoreListener]
-
-  def getEvents(entityClass: Class[_]) = eventsByType.getOrElse(entityClass, null)
 
   def addEventForNewAggregate(id:UID, event: CqrsEvent) {
     var eventsForType = eventsByType.getOrElseUpdate(event.entityClass, new HashMap[UID, ListBuffer[CqrsEvent]])
     var eventsForEntity = eventsForType.getOrElseUpdate(id, new ListBuffer[CqrsEvent])
     event.entityId = id
     eventsForEntity += event
-    callAllListenersAboutNewEvent(event)
+    callAllListenersAboutNewEvent(event.entityClass, event.entityId)
   }
 
   def getEventsForEntity(entityClass: Class[_], id: UID): ListBuffer[CqrsEvent] = {
@@ -34,14 +32,22 @@ class EventStoreImpl extends EventStore {
       throw new ConcurrentAggregateModificationException
     }
     eventsForEntity += event
-    callAllListenersAboutNewEvent(event)
+    callAllListenersAboutNewEvent(event.entityClass, event.entityId)
+  }
+
+  def initDatabaseIfNotExists {
+    //not necessary for mock event store
+  }
+
+  def callListenersForAllAggregates {
+    //not necessary for mock event store
   }
 
   def addListener(listener: EventStoreListener) {
     listeners += listener
   }
   
-  private def callAllListenersAboutNewEvent(event: CqrsEvent) {
-    listeners.foreach(listener => listener.onNewEvent(event))
+  private def callAllListenersAboutNewEvent(entityClass:Class[_ <: CqrsEntity], entityId:UID) {
+    listeners.foreach(listener => listener.onEntityChanged(entityClass, entityId))
   }
 }

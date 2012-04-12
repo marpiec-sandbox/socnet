@@ -16,7 +16,7 @@ import pl.marpiec.util.UID
 class ArticleManagementTest {
 
   def testSimpleArticleCreationAndCommentsAdding() {
-    val eventStore: EventStore = new EventStoreImpl
+    val eventStore: EventStore = new EventStoreMockImpl
     val entityCache: EntityCache = new EntityCacheSimpleImpl
     val dataStore: DataStore = new DataStoreImpl(eventStore, entityCache)
 

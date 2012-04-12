@@ -23,7 +23,7 @@ class UserProfileDatabaseMockImpl(dataStore: DataStore) extends AbstractDatabase
 
   def addUserProfile(userProfile: UserProfile) = add(userProfile)
 
-  def updateUserProfile(userProfile: UserProfile) = update(userProfile)
+  def updateUserProfile(userProfile: UserProfile) = addOrUpdate(userProfile)
 
   def getUserProfileByUserId(userId: UID) = getByIndex(USER_ID_INDEX, userId)
 

@@ -17,7 +17,7 @@ import pl.marpiec.util.UID
 class ArticleDatabaseMockImplTest {
   def testBasicDatabaseOperations() {
 
-    val eventStore:EventStore = new EventStoreImpl
+    val eventStore:EventStore = new EventStoreMockImpl
     val entityCache:EntityCache = new EntityCacheSimpleImpl
     val dataStore:DataStore = new DataStoreImpl(eventStore, entityCache)
     val articleDatabase:ArticleDatabase = new ArticleDatabaseMockImpl(dataStore)
@@ -44,7 +44,7 @@ class ArticleDatabaseMockImplTest {
   }
 
   def testDataStoreListening() {
-    val eventStore:EventStore = new EventStoreImpl
+    val eventStore:EventStore = new EventStoreMockImpl
     val entityCache:EntityCache = new EntityCacheSimpleImpl
     val dataStore:DataStore = new DataStoreImpl(eventStore, entityCache)
     val articleDatabase: ArticleDatabase = new ArticleDatabaseMockImpl(dataStore)

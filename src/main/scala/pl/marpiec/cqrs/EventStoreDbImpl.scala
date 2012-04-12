@@ -1,10 +1,10 @@
 package pl.marpiec.cqrs
 
 import pl.marpiec.util.UID
-import java.util.Date
 import collection.mutable.{HashMap, ListBuffer}
 import java.sql._
 import com.google.gson.Gson
+import java.util.{UUID, Date}
 
 /**
  * @author Marcin Pieciukiewicz
@@ -48,11 +48,11 @@ class EventStoreDbImpl extends EventStore {
     insert.setObject(5, gson.toJson(event))
     insert.executeUpdate
 
-    val update = connection.prepareStatement("UPDATE aggregate SET version = version + 1 WHERE uid = ?")
+    val update = connection.prepareStatement("UPDATE aggregates SET version = version + 1 WHERE uid = ?")
     update.setObject(1, event.entityId.uuid)
     update.executeUpdate
 
-    callAllListenersAboutNewEvent(event)
+    callAllListenersAboutNewEvent(event.entityClass, event.entityId)
 
   }
 
@@ -75,19 +75,35 @@ class EventStoreDbImpl extends EventStore {
     insertEvent.setObject(5, gson.toJson(event))
     insertEvent.executeUpdate
 
-    callAllListenersAboutNewEvent(event)
+    callAllListenersAboutNewEvent(event.entityClass, event.entityId)
 
   }
 
-  def getEvents(entityClass: Class[_]):HashMap[UID, ListBuffer[CqrsEvent]] = {
-    new HashMap[UID, ListBuffer[CqrsEvent]]
+  def initDatabaseIfNotExists {
+
+    val createEvents = connection.prepareStatement("CREATE TABLE IF NOT EXISTS events (aggregate_uid UUID, event_time TIMESTAMP, version INT, event_type VARCHAR(128), event VARCHAR(10240))")
+    createEvents.execute()
+
+    val createAggregates = connection.prepareStatement("CREATE TABLE IF NOT EXISTS aggregates (class VARCHAR(128), uid UUID, version INT)")
+    createAggregates.execute()
   }
+
+  def callListenersForAllAggregates {
+    val selectAggregates = connection.prepareStatement("SELECT class, uid FROM aggregates")
+    val results = selectAggregates.executeQuery
+    while(results.next()) {
+      var className = results.getString(1)
+      var uuid = results.getObject(2).asInstanceOf[UUID]
+      callAllListenersAboutNewEvent(Class.forName(className).asInstanceOf[Class[_ <: CqrsEntity]], UID.fromUUID(uuid))
+    }
+  }
+
 
   def addListener(listener: EventStoreListener) {
     listeners += listener
   }
 
-  private def callAllListenersAboutNewEvent(event: CqrsEvent) {
-    listeners.foreach(listener => listener.onNewEvent(event))
+  private def callAllListenersAboutNewEvent(entityClass:Class[_ <: CqrsEntity], entityId:UID) {
+    listeners.foreach(listener => listener.onEntityChanged(entityClass, entityId))
   }
 }

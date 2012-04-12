@@ -15,7 +15,7 @@ class ArticleDatabaseMockImpl(dataStore: DataStore) extends AbstractDatabase[Art
 
   def addArticle(article: Article) = add(article)
 
-  def updateArticle(article: Article) = update(article)
+  def updateArticle(article: Article) = addOrUpdate(article)
 
   def getArticleById(id: UID) = getById(id)
 

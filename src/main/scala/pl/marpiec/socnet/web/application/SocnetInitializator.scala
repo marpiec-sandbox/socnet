@@ -1,7 +1,7 @@
 package pl.marpiec.socnet.web.application
 
-import pl.marpiec.socnet.service.user.UserCommand
 import pl.marpiec.socnet.di.Factory
+import compat.Platform
 
 /**
  * @author Marcin Pieciukiewicz
@@ -9,12 +9,20 @@ import pl.marpiec.socnet.di.Factory
 
 object SocnetInitializator {
 
-  val userCommand: UserCommand = Factory.userCommand
+
+  val eventStore = Factory.eventStore
 
   def apply() {
 
-    //userCommand.registerUser("Marcin Pieciukiewicz", "m.pieciukiewicz@socnet", "haslo")
+    eventStore.initDatabaseIfNotExists
 
+    val start = System.currentTimeMillis
+    print("Starting rebuilding read databases... ")
+
+    eventStore.callListenersForAllAggregates
+
+    val end = System.currentTimeMillis
+    println("Done in "+(end-start)+" mills.")
 
   }
 }

@@ -1,6 +1,7 @@
 package pl.marpiec.cqrs
 
 import pl.marpiec.socnet.model.User
+import pl.marpiec.util.UID
 
 /**
  * @author Marcin Pieciukiewicz
@@ -11,5 +12,5 @@ trait EventStoreListener {
     eventStore.addListener(this)
   }
 
-  def onNewEvent(event:CqrsEvent)
+  def onEntityChanged(entityClass:Class[_ <: CqrsEntity], entityId:UID)
 }
