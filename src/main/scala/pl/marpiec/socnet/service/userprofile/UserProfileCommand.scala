@@ -1,7 +1,7 @@
 package pl.marpiec.socnet.service.userprofile
 
 import input.{JobExperienceParam, PersonalSummary}
-import java.util.UUID
+import pl.marpiec.util.UID
 
 
 /**
@@ -10,10 +10,10 @@ import java.util.UUID
 
 trait UserProfileCommand {
 
-  def createUserProfile(userId:UUID):UUID
-  def updatePersonalSummary(id: UUID, version: Int, personalSummary: PersonalSummary)
+  def createUserProfile(userId:UID):UID
+  def updatePersonalSummary(id: UID, version: Int, personalSummary: PersonalSummary)
 
-  def addJobExperience(id: UUID, version: Int, jobExperience: JobExperienceParam)
-  def updateJobExperience(id: UUID, version: Int, jobExperience: JobExperienceParam)
-  def removeJobExperience(id: UUID, version: Int, jobExperienceUuid: UUID)
+  def addJobExperience(id: UID, version: Int, jobExperience: JobExperienceParam)
+  def updateJobExperience(id: UID, version: Int, jobExperience: JobExperienceParam)
+  def removeJobExperience(id: UID, version: Int, jobExperienceId: UID)
 }

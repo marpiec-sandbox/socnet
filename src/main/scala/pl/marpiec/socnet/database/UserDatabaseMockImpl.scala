@@ -2,7 +2,7 @@ package pl.marpiec.socnet.database
 
 import pl.marpiec.socnet.model.User
 import pl.marpiec.cqrs.{CqrsEntity, DataStore}
-import java.util.UUID
+import pl.marpiec.util.UID
 
 /**
  * ...
@@ -26,5 +26,5 @@ class UserDatabaseMockImpl(dataStore: DataStore) extends AbstractDatabase[User](
 
   def getUserByEmail(email: String) = getByIndex(NAME_INDEX, email)
 
-  def getUserById(id: UUID) = getById(id)
+  def getUserById(id: UID) = getById(id)
 }

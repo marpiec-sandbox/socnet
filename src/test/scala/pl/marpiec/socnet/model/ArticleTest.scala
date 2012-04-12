@@ -2,7 +2,7 @@ package pl.marpiec.socnet.model
 
 import org.testng.Assert._
 import org.joda.time.LocalDateTime
-import java.util.UUID
+import pl.marpiec.util.UID
 
 /**
  * @author Marcin Pieciukiewicz
@@ -11,17 +11,17 @@ import java.util.UUID
 class ArticleTest {
 
   val article = new Article
-  article.uuid = UUID.randomUUID()
+  article.id = UID.generate
   article.version = 1
   article.content = "Tresc artykulu"
-  article.authorUserId = UUID.randomUUID()
+  article.authorUserId = UID.generate
   article.creationTime = new LocalDateTime()
 
   val articleCopy = article.copy.asInstanceOf[Article]
 
   assertTrue(articleCopy ne article)
 
-  assertEquals(articleCopy.uuid, article.uuid)
+  assertEquals(articleCopy.id, article.id)
   assertEquals(articleCopy.version, article.version)
   assertEquals(articleCopy.content, article.content)
   assertEquals(articleCopy.authorUserId, article.authorUserId)

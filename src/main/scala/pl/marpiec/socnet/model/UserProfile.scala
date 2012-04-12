@@ -3,7 +3,7 @@ package pl.marpiec.socnet.model
 import pl.marpiec.cqrs.CqrsEntity
 import userprofile.{JobExperience, Education}
 import collection.mutable.ListBuffer
-import java.util.UUID
+import pl.marpiec.util.UID
 
 /**
  * ...
@@ -11,7 +11,7 @@ import java.util.UUID
  */
 
 class UserProfile extends CqrsEntity(null, 0) {
-  var userId:UUID = _
+  var userId:UID = _
   var professionalTitle:String = _
   var city:String = _
   var province:String = _
@@ -21,11 +21,11 @@ class UserProfile extends CqrsEntity(null, 0) {
   var blogPage:String = _
   var summary:String = _
   
-  def jobExperienceByUuid(uuid:UUID):Option[JobExperience] = jobExperience.find(exp => exp.uuid == uuid)
+  def jobExperienceById(id:UID):Option[JobExperience] = jobExperience.find(exp => exp.id == id)
 
   def copy:CqrsEntity = {
     val profile = new UserProfile
-    profile.uuid = this.uuid
+    profile.id = this.id
     profile.version = this.version
     profile.professionalTitle = this.professionalTitle
     profile.city = this.city

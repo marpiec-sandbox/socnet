@@ -3,7 +3,7 @@ package pl.marpiec.socnet.service.article
 import event.{CreateCommentEvent, CreateArticleEvent}
 import pl.marpiec.cqrs.{DataStore, EventStore}
 import pl.marpiec.socnet.model.Article
-import java.util.UUID
+import pl.marpiec.util.UID
 
 
 /**
@@ -12,14 +12,14 @@ import java.util.UUID
 
 class ArticleCommandImpl(val eventStore: EventStore, val dataStore: DataStore) extends ArticleCommand {
 
-  def createArticle(content: String, authorUserId: UUID): UUID = {
+  def createArticle(content: String, authorUserId: UID): UID = {
     val createArticle = new CreateArticleEvent(content, authorUserId)
-    val uuid = UUID.randomUUID()
-    eventStore.addEventForNewAggregate(uuid, createArticle)
-    uuid
+    val id = UID.generate
+    eventStore.addEventForNewAggregate(id, createArticle)
+    id
   }
 
-  def addComment(articleId: UUID, articleVersion: Int, commentContent: String, commentAuthorUserId: UUID) {
+  def addComment(articleId: UID, articleVersion: Int, commentContent: String, commentAuthorUserId: UID) {
     val createComment = new CreateCommentEvent(articleId, articleVersion, commentContent, commentAuthorUserId)
     eventStore.addEvent(createComment)
 

@@ -2,7 +2,7 @@ package pl.marpiec.socnet.database
 
 import pl.marpiec.cqrs.DataStore
 import pl.marpiec.socnet.model.Article
-import java.util.UUID
+import pl.marpiec.util.UID
 
 
 /**
@@ -17,7 +17,7 @@ class ArticleDatabaseMockImpl(dataStore: DataStore) extends AbstractDatabase[Art
 
   def updateArticle(article: Article) = update(article)
 
-  def getArticleById(id: UUID) = getById(id)
+  def getArticleById(id: UID) = getById(id)
 
   def getAllArticles = getAll
 }

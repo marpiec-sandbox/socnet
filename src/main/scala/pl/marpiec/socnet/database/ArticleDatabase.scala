@@ -1,7 +1,7 @@
 package pl.marpiec.socnet.database
 
 import pl.marpiec.socnet.model.Article
-import java.util.UUID
+import pl.marpiec.util.UID
 
 /**
  * @author Marcin Pieciukiewicz
@@ -12,7 +12,7 @@ trait ArticleDatabase {
 
   def updateArticle(article:Article)
 
-  def getArticleById(id: UUID):Option[Article]
+  def getArticleById(id: UID):Option[Article]
   
   def getAllArticles:List[Article]
 }

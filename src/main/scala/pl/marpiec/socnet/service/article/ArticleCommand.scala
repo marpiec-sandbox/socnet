@@ -1,6 +1,6 @@
 package pl.marpiec.socnet.service.article
 
-import java.util.UUID
+import pl.marpiec.util.UID
 
 /**
  * @author Marcin Pieciukiewicz
@@ -8,7 +8,7 @@ import java.util.UUID
 
 trait ArticleCommand {
 
-  def createArticle(content: String, authorUserId: UUID):UUID
+  def createArticle(content: String, authorUserId: UID):UID
 
-  def addComment(articleId: UUID, articleVersion: Int, commentContent: String, commentAuthorUserId: UUID)
+  def addComment(articleId: UID, articleVersion: Int, commentContent: String, commentAuthorUserId: UID)
 }

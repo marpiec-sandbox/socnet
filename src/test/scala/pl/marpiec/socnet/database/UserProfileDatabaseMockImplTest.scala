@@ -7,7 +7,7 @@ import pl.marpiec.socnet.model.UserProfile
 import pl.marpiec.socnet.model.userprofile.Education
 import org.joda.time.LocalDate
 import org.testng.Assert._
-import java.util.UUID
+import pl.marpiec.util.UID
 
 /**
  * ...
@@ -20,11 +20,11 @@ class UserProfileDatabaseMockImplTest {
   def testBasicDatabaseOperations() {
     val userProfileDatabase: UserProfileDatabase = new UserProfileDatabaseMockImpl(new DataStoreImpl(new EventStoreImpl, new EntityCacheSimpleImpl))
 
-    val profileId = UUID.randomUUID()
-    val userId = UUID.randomUUID()
+    val profileId = UID.generate
+    val userId = UID.generate
     
     val profile = new UserProfile
-    profile.uuid = profileId
+    profile.id = profileId
     profile.userId = userId
     profile.city = "Warszawa"
     profile.province = "Mazowieckie"
@@ -46,7 +46,7 @@ class UserProfileDatabaseMockImplTest {
     assertTrue(userProfileOption.isDefined)
     assertTrue(userProfileOptionByUserId.isDefined)
 
-    assertEquals(userProfileOption.get.uuid, userProfileOptionByUserId.get.uuid)
+    assertEquals(userProfileOption.get.id, userProfileOptionByUserId.get.id)
 
     val userProfileFromDatabase = userProfileOption.get
 

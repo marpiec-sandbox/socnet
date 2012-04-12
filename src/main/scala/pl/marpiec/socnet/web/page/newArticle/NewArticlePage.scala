@@ -43,7 +43,7 @@ class NewArticlePage extends WebPage {
       val model: NewArticleFormModel = getDefaultModelObject.asInstanceOf[NewArticleFormModel]
       val user:User = getSession.asInstanceOf[SocnetSession].user
       
-      articleCommand.createArticle(model.content, user.uuid)
+      articleCommand.createArticle(model.content, user.id)
       setResponsePage(classOf[HomePage])
     }
   })

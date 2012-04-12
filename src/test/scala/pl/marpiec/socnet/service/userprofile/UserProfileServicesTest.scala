@@ -9,7 +9,7 @@ import pl.marpiec.socnet.service.article.{ArticleCommandImpl, ArticleCommand}
 import pl.marpiec.socnet.model.UserProfile
 import org.joda.time.LocalDate
 import pl.marpiec.socnet.model.userprofile.JobExperience
-import java.util.UUID
+import pl.marpiec.util.UID
 
 /**
  * @author Marcin Pieciukiewicz
@@ -24,7 +24,7 @@ class UserProfileServicesTest {
     val dataStore: DataStore = new DataStoreImpl(eventStore, entityCache)
     val userProfileCommand: UserProfileCommand = new UserProfileCommandImpl(eventStore, dataStore)
 
-    val userId = UUID.randomUUID()
+    val userId = UID.generate
     val userProfileId = userProfileCommand.createUserProfile(userId)
 
     var userProfile = dataStore.getEntity(classOf[UserProfile], userProfileId).asInstanceOf[UserProfile]
@@ -37,7 +37,7 @@ class UserProfileServicesTest {
     personalSummary.blogPage = ""
     personalSummary.wwwPage = "socnet.pl"
 
-    userProfileCommand.updatePersonalSummary(userProfile.uuid, userProfile.version, personalSummary)
+    userProfileCommand.updatePersonalSummary(userProfile.id, userProfile.version, personalSummary)
 
     userProfile = dataStore.getEntity(classOf[UserProfile], userProfileId).asInstanceOf[UserProfile]
 
@@ -57,7 +57,7 @@ class UserProfileServicesTest {
     val dataStore: DataStore = new DataStoreImpl(eventStore, entityCache)
     val userProfileCommand: UserProfileCommand = new UserProfileCommandImpl(eventStore, dataStore)
 
-    val userId = UUID.randomUUID()
+    val userId = UID.generate
     val userProfileId = userProfileCommand.createUserProfile(userId)
     var userProfile = dataStore.getEntity(classOf[UserProfile], userProfileId).asInstanceOf[UserProfile]
     
@@ -68,10 +68,10 @@ class UserProfileServicesTest {
     jobExperienceParam.startDateOption = Option[LocalDate](new LocalDate(2002, 10, 1))
     jobExperienceParam.endDateOption = Option[LocalDate](new LocalDate(2006, 3, 1))
     jobExperienceParam.position = "Programmer"
-    jobExperienceParam.uuid = UUID.randomUUID()
+    jobExperienceParam.id = UID.generate
 
-    val jobExperienceUuid = jobExperienceParam.uuid
-    userProfileCommand.addJobExperience(userProfile.uuid, userProfile.version, jobExperienceParam)
+    val jobExperienceUuid = jobExperienceParam.id
+    userProfileCommand.addJobExperience(userProfile.id, userProfile.version, jobExperienceParam)
 
     userProfile = dataStore.getEntity(classOf[UserProfile], userProfileId).asInstanceOf[UserProfile]
 
@@ -86,14 +86,14 @@ class UserProfileServicesTest {
 
     jobExperienceParam = new JobExperienceParam
 
-    jobExperienceParam.uuid = jobExperienceUuid
+    jobExperienceParam.id = jobExperienceUuid
     jobExperienceParam.companyName = "socnet"
     jobExperienceParam.description = "coding and programming"
     jobExperienceParam.startDateOption = Option[LocalDate](new LocalDate(2002, 10, 1))
     jobExperienceParam.endDateOption = Option[LocalDate](new LocalDate(2006, 3, 1))
     jobExperienceParam.position = "CTO"
 
-    userProfileCommand.updateJobExperience(userProfile.uuid, userProfile.version, jobExperienceParam)
+    userProfileCommand.updateJobExperience(userProfile.id, userProfile.version, jobExperienceParam)
 
     userProfile = dataStore.getEntity(classOf[UserProfile], userProfileId).asInstanceOf[UserProfile]
 
@@ -105,7 +105,7 @@ class UserProfileServicesTest {
     assertEquals(experience.endDateOption.get, new LocalDate(2006, 3, 1))
     assertEquals(experience.position, "CTO")
 
-    userProfileCommand.removeJobExperience(userProfile.uuid, userProfile.version, jobExperienceUuid)
+    userProfileCommand.removeJobExperience(userProfile.id, userProfile.version, jobExperienceUuid)
 
     userProfile = dataStore.getEntity(classOf[UserProfile], userProfileId).asInstanceOf[UserProfile]
 

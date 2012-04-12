@@ -1,6 +1,6 @@
 package pl.marpiec.cqrs
 
-import java.util.UUID
+import pl.marpiec.util.UID
 
 /**
  * @author Marcin Pieciukiewicz
@@ -8,6 +8,6 @@ import java.util.UUID
 
 trait EntityCache {
 
-  def get(entityClass: Class[_ <: CqrsEntity], uuid:UUID):Option[CqrsEntity]
+  def get(entityClass: Class[_ <: CqrsEntity], id:UID):Option[CqrsEntity]
   def put(entity:CqrsEntity)
 }

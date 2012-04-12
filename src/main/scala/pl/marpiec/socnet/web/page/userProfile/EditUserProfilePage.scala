@@ -23,7 +23,7 @@ class EditUserProfilePage extends WebPage {
   val userProfileDatabase: UserProfileDatabase = Factory.userProfileDatabase
   val session: SocnetSession = getSession.asInstanceOf[SocnetSession]
 
-  val userProfileOption = userProfileDatabase.getUserProfileByUserId(session.user.uuid)
+  val userProfileOption = userProfileDatabase.getUserProfileByUserId(session.user.id)
   val userProfile = userProfileOption.getOrElse(createUserProfile)
 
   var jobExperience = new JobExperience
@@ -43,9 +43,9 @@ class EditUserProfilePage extends WebPage {
   add(new JobExperienceListPanel("jobExperienceListPanel", session.user, userProfile.jobExperience))
 
   def createUserProfile: UserProfile = {
-    val userProfileId = userProfileCommand.createUserProfile(session.user.uuid)
+    val userProfileId = userProfileCommand.createUserProfile(session.user.id)
     val userProfile = new UserProfile
-    userProfile.uuid = userProfileId;
+    userProfile.id = userProfileId;
     userProfile.version = 1
     userProfile
   }

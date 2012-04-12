@@ -1,19 +1,19 @@
 package pl.marpiec.socnet.service.userprofile.event
 
 import pl.marpiec.socnet.model.UserProfile
-import java.util.UUID
+import pl.marpiec.util.UID
 import pl.marpiec.cqrs.{CqrsEntity, CqrsEvent}
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
-class RemoveJobExperienceEvent(entityId: UUID, expectedVersion: Int, val jobExperienceUuid: UUID)
+class RemoveJobExperienceEvent(entityId: UID, expectedVersion: Int, val jobExperienceId: UID)
   extends CqrsEvent(entityId, expectedVersion, classOf[UserProfile]) {
   def applyEvent(entity: CqrsEntity) {
     val userProfile = entity.asInstanceOf[UserProfile]
 
-    val jobExperiencOption = userProfile.jobExperienceByUuid(jobExperienceUuid)
+    val jobExperiencOption = userProfile.jobExperienceById(jobExperienceId)
 
     if (jobExperiencOption.isDefined) {
       val jobExperience = jobExperiencOption.get

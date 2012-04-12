@@ -1,7 +1,7 @@
 package pl.marpiec.cqrs
 
 import collection.mutable.{ListBuffer, HashMap}
-import java.util.UUID
+import pl.marpiec.util.UID
 
 
 class DataStoreImpl (val eventStore:EventStore, val entityCache:EntityCache) extends EventStoreListener with DataStore {
@@ -10,11 +10,11 @@ class DataStoreImpl (val eventStore:EventStore, val entityCache:EntityCache) ext
 
   startListeningToEventStore(eventStore)
 
-  def getEntity(entityClass:Class[_ <: CqrsEntity], uuid: UUID):CqrsEntity = {
-    val entity = getNewOrCachedEntity(entityClass, uuid)
+  def getEntity(entityClass:Class[_ <: CqrsEntity], id: UID):CqrsEntity = {
+    val entity = getNewOrCachedEntity(entityClass, id)
 
     //TODO doadac wyciaganie zakresu eventow
-    val events = eventStore.getEventsForEntity(entityClass, uuid)
+    val events = eventStore.getEventsForEntity(entityClass, id)
 
     events.foreach((event) => {
         if(event.expectedVersion == entity.version) {
@@ -28,12 +28,12 @@ class DataStoreImpl (val eventStore:EventStore, val entityCache:EntityCache) ext
 
   }
 
-  private def getNewOrCachedEntity(entityClass: Class[_ <: CqrsEntity], uuid: UUID):CqrsEntity = {
-    entityCache.get(entityClass, uuid) match {
+  private def getNewOrCachedEntity(entityClass: Class[_ <: CqrsEntity], id: UID):CqrsEntity = {
+    entityCache.get(entityClass, id) match {
       case Some(entity) => entity
       case None => {
         val entity: CqrsEntity = entityClass.newInstance
-        entity.uuid = uuid
+        entity.id = id
         entity.version = 0
         entity
       }
@@ -46,7 +46,7 @@ class DataStoreImpl (val eventStore:EventStore, val entityCache:EntityCache) ext
   }
 
   def onNewEvent(event: CqrsEvent) {
-    val entity = getEntity(event.entityClass, event.entityUuid)
+    val entity = getEntity(event.entityClass, event.entityId)
 
     val entityListenersOption = listeners.get(event.entityClass)
     

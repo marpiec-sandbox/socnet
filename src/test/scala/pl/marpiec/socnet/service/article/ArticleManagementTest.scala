@@ -6,7 +6,7 @@ import pl.marpiec.cqrs._
 import pl.marpiec.socnet.model.Article
 
 import pl.marpiec.socnet.database.{ArticleDatabaseMockImpl, ArticleDatabase}
-import java.util.UUID
+import pl.marpiec.util.UID
 
 /**
  * @author Marcin Pieciukiewicz
@@ -22,7 +22,7 @@ class ArticleManagementTest {
 
     val articleCommand: ArticleCommand = new ArticleCommandImpl(eventStore, dataStore)
 
-    val userId = UUID.randomUUID()
+    val userId = UID.generate
 
     val articleId = articleCommand.createArticle("Tresc artykulu", userId)
 
@@ -30,7 +30,7 @@ class ArticleManagementTest {
 
     assertEquals(article.content, "Tresc artykulu")
 
-    articleCommand.addComment(article.uuid, article.version, "Tresc komentarza", userId)
+    articleCommand.addComment(article.id, article.version, "Tresc komentarza", userId)
 
     article = dataStore.getEntity(classOf[Article], articleId).asInstanceOf[Article]
 

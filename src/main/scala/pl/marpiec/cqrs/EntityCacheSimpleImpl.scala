@@ -1,7 +1,7 @@
 package pl.marpiec.cqrs
 
 import collection.mutable.{ListBuffer, HashMap, WeakHashMap}
-import java.util.UUID
+import pl.marpiec.util.UID
 
 
 /**
@@ -10,13 +10,13 @@ import java.util.UUID
 
 class EntityCacheSimpleImpl extends EntityCache {
   
-  private val cache = new WeakHashMap[Class[_], WeakHashMap[UUID, CqrsEntity]]
+  private val cache = new WeakHashMap[Class[_], WeakHashMap[UID, CqrsEntity]]
   
-  def get(entityClass: Class[_ <: CqrsEntity], uuid: UUID):Option[CqrsEntity] = {
+  def get(entityClass: Class[_ <: CqrsEntity], id: UID):Option[CqrsEntity] = {
     var entitiesForType = cache.get(entityClass)
     entitiesForType match {
       case Some(entities) => {
-        entities.get(uuid)
+        entities.get(id)
       }
       case None => {
         None
@@ -25,7 +25,7 @@ class EntityCacheSimpleImpl extends EntityCache {
   }
 
   def put(entity: CqrsEntity) {
-    var entitiesForType = cache.getOrElseUpdate(entity.getClass, new WeakHashMap[UUID, CqrsEntity])
-    entitiesForType += entity.uuid -> entity
+    var entitiesForType = cache.getOrElseUpdate(entity.getClass, new WeakHashMap[UID, CqrsEntity])
+    entitiesForType += entity.id -> entity
   }
 }

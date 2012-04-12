@@ -30,7 +30,7 @@ class ArticleList(id: String, private val articleList:List[Article]) extends Pan
     item.add(new Label("time", article.creationTime.toString))
     item.add(new Label("author", article.authorUserId.toString))
     val parameters: PageParameters = new PageParameters()
-    parameters.set(ArticlePage.ARTICLE_ID_PARAM, article.uuid)
+    parameters.set(ArticlePage.ARTICLE_ID_PARAM, article.id)
 
     item.add(new BookmarkablePageLink("articleLink", classOf[ArticlePage], parameters))
   }

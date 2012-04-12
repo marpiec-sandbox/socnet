@@ -13,7 +13,7 @@ import org.apache.wicket.markup.html.form.{TextArea, TextField, Form}
 import org.apache.wicket.ajax.markup.html.form.AjaxButton
 import org.apache.wicket.model.CompoundPropertyModel
 import org.apache.wicket.MarkupContainer
-import java.util.UUID
+import pl.marpiec.util.UID
 
 /**
  * ...
@@ -75,7 +75,7 @@ class JobExperienceListPanel(id: String, val user: User, val jobExperience: List
         experience.companyName = model.companyName
         experience.description = model.description
         experience.position = model.position
-        experience.uuid = UUID.randomUUID
+        experience.id = UID.generate
 
         addExperienceToJobExperienceList(jobExperienceList, experience)
         

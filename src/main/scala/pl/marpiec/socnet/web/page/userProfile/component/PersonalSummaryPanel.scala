@@ -116,6 +116,6 @@ class PersonalSummaryPanel(id: String, val user: User, val userProfile: UserProf
   }
 
   def saveChangesToUserProfile(personalSummary: PersonalSummary) {
-    userProfileCommand.updatePersonalSummary(userProfile.uuid, userProfile.version, personalSummary)
+    userProfileCommand.updatePersonalSummary(userProfile.id, userProfile.version, personalSummary)
   }
 }

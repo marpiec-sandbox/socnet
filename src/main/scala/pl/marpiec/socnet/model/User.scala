@@ -9,7 +9,7 @@ class User extends CqrsEntity(null, 0) {
   
   def copy:CqrsEntity = {
     val user = new User
-    user.uuid = this.uuid
+    user.id = this.id
     user.version = this.version
     user.name = this.name
     user.password = this.password
