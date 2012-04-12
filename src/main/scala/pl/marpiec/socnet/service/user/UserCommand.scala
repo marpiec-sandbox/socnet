@@ -1,6 +1,7 @@
 package pl.marpiec.socnet.service.user
 
 import pl.marpiec.socnet.model.User
+import java.util.UUID
 
 /**
  * ...
@@ -9,8 +10,8 @@ import pl.marpiec.socnet.model.User
 
 trait UserCommand {
 
-  def registerUser(name:String, email:String, password:String):Int
+  def registerUser(name:String, email:String, password:String):UUID
 
-  def changeUserEmail(id: Int, version: Int, email: String)
+  def changeUserEmail(uuid: UUID, version: Int, email: String)
 
 }

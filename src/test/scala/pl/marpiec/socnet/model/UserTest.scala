@@ -2,6 +2,7 @@ package pl.marpiec.socnet.model
 
 import org.testng.annotations.Test
 import org.testng.Assert._
+import java.util.UUID
 
 /**
  * @author Marcin Pieciukiewicz
@@ -12,7 +13,7 @@ class UserTest {
 
   def testCopyConstructor {
     val user = new User
-    user.id = 1
+    user.uuid = UUID.randomUUID()
     user.version = 1
     user.name = "Marcin Pieciukiewicz"
     user.password = "Haslo"
@@ -22,7 +23,7 @@ class UserTest {
 
     assertNotSame(userCopy, user)
 
-    assertEquals(userCopy.id, user.id)
+    assertEquals(userCopy.uuid, user.uuid)
     assertEquals(userCopy.version, user.version)
     assertEquals(userCopy.name, user.name)
     assertEquals(userCopy.password, user.password)

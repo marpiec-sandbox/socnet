@@ -1,16 +1,15 @@
 package pl.marpiec.socnet.database
 
-import collection.mutable.HashMap
-import exception.EntryAlreadyExistsException
-import pl.marpiec.cqrs.{CqrsEntity, DataStoreListener, DataStore}
-import pl.marpiec.socnet.model.{User, Article}
+import pl.marpiec.cqrs.DataStore
+import pl.marpiec.socnet.model.Article
+import java.util.UUID
 
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
-class ArticleDatabaseMockImpl(dataStore:DataStore) extends AbstractDatabase[Article](dataStore) with ArticleDatabase {
+class ArticleDatabaseMockImpl(dataStore: DataStore) extends AbstractDatabase[Article](dataStore) with ArticleDatabase {
 
   startListeningToDataStore(dataStore, classOf[Article])
 
@@ -18,7 +17,7 @@ class ArticleDatabaseMockImpl(dataStore:DataStore) extends AbstractDatabase[Arti
 
   def updateArticle(article: Article) = update(article)
 
-  def getArticleById(id: Int) = getById(id)
+  def getArticleById(id: UUID) = getById(id)
 
   def getAllArticles = getAll
 }

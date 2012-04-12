@@ -1,5 +1,7 @@
 package pl.marpiec.cqrs
 
-abstract class CqrsEntity(var id:Int, var version:Int) {
+import java.util.UUID
+
+abstract class CqrsEntity(var uuid:UUID, var version:Int) {
   def copy:CqrsEntity
 }

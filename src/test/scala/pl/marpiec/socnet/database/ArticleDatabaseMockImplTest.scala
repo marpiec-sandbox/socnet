@@ -7,6 +7,7 @@ import pl.marpiec.cqrs._
 import pl.marpiec.socnet.service.user.event.RegisterUserEvent
 import pl.marpiec.socnet.model.{User, Article}
 import pl.marpiec.socnet.service.article.event.CreateArticleEvent
+import java.util.UUID
 
 /**
  * @author Marcin Pieciukiewicz
@@ -21,14 +22,17 @@ class ArticleDatabaseMockImplTest {
     val dataStore:DataStore = new DataStoreImpl(eventStore, entityCache)
     val articleDatabase:ArticleDatabase = new ArticleDatabaseMockImpl(dataStore)
     
+    val articleId = UUID.randomUUID()
+    val userId = UUID.randomUUID()
+    
     val article = new Article
-    article.id = 1
+    article.uuid = articleId
     article.content = "tresc artykulu"
-    article.authorUserId = 1
+    article.authorUserId = userId
     article.creationTime = new LocalDateTime
 
     articleDatabase.addArticle(article)
-    val articleOption = articleDatabase.getArticleById(1)
+    val articleOption = articleDatabase.getArticleById(articleId)
 
     assertTrue(articleOption.isDefined)
     val articleFromDatabase = articleOption.get
@@ -45,7 +49,9 @@ class ArticleDatabaseMockImplTest {
     val dataStore:DataStore = new DataStoreImpl(eventStore, entityCache)
     val articleDatabase: ArticleDatabase = new ArticleDatabaseMockImpl(dataStore)
 
-    val articleId = eventStore.addEventForNewAggregate(new CreateArticleEvent("Tresc artykulu", 1))
+    val userId = UUID.randomUUID()
+    val articleId = UUID.randomUUID()
+    eventStore.addEventForNewAggregate(articleId, new CreateArticleEvent("Tresc artykulu", userId))
 
     val article: Option[Article] = articleDatabase.getArticleById(articleId)
 

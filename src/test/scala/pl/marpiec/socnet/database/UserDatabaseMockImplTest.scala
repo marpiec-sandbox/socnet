@@ -7,6 +7,7 @@ import pl.marpiec.socnet.database.{UserDatabaseMockImpl, UserDatabase}
 import pl.marpiec.socnet.model.User
 import pl.marpiec.cqrs._
 import pl.marpiec.socnet.service.user.event.RegisterUserEvent
+import java.util.UUID
 
 /**
  * ...
@@ -45,7 +46,8 @@ class UserDatabaseMockImplTest {
     val dataStore:DataStore = new DataStoreImpl(eventStore, entityCache)
     val userDatabase: UserDatabase = new UserDatabaseMockImpl(dataStore)
 
-    val userId = eventStore.addEventForNewAggregate(new RegisterUserEvent("Marcin", "marcin@socnet", "haslo"))
+    val userId = UUID.randomUUID()
+    eventStore.addEventForNewAggregate(userId, new RegisterUserEvent("Marcin", "marcin@socnet", "haslo"))
 
     val user: Option[User] = userDatabase.getUserById(userId)
 

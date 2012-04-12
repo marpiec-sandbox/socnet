@@ -10,10 +10,10 @@ import java.util.UUID
 
 trait UserProfileCommand {
 
-  def createUserProfile(userId:Int):Int
-  def updatePersonalSummary(id: Int, version: Int, personalSummary: PersonalSummary)
+  def createUserProfile(userId:UUID):UUID
+  def updatePersonalSummary(id: UUID, version: Int, personalSummary: PersonalSummary)
 
-  def addJobExperience(id: Int, version: Int, jobExperience: JobExperienceParam)
-  def updateJobExperience(id: Int, version: Int, jobExperience: JobExperienceParam)
-  def removeJobExperience(id: Int, version: Int, jobExperienceUuid: UUID)
+  def addJobExperience(id: UUID, version: Int, jobExperience: JobExperienceParam)
+  def updateJobExperience(id: UUID, version: Int, jobExperience: JobExperienceParam)
+  def removeJobExperience(id: UUID, version: Int, jobExperienceUuid: UUID)
 }

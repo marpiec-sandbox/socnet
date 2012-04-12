@@ -2,8 +2,9 @@ package pl.marpiec.socnet.service.user.event
 
 import pl.marpiec.socnet.model.User
 import pl.marpiec.cqrs.{CqrsEntity, CqrsEvent}
+import java.util.UUID
 
-class ChangeEmailEvent(entityId:Int, expectedVersion:Int, val email: String)
+class ChangeEmailEvent(entityId:UUID, expectedVersion:Int, val email: String)
       extends CqrsEvent(entityId, expectedVersion, classOf[User]) {
 
   def applyEvent(entity: CqrsEntity) {

@@ -1,6 +1,7 @@
 package pl.marpiec.socnet.database
 
 import pl.marpiec.socnet.model.UserProfile
+import java.util.UUID
 
 /**
  * ...
@@ -10,6 +11,6 @@ import pl.marpiec.socnet.model.UserProfile
 trait UserProfileDatabase {
   def addUserProfile(userProfile: UserProfile)
   def updateUserProfile(userProfile: UserProfile)
-  def getUserProfileByUserId(userId:Int):Option[UserProfile]
-  def getUserProfileById(id: Int):Option[UserProfile]
+  def getUserProfileByUserId(userId:UUID):Option[UserProfile]
+  def getUserProfileById(id: UUID):Option[UserProfile]
 }

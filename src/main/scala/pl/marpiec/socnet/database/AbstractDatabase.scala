@@ -4,6 +4,7 @@ import exception.EntryAlreadyExistsException
 import pl.marpiec.cqrs.{CqrsEntity, DataStoreListener, DataStore}
 import collection.mutable.HashMap
 import pl.marpiec.socnet.model.{Article, UserProfile}
+import java.util.UUID
 
 
 /**
@@ -16,7 +17,7 @@ class DatabaseIndex(val indexFunction: (CqrsEntity) => Any) {
 
 class AbstractDatabase[E <: CqrsEntity](dataStore: DataStore) extends DataStoreListener {
 
-  private val entityDatabase = new HashMap[Int, E]
+  private val entityDatabase = new HashMap[UUID, E]
   private val indexes = new HashMap[String, DatabaseIndex]
   
   def addIndex(name:String, keyFunction:(CqrsEntity) => Any) {
@@ -34,11 +35,11 @@ class AbstractDatabase[E <: CqrsEntity](dataStore: DataStore) extends DataStoreL
 
   def add(entity: E) {
     this.synchronized {
-      if (entityDatabase.get(entity.id).isDefined) {
+      if (entityDatabase.get(entity.uuid).isDefined) {
         throw new EntryAlreadyExistsException
       } else {
         val copy = entity.copy.asInstanceOf[E]
-        entityDatabase += entity.id -> copy
+        entityDatabase += entity.uuid -> copy
         
         indexes.values.foreach[Unit]((index:DatabaseIndex) => {
           index.index += index.indexFunction(entity) -> copy
@@ -49,15 +50,15 @@ class AbstractDatabase[E <: CqrsEntity](dataStore: DataStore) extends DataStoreL
 
   def update(entity: E) {
     this.synchronized {
-      val entityOption = entityDatabase.get(entity.id)
+      val entityOption = entityDatabase.get(entity.uuid)
       if (entityOption.isEmpty) {
-        throw new IllegalStateException("No entity defined in database, entityId=" + entity.id)
+        throw new IllegalStateException("No entity defined in database, entityId=" + entity.uuid)
       } else {
 
         val previousEntity = entityOption.get
 
         val copy = entity.copy.asInstanceOf[E]
-        entityDatabase += entity.id -> copy
+        entityDatabase += entity.uuid -> copy
 
         indexes.values.foreach[Unit]((index:DatabaseIndex) => {
 
@@ -70,8 +71,8 @@ class AbstractDatabase[E <: CqrsEntity](dataStore: DataStore) extends DataStoreL
     }
   }
 
-  def getById(id: Int):Option[E] = {
-    entityDatabase.get(id) match {
+  def getById(uuid: UUID):Option[E] = {
+    entityDatabase.get(uuid) match {
       case Some(entity) => Option.apply(entity)
       case None => None
     }

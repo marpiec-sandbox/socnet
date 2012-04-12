@@ -4,12 +4,13 @@ import pl.marpiec.socnet.service.userprofile.input.JobExperienceParam
 import pl.marpiec.socnet.model.UserProfile
 import pl.marpiec.cqrs.{CqrsEntity, CqrsEvent}
 import pl.marpiec.socnet.model.userprofile.JobExperience
+import java.util.UUID
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
-class UpdateJobExperienceEvent(entityId: Int, expectedVersion: Int, val jobExperienceParam: JobExperienceParam)
+class UpdateJobExperienceEvent(entityId: UUID, expectedVersion: Int, val jobExperienceParam: JobExperienceParam)
   extends CqrsEvent(entityId, expectedVersion, classOf[UserProfile]){
   def applyEvent(entity: CqrsEntity) {
 

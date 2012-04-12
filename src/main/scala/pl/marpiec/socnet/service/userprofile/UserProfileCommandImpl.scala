@@ -11,25 +11,26 @@ import java.util.UUID
  */
 
 class UserProfileCommandImpl(val eventStore: EventStore, val dataStore: DataStore) extends UserProfileCommand {
-  def createUserProfile(userId: Int) = {
+  def createUserProfile(userId: UUID):UUID = {
     val createUserProfile = new CreateUserProfileEvent(userId)
-    val id = eventStore.addEventForNewAggregate(createUserProfile)
-    id
+    val uuid = UUID.randomUUID()
+    eventStore.addEventForNewAggregate(uuid, createUserProfile)
+    uuid
   }
 
-  def updatePersonalSummary(id: Int, version: Int, personalSummary: PersonalSummary) {
-    eventStore.addEvent(new UpdatePersonalSummaryEvent(id, version, personalSummary))
+  def updatePersonalSummary(uuid: UUID, version: Int, personalSummary: PersonalSummary) {
+    eventStore.addEvent(new UpdatePersonalSummaryEvent(uuid, version, personalSummary))
   }
 
-  def addJobExperience(id: Int, version: Int, jobExperience: JobExperienceParam) {
-    eventStore.addEvent(new AddJobExperienceEvent(id, version, jobExperience))
+  def addJobExperience(uuid: UUID, version: Int, jobExperience: JobExperienceParam) {
+    eventStore.addEvent(new AddJobExperienceEvent(uuid, version, jobExperience))
   }
 
-  def updateJobExperience(id: Int, version: Int, jobExperience: JobExperienceParam) {
-    eventStore.addEvent(new UpdateJobExperienceEvent(id, version, jobExperience))
+  def updateJobExperience(uuid: UUID, version: Int, jobExperience: JobExperienceParam) {
+    eventStore.addEvent(new UpdateJobExperienceEvent(uuid, version, jobExperience))
   }
 
-  def removeJobExperience(id: Int, version: Int, jobExperienceUuid: UUID) {
-    eventStore.addEvent(new RemoveJobExperienceEvent(id, version, jobExperienceUuid))
+  def removeJobExperience(uuid: UUID, version: Int, jobExperienceUuid: UUID) {
+    eventStore.addEvent(new RemoveJobExperienceEvent(uuid, version, jobExperienceUuid))
   }
 }

@@ -4,12 +4,13 @@ import pl.marpiec.cqrs.{CqrsEntity, CqrsEvent}
 import pl.marpiec.socnet.model.article.ArticleComment
 import pl.marpiec.socnet.model.Article
 import org.joda.time.LocalDateTime
+import java.util.UUID
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
-class CreateCommentEvent(entityId: Int, expectedVersion: Int, val commentContent: String, val commentAuthorUserId: Int)
+class CreateCommentEvent(entityId: UUID, expectedVersion: Int, val commentContent: String, val commentAuthorUserId: UUID)
   extends CqrsEvent(entityId, expectedVersion, classOf[Article]) {
 
   def applyEvent(entity: CqrsEntity) {

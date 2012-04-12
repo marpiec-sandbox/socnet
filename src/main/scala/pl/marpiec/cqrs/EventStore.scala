@@ -1,17 +1,18 @@
 package pl.marpiec.cqrs
 
 import collection.mutable.{ListBuffer, Map}
+import java.util.UUID
 
 
 trait EventStore {
 
-  def getEventsForEntity(entityClass: Class[_], i: Int):ListBuffer[CqrsEvent]
+  def getEventsForEntity(entityClass: Class[_], uuid: UUID):ListBuffer[CqrsEvent]
 
   def addEvent(event: CqrsEvent)
 
-  def addEventForNewAggregate(event: CqrsEvent): Int
+  def addEventForNewAggregate(uuid:UUID, event: CqrsEvent)
 
-  def getEvents(entityClass: Class[_]): Map[Int, ListBuffer[CqrsEvent]]
+  def getEvents(entityClass: Class[_]): Map[UUID, ListBuffer[CqrsEvent]]
 
   def addListener(listener: EventStoreListener)
 

@@ -1,6 +1,7 @@
 package pl.marpiec.socnet.database
 
 import pl.marpiec.socnet.model.User
+import java.util.UUID
 
 /**
  * ...
@@ -15,5 +16,5 @@ trait UserDatabase {
 
   def getUserByEmail(email:String):Option[User]
 
-  def getUserById(id: Int):Option[User]
+  def getUserById(id: UUID):Option[User]
 }

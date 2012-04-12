@@ -10,8 +10,8 @@ import java.util.UUID
  * @author Marcin Pieciukiewicz
  */
 
-class UserProfile extends CqrsEntity(0, 0) {
-  var userId:Int = _
+class UserProfile extends CqrsEntity(null, 0) {
+  var userId:UUID = _
   var professionalTitle:String = _
   var city:String = _
   var province:String = _
@@ -25,7 +25,7 @@ class UserProfile extends CqrsEntity(0, 0) {
 
   def copy:CqrsEntity = {
     val profile = new UserProfile
-    profile.id = this.id
+    profile.uuid = this.uuid
     profile.version = this.version
     profile.professionalTitle = this.professionalTitle
     profile.city = this.city

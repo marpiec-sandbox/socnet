@@ -1,6 +1,7 @@
 package pl.marpiec.socnet.service.user
 
 import pl.marpiec.socnet.model.User
+import java.util.UUID
 
 /**
  * ...
@@ -9,7 +10,7 @@ import pl.marpiec.socnet.model.User
 
 trait UserQuery {
 
-  def getUserById(id:Int):User
+  def getUserById(uuid:UUID):User
 
   def getUserByCredentials(username:String, password:String):Option[User]
 }

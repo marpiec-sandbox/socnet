@@ -5,6 +5,7 @@ import pl.marpiec.cqrs.{DataStore, EventStore}
 import pl.marpiec.socnet.database.UserDatabase
 import pl.marpiec.socnet.model.User
 import pl.marpiec.socnet.database.exception.EntryAlreadyExistsException
+import java.util.UUID
 
 /**
  * ...
@@ -13,23 +14,20 @@ import pl.marpiec.socnet.database.exception.EntryAlreadyExistsException
 
 class UserCommandImpl(val eventStore: EventStore, val dataStore: DataStore, val userDatabase: UserDatabase) extends UserCommand {
 
-  override def registerUser(name: String, email: String, password: String): Int = {
+  override def registerUser(name: String, email: String, password: String): UUID = {
     if (userDatabase.getUserByEmail(email).isDefined) {
       throw new EntryAlreadyExistsException
     }
     //TODO pomyslec o synchronizacji
     val registerUser = new RegisterUserEvent(name, email, password)
-    val id = eventStore.addEventForNewAggregate(registerUser)
-    id
+    val uuid = UUID.randomUUID()
+    eventStore.addEventForNewAggregate(uuid, registerUser)
+    uuid
   }
 
-  def changeUserEmail(id: Int, version: Int, email: String) {
-    val changeEmail = new ChangeEmailEvent(id, version, email)
+  def changeUserEmail(uuid: UUID, version: Int, email: String) {
+    val changeEmail = new ChangeEmailEvent(uuid, version, email)
     eventStore.addEvent(changeEmail);
-  }
-
-  def loadUserFromStore(id: Int): User = {
-    dataStore.getEntity(classOf[User], id).asInstanceOf[User]
   }
 
 

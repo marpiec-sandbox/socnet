@@ -7,7 +7,7 @@ import pl.marpiec.socnet.model.User
 @Test
 class ChangeEmailEventTest {
   def testApplyingEvent() {
-    val event = new ChangeEmailEvent(0, 0, "marcin.p@socnet")
+    val event = new ChangeEmailEvent(null, 0, "marcin.p@socnet")
     val user = new User
     user.name = "Marcin"
     user.email = "m.pieciukiewicz@socnet"

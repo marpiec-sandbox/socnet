@@ -2,6 +2,7 @@ package pl.marpiec.socnet.database
 
 import pl.marpiec.cqrs.{CqrsEntity, DataStore}
 import pl.marpiec.socnet.model.UserProfile
+import java.util.UUID
 
 
 /**
@@ -24,7 +25,7 @@ class UserProfileDatabaseMockImpl(dataStore: DataStore) extends AbstractDatabase
 
   def updateUserProfile(userProfile: UserProfile) = update(userProfile)
 
-  def getUserProfileByUserId(userId: Int) = getByIndex(USER_ID_INDEX, userId)
+  def getUserProfileByUserId(userId: UUID) = getByIndex(USER_ID_INDEX, userId)
 
-  def getUserProfileById(id: Int) = getById(id)
+  def getUserProfileById(id: UUID) = getById(id)
 }

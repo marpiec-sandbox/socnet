@@ -2,6 +2,7 @@ package pl.marpiec.socnet.database
 
 import pl.marpiec.socnet.model.User
 import pl.marpiec.cqrs.{CqrsEntity, DataStore}
+import java.util.UUID
 
 /**
  * ...
@@ -14,7 +15,7 @@ class UserDatabaseMockImpl(dataStore: DataStore) extends AbstractDatabase[User](
 
   startListeningToDataStore(dataStore, classOf[User])
 
-  addIndex(NAME_INDEX, (entity:CqrsEntity) => {
+  addIndex(NAME_INDEX, (entity: CqrsEntity) => {
     val user = entity.asInstanceOf[User]
     user.email
   });
@@ -25,5 +26,5 @@ class UserDatabaseMockImpl(dataStore: DataStore) extends AbstractDatabase[User](
 
   def getUserByEmail(email: String) = getByIndex(NAME_INDEX, email)
 
-  def getUserById(id: Int) = getById(id)
+  def getUserById(id: UUID) = getById(id)
 }

@@ -4,6 +4,7 @@ import pl.marpiec.util.Strings
 import pl.marpiec.socnet.database.UserDatabase
 import pl.marpiec.socnet.model.User
 import pl.marpiec.cqrs.DataStore
+import java.util.UUID
 
 /**
  * ...
@@ -12,8 +13,8 @@ import pl.marpiec.cqrs.DataStore
 
 class UserQueryImpl(val socnetDatabase:UserDatabase, val dataStore:DataStore) extends UserQuery {
 
-  def getUserById(id: Int):User = {
-    dataStore.getEntity(classOf[User], id).asInstanceOf[User]
+  def getUserById(uuid: UUID):User = {
+    dataStore.getEntity(classOf[User], uuid).asInstanceOf[User]
   }
 
   def getUserByCredentials(username: String, password: String):Option[User] = {

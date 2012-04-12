@@ -1,8 +1,9 @@
 package pl.marpiec.cqrs
 
-import java.util.Date
+import java.util.{UUID, Date}
 
-abstract class CqrsEvent(var entityId:Int, val expectedVersion:Int, val entityClass:Class[_ <: CqrsEntity]) {
+
+abstract class CqrsEvent(var entityUuid:UUID, val expectedVersion:Int, val entityClass:Class[_ <: CqrsEntity]) {
 
   val timeOccured = new Date
 

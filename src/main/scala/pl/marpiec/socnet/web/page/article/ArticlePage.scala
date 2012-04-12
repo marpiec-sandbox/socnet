@@ -8,6 +8,7 @@ import org.apache.wicket.markup.html.basic.Label
 import pl.marpiec.socnet.di.Factory
 import pl.marpiec.socnet.model.{User, Article}
 import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException
+import java.util.UUID
 
 /**
  * @author Marcin Pieciukiewicz
@@ -20,7 +21,8 @@ class ArticlePage (parameters: PageParameters) extends WebPage {
   private val articleDatabase = Factory.articleDatabase
   private val userDatabase = Factory.userDatabase
 
-  val articleId = parameters.get(ArticlePage.ARTICLE_ID_PARAM).toInt(0)
+
+  val articleId = UUID.fromString(parameters.get(ArticlePage.ARTICLE_ID_PARAM).toString)
 
   articleDatabase.getArticleById(articleId) match {
     case Some(article) => {
