@@ -22,6 +22,7 @@ class JobExperiencePanel(id: String, val user: User, val jobExperience: JobExper
 
   var edit = false
 
+
   setOutputMarkupId(true)
 
   add(new WebMarkupContainer("experiencePreview") {
@@ -32,6 +33,13 @@ class JobExperiencePanel(id: String, val user: User, val jobExperience: JobExper
     add(new AjaxFallbackLink("editButton") {
       def onClick(target: AjaxRequestTarget) {
         edit = true
+        target.add(JobExperiencePanel.this)
+      }
+    })
+
+    add(new AjaxFallbackLink("deleteButton") {
+      def onClick(target: AjaxRequestTarget) {
+        JobExperiencePanel.this.setVisible(false)
         target.add(JobExperiencePanel.this)
       }
     })

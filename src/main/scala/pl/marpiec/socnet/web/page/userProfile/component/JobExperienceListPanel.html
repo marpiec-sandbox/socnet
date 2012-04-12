@@ -6,5 +6,26 @@
     <div wicket:id="repeating">
         <div wicket:id="content">content</div>
     </div>
+
+    <a wicket:id="showNewExperienceFormLink">Dodaj</a>
+
+    <form wicket:id="newJobExperienceForm">
+
+        <div>
+            Nazwa firmy: <input wicket:id="companyName" />
+        </div>
+
+        <div>
+            Stanowisko: <input wicket:id="position" />
+        </div>
+        <div>
+            Opis: <textarea wicket:id="description"/>
+        </div>
+        <div>
+            <input type="submit" wicket:id="cancelButton" value="anuluj"/>
+            <input type="submit" wicket:id="submitButton" value="zapisz"/>
+        </div>
+    </form>
+
 </wicket:panel>
 </html>
