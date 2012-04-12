@@ -13,7 +13,7 @@ object SocnetInitializator {
 
   def apply() {
 
-    userCommand.registerUser("Marcin Pieciukiewicz", "m.pieciukiewicz@socnet", "haslo")
+    //userCommand.registerUser("Marcin Pieciukiewicz", "m.pieciukiewicz@socnet", "haslo")
 
 
   }

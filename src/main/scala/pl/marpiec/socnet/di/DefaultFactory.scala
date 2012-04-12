@@ -7,7 +7,7 @@ import pl.marpiec.socnet.database._
 import pl.marpiec.socnet.service.userprofile.{UserProfileCommandImpl, UserProfileCommand}
 
 class DefaultFactory {
-  val eventStore: EventStore = new EventStoreImpl
+  val eventStore: EventStore = new EventStoreDbImpl
   val entityCache: EntityCache = new EntityCacheSimpleImpl
 
   val dataStore: DataStore = new DataStoreImpl(eventStore, entityCache)
