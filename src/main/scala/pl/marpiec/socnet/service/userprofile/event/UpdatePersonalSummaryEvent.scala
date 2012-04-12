@@ -10,7 +10,10 @@ import pl.marpiec.util.UID
  */
 
 class UpdatePersonalSummaryEvent(entityId: UID, expectedVersion: Int, val personalSummary: PersonalSummary)
-    extends CqrsEvent(entityId, expectedVersion, classOf[UserProfile]) {
+    extends CqrsEvent(entityId, expectedVersion) {
+
+  def entityClass = classOf[UserProfile]
+
   def applyEvent(entity: CqrsEntity) = {
     val userProfile = entity.asInstanceOf[UserProfile]
 

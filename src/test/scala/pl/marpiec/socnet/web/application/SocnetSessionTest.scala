@@ -13,7 +13,7 @@ import pl.marpiec.socnet.database.UserDatabaseMockImpl
 class SocnetSessionTest {
 
    def testSimpleLogin() {
-     val eventStore = new EventStoreImpl
+    /* val eventStore = new EventStoreImpl
      val entityCache = new EntityCacheSimpleImpl
      val dataStore = new DataStoreImpl(eventStore, entityCache)
      val userDatabase = new UserDatabaseMockImpl(dataStore)
@@ -37,7 +37,7 @@ class SocnetSessionTest {
 
      socnetSession.clearSessionData
 
-     assertNull(socnetSession.user, "there should be no data in the session now")
+     assertNull(socnetSession.user, "there should be no data in the session now")    */
 
    }
 }

@@ -12,7 +12,9 @@ import org.joda.time.LocalDate
  */
 
 class AddJobExperienceEvent(entityId: UID, expectedVersion: Int, val jobExperienceParam: JobExperienceParam)
-  extends CqrsEvent(entityId, expectedVersion, classOf[UserProfile]){
+  extends CqrsEvent(entityId, expectedVersion){
+
+  def entityClass = classOf[UserProfile]
 
   def applyEvent(entity: CqrsEntity) {
     val userProfile = entity.asInstanceOf[UserProfile]
@@ -28,4 +30,6 @@ class AddJobExperienceEvent(entityId: UID, expectedVersion: Int, val jobExperien
 
     userProfile.jobExperience += jobExperience
   }
+
+
 }

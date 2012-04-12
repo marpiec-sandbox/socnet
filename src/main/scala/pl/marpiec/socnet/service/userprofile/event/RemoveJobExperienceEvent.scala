@@ -9,7 +9,10 @@ import pl.marpiec.cqrs.{CqrsEntity, CqrsEvent}
  */
 
 class RemoveJobExperienceEvent(entityId: UID, expectedVersion: Int, val jobExperienceId: UID)
-  extends CqrsEvent(entityId, expectedVersion, classOf[UserProfile]) {
+  extends CqrsEvent(entityId, expectedVersion) {
+
+  def entityClass = classOf[UserProfile]
+
   def applyEvent(entity: CqrsEntity) {
     val userProfile = entity.asInstanceOf[UserProfile]
 

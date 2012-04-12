@@ -11,11 +11,13 @@ import pl.marpiec.util.UID
  */
 
 class CreateCommentEvent(entityId: UID, expectedVersion: Int, val commentContent: String, val commentAuthorUserId: UID)
-  extends CqrsEvent(entityId, expectedVersion, classOf[Article]) {
+  extends CqrsEvent(entityId, expectedVersion) {
 
   def applyEvent(entity: CqrsEntity) {
     val article = entity.asInstanceOf[Article]
     val comment = new ArticleComment(commentContent, new LocalDateTime, commentAuthorUserId)
     article.comments += comment
   }
+
+  def entityClass = classOf[Article]
 }

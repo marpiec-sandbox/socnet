@@ -17,18 +17,19 @@ class EventStoreDbImpl extends EventStore {
 
   def getEventsForEntity(entityClass: Class[_], id: UID):ListBuffer[CqrsEvent] = {
 
+    var gson = new Gson
+
     val selectEvents = connection.prepareStatement("SELECT event, event_type FROM events WHERE aggregate_uid = ? ORDER BY event_time")
+    selectEvents.setObject(1, id.uuid)
     val results = selectEvents.executeQuery
 
     val events = new ListBuffer[CqrsEvent]
 
     while(results.next()) {
 
-
       var event = results.getString(1)
       var eventType = results.getString(2)
 
-      var gson = new Gson
       events += gson.fromJson(event, Class.forName(eventType)).asInstanceOf[CqrsEvent]
 
     }
@@ -39,10 +40,12 @@ class EventStoreDbImpl extends EventStore {
 
     var gson = new Gson
 
-    val insert = connection.prepareStatement("INSERT INTO events (aggregate_uid, event_time, event) VALUES (?, ?, ?)")
+    val insert = connection.prepareStatement("INSERT INTO events (aggregate_uid, event_time, version, event_type, event) VALUES (?, ?, ?, ?, ?)")
     insert.setObject(1, event.entityId.uuid)
     insert.setTimestamp(2, new Timestamp(new Date().getTime))
-    insert.setObject(3, gson.toJson(event))
+    insert.setInt(3, event.expectedVersion)
+    insert.setString(4, event.getClass.getName)
+    insert.setObject(5, gson.toJson(event))
     insert.executeUpdate
 
     val update = connection.prepareStatement("UPDATE aggregate SET version = version + 1 WHERE uid = ?")
@@ -56,7 +59,7 @@ class EventStoreDbImpl extends EventStore {
   def addEventForNewAggregate(id: UID, event: CqrsEvent) {
 
     event.entityId = id
-    var gson = new Gson
+    var gson = new Gson()
 
     val insertAggregate = connection.prepareStatement("INSERT INTO aggregates (class, uid, version) VALUES (?,?,?)")
     insertAggregate.setString(1, event.entityClass.getName)
@@ -64,11 +67,12 @@ class EventStoreDbImpl extends EventStore {
     insertAggregate.setInt(3, 1)
     insertAggregate.executeUpdate
 
-    val insertEvent = connection.prepareStatement("INSERT INTO events (aggregate_uid, event_time, event_type, event) VALUES (?, ?, ?, ?)")
-    insertEvent.setObject(1, id.uuid)
+    val insertEvent = connection.prepareStatement("INSERT INTO events (aggregate_uid, event_time, version, event_type, event) VALUES (?, ?, ?, ?, ?)")
+    insertEvent.setObject(1, event.entityId.uuid)
     insertEvent.setTimestamp(2, new Timestamp(new Date().getTime))
-    insertEvent.setString(3, event.getClass.getName)
-    insertEvent.setObject(4, gson.toJson(event))
+    insertEvent.setInt(3, event.expectedVersion)
+    insertEvent.setString(4, event.getClass.getName)
+    insertEvent.setObject(5, gson.toJson(event))
     insertEvent.executeUpdate
 
     callAllListenersAboutNewEvent(event)

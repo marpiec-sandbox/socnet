@@ -11,7 +11,10 @@ import pl.marpiec.util.UID
  */
 
 class UpdateJobExperienceEvent(entityId: UID, expectedVersion: Int, val jobExperienceParam: JobExperienceParam)
-  extends CqrsEvent(entityId, expectedVersion, classOf[UserProfile]){
+  extends CqrsEvent(entityId, expectedVersion){
+
+  def entityClass = classOf[UserProfile]
+
   def applyEvent(entity: CqrsEntity) {
 
     val userProfile = entity.asInstanceOf[UserProfile]

@@ -8,7 +8,10 @@ import pl.marpiec.util.UID
  * @author Marcin Pieciukiewicz
  */
 
-class CreateUserProfileEvent(userId:UID) extends CqrsEvent(null, 0, classOf[UserProfile]) {
+class CreateUserProfileEvent(userId:UID) extends CqrsEvent(null, 0) {
+
+  def entityClass = classOf[UserProfile]
+
   def applyEvent(entity: CqrsEntity) = {
     val userProfile = entity.asInstanceOf[UserProfile]
     userProfile.userId = userId

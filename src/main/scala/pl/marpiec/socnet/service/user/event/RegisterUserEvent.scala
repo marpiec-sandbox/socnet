@@ -4,7 +4,7 @@ import pl.marpiec.socnet.model.User
 import pl.marpiec.cqrs.{CqrsEntity, CqrsEvent}
 
 class RegisterUserEvent(val name: String, val email: String, val password: String)
-  extends CqrsEvent(null, 0, classOf[User]) {
+  extends CqrsEvent(null, 0) {
 
   def applyEvent(entity: CqrsEntity) {
     val user = entity.asInstanceOf[User]
@@ -12,5 +12,7 @@ class RegisterUserEvent(val name: String, val email: String, val password: Strin
     user.email = email
     user.password = password
   }
+
+  def entityClass = classOf[User]
 
 }
