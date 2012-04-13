@@ -3,13 +3,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>socnet</groupId>
+    <groupId>pl.marpiec</groupId>
     <artifactId>socnet</artifactId>
     <version>1.0</version>
 
     <name>socnet</name>
     <url>http://localhost/socnet</url>
-    <packaging>war</packaging>
+    <packaging>pom</packaging>
 
 
     <properties>
@@ -43,8 +43,6 @@
         </pluginRepository>
     </pluginRepositories>
 
-
-
     <dependencies>
         <!-- Scala -->
         <dependency>
@@ -57,43 +55,6 @@
             <artifactId>scala-compiler</artifactId>
             <version>${scala.version}</version>
             <scope>test</scope>
-        </dependency>
-
-
-        <!-- Wicket -->
-        <dependency>
-            <groupId>org.apache.wicket</groupId>
-            <artifactId>wicket</artifactId>
-            <version>${wicket.version}</version>
-            <type>pom</type>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.wicket</groupId>
-            <artifactId>wicket-auth-roles</artifactId>
-            <version>${wicket.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.wicket</groupId>
-            <artifactId>wicket-extensions</artifactId>
-            <version>${wicket.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <version>2.5</version>
-        </dependency>
-
-        <!-- Database -->
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>1.3.165</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.1</version>
         </dependency>
 
 
@@ -131,16 +92,12 @@
             <scope>test</scope>
         </dependency>
 
-
-
-
     </dependencies>
 
 
 
     <build>
-
-        <!-- Resources definition are required byu Wicket -->
+        <!-- Resources definition are required by Wicket -->
         <resources>
             <resource>
                 <filtering>false</filtering>
@@ -211,14 +168,14 @@
                     </launchers>
                 </configuration-->
             </plugin>
-            <!--<plugin>-->
-                <!--<groupId>org.apache.maven.plugins</groupId>-->
-                <!--<artifactId>maven-war-plugin</artifactId>-->
-                <!--<version>2.2</version>-->
-                <!--<configuration>-->
-                    <!--<webappDirectory>/sample/servlet/container/deploy/directory</webappDirectory>-->
-                <!--</configuration>-->
-            <!--</plugin>-->
         </plugins>
     </build>
+
+
+    <modules>
+        <module>cqrs</module>
+        <module>util</module>
+        <module>business</module>
+        <module>webapp</module>
+    </modules>
 </project>
