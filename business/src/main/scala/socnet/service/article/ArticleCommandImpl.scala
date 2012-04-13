@@ -4,6 +4,7 @@ import event.{CreateCommentEvent, CreateArticleEvent}
 import pl.marpiec.cqrs.{DataStore, EventStore}
 import pl.marpiec.socnet.model.Article
 import pl.marpiec.util.UID
+import org.joda.time.LocalDateTime
 
 
 /**
@@ -13,7 +14,7 @@ import pl.marpiec.util.UID
 class ArticleCommandImpl(val eventStore: EventStore, val dataStore: DataStore) extends ArticleCommand {
 
   def createArticle(content: String, authorUserId: UID): UID = {
-    val createArticle = new CreateArticleEvent(content, authorUserId)
+    val createArticle = new CreateArticleEvent(content, new LocalDateTime, authorUserId)
     val id = UID.generate
     eventStore.addEventForNewAggregate(id, createArticle)
     id

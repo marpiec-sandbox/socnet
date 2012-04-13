@@ -3,7 +3,6 @@ package pl.marpiec.socnet.service.userprofile
 import event._
 import input.{JobExperienceParam, PersonalSummary}
 import pl.marpiec.cqrs.{DataStore, EventStore}
-import pl.marpiec.socnet.service.article.event.CreateArticleEvent
 import pl.marpiec.util.UID
 
 /**
@@ -11,7 +10,7 @@ import pl.marpiec.util.UID
  */
 
 class UserProfileCommandImpl(val eventStore: EventStore, val dataStore: DataStore) extends UserProfileCommand {
-  def createUserProfile(userId: UID):UID = {
+  def createUserProfile(userId: UID): UID = {
     val createUserProfile = new CreateUserProfileEvent(userId)
     val id = UID.generate
     eventStore.addEventForNewAggregate(id, createUserProfile)

@@ -1,10 +1,9 @@
 package pl.marpiec.cqrs
 
-import pl.marpiec.util.UID
-import collection.mutable.{HashMap, ListBuffer}
+import collection.mutable.ListBuffer
 import java.sql._
-import com.google.gson.Gson
 import java.util.{UUID, Date}
+import pl.marpiec.util.{JsonUtil, UID}
 
 /**
  * @author Marcin Pieciukiewicz
@@ -12,12 +11,12 @@ import java.util.{UUID, Date}
 
 class EventStoreDbImpl extends EventStore {
 
-  private val connection:Connection = DriverManager.getConnection("jdbc:h2:~/test", "sa", "sa");
+  private val connection: Connection = DriverManager.getConnection("jdbc:h2:~/test", "sa", "sa");
   private val listeners = new ListBuffer[EventStoreListener]
 
-  def getEventsForEntity(entityClass: Class[_], id: UID):ListBuffer[CqrsEvent] = {
+  var jsonSerializer = new JsonUtil
 
-    var gson = new Gson
+  def getEventsForEntity(entityClass: Class[_], id: UID): ListBuffer[CqrsEvent] = {
 
     val selectEvents = connection.prepareStatement("SELECT event, event_type FROM events WHERE aggregate_uid = ? ORDER BY event_time")
     selectEvents.setObject(1, id.uuid)
@@ -30,22 +29,21 @@ class EventStoreDbImpl extends EventStore {
       var event = results.getString(1)
       var eventType = results.getString(2)
 
-      events += gson.fromJson(event, Class.forName(eventType)).asInstanceOf[CqrsEvent]
+      events += jsonSerializer.fromJson(event, Class.forName(eventType)).asInstanceOf[CqrsEvent]
 
     }
+    
     events
   }
 
   def addEvent(event: CqrsEvent) {
-
-    var gson = new Gson
 
     val insert = connection.prepareStatement("INSERT INTO events (aggregate_uid, event_time, version, event_type, event) VALUES (?, ?, ?, ?, ?)")
     insert.setObject(1, event.entityId.uuid)
     insert.setTimestamp(2, new Timestamp(new Date().getTime))
     insert.setInt(3, event.expectedVersion)
     insert.setString(4, event.getClass.getName)
-    insert.setObject(5, gson.toJson(event))
+    insert.setObject(5, jsonSerializer.toJson(event))
     insert.executeUpdate
 
     val update = connection.prepareStatement("UPDATE aggregates SET version = version + 1 WHERE uid = ?")
@@ -59,7 +57,6 @@ class EventStoreDbImpl extends EventStore {
   def addEventForNewAggregate(id: UID, event: CqrsEvent) {
 
     event.entityId = id
-    var gson = new Gson()
 
     val insertAggregate = connection.prepareStatement("INSERT INTO aggregates (class, uid, version) VALUES (?,?,?)")
     insertAggregate.setString(1, event.entityClass.getName)
@@ -72,7 +69,7 @@ class EventStoreDbImpl extends EventStore {
     insertEvent.setTimestamp(2, new Timestamp(new Date().getTime))
     insertEvent.setInt(3, event.expectedVersion)
     insertEvent.setString(4, event.getClass.getName)
-    insertEvent.setObject(5, gson.toJson(event))
+    insertEvent.setObject(5, jsonSerializer.toJson(event))
     insertEvent.executeUpdate
 
     callAllListenersAboutNewEvent(event.entityClass, event.entityId)
@@ -91,7 +88,7 @@ class EventStoreDbImpl extends EventStore {
   def callListenersForAllAggregates {
     val selectAggregates = connection.prepareStatement("SELECT class, uid FROM aggregates")
     val results = selectAggregates.executeQuery
-    while(results.next()) {
+    while (results.next()) {
       var className = results.getString(1)
       var uuid = results.getObject(2).asInstanceOf[UUID]
       callAllListenersAboutNewEvent(Class.forName(className).asInstanceOf[Class[_ <: CqrsEntity]], UID.fromUUID(uuid))
@@ -103,7 +100,9 @@ class EventStoreDbImpl extends EventStore {
     listeners += listener
   }
 
-  private def callAllListenersAboutNewEvent(entityClass:Class[_ <: CqrsEntity], entityId:UID) {
-    listeners.foreach(listener => listener.onEntityChanged(entityClass, entityId))
+  private def callAllListenersAboutNewEvent(entityClass: Class[_ <: CqrsEntity], entityId: UID) {
+    listeners.foreach(listener =>  {
+      listener.onEntityChanged(entityClass, entityId)
+    })
   }
 }

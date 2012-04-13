@@ -23,7 +23,6 @@ class DataStoreImpl (val eventStore:EventStore, val entityCache:EntityCache) ext
         }
       }
     )
-
     entity
 
   }
@@ -46,6 +45,7 @@ class DataStoreImpl (val eventStore:EventStore, val entityCache:EntityCache) ext
   }
 
   def onEntityChanged(entityClass:Class[_ <: CqrsEntity], entityId:UID) {
+
     val entity = getEntity(entityClass, entityId:UID)
 
     val entityListenersOption = listeners.get(entityClass)
