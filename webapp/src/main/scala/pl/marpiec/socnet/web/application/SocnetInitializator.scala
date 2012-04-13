@@ -17,7 +17,7 @@ object SocnetInitializator {
 
     eventStore.initDatabaseIfNotExists
 
-    // for faster jodatime initialization (first new LocalDateTime took about 1 sec)
+    // for faster jodatime initialization (first new LocalDateTime call took about 1 sec, now its about 50 mills)
     System.setProperty("org.joda.time.DateTimeZone.Provider", "org.joda.time.tz.UTCProvider");
     // to initialize jodatime, before time meassurement
     new LocalDateTime()

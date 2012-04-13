@@ -37,6 +37,27 @@ class InstantTypeConverter extends JsonSerializer[Instant] with JsonDeserializer
   }
 }
 
+
+class OptionSerializer extends JsonSerializer[Option[Any]] with JsonDeserializer[Option[Any]]  {
+  def serialize(src: Option[Any], typeOfSrc: Type, context: JsonSerializationContext): JsonElement = {
+    new JsonPrimitive(src.getOrElse("none").toString());
+  }
+
+  def deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext) = {
+    var jsonObject = json.getAsJsonObject
+
+    if(jsonObject.entrySet().isEmpty) {
+      None
+    } else {
+      throw new IllegalStateException("Option deserialization Not yet implemented")
+    }
+    
+  }
+}
+
+
+
+
 class JsonUtil {
 
   val gson = buildGson
@@ -45,6 +66,7 @@ class JsonUtil {
     val gsonBuilder = new GsonBuilder
     gsonBuilder.registerTypeAdapter(classOf[LocalDateTime], new DateTimeTypeConverter)
     gsonBuilder.registerTypeAdapter(classOf[Instant], new InstantTypeConverter)
+    gsonBuilder.registerTypeAdapter(classOf[Option[Any]], new OptionSerializer)
     gsonBuilder.create
   }
   

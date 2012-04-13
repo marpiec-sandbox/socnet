@@ -11,6 +11,8 @@ import org.apache.wicket.model.{CompoundPropertyModel, PropertyModel}
 import pl.marpiec.socnet.service.userprofile.input.JobExperienceParam
 import org.apache.wicket.markup.html.form.{TextArea, TextField, Form}
 import org.apache.wicket.ajax.markup.html.form.AjaxButton
+import pl.marpiec.socnet.di.Factory
+import pl.marpiec.socnet.service.userprofile.UserProfileCommand
 
 /**
  * ...
@@ -19,6 +21,9 @@ import org.apache.wicket.ajax.markup.html.form.AjaxButton
 
 class JobExperiencePanel(id: String, val user: User, val jobExperience: JobExperience)
   extends Panel(id) {
+
+  val userProfileCommand = Factory.userProfileCommand
+
 
   var edit = false
 
@@ -38,6 +43,7 @@ class JobExperiencePanel(id: String, val user: User, val jobExperience: JobExper
 
     add(new AjaxFallbackLink("deleteButton") {
       def onClick(target: AjaxRequestTarget) {
+
         JobExperiencePanel.this.setVisible(false)
         target.add(JobExperiencePanel.this)
       }

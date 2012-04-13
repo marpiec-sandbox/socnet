@@ -1,6 +1,5 @@
 package pl.marpiec.socnet.web.page.userProfile.component
 
-import pl.marpiec.socnet.model.User
 import org.apache.wicket.markup.html.panel.Panel
 import collection.mutable.ListBuffer
 import pl.marpiec.socnet.model.userprofile.JobExperience
@@ -14,16 +13,21 @@ import org.apache.wicket.ajax.markup.html.form.AjaxButton
 import org.apache.wicket.model.CompoundPropertyModel
 import org.apache.wicket.MarkupContainer
 import pl.marpiec.util.UID
+import pl.marpiec.socnet.model.{UserProfile, User}
+import pl.marpiec.socnet.service.userprofile.UserProfileCommand
+import pl.marpiec.socnet.di.Factory
 
 /**
  * ...
  * @author Marcin Pieciukiewicz
  */
 
-class JobExperienceListPanel(id: String, val user: User, val jobExperience: ListBuffer[JobExperience])
-  extends Panel(id) {
+class JobExperienceListPanel(id: String, val user: User, val userProfile: UserProfile,
+                             val jobExperience: ListBuffer[JobExperience]) extends Panel(id) {
 
   setOutputMarkupId(true)
+
+  val userProfileCommand: UserProfileCommand = Factory.userProfileCommand
 
 
   val jobExperienceList: RepeatingView = new RepeatingView("repeating") {
@@ -76,6 +80,9 @@ class JobExperienceListPanel(id: String, val user: User, val jobExperience: List
         experience.description = model.description
         experience.position = model.position
         experience.id = UID.generate
+
+        userProfileCommand.addJobExperience(userProfile.id, userProfile.version, model)
+        userProfile.incrementVersion
 
         addExperienceToJobExperienceList(jobExperienceList, experience)
         

@@ -26,7 +26,7 @@ class EditUserProfilePage extends WebPage {
   val userProfile = userProfileOption.getOrElse(createUserProfile)
 
   add(new PersonalSummaryPanel("personalSummaryPanel", session.user, userProfile));
-  add(new JobExperienceListPanel("jobExperienceListPanel", session.user, userProfile.jobExperience))
+  add(new JobExperienceListPanel("jobExperienceListPanel", session.user, userProfile, userProfile.jobExperience))
 
   def createUserProfile: UserProfile = {
     val userProfileId = userProfileCommand.createUserProfile(session.user.id)
