@@ -33,8 +33,8 @@ object UID {
       new UID(str.toLong)
     } catch {
       case e:NumberFormatException => new UID(0)
+      case e:Exception => throw new IllegalStateException("It shouldn't happen , ever.")
     }
-    throw new IllegalStateException("It shouldn't happen , ever.")
   }
 }
 
