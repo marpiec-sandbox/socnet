@@ -70,10 +70,10 @@ class UserProfileServicesTest {
     jobExperienceParam.startDateOption = Option[LocalDate](new LocalDate(2002, 10, 1))
     jobExperienceParam.endDateOption = Option[LocalDate](new LocalDate(2006, 3, 1))
     jobExperienceParam.position = "Programmer"
-    jobExperienceParam.id = uidGenerator.nextUid
+    val jobExperienceUid = uidGenerator.nextUid
+    jobExperienceParam.id = jobExperienceUid
 
-    val jobExperienceUid = jobExperienceParam.id
-    userProfileCommand.addJobExperience(userProfile.id, userProfile.version, jobExperienceParam)
+    userProfileCommand.addJobExperience(userProfile.id, userProfile.version, jobExperienceParam, jobExperienceUid)
 
     userProfile = dataStore.getEntity(classOf[UserProfile], userProfileId).asInstanceOf[UserProfile]
 

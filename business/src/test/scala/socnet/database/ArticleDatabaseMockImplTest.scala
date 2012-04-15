@@ -53,7 +53,7 @@ class ArticleDatabaseMockImplTest {
 
     val userId = uidGenerator.nextUid
     val articleId = uidGenerator.nextUid
-    eventStore.addEventForNewAggregate(articleId, new CreateArticleEvent("Tresc artykulu", new LocalDateTime, userId))
+    eventStore.addEventForNewAggregate(articleId, new Event(articleId, 0, new CreateArticleEvent("Tresc artykulu", new LocalDateTime, userId)))
 
     val article: Option[Article] = articleDatabase.getArticleById(articleId)
 

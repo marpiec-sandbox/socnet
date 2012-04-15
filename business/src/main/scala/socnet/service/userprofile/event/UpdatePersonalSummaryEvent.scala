@@ -9,8 +9,7 @@ import pl.marpiec.util.UID
  * @author Marcin Pieciukiewicz
  */
 
-class UpdatePersonalSummaryEvent(entityId: UID, expectedVersion: Int, val personalSummary: PersonalSummary)
-    extends CqrsEvent(entityId, expectedVersion) {
+class UpdatePersonalSummaryEvent(val personalSummary: PersonalSummary) extends CqrsEvent {
 
   def entityClass = classOf[UserProfile]
 

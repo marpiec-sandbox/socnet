@@ -1,6 +1,7 @@
 package pl.marpiec.cqrs
 
 import collection.mutable.ListBuffer
+import exception.ConcurrentAggregateModificationException
 import java.sql._
 import java.util.{UUID, Date}
 import pl.marpiec.util.{JsonUtil, UID}
@@ -16,63 +17,82 @@ class EventStoreDbImpl extends EventStore {
 
   var jsonSerializer = new JsonUtil
 
-  def getEventsForEntity(entityClass: Class[_], id: UID): ListBuffer[CqrsEvent] = {
+  def getEventsForEntity(entityClass: Class[_], id: UID): ListBuffer[Event] = {
 
-    val selectEvents = connection.prepareStatement("SELECT event, event_type FROM events WHERE aggregate_uid = ? ORDER BY event_time")
+    val selectEvents = connection.prepareStatement("SELECT aggregate_uid, version, event, event_type FROM events WHERE aggregate_uid = ? ORDER BY event_time")
     selectEvents.setLong(1, id.uid)
     val results = selectEvents.executeQuery
 
-    val events = new ListBuffer[CqrsEvent]
+    val events = new ListBuffer[Event]
 
     while(results.next()) {
 
-      var event = results.getString(1)
-      var eventType = results.getString(2)
+      var aggregateId = results.getLong(1)
+      var version = results.getInt(2)
+      var event = results.getString(3)
+      var eventType = results.getString(4)
 
-      events += jsonSerializer.fromJson(event, Class.forName(eventType)).asInstanceOf[CqrsEvent]
+      events += new Event(new UID(aggregateId), version, jsonSerializer.fromJson(event, Class.forName(eventType)).asInstanceOf[CqrsEvent])
 
     }
     
     events
   }
 
-  def addEvent(event: CqrsEvent) {
+  def addEvent(event: Event) {
+
+    val selectAggregateVersion = connection.prepareStatement("SELECT version FROM aggregates WHERE uid = ? AND class = ?")
+    selectAggregateVersion.setLong(1, event.aggregateId.uid)
+    selectAggregateVersion.setString(2, event.event.entityClass.getName)
+
+    val versionResults: ResultSet = selectAggregateVersion.executeQuery()
+
+    if (versionResults.next) {
+      val currentVersion: Int = versionResults.getInt(1)
+      if (currentVersion > event.expectedVersion) {
+        throw new ConcurrentAggregateModificationException
+      }
+    } else {
+      throw new IllegalStateException("No aggregate found! ")
+    }
 
     val insert = connection.prepareStatement("INSERT INTO events (aggregate_uid, event_time, version, event_type, event) VALUES (?, ?, ?, ?, ?)")
-    insert.setLong(1, event.entityId.uid)
+    insert.setLong(1, event.aggregateId.uid)
     insert.setTimestamp(2, new Timestamp(new Date().getTime))
     insert.setInt(3, event.expectedVersion)
-    insert.setString(4, event.getClass.getName)
-    insert.setObject(5, jsonSerializer.toJson(event))
+    insert.setString(4, event.event.getClass.getName)
+    insert.setObject(5, jsonSerializer.toJson(event.event))
     insert.executeUpdate
 
+
+
     val update = connection.prepareStatement("UPDATE aggregates SET version = version + 1 WHERE uid = ?")
-    update.setLong(1, event.entityId.uid)
+    update.setLong(1, event.aggregateId.uid)
     update.executeUpdate
 
-    callAllListenersAboutNewEvent(event.entityClass, event.entityId)
+    callAllListenersAboutNewEvent(event.event.entityClass, event.aggregateId)
 
   }
 
-  def addEventForNewAggregate(id: UID, event: CqrsEvent) {
+  def addEventForNewAggregate(id: UID, event: Event) {
 
-    event.entityId = id
+    event.aggregateId = id
 
     val insertAggregate = connection.prepareStatement("INSERT INTO aggregates (class, uid, version) VALUES (?,?,?)")
-    insertAggregate.setString(1, event.entityClass.getName)
+    insertAggregate.setString(1, event.event.entityClass.getName)
     insertAggregate.setLong(2, id.uid)
     insertAggregate.setInt(3, 1)
     insertAggregate.executeUpdate
 
     val insertEvent = connection.prepareStatement("INSERT INTO events (aggregate_uid, event_time, version, event_type, event) VALUES (?, ?, ?, ?, ?)")
-    insertEvent.setLong(1, event.entityId.uid)
+    insertEvent.setLong(1, event.aggregateId.uid)
     insertEvent.setTimestamp(2, new Timestamp(new Date().getTime))
     insertEvent.setInt(3, event.expectedVersion)
-    insertEvent.setString(4, event.getClass.getName)
-    insertEvent.setObject(5, jsonSerializer.toJson(event))
+    insertEvent.setString(4, event.event.getClass.getName)
+    insertEvent.setObject(5, jsonSerializer.toJson(event.event))
     insertEvent.executeUpdate
 
-    callAllListenersAboutNewEvent(event.entityClass, event.entityId)
+    callAllListenersAboutNewEvent(event.event.entityClass, event.aggregateId)
 
   }
 

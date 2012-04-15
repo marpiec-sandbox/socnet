@@ -3,7 +3,7 @@ package pl.marpiec.socnet.service.userprofile
 import event._
 import input.{JobExperienceParam, PersonalSummary}
 import pl.marpiec.util.UID
-import pl.marpiec.cqrs.{UidGenerator, DataStore, EventStore}
+import pl.marpiec.cqrs.{Event, UidGenerator, DataStore, EventStore}
 
 /**
  * @author Marcin Pieciukiewicz
@@ -13,23 +13,23 @@ class UserProfileCommandImpl(val eventStore: EventStore, val dataStore: DataStor
   def createUserProfile(userId: UID): UID = {
     val createUserProfile = new CreateUserProfileEvent(userId)
     val id = uidGenerator.nextUid
-    eventStore.addEventForNewAggregate(id, createUserProfile)
+    eventStore.addEventForNewAggregate(id, new Event(id, 0, createUserProfile))
     id
   }
 
   def updatePersonalSummary(id: UID, version: Int, personalSummary: PersonalSummary) {
-    eventStore.addEvent(new UpdatePersonalSummaryEvent(id, version, personalSummary))
+    eventStore.addEvent(new Event(id, version, new UpdatePersonalSummaryEvent(personalSummary)))
   }
 
-  def addJobExperience(id: UID, version: Int, jobExperience: JobExperienceParam) {
-    eventStore.addEvent(new AddJobExperienceEvent(id, version, jobExperience))
+  def addJobExperience(id: UID, version: Int, jobExperience: JobExperienceParam, jobExperienceId: UID) {
+    eventStore.addEvent(new Event(id, version, new AddJobExperienceEvent(jobExperience, jobExperienceId)))
   }
 
   def updateJobExperience(id: UID, version: Int, jobExperience: JobExperienceParam) {
-    eventStore.addEvent(new UpdateJobExperienceEvent(id, version, jobExperience))
+    eventStore.addEvent(new Event(id, version, new UpdateJobExperienceEvent(jobExperience)))
   }
 
   def removeJobExperience(id: UID, version: Int, jobExperienceId: UID) {
-    eventStore.addEvent(new RemoveJobExperienceEvent(id, version, jobExperienceId))
+    eventStore.addEvent(new Event(id, version, new RemoveJobExperienceEvent(jobExperienceId)))
   }
 }

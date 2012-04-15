@@ -8,7 +8,7 @@ import pl.marpiec.util.UID
  * @author Marcin Pieciukiewicz
  */
 
-class CreateUserProfileEvent(userId:UID) extends CqrsEvent(null, 0) {
+class CreateUserProfileEvent(userId:UID) extends CqrsEvent {
 
   def entityClass = classOf[UserProfile]
 

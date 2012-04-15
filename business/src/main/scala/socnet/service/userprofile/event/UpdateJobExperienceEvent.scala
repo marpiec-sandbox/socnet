@@ -10,8 +10,7 @@ import pl.marpiec.util.UID
  * @author Marcin Pieciukiewicz
  */
 
-class UpdateJobExperienceEvent(entityId: UID, expectedVersion: Int, val jobExperienceParam: JobExperienceParam)
-  extends CqrsEvent(entityId, expectedVersion){
+class UpdateJobExperienceEvent(val jobExperienceParam: JobExperienceParam) extends CqrsEvent{
 
   def entityClass = classOf[UserProfile]
 

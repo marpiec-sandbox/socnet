@@ -2,10 +2,8 @@ package pl.marpiec.socnet.service.user.event
 
 import pl.marpiec.socnet.model.User
 import pl.marpiec.cqrs.{CqrsEntity, CqrsEvent}
-import pl.marpiec.util.UID
 
-class ChangeEmailEvent(entityId:UID, expectedVersion:Int, val email: String)
-      extends CqrsEvent(entityId, expectedVersion) {
+class ChangeEmailEvent(val email: String) extends CqrsEvent {
 
   def applyEvent(entity: CqrsEntity) {
     val user = entity.asInstanceOf[User]

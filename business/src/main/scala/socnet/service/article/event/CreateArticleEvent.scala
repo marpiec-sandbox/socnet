@@ -9,7 +9,7 @@ import pl.marpiec.util.UID
  * @author Marcin Pieciukiewicz
  */
 
-class CreateArticleEvent(val content:String, val creationTime:LocalDateTime, val authorUserId:UID) extends CqrsEvent(null, 0) {
+class CreateArticleEvent(val content:String, val creationTime:LocalDateTime, val authorUserId:UID) extends CqrsEvent {
   def applyEvent(entity: CqrsEntity) {
 
     val article = entity.asInstanceOf[Article]

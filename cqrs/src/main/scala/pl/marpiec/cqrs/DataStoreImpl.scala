@@ -18,7 +18,7 @@ class DataStoreImpl (val eventStore:EventStore, val entityCache:EntityCache) ext
 
     events.foreach((event) => {
         if(event.expectedVersion == entity.version) {
-          event.applyEvent(entity)
+          event.event.applyEvent(entity)
           entity.version = entity.version + 1
         }
       }

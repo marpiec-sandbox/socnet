@@ -1,6 +1,5 @@
 package pl.marpiec.socnet.web.page.userProfile.component
 
-import pl.marpiec.socnet.model.User
 import pl.marpiec.socnet.model.userprofile.JobExperience
 import org.apache.wicket.markup.html.panel.Panel
 import org.apache.wicket.markup.html.basic.Label
@@ -12,14 +11,14 @@ import pl.marpiec.socnet.service.userprofile.input.JobExperienceParam
 import org.apache.wicket.markup.html.form.{TextArea, TextField, Form}
 import org.apache.wicket.ajax.markup.html.form.AjaxButton
 import pl.marpiec.socnet.di.Factory
-import pl.marpiec.socnet.service.userprofile.UserProfileCommand
+import pl.marpiec.socnet.model.{UserProfile, User}
 
 /**
  * ...
  * @author Marcin Pieciukiewicz
  */
 
-class JobExperiencePanel(id: String, val user: User, val jobExperience: JobExperience)
+class JobExperiencePanel(id: String, val user: User, val userProfile: UserProfile, val jobExperience: JobExperience)
   extends Panel(id) {
 
   val userProfileCommand = Factory.userProfileCommand
@@ -44,6 +43,8 @@ class JobExperiencePanel(id: String, val user: User, val jobExperience: JobExper
     add(new AjaxFallbackLink("deleteButton") {
       def onClick(target: AjaxRequestTarget) {
 
+        userProfileCommand.removeJobExperience(userProfile.id, userProfile.version, jobExperience.id)
+        userProfile.incrementVersion
         JobExperiencePanel.this.setVisible(false)
         target.add(JobExperiencePanel.this)
       }
@@ -61,6 +62,8 @@ class JobExperiencePanel(id: String, val user: User, val jobExperience: JobExper
     jobExperienceModel.companyName = jobExperience.companyName
     jobExperienceModel.position = jobExperience.position
     jobExperienceModel.description = jobExperience.description
+    jobExperienceModel.id = jobExperience.id
+
     setModel(new CompoundPropertyModel[JobExperienceParam](jobExperienceModel))
 
     add(new TextField[String]("companyName"))
@@ -74,6 +77,7 @@ class JobExperiencePanel(id: String, val user: User, val jobExperience: JobExper
         model.companyName = jobExperience.companyName
         model.position = jobExperience.position
         model.description = jobExperience.description
+        model.id = null
         edit = false
         target.add(JobExperiencePanel.this)
       }
@@ -89,6 +93,11 @@ class JobExperiencePanel(id: String, val user: User, val jobExperience: JobExper
         jobExperience.companyName = model.companyName
         jobExperience.position = model.position
         jobExperience.description = model.description
+        jobExperience.id = model.id
+
+        userProfileCommand.updateJobExperience(userProfile.id, userProfile.version, model)
+        userProfile.incrementVersion
+
         edit = false
         target.add(JobExperiencePanel.this)
       }

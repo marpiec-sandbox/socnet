@@ -40,7 +40,7 @@ class JobExperienceListPanel(id: String, val user: User, val userProfile: UserPr
   
   def addExperienceToJobExperienceList(repeating: RepeatingView, experience: JobExperience): MarkupContainer = {
     val item: AbstractItem = new AbstractItem(repeating.newChildId());
-    item.add(new JobExperiencePanel("content", user, experience))
+    item.add(new JobExperiencePanel("content", user, userProfile, experience))
     repeating.add(item);
   }
 
@@ -76,14 +76,16 @@ class JobExperienceListPanel(id: String, val user: User, val userProfile: UserPr
       def onSubmit(target: AjaxRequestTarget, form: Form[_]) {
 
         val model = form.getModel.asInstanceOf[CompoundPropertyModel[JobExperienceParam]].getObject
-        
+
+        val newExperienceId = uidGenerator.nextUid
+
         val experience = new JobExperience
         experience.companyName = model.companyName
         experience.description = model.description
         experience.position = model.position
-        experience.id = uidGenerator.nextUid
+        experience.id = newExperienceId
 
-        userProfileCommand.addJobExperience(userProfile.id, userProfile.version, model)
+        userProfileCommand.addJobExperience(userProfile.id, userProfile.version, model, newExperienceId)
         userProfile.incrementVersion
 
         addExperienceToJobExperienceList(jobExperienceList, experience)
@@ -105,6 +107,7 @@ class JobExperienceListPanel(id: String, val user: User, val userProfile: UserPr
     model.companyName = ""
     model.description = ""
     model.position = ""
+    model.id = null
   }
 
 

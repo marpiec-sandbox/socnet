@@ -6,11 +6,11 @@ import pl.marpiec.util.UID
 
 trait EventStore {
 
-  def getEventsForEntity(entityClass: Class[_], id: UID):ListBuffer[CqrsEvent]
+  def getEventsForEntity(entityClass: Class[_], id: UID):ListBuffer[Event]
 
-  def addEvent(event: CqrsEvent)
+  def addEvent(event: Event)
 
-  def addEventForNewAggregate(id:UID, event: CqrsEvent)
+  def addEventForNewAggregate(id:UID, event: Event)
 
   def addListener(listener: EventStoreListener)
 

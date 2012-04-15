@@ -14,7 +14,7 @@ import userProfile.EditUserProfilePage
 
 class HomePage extends WebPage {
 
-  setStatelessHint(false)
+  setStatelessHint(true)
 
   private val articleDatabase:ArticleDatabase = Factory.articleDatabase
   

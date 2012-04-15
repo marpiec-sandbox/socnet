@@ -13,7 +13,7 @@ trait UserProfileCommand {
   def createUserProfile(userId:UID):UID
   def updatePersonalSummary(id: UID, version: Int, personalSummary: PersonalSummary)
 
-  def addJobExperience(id: UID, version: Int, jobExperience: JobExperienceParam)
+  def addJobExperience(id: UID, version: Int, jobExperience: JobExperienceParam, jobExperienceId: UID)
   def updateJobExperience(id: UID, version: Int, jobExperience: JobExperienceParam)
   def removeJobExperience(id: UID, version: Int, jobExperienceId: UID)
 }

@@ -8,18 +8,17 @@ import pl.marpiec.cqrs.{CqrsEntity, CqrsEvent}
  * @author Marcin Pieciukiewicz
  */
 
-class RemoveJobExperienceEvent(entityId: UID, expectedVersion: Int, val jobExperienceId: UID)
-  extends CqrsEvent(entityId, expectedVersion) {
+class RemoveJobExperienceEvent(val jobExperienceId: UID) extends CqrsEvent {
 
   def entityClass = classOf[UserProfile]
 
   def applyEvent(entity: CqrsEntity) {
     val userProfile = entity.asInstanceOf[UserProfile]
 
-    val jobExperiencOption = userProfile.jobExperienceById(jobExperienceId)
+    val jobExperienceOption = userProfile.jobExperienceById(jobExperienceId)
 
-    if (jobExperiencOption.isDefined) {
-      val jobExperience = jobExperiencOption.get
+    if (jobExperienceOption.isDefined) {
+      val jobExperience = jobExperienceOption.get
       userProfile.jobExperience -= jobExperience
     } else {
       throw new IllegalStateException("No JobExperience with given uid")
