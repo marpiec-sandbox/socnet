@@ -16,6 +16,7 @@ import pl.marpiec.util.UID
 import pl.marpiec.socnet.model.{UserProfile, User}
 import pl.marpiec.socnet.service.userprofile.UserProfileCommand
 import pl.marpiec.socnet.di.Factory
+import pl.marpiec.cqrs.UidGenerator
 
 /**
  * ...
@@ -27,7 +28,8 @@ class JobExperienceListPanel(id: String, val user: User, val userProfile: UserPr
 
   setOutputMarkupId(true)
 
-  val userProfileCommand: UserProfileCommand = Factory.userProfileCommand
+  val userProfileCommand = Factory.userProfileCommand
+  val uidGenerator = Factory.uidGenerator
 
 
   val jobExperienceList: RepeatingView = new RepeatingView("repeating") {
@@ -79,7 +81,7 @@ class JobExperienceListPanel(id: String, val user: User, val userProfile: UserPr
         experience.companyName = model.companyName
         experience.description = model.description
         experience.position = model.position
-        experience.id = UID.generate
+        experience.id = uidGenerator.nextUid
 
         userProfileCommand.addJobExperience(userProfile.id, userProfile.version, model)
         userProfile.incrementVersion

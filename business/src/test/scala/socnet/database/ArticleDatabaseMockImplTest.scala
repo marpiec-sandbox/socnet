@@ -21,9 +21,10 @@ class ArticleDatabaseMockImplTest {
     val entityCache:EntityCache = new EntityCacheSimpleImpl
     val dataStore:DataStore = new DataStoreImpl(eventStore, entityCache)
     val articleDatabase:ArticleDatabase = new ArticleDatabaseMockImpl(dataStore)
+    val uidGenerator:UidGenerator = new UidGeneratorMockImpl
     
-    val articleId = UID.generate
-    val userId = UID.generate
+    val articleId = uidGenerator.nextUid
+    val userId = uidGenerator.nextUid
     
     val article = new Article
     article.id = articleId
@@ -48,9 +49,10 @@ class ArticleDatabaseMockImplTest {
     val entityCache:EntityCache = new EntityCacheSimpleImpl
     val dataStore:DataStore = new DataStoreImpl(eventStore, entityCache)
     val articleDatabase: ArticleDatabase = new ArticleDatabaseMockImpl(dataStore)
+    val uidGenerator:UidGenerator = new UidGeneratorMockImpl
 
-    val userId = UID.generate
-    val articleId = UID.generate
+    val userId = uidGenerator.nextUid
+    val articleId = uidGenerator.nextUid
     eventStore.addEventForNewAggregate(articleId, new CreateArticleEvent("Tresc artykulu", new LocalDateTime, userId))
 
     val article: Option[Article] = articleDatabase.getArticleById(articleId)

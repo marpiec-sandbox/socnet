@@ -3,6 +3,7 @@ package pl.marpiec.socnet.model
 import org.testng.Assert._
 import org.joda.time.LocalDateTime
 import pl.marpiec.util.UID
+import pl.marpiec.cqrs.{UidGeneratorMockImpl, UidGenerator}
 
 /**
  * @author Marcin Pieciukiewicz
@@ -10,11 +11,13 @@ import pl.marpiec.util.UID
 
 class ArticleTest {
 
+  val uidGenerator:UidGenerator = new UidGeneratorMockImpl
+
   val article = new Article
-  article.id = UID.generate
+  article.id = uidGenerator.nextUid
   article.version = 1
   article.content = "Tresc artykulu"
-  article.authorUserId = UID.generate
+  article.authorUserId = uidGenerator.nextUid
   article.creationTime = new LocalDateTime()
 
   val articleCopy = article.copy.asInstanceOf[Article]

@@ -22,7 +22,7 @@ class ArticlePage (parameters: PageParameters) extends WebPage {
   private val userDatabase = Factory.userDatabase
 
 
-  val articleId = UID.parse(parameters.get(ArticlePage.ARTICLE_ID_PARAM).toString)
+  val articleId = UID.parseOrZero(parameters.get(ArticlePage.ARTICLE_ID_PARAM).toString)
 
   articleDatabase.getArticleById(articleId) match {
     case Some(article) => {

@@ -2,17 +2,17 @@ package pl.marpiec.socnet.service.userprofile
 
 import event._
 import input.{JobExperienceParam, PersonalSummary}
-import pl.marpiec.cqrs.{DataStore, EventStore}
 import pl.marpiec.util.UID
+import pl.marpiec.cqrs.{UidGenerator, DataStore, EventStore}
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
-class UserProfileCommandImpl(val eventStore: EventStore, val dataStore: DataStore) extends UserProfileCommand {
+class UserProfileCommandImpl(val eventStore: EventStore, val dataStore: DataStore, val uidGenerator:UidGenerator) extends UserProfileCommand {
   def createUserProfile(userId: UID): UID = {
     val createUserProfile = new CreateUserProfileEvent(userId)
-    val id = UID.generate
+    val id = uidGenerator.nextUid
     eventStore.addEventForNewAggregate(id, createUserProfile)
     id
   }

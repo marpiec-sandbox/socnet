@@ -3,6 +3,7 @@ package pl.marpiec.socnet.model
 import org.testng.annotations.Test
 import org.testng.Assert._
 import pl.marpiec.util.UID
+import pl.marpiec.cqrs.{UidGeneratorMockImpl, UidGenerator}
 
 /**
  * @author Marcin Pieciukiewicz
@@ -12,8 +13,11 @@ import pl.marpiec.util.UID
 class UserTest {
 
   def testCopyConstructor {
+
+    val uidGenerator:UidGenerator = new UidGeneratorMockImpl
+
     val user = new User
-    user.id = UID.generate
+    user.id = uidGenerator.nextUid
     user.version = 1
     user.name = "Marcin Pieciukiewicz"
     user.password = "Haslo"

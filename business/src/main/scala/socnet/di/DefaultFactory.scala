@@ -7,6 +7,8 @@ import pl.marpiec.socnet.database._
 import pl.marpiec.socnet.service.userprofile.{UserProfileCommandImpl, UserProfileCommand}
 
 class DefaultFactory {
+  val uidGenerator: UidGenerator = new UidGeneratorDbImpl
+
   val eventStore: EventStore = new EventStoreDbImpl
   val entityCache: EntityCache = new EntityCacheSimpleImpl
 
@@ -16,10 +18,10 @@ class DefaultFactory {
   val articleDatabase:ArticleDatabase = new ArticleDatabaseMockImpl(dataStore)
   val userProfileDatabase:UserProfileDatabase = new UserProfileDatabaseMockImpl(dataStore)
 
-  val userCommand: UserCommand = new UserCommandImpl(eventStore, dataStore, userDatabase)
+  val userCommand: UserCommand = new UserCommandImpl(eventStore, dataStore, userDatabase, uidGenerator)
   val userQuery:UserQuery = new UserQueryImpl(userDatabase, dataStore)
 
-  val articleCommand:ArticleCommand = new ArticleCommandImpl(eventStore, dataStore)
+  val articleCommand:ArticleCommand = new ArticleCommandImpl(eventStore, dataStore, uidGenerator)
 
-  val userProfileCommand:UserProfileCommand = new UserProfileCommandImpl(eventStore, dataStore)
+  val userProfileCommand:UserProfileCommand = new UserProfileCommandImpl(eventStore, dataStore, uidGenerator)
 }

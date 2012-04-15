@@ -19,10 +19,11 @@ class ArticleManagementTest {
     val eventStore: EventStore = new EventStoreMockImpl
     val entityCache: EntityCache = new EntityCacheSimpleImpl
     val dataStore: DataStore = new DataStoreImpl(eventStore, entityCache)
+    val uidGenerator:UidGenerator = new UidGeneratorMockImpl
 
-    val articleCommand: ArticleCommand = new ArticleCommandImpl(eventStore, dataStore)
+    val articleCommand: ArticleCommand = new ArticleCommandImpl(eventStore, dataStore, uidGenerator)
 
-    val userId = UID.generate
+    val userId = uidGenerator.nextUid
 
     val articleId = articleCommand.createArticle("Tresc artykulu", userId)
 

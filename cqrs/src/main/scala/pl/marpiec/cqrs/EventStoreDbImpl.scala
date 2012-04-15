@@ -19,7 +19,7 @@ class EventStoreDbImpl extends EventStore {
   def getEventsForEntity(entityClass: Class[_], id: UID): ListBuffer[CqrsEvent] = {
 
     val selectEvents = connection.prepareStatement("SELECT event, event_type FROM events WHERE aggregate_uid = ? ORDER BY event_time")
-    selectEvents.setObject(1, id.uuid)
+    selectEvents.setLong(1, id.uid)
     val results = selectEvents.executeQuery
 
     val events = new ListBuffer[CqrsEvent]
@@ -39,7 +39,7 @@ class EventStoreDbImpl extends EventStore {
   def addEvent(event: CqrsEvent) {
 
     val insert = connection.prepareStatement("INSERT INTO events (aggregate_uid, event_time, version, event_type, event) VALUES (?, ?, ?, ?, ?)")
-    insert.setObject(1, event.entityId.uuid)
+    insert.setLong(1, event.entityId.uid)
     insert.setTimestamp(2, new Timestamp(new Date().getTime))
     insert.setInt(3, event.expectedVersion)
     insert.setString(4, event.getClass.getName)
@@ -47,7 +47,7 @@ class EventStoreDbImpl extends EventStore {
     insert.executeUpdate
 
     val update = connection.prepareStatement("UPDATE aggregates SET version = version + 1 WHERE uid = ?")
-    update.setObject(1, event.entityId.uuid)
+    update.setLong(1, event.entityId.uid)
     update.executeUpdate
 
     callAllListenersAboutNewEvent(event.entityClass, event.entityId)
@@ -60,12 +60,12 @@ class EventStoreDbImpl extends EventStore {
 
     val insertAggregate = connection.prepareStatement("INSERT INTO aggregates (class, uid, version) VALUES (?,?,?)")
     insertAggregate.setString(1, event.entityClass.getName)
-    insertAggregate.setObject(2, id.uuid)
+    insertAggregate.setLong(2, id.uid)
     insertAggregate.setInt(3, 1)
     insertAggregate.executeUpdate
 
     val insertEvent = connection.prepareStatement("INSERT INTO events (aggregate_uid, event_time, version, event_type, event) VALUES (?, ?, ?, ?, ?)")
-    insertEvent.setObject(1, event.entityId.uuid)
+    insertEvent.setLong(1, event.entityId.uid)
     insertEvent.setTimestamp(2, new Timestamp(new Date().getTime))
     insertEvent.setInt(3, event.expectedVersion)
     insertEvent.setString(4, event.getClass.getName)
@@ -78,11 +78,14 @@ class EventStoreDbImpl extends EventStore {
 
   def initDatabaseIfNotExists {
 
-    val createEvents = connection.prepareStatement("CREATE TABLE IF NOT EXISTS events (aggregate_uid UUID, event_time TIMESTAMP, version INT, event_type VARCHAR(128), event VARCHAR(10240))")
+    val createEvents = connection.prepareStatement("CREATE TABLE IF NOT EXISTS events (aggregate_uid BIGINT, event_time TIMESTAMP, version INT, event_type VARCHAR(128), event VARCHAR(10240))")
     createEvents.execute()
 
-    val createAggregates = connection.prepareStatement("CREATE TABLE IF NOT EXISTS aggregates (class VARCHAR(128), uid UUID, version INT)")
+    val createAggregates = connection.prepareStatement("CREATE TABLE IF NOT EXISTS aggregates (class VARCHAR(128), uid BIGINT, version INT)")
     createAggregates.execute()
+
+    val createUids = connection.prepareStatement("CREATE TABLE IF NOT EXISTS uids(uidName VARCHAR(128), uid BIGINT)")
+    createUids.execute()
   }
 
   def callListenersForAllAggregates {
@@ -90,8 +93,8 @@ class EventStoreDbImpl extends EventStore {
     val results = selectAggregates.executeQuery
     while (results.next()) {
       var className = results.getString(1)
-      var uuid = results.getObject(2).asInstanceOf[UUID]
-      callAllListenersAboutNewEvent(Class.forName(className).asInstanceOf[Class[_ <: CqrsEntity]], UID.fromUUID(uuid))
+      var uid = results.getLong(2)
+      callAllListenersAboutNewEvent(Class.forName(className).asInstanceOf[Class[_ <: CqrsEntity]], new UID(uid))
     }
   }
 

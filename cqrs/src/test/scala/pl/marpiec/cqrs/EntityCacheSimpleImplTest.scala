@@ -13,13 +13,14 @@ class EntityCacheSimpleImplTest {
   def testSimpleCacheOperations() {
 
     val entityCache:EntityCache = new EntityCacheSimpleImpl
+    val uidGenerator:UidGenerator = new UidGeneratorMockImpl
 
-    if(entityCache.get(classOf[SimpleTestEntity], UID.generate).isDefined) {
+    if(entityCache.get(classOf[SimpleTestEntity], uidGenerator.nextUid).isDefined) {
       fail("Unexpeced entity in database")
     }
     
     val entity = new SimpleTestEntity
-    val entityId = UID.generate;
+    val entityId = uidGenerator.nextUid;
     entity.id = entityId
     entity.name = "Marcin"
     

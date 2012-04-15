@@ -45,8 +45,9 @@ class UserDatabaseMockImplTest {
     val entityCache:EntityCache = new EntityCacheSimpleImpl
     val dataStore:DataStore = new DataStoreImpl(eventStore, entityCache)
     val userDatabase: UserDatabase = new UserDatabaseMockImpl(dataStore)
+    val uidGenerator:UidGenerator = new UidGeneratorMockImpl
 
-    val userId = UID.generate
+    val userId = uidGenerator.nextUid
     eventStore.addEventForNewAggregate(userId, new RegisterUserEvent("Marcin", "marcin@socnet", "haslo"))
 
     val user: Option[User] = userDatabase.getUserById(userId)

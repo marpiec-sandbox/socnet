@@ -1,23 +1,26 @@
 package pl.marpiec.util
 
-import java.util.UUID
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
-class UID private(val uuid: UUID) extends Serializable with Comparable[UID] {
+class UID(val uid: Long) extends Serializable with Comparable[UID] {
 
-  def compareTo(o: UID) = uuid.compareTo(o.uuid)
+  def compareTo(o: UID) = uid.compareTo(o.uid)
 
-  override def toString = uuid.toString
+  def nextUid: UID = {
+    new UID(uid + 1)
+  }
 
-  override def hashCode() = uuid.hashCode()
+  override def toString = uid.toString
+
+  override def hashCode() = uid.hashCode()
 
   override def equals(obj: Any) = {
     if(obj.isInstanceOf[UID]) {
-      val uid: UID = obj.asInstanceOf[UID]
-      uuid.equals(uid.uuid)
+      val objUid: UID = obj.asInstanceOf[UID]
+      objUid.uid.equals(uid)
     } else {
       false
     }
@@ -25,17 +28,47 @@ class UID private(val uuid: UUID) extends Serializable with Comparable[UID] {
 }
 
 object UID {
-
-  def generate: UID = {
-    new UID(UUID.randomUUID)
+  def parseOrZero(str:String):UID = {
+    try {
+      new UID(str.toLong)
+    } catch {
+      case e:NumberFormatException => new UID(0)
+    }
+    throw new IllegalStateException("It shouldn't happen , ever.")
   }
-
-  def parse(str: String): UID = {
-    new UID(UUID.fromString(str))
-  }
-
-  def fromUUID(uuid:UUID): UID = {
-    new UID(uuid)
-  }
-
 }
+
+
+/*class UID private(val uuid: UUID) extends Serializable with Comparable[UID] {
+
+def compareTo(o: UID) = uuid.compareTo(o.uuid)
+
+override def toString = uuid.toString
+
+override def hashCode() = uuid.hashCode()
+
+override def equals(obj: Any) = {
+if(obj.isInstanceOf[UID]) {
+ val uid: UID = obj.asInstanceOf[UID]
+ uuid.equals(uid.uuid)
+} else {
+ false
+}
+}
+}
+
+object UID {
+
+def generate: UID = {
+new UID(UUID.randomUUID)
+}
+
+def parseOr(str: String): UID = {
+new UID(UUID.fromString(str))
+}
+
+def fromUUID(uuid:UUID): UID = {
+new UID(uuid)
+}
+
+}     */

@@ -21,8 +21,9 @@ class UserServicesTest extends FunSuite {
   val entityCache:EntityCache = new EntityCacheSimpleImpl
   val dataStore:DataStore = new DataStoreImpl(eventStore, entityCache)
   val userDatabase:UserDatabase = new UserDatabaseMockImpl(dataStore)
+  val uidGenerator:UidGenerator = new UidGeneratorMockImpl
 
-  val userCommand:UserCommand = new UserCommandImpl(eventStore, dataStore, userDatabase)
+  val userCommand:UserCommand = new UserCommandImpl(eventStore, dataStore, userDatabase, uidGenerator)
 
   val userId = userCommand.registerUser("Marcin", "m.pieciukiewicz@socnet", "Haslo");
 

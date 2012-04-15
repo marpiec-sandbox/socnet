@@ -22,7 +22,7 @@ class RemoveJobExperienceEvent(entityId: UID, expectedVersion: Int, val jobExper
       val jobExperience = jobExperiencOption.get
       userProfile.jobExperience -= jobExperience
     } else {
-      throw new IllegalStateException("No JobExperience with given uuid")
+      throw new IllegalStateException("No JobExperience with given uid")
     }
   }
 }
