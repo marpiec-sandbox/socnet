@@ -4,6 +4,7 @@ import com.google.gson._
 import java.util.Date
 import org.joda.time._
 import java.lang.reflect.{ParameterizedType, Type}
+import scala.util.parsing.json.Parser
 
 /**
  * @author Marcin Pieciukiewicz
@@ -56,10 +57,15 @@ class InstantTypeConverter extends JsonSerializer[Instant] with JsonDeserializer
 }
 
 
+
 class OptionSerializer extends JsonSerializer[Option[Any]] with JsonDeserializer[Option[Any]] {
   def serialize(src: Option[Any], typeOfSrc: Type, context: JsonSerializationContext): JsonElement = {
     if (src.isDefined) {
-      context.serialize(src.get);
+      def value = src.get
+      var serialized = new JsonObject
+      serialized.addProperty("class", value.asInstanceOf[Object].getClass.getName)
+      serialized.add("value", context.serialize(value))
+      serialized
     } else {
       new JsonObject
     }
@@ -72,32 +78,8 @@ class OptionSerializer extends JsonSerializer[Option[Any]] with JsonDeserializer
     } else if (json.isJsonObject && json.getAsJsonObject.entrySet().size()==0) {
       None
     } else {
-      val arguments = typeOfT.asInstanceOf[ParameterizedType].getActualTypeArguments
-      val argument = arguments(0)
-      if (argument.equals(classOf[Object])) {
-        try {
-          
-          def longValue = json.getAsLong
-          if (longValue <= Int.MaxValue && longValue >= Int.MinValue) {
-            return Option[Int](longValue.intValue)
-          } else {
-            return Option[Long](longValue)
-          }
-        } catch {
-          case e:NumberFormatException => {}
-        }
-        try {
-          return Option[Double](json.getAsDouble)
-        } catch {
-          case e:NumberFormatException => {}
-        }
-        try {
-          return Option[Boolean](json.getAsBoolean)
-        } catch {
-          case e:NumberFormatException => {}
-        }
-      }
-      Option(context.deserialize(json, arguments(0)))
+      def className = json.getAsJsonObject.get("class").getAsString
+      Option(context.deserialize(json.getAsJsonObject.get("value"), Class.forName(className)))
     }
   }
 }
