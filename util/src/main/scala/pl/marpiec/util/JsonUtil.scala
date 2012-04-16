@@ -61,16 +61,42 @@ class OptionSerializer extends JsonSerializer[Option[Any]] with JsonDeserializer
     if (src.isDefined) {
       context.serialize(src.get);
     } else {
-      JsonNull.INSTANCE
+      new JsonObject
     }
 
   }
 
-  def deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext) = {
+  def deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext):Option[Any] = {
     if (json.isJsonNull) {
+      None
+    } else if (json.isJsonObject && json.getAsJsonObject.entrySet().size()==0) {
       None
     } else {
       val arguments = typeOfT.asInstanceOf[ParameterizedType].getActualTypeArguments
+      val argument = arguments(0)
+      if (argument.equals(classOf[Object])) {
+        try {
+          
+          def longValue = json.getAsLong
+          if (longValue <= Int.MaxValue && longValue >= Int.MinValue) {
+            return Option[Int](longValue.intValue)
+          } else {
+            return Option[Long](longValue)
+          }
+        } catch {
+          case e:NumberFormatException => {}
+        }
+        try {
+          return Option[Double](json.getAsDouble)
+        } catch {
+          case e:NumberFormatException => {}
+        }
+        try {
+          return Option[Boolean](json.getAsBoolean)
+        } catch {
+          case e:NumberFormatException => {}
+        }
+      }
       Option(context.deserialize(json, arguments(0)))
     }
   }
@@ -92,6 +118,10 @@ class JsonUtil {
 
   def toJson(obj: AnyRef): String = {
     gson.toJson(obj)
+  }
+
+  def toJson(obj: AnyRef, clazz: Class[_]): String = {
+    gson.toJson(obj, clazz)
   }
 
   def fromJson[E](json: String, clazz: Class[E]): E = {
