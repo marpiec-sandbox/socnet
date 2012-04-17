@@ -177,5 +177,6 @@
         <module>util</module>
         <module>business</module>
         <module>webapp</module>
+        <module>h2console</module>
     </modules>
 </project>
