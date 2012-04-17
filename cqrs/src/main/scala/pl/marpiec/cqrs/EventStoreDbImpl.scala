@@ -56,7 +56,7 @@ class EventStoreDbImpl extends EventStore {
       throw new IllegalStateException("No aggregate found! ")
     }
 
-    val insert = connection.prepareStatement("INSERT INTO events (aggregate_uid, event_time, version, event_type, event) VALUES (?, ?, ?, ?, ?)")
+    val insert = connection.prepareStatement("INSERT INTO events (id, aggregate_uid, event_time, version, event_type, event) VALUES (NEXTVAL('events_seq'), ?, ?, ?, ?, ?)")
     insert.setLong(1, event.aggregateId.uid)
     insert.setTimestamp(2, new Timestamp(new Date().getTime))
     insert.setInt(3, event.expectedVersion)
@@ -78,13 +78,13 @@ class EventStoreDbImpl extends EventStore {
 
     event.aggregateId = id
 
-    val insertAggregate = connection.prepareStatement("INSERT INTO aggregates (class, uid, version) VALUES (?,?,?)")
+    val insertAggregate = connection.prepareStatement("INSERT INTO aggregates (id, class, uid, version) VALUES (NEXTVAL('aggregates_seq'), ?,?,?)")
     insertAggregate.setString(1, event.event.entityClass.getName)
     insertAggregate.setLong(2, id.uid)
     insertAggregate.setInt(3, 1)
     insertAggregate.executeUpdate
 
-    val insertEvent = connection.prepareStatement("INSERT INTO events (aggregate_uid, event_time, version, event_type, event) VALUES (?, ?, ?, ?, ?)")
+    val insertEvent = connection.prepareStatement("INSERT INTO events (id, aggregate_uid, event_time, version, event_type, event) VALUES (NEXTVAL('events_seq'), ?, ?, ?, ?, ?)")
     insertEvent.setLong(1, event.aggregateId.uid)
     insertEvent.setTimestamp(2, new Timestamp(new Date().getTime))
     insertEvent.setInt(3, event.expectedVersion)
@@ -98,14 +98,14 @@ class EventStoreDbImpl extends EventStore {
 
   def initDatabaseIfNotExists {
 
-    val createEvents = connection.prepareStatement("CREATE TABLE IF NOT EXISTS events (aggregate_uid BIGINT, event_time TIMESTAMP, version INT, event_type VARCHAR(128), event VARCHAR(10240))")
-    createEvents.execute()
+    connection.prepareStatement("CREATE TABLE IF NOT EXISTS events (id INT NOT NULL PRIMARY KEY, aggregate_uid BIGINT NOT NULL, event_time TIMESTAMP NOT NULL, version INT NOT NULL, event_type VARCHAR(128) NOT NULL, event VARCHAR(10240) NOT NULL)").execute()
+    connection.prepareStatement("CREATE TABLE IF NOT EXISTS aggregates (id INT NOT NULL PRIMARY KEY, class VARCHAR(128) NOT NULL, uid BIGINT NOT NULL, version INT NOT NULL)").execute()
+    connection.prepareStatement("CREATE TABLE IF NOT EXISTS uids(id INT NOT NULL PRIMARY KEY, uidName VARCHAR(128) NOT NULL, uid BIGINT NOT NULL)").execute()
 
-    val createAggregates = connection.prepareStatement("CREATE TABLE IF NOT EXISTS aggregates (class VARCHAR(128), uid BIGINT, version INT)")
-    createAggregates.execute()
+    connection.prepareStatement("CREATE SEQUENCE IF NOT EXISTS uids_seq").execute()
+    connection.prepareStatement("CREATE SEQUENCE IF NOT EXISTS events_seq").execute()
+    connection.prepareStatement("CREATE SEQUENCE IF NOT EXISTS aggregates_seq").execute()
 
-    val createUids = connection.prepareStatement("CREATE TABLE IF NOT EXISTS uids(uidName VARCHAR(128), uid BIGINT)")
-    createUids.execute()
   }
 
   def callListenersForAllAggregates {
