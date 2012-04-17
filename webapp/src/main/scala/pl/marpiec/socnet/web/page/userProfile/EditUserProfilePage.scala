@@ -1,20 +1,22 @@
 package pl.marpiec.socnet.web.page.userProfile
 
 import component.{JobExperienceListPanel, PersonalSummaryPanel}
-import pl.marpiec.socnet.web.application.SocnetSession
 import pl.marpiec.socnet.database.UserProfileDatabase
 import pl.marpiec.socnet.di.Factory
 import pl.marpiec.socnet.model.UserProfile
 import org.apache.wicket.markup.html.WebPage
 import pl.marpiec.socnet.service.userprofile.UserProfileCommand
-import pl.marpiec.socnet.model.userprofile.JobExperience
+import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException
+import pl.marpiec.socnet.web.authorization.SecureWebPage
+import pl.marpiec.socnet.web.application.{SocnetRoles, SocnetSession}
+
 
 /**
  * ...
  * @author Marcin Pieciukiewicz
  */
 
-class EditUserProfilePage extends WebPage {
+class EditUserProfilePage extends SecureWebPage(SocnetRoles.USER) {
 
   setVersioned(false)
 

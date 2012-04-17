@@ -6,6 +6,8 @@ import org.apache.wicket.request.{Response, Request}
 import pl.marpiec.socnet.web.page.{SignOutPage, RegisterPage, HomePage}
 import org.apache.wicket.authentication.strategy.NoOpAuthenticationStrategy
 import org.apache.wicket.authroles.authorization.strategies.role.RoleAuthorizationStrategy
+import org.apache.wicket.authroles.authorization.strategies.role.metadata.MetaDataRoleAuthorizationStrategy
+import pl.marpiec.socnet.web.page.userProfile.EditUserProfilePage
 
 class SocnetApplication extends WebApplication {
 
@@ -20,6 +22,8 @@ class SocnetApplication extends WebApplication {
     getSecuritySettings.setAuthorizationStrategy(new RoleAuthorizationStrategy(new UserRolesAuthorizer()));
 
     SocnetInitializator()
+
+    getDebugSettings().setDevelopmentUtilitiesEnabled(true);
 
   }
 
