@@ -85,7 +85,7 @@ class JsonUtilTest {
     sdo.stringValue = "testString"
     odo.sdo = Option[SimpleDataObject](sdo)
 
-    val simpleJson = jsonUtil.toJson(odo, classOf[OptionalDataObject])
+    val simpleJson = jsonUtil.toJson(odo)
 
     val dataObject = jsonUtil.fromJson(simpleJson, classOf[OptionalDataObject])
 
