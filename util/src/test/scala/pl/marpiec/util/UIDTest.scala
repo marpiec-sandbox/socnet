@@ -21,10 +21,6 @@ class UIDTest {
 
     assertNotEquals(a, 5L)
     
-    var d = a.nextUid
-    
-    assertEquals(d.uid, 6)
-    
     val e = UID.parseOrZero("35")
     assertEquals(e, new UID(35))
 
