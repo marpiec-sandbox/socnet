@@ -12,7 +12,7 @@ import pl.marpiec.socnet.database.exception.EntryAlreadyExistsException
 class RegisterForm(id: String) extends Panel(id) {
 
   add(new FeedbackPanel("feedback"))
-  add(new Form[RegisterFormModel]("form") {
+  add(new StatelessForm[RegisterFormModel]("form") {
 
     private val userCommand = Factory.userCommand
 
@@ -23,8 +23,8 @@ class RegisterForm(id: String) extends Panel(id) {
     add(new Label("warningMessage", warningMessage))
     add(new TextField[String]("username"))
     add(new TextField[String]("email"))
-    add(new TextField[String]("password"))
-    add(new TextField[String]("repeatPassword"))
+    add(new PasswordTextField("password"))
+    add(new PasswordTextField("repeatPassword"))
     add(new Button("saveButton"))
 
     add(new Button("cancelButton") {

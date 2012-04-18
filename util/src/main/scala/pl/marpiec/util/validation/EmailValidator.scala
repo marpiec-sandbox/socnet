@@ -1,7 +1,7 @@
 package pl.marpiec.util.validation
 
 import java.util.regex.Pattern
-import pl.marpiec.util.ValidationResult
+import pl.marpiec.util.{Strings, ValidationResult}
 
 /**
  * ...
@@ -10,10 +10,15 @@ import pl.marpiec.util.ValidationResult
 
 object EmailValidator {
 
+  val requiredMessage = "Email is required"
+  val errorMessage = "Email is incorrect"
+
   val emailPattern = Pattern.compile("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
 
-  def validate(result:ValidationResult, email:String, errorMessage:String) {
-    if(isNotValid(email)) {
+  def validate(result:ValidationResult, email:String) {
+    if (Strings.isBlank(email)) {
+      result.addError(requiredMessage)
+    } else if(isNotValid(email)) {
       result.addError(errorMessage)
     }
   }

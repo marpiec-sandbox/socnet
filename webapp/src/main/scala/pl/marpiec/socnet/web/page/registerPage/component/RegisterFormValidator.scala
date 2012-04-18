@@ -25,7 +25,7 @@ object RegisterFormValidator {
   }
 
   private def validateEmail(result:ValidationResult, model: RegisterFormModel) {
-    EmailValidator.validate(result, model.email, "Email is incorrect")
+    EmailValidator.validate(result, model.email)
   }
 
   private def validatePassword(result: ValidationResult, model: RegisterFormModel) {

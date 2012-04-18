@@ -16,11 +16,12 @@ class EmailValidatorTest {
     assertTrue(EmailValidator.isNotValid(""))
     assertTrue(EmailValidator.isNotValid(null))
     assertTrue(EmailValidator.isValid("marcin@socnet.pl"))
+    assertTrue(EmailValidator.isValid("marcin@socnet.mobile"))
     assertTrue(EmailValidator.isValid("marcin-p@1.pl"))
     assertTrue(EmailValidator.isValid("marcin.p@1.pl"))
 
     val result = new ValidationResult
-    EmailValidator.validate(result, "Marcin@socnet@pl", "Incorrect value")
+    EmailValidator.validate(result, "Marcin@socnet@pl")
     assertTrue(result.isNotValid)
 
     assertTrue(EmailValidator.isNotValid("Marcin@socnet@pl"))

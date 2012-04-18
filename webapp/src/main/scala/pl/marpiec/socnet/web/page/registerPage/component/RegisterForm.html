@@ -1,24 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <html xmlns:wicket="http://wicket.apache.org">
     <wicket:panel>
-        <form wicket:id="form" id="registerForm">
+        <form wicket:id="form" id="registerForm" class="formValidator">
             <span wicket:id="warningMessage"></span>
 
             <div>
                 <span>User name</span>
-                <input wicket:id="username" type="text" size="40"/>
+                <input wicket:id="username" type="text" size="40" class="requiredValidator" />
+                <span class="validatorMessage"></span>
             </div>
             <div>
                 <span>Email</span>
-                <input wicket:id="email" type="text" size="40"/>
+                <input wicket:id="email" type="text" size="40" class="requiredValidator emailValidator"/>
+                <span class="validatorMessage"></span>
             </div>
             <div>
                 <span>Password</span>
-                <input wicket:id="password" type="text" size="40"/>
+                <input wicket:id="password" type="password" size="40" class="requiredValidator passwordValidator"/>
+                <span class="validatorMessage"></span>
             </div>
             <div>
                 <span>Repeat password</span>
-                <input wicket:id="repeatPassword" type="text" size="40"/>
+                <input wicket:id="repeatPassword" type="password" size="40" class="requiredValidator passwordRepeatValidator"/>
+                <span class="validatorMessage"></span>
             </div>
             <div>
                 <input type="submit" wicket:id="saveButton" value="save"/>

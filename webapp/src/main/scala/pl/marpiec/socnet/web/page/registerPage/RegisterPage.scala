@@ -7,6 +7,8 @@ import org.apache.wicket.markup.html.WebPage
 
 class RegisterPage(parameters: PageParameters) extends WebPage {
 
+  setStatelessHint(true)
+
   add(new RegisterForm("registerForm"))
 
 }
