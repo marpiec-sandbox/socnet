@@ -12,6 +12,8 @@ class PasswordValidatorTest {
 
   def testSimpleValidation() {
     valid("haslo", "haslo")
+    invalid("", "")
+    invalid(null, null)
     invalid("haslo", "BAAAo")
     invalid("haslo", "")
     invalid("abcd", "abcd")

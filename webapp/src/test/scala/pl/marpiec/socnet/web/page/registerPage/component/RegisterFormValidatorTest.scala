@@ -54,4 +54,22 @@ class RegisterFormValidatorTest {
 
     assertTrue(result.isNotValid)
   }
+
+  def testNoEmailValidation() {
+    val form = createCorrectForm
+    form.email = ""
+
+    val result = RegisterFormValidator.validate(form)
+
+    assertTrue(result.isNotValid)
+  }
+
+  def testIncorrectEmailValidation() {
+    val form = createCorrectForm
+    form.email = "marcin"
+
+    val result = RegisterFormValidator.validate(form)
+
+    assertTrue(result.isNotValid)
+  }
 }

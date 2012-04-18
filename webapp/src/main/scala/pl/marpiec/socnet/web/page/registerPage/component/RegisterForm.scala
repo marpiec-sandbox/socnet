@@ -21,10 +21,10 @@ class RegisterForm(id: String) extends Panel(id) {
     setModel(new CompoundPropertyModel[RegisterFormModel](new RegisterFormModel))
 
     add(new Label("warningMessage", warningMessage))
-    add(new TextField[String]("username").setRequired(true))
-    add(new TextField[String]("email").setRequired(true))
-    add(new TextField[String]("password").setRequired(true))
-    add(new TextField[String]("repeatPassword").setRequired(true))
+    add(new TextField[String]("username"))
+    add(new TextField[String]("email"))
+    add(new TextField[String]("password"))
+    add(new TextField[String]("repeatPassword"))
     add(new Button("saveButton"))
 
     add(new Button("cancelButton") {
@@ -42,12 +42,15 @@ class RegisterForm(id: String) extends Panel(id) {
 
         val model: RegisterFormModel = getDefaultModelObject.asInstanceOf[RegisterFormModel]
 
-        if (Strings.equal(model.password, model.repeatPassword)) {
+        val validationResult = RegisterFormValidator.validate(model)
+
+        if (validationResult.isValid) {
           userCommand.registerUser(model.username, model.email, model.password)
           setResponsePage(classOf[HomePage])
         } else {
-          warningMessage.setObject("Passwords does not match")
+          warningMessage.setObject(validationResult.errors.toString())
         }
+
       } catch {
         case e: EntryAlreadyExistsException => warningMessage.setObject("User already registered")
       }
