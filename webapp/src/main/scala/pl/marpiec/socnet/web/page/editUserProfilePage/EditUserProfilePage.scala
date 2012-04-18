@@ -1,12 +1,10 @@
-package pl.marpiec.socnet.web.page.userProfile
+package pl.marpiec.socnet.web.page.editUserProfilePage
 
 import component.{JobExperienceListPanel, PersonalSummaryPanel}
 import pl.marpiec.socnet.database.UserProfileDatabase
 import pl.marpiec.socnet.di.Factory
 import pl.marpiec.socnet.model.UserProfile
-import org.apache.wicket.markup.html.WebPage
 import pl.marpiec.socnet.service.userprofile.UserProfileCommand
-import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException
 import pl.marpiec.socnet.web.authorization.SecureWebPage
 import pl.marpiec.socnet.web.application.{SocnetRoles, SocnetSession}
 

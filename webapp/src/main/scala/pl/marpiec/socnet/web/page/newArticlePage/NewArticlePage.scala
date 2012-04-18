@@ -1,10 +1,9 @@
-package pl.marpiec.socnet.web.page.newArticle
+package pl.marpiec.socnet.web.page.newArticlePage
 
-import org.apache.wicket.markup.html.WebPage
 import org.apache.wicket.model.{CompoundPropertyModel, Model}
 import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.markup.html.form.{TextArea, Button, Form}
-import pl.marpiec.socnet.web.page.HomePage
+import pl.marpiec.socnet.web.page.homePage.HomePage
 import pl.marpiec.socnet.model.User
 import pl.marpiec.socnet.di.Factory
 import pl.marpiec.socnet.web.authorization.SecureWebPage

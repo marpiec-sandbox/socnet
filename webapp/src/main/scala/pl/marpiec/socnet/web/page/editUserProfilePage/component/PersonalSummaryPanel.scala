@@ -1,4 +1,4 @@
-package pl.marpiec.socnet.web.page.userProfile.component
+package pl.marpiec.socnet.web.page.editUserProfilePage.component
 
 import org.apache.wicket.markup.html.panel.Panel
 import org.apache.wicket.markup.html.WebMarkupContainer

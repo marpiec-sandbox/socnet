@@ -1,5 +1,6 @@
 package pl.marpiec.socnet.web.page
 
+import homePage.HomePage
 import org.testng.annotations.Test
 import org.testng.Assert._
 import pl.marpiec.socnet.web.application.SocnetApplication

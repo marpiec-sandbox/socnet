@@ -1,4 +1,4 @@
-package pl.marpiec.socnet.web.page.userProfile.component
+package pl.marpiec.socnet.web.page.editUserProfilePage.component
 
 import org.apache.wicket.markup.html.panel.Panel
 import collection.mutable.ListBuffer
@@ -12,11 +12,8 @@ import org.apache.wicket.markup.html.form.{TextArea, TextField, Form}
 import org.apache.wicket.ajax.markup.html.form.AjaxButton
 import org.apache.wicket.model.CompoundPropertyModel
 import org.apache.wicket.MarkupContainer
-import pl.marpiec.util.UID
 import pl.marpiec.socnet.model.{UserProfile, User}
-import pl.marpiec.socnet.service.userprofile.UserProfileCommand
 import pl.marpiec.socnet.di.Factory
-import pl.marpiec.cqrs.UidGenerator
 
 /**
  * ...
@@ -33,17 +30,16 @@ class JobExperienceListPanel(id: String, val user: User, val userProfile: UserPr
 
 
   val jobExperienceList: RepeatingView = new RepeatingView("repeating") {
-  for (experience <- jobExperience) {
+    for (experience <- jobExperience) {
       addExperienceToJobExperienceList(this, experience)
     }
   }
-  
+
   def addExperienceToJobExperienceList(repeating: RepeatingView, experience: JobExperience): MarkupContainer = {
     val item: AbstractItem = new AbstractItem(repeating.newChildId());
     item.add(new JobExperiencePanel("content", user, userProfile, experience))
     repeating.add(item);
   }
-
 
 
   val newJobExperienceForm: Form[JobExperienceParam] = new Form[JobExperienceParam]("newJobExperienceForm") {
@@ -89,9 +85,9 @@ class JobExperienceListPanel(id: String, val user: User, val userProfile: UserPr
         userProfile.incrementVersion
 
         addExperienceToJobExperienceList(jobExperienceList, experience)
-        
+
         cleanModel(model)
-        
+
         newJobExperienceForm.setVisible(false)
         showNewExperienceFormLink.setVisible(true)
         target.add(JobExperienceListPanel.this)
@@ -103,7 +99,7 @@ class JobExperienceListPanel(id: String, val user: User, val userProfile: UserPr
     })
   }
 
-  def cleanModel(model:JobExperienceParam) {
+  def cleanModel(model: JobExperienceParam) {
     model.companyName = ""
     model.description = ""
     model.position = ""

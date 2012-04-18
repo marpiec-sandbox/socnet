@@ -1,4 +1,4 @@
-package pl.marpiec.socnet.web.page.newArticle
+package pl.marpiec.socnet.web.page.newArticlePage
 
 /**
  * @author Marcin Pieciukiewicz

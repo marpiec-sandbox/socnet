@@ -3,11 +3,9 @@ package pl.marpiec.socnet.web.application
 import org.apache.wicket.protocol.http.WebApplication
 import org.apache.wicket.Session
 import org.apache.wicket.request.{Response, Request}
-import pl.marpiec.socnet.web.page.{SignOutPage, RegisterPage, HomePage}
+import pl.marpiec.socnet.web.page.homePage.HomePage
 import org.apache.wicket.authentication.strategy.NoOpAuthenticationStrategy
 import org.apache.wicket.authroles.authorization.strategies.role.RoleAuthorizationStrategy
-import org.apache.wicket.authroles.authorization.strategies.role.metadata.MetaDataRoleAuthorizationStrategy
-import pl.marpiec.socnet.web.page.userProfile.EditUserProfilePage
 
 class SocnetApplication extends WebApplication {
 

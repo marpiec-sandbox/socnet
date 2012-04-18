@@ -1,23 +1,25 @@
-package pl.marpiec.socnet.web.page
+package pl.marpiec.socnet.web.page.homePage
 
-import newArticle.NewArticlePage
+import component.ArticleList
 import org.apache.wicket.markup.html.WebPage
 import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.markup.html.link.BookmarkablePageLink
 import org.apache.wicket.authroles.authentication.panel.SignInPanel
 import pl.marpiec.socnet.web.application.SocnetSession
-import pl.marpiec.socnet.web.component.articleList.ArticleList
 import pl.marpiec.socnet.database.ArticleDatabase
 import pl.marpiec.socnet.di.Factory
 import pl.marpiec.socnet.web.authorization.{UnauthorizeAll, AuthorizeUser}
-import userProfile.EditUserProfilePage
+import pl.marpiec.socnet.web.page.registerPage.RegisterPage
+import pl.marpiec.socnet.web.page.signOutPage.SignOutPage
+import pl.marpiec.socnet.web.page.newArticlePage.NewArticlePage
+import pl.marpiec.socnet.web.page.editUserProfilePage.EditUserProfilePage
 
 class HomePage extends WebPage {
 
   setStatelessHint(true)
 
-  private val articleDatabase:ArticleDatabase = Factory.articleDatabase
-  
+  private val articleDatabase: ArticleDatabase = Factory.articleDatabase
+
   add(new Label("welcomeMessage", "Hello World by Wicket version " + getApplication.getFrameworkSettings.getVersion))
 
   add(AuthorizeUser(new BookmarkablePageLink("signoutLink", classOf[SignOutPage])))
@@ -27,7 +29,7 @@ class HomePage extends WebPage {
   add(AuthorizeUser(new BookmarkablePageLink("editProfileLink", classOf[EditUserProfilePage])))
 
   add(UnauthorizeAll(new SignInPanel("signInPanel", false)))
-  
+
   add(AuthorizeUser(new ArticleList("articleList", articleDatabase.getAllArticles)))
 
 
@@ -37,7 +39,6 @@ class HomePage extends WebPage {
   } else {
     add(new Label("userName", ""))
   }
-
 
 
 }

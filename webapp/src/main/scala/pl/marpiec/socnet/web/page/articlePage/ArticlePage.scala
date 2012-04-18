@@ -1,4 +1,4 @@
-package pl.marpiec.socnet.web.page.article
+package pl.marpiec.socnet.web.page.articlePage
 
 import org.apache.wicket.request.mapper.parameter.PageParameters
 import org.apache.wicket.markup.html.WebPage
