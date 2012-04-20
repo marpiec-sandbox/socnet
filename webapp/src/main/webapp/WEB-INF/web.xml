@@ -60,6 +60,8 @@
         -->
         <load-on-startup>1</load-on-startup>
     </servlet>
+
+
     <servlet-mapping>
         <servlet-name>H2Console</servlet-name>
         <url-pattern>/console/*</url-pattern>

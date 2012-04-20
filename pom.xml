@@ -8,6 +8,7 @@
     <version>1.0</version>
 
     <name>socnet</name>
+
     <url>http://localhost/socnet</url>
     <packaging>pom</packaging>
 
