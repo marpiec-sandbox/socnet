@@ -9,14 +9,13 @@ import pl.marpiec.socnet.di.Factory
 import pl.marpiec.socnet.model.{User, Article}
 import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException
 import pl.marpiec.util.UID
+import pl.marpiec.socnet.web.page.template.SimpleTemplatePage
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
-class ArticlePage (parameters: PageParameters) extends WebPage {
-
-
+class ArticlePage (parameters: PageParameters) extends SimpleTemplatePage {
 
   private val articleDatabase = Factory.articleDatabase
   private val userDatabase = Factory.userDatabase
@@ -38,6 +37,8 @@ class ArticlePage (parameters: PageParameters) extends WebPage {
       add(new Label("articleContent", article.content))
       add(new Label("articleDate", article.creationTime.toString))
       add(new Label("authorName", authorName))
+
+      setSubTitle(article.authorUserId.toString)
 
     }
     case None => {

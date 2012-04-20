@@ -8,13 +8,14 @@ import org.apache.wicket.authroles.authentication.panel.SignInPanel
 import pl.marpiec.socnet.web.application.SocnetSession
 import pl.marpiec.socnet.database.ArticleDatabase
 import pl.marpiec.socnet.di.Factory
-import pl.marpiec.socnet.web.authorization.{UnauthorizeAll, AuthorizeUser}
 import pl.marpiec.socnet.web.page.registerPage.RegisterPage
 import pl.marpiec.socnet.web.page.signOutPage.SignOutPage
 import pl.marpiec.socnet.web.page.newArticlePage.NewArticlePage
 import pl.marpiec.socnet.web.page.editUserProfilePage.EditUserProfilePage
+import pl.marpiec.socnet.web.authorization.{SecureWebPage, UnauthorizeAll, AuthorizeUser}
+import pl.marpiec.socnet.web.page.template.SimpleTemplatePage
 
-class HomePage extends WebPage {
+class HomePage extends SimpleTemplatePage {
 
   setStatelessHint(true)
 
