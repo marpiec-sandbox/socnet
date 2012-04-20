@@ -1,0 +1,56 @@
+form {
+    width: 300px;
+}
+
+div.input {
+    position: relative;
+    height: 50px;
+    border-radius: 4px;
+    border: 1px solid white;
+}
+
+div.input span.label {
+    position: absolute;
+    top: 3px;
+    left: 8px;
+}
+
+div.input.invalid span.label {
+    color: #AB1600;
+}
+
+div.input span.validatorMessage {
+    background-color: #ff9c9c;
+    color: black;
+    display: none;
+    left: 160px;
+    position: absolute;
+    top: -13px;
+    white-space: nowrap;
+}
+
+div.input input {
+    position: absolute;
+    top: 22px;
+    left: 8px;
+    width: 280px;
+    border: 1px solid #708496;
+}
+
+div.input.invalid input {
+    border-color: #ab1600;
+}
+
+div.input.focused {
+    background-color: #e3e3e3;
+    border: 1px solid #d6d6d6;
+}
+
+div.input.focused.invalid span.validatorMessage {
+    border: 1px solid #AB1600;
+    display: block;
+    padding: 2px 5px;
+    vertical-align: bottom;
+}
+
+

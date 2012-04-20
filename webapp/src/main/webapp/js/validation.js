@@ -65,10 +65,12 @@ function getMessageContainer(element){
 
 function hideValidationMessage(element){
     getMessageContainer(element).html("");
+    element.parent().removeClass("invalid")
 }
 
 function showValidationMessage(element, message){
     getMessageContainer(element).html(message);
+    element.parent().addClass("invalid")
 }
 
 function isElementValid(jqElement){
