@@ -3,6 +3,7 @@ package pl.marpiec.util
 import util.Random
 import java.security.MessageDigest
 import org.apache.commons.codec.digest.DigestUtils
+import org.apache.commons.lang.RandomStringUtils
 
 
 /**
@@ -13,9 +14,9 @@ object PasswordUtil {
   
   val saltLength = 24; //As recommended by OWASP
   val hashComputationTimes = 4000;
-  val systemSalt = System.getProperty("SOCNET_SYSTEM_SALT")
+  val systemSalt = System.getenv("SOCNET_SYSTEM_SALT")
   
-  def generateRandomSalt:String = Random.nextString(saltLength)
+  def generateRandomSalt:String = RandomStringUtils.randomAlphanumeric(saltLength);
 
   def hashPassword(password:String, salt:String):String = {
 

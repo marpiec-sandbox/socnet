@@ -47,7 +47,7 @@
 
     <servlet-mapping>
         <servlet-name>H2Console</servlet-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/console/*</url-pattern>
     </servlet-mapping>
 
 

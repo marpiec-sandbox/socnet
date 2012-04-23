@@ -12,13 +12,13 @@ class ChangeEmailEventTest {
     user.firstName = "Marcin"
     user.lastName = "Pieciukiewicz"
     user.email = "m.pieciukiewicz@socnet"
-    user.password = "Haslo"
+    user.passwordHash = "Haslo"
 
     event.applyEvent(user)
 
     assertEquals(user.firstName, "Marcin")
     assertEquals(user.lastName, "Pieciukiewicz")
     assertEquals(user.email, "marcin.p@socnet")
-    assertEquals(user.password, "Haslo")
+    assertEquals(user.passwordHash, "Haslo")
   }
 }

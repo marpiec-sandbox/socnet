@@ -3,8 +3,8 @@ package pl.marpiec.socnet.service.user
 import event.{ChangeEmailEvent, RegisterUserEvent}
 import pl.marpiec.socnet.database.UserDatabase
 import pl.marpiec.socnet.database.exception.EntryAlreadyExistsException
-import pl.marpiec.util.UID
 import pl.marpiec.cqrs._
+import pl.marpiec.util.{PasswordUtil, UID}
 
 /**
  * ...
@@ -18,7 +18,11 @@ class UserCommandImpl(val eventStore: EventStore, val dataStore: DataStore, val 
       throw new EntryAlreadyExistsException
     }
     //TODO pomyslec o synchronizacji
-    val registerUser = new RegisterUserEvent(firstName, lastName, email, password)
+
+    val passwordSalt = PasswordUtil.generateRandomSalt
+    val passwordHash = PasswordUtil.hashPassword(password, passwordSalt)
+
+    val registerUser = new RegisterUserEvent(firstName, lastName, email, passwordHash, passwordSalt)
     val id = uidGenerator.nextUid
     eventStore.addEventForNewAggregate(id, new DatabaseEvent(id, id, 0, registerUser))
     id

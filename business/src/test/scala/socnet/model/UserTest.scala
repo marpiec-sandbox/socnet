@@ -21,7 +21,7 @@ class UserTest {
     user.firstName = "Marcin"
     user.lastName = "Pieciukiewicz"
     user.displayName = "Marcin Pieciukiewicz"
-    user.password = "Haslo"
+    user.passwordHash = "Haslo"
     user.email = "m.pieciukiewicz@socnet"
     
     val userCopy = user.copy.asInstanceOf[User]
@@ -33,7 +33,7 @@ class UserTest {
     assertEquals(userCopy.firstName, user.firstName)
     assertEquals(userCopy.lastName, user.lastName)
     assertEquals(userCopy.displayName, user.displayName)
-    assertEquals(userCopy.password, user.password)
+    assertEquals(userCopy.passwordHash, user.passwordHash)
     assertEquals(userCopy.email, user.email)
 
   }

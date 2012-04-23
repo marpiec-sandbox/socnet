@@ -6,7 +6,8 @@ class User extends CqrsEntity(null, 0) {
   var firstName: String = _
   var lastName: String = _
   var displayName: String = _
-  var password: String = _
+  var passwordHash: String = _
+  var passwordSalt: String = _
   var email: String = _
 
   def fullName = firstName + " " + lastName
@@ -18,7 +19,8 @@ class User extends CqrsEntity(null, 0) {
     user.firstName = this.firstName
     user.lastName = this.lastName
     user.displayName = this.displayName
-    user.password = this.password
+    user.passwordHash = this.passwordHash
+    user.passwordSalt = this.passwordSalt
     user.email = this.email
     user
   }

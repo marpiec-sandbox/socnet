@@ -23,7 +23,7 @@ class UserDatabaseMockImplTest {
     val user: User = new User
     user.firstName = "Marcin"
     user.lastName = "Pieciukiewicz"
-    user.password = "Haslo"
+    user.passwordHash = "Haslo"
     user.email = "m.pieciukiewicz@socnet"
 
     userDatabase.addUser(user)
@@ -35,7 +35,7 @@ class UserDatabaseMockImplTest {
     assertTrue(user ne userFromDatabase)
     assertEquals(userFromDatabase.firstName, user.firstName)
     assertEquals(userFromDatabase.lastName, user.lastName)
-    assertEquals(userFromDatabase.password, user.password)
+    assertEquals(userFromDatabase.passwordHash, user.passwordHash)
     assertEquals(userFromDatabase.email, user.email)
 
   }
@@ -48,7 +48,7 @@ class UserDatabaseMockImplTest {
     val uidGenerator: UidGenerator = new UidGeneratorMockImpl
 
     val userId = uidGenerator.nextUid
-    eventStore.addEventForNewAggregate(userId, new DatabaseEvent(new UID(0), userId, 0, new RegisterUserEvent("Marcin", "Pieciukiewicz", "marcin@socnet", "haslo")))
+    eventStore.addEventForNewAggregate(userId, new DatabaseEvent(new UID(0), userId, 0, new RegisterUserEvent("Marcin", "Pieciukiewicz", "marcin@socnet", "haslo", "salt")))
 
     val user: Option[User] = userDatabase.getUserById(userId)
 
