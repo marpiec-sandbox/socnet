@@ -8,7 +8,7 @@ import pl.marpiec.util.UID
 
 trait ArticleCommand {
 
-  def createArticle(content: String, authorUserId: UID):UID
+  def createArticle(userId:UID, content: String, authorUserId: UID):UID
 
-  def addComment(articleId: UID, articleVersion: Int, commentContent: String, commentAuthorUserId: UID)
+  def addComment(userId:UID, articleId: UID, articleVersion: Int, commentContent: String, commentAuthorUserId: UID)
 }

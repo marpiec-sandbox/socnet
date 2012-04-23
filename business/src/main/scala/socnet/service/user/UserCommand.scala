@@ -12,6 +12,6 @@ trait UserCommand {
 
   def registerUser(name:String, email:String, password:String):UID
 
-  def changeUserEmail(id: UID, version: Int, email: String)
+  def changeUserEmail(userId:UID, aggregateUserId: UID, version: Int, email: String)
 
 }

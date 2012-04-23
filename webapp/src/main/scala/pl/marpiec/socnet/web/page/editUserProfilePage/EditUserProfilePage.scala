@@ -29,7 +29,7 @@ class EditUserProfilePage extends SecureWebPage(SocnetRoles.USER) {
   add(new JobExperienceListPanel("jobExperienceListPanel", session.user, userProfile, userProfile.jobExperience))
 
   def createUserProfile: UserProfile = {
-    val userProfileId = userProfileCommand.createUserProfile(session.user.id)
+    val userProfileId = userProfileCommand.createUserProfile(session.user.id, session.user.id)
     val userProfile = new UserProfile
     userProfile.id = userProfileId;
     userProfile.version = 1

@@ -48,7 +48,7 @@ class UserDatabaseMockImplTest {
     val uidGenerator:UidGenerator = new UidGeneratorMockImpl
 
     val userId = uidGenerator.nextUid
-    eventStore.addEventForNewAggregate(userId, new Event(userId, 0, new RegisterUserEvent("Marcin", "marcin@socnet", "haslo")))
+    eventStore.addEventForNewAggregate(userId, new Event(new UID(0), userId, 0, new RegisterUserEvent("Marcin", "marcin@socnet", "haslo")))
 
     val user: Option[User] = userDatabase.getUserById(userId)
 

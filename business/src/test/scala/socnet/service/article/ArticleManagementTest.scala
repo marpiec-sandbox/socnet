@@ -25,13 +25,13 @@ class ArticleManagementTest {
 
     val userId = uidGenerator.nextUid
 
-    val articleId = articleCommand.createArticle("Tresc artykulu", userId)
+    val articleId = articleCommand.createArticle(new UID(0), "Tresc artykulu", userId)
 
     var article = dataStore.getEntity(classOf[Article], articleId).asInstanceOf[Article]
 
     assertEquals(article.content, "Tresc artykulu")
 
-    articleCommand.addComment(article.id, article.version, "Tresc komentarza", userId)
+    articleCommand.addComment(new UID(0), article.id, article.version, "Tresc komentarza", userId)
 
     article = dataStore.getEntity(classOf[Article], articleId).asInstanceOf[Article]
 

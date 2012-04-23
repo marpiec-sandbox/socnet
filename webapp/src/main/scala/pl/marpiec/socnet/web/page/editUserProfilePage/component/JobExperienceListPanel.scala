@@ -81,7 +81,7 @@ class JobExperienceListPanel(id: String, val user: User, val userProfile: UserPr
         experience.position = model.position
         experience.id = newExperienceId
 
-        userProfileCommand.addJobExperience(userProfile.id, userProfile.version, model, newExperienceId)
+        userProfileCommand.addJobExperience(user.id, userProfile.id, userProfile.version, model, newExperienceId)
         userProfile.incrementVersion
 
         addExperienceToJobExperienceList(jobExperienceList, experience)

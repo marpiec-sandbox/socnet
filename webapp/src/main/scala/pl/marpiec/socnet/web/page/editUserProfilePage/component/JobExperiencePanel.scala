@@ -43,7 +43,7 @@ class JobExperiencePanel(id: String, val user: User, val userProfile: UserProfil
     add(new AjaxFallbackLink("deleteButton") {
       def onClick(target: AjaxRequestTarget) {
 
-        userProfileCommand.removeJobExperience(userProfile.id, userProfile.version, jobExperience.id)
+        userProfileCommand.removeJobExperience(user.id, userProfile.id, userProfile.version, jobExperience.id)
         userProfile.incrementVersion
         JobExperiencePanel.this.setVisible(false)
         target.add(JobExperiencePanel.this)
@@ -95,7 +95,7 @@ class JobExperiencePanel(id: String, val user: User, val userProfile: UserProfil
         jobExperience.description = model.description
         jobExperience.id = model.id
 
-        userProfileCommand.updateJobExperience(userProfile.id, userProfile.version, model)
+        userProfileCommand.updateJobExperience(user.id, userProfile.id, userProfile.version, model)
         userProfile.incrementVersion
 
         edit = false

@@ -8,6 +8,7 @@ import exception.ConcurrentAggregateModificationException
 import org.testng.Assert._
 import org.testng.annotations.Test
 import pl.marpiec.socnet.model.User
+import pl.marpiec.util.UID
 
 /**
  * ...
@@ -32,7 +33,7 @@ class UserServicesTest extends FunSuite {
   assertEquals(user.name, "Marcin")
   assertEquals(user.email, "m.pieciukiewicz@socnet")
 
-  userCommand.changeUserEmail(userId, user.version, "m.pieciukiewicz@socnet.org")
+  userCommand.changeUserEmail(new UID(0), userId, user.version, "m.pieciukiewicz@socnet.org")
 
   user = dataStore.getEntity(classOf[User], userId).asInstanceOf[User]
 
@@ -40,7 +41,7 @@ class UserServicesTest extends FunSuite {
   assertEquals(user.email, "m.pieciukiewicz@socnet.org")
 
   try {
-    userCommand.changeUserEmail(userId, user.version-1, "irek@socnet")
+    userCommand.changeUserEmail(new UID(0), userId, user.version-1, "irek@socnet")
     fail("ConcurrentAggregateModificationException should be thrown")
   } catch {
     case e:ConcurrentAggregateModificationException => {}

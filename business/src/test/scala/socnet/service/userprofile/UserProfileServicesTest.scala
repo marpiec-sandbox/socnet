@@ -26,7 +26,7 @@ class UserProfileServicesTest {
     val userProfileCommand: UserProfileCommand = new UserProfileCommandImpl(eventStore, dataStore, uidGenerator)
 
     val userId = uidGenerator.nextUid
-    val userProfileId = userProfileCommand.createUserProfile(userId)
+    val userProfileId = userProfileCommand.createUserProfile(new UID(0), userId)
 
     var userProfile = dataStore.getEntity(classOf[UserProfile], userProfileId).asInstanceOf[UserProfile]
 
@@ -38,7 +38,7 @@ class UserProfileServicesTest {
     personalSummary.blogPage = ""
     personalSummary.wwwPage = "socnet.pl"
 
-    userProfileCommand.updatePersonalSummary(userProfile.id, userProfile.version, personalSummary)
+    userProfileCommand.updatePersonalSummary(new UID(0), userProfile.id, userProfile.version, personalSummary)
 
     userProfile = dataStore.getEntity(classOf[UserProfile], userProfileId).asInstanceOf[UserProfile]
 
@@ -60,7 +60,7 @@ class UserProfileServicesTest {
     val userProfileCommand: UserProfileCommand = new UserProfileCommandImpl(eventStore, dataStore, uidGenerator)
 
     val userId = uidGenerator.nextUid
-    val userProfileId = userProfileCommand.createUserProfile(userId)
+    val userProfileId = userProfileCommand.createUserProfile(new UID(0), userId)
     var userProfile = dataStore.getEntity(classOf[UserProfile], userProfileId).asInstanceOf[UserProfile]
     
     var jobExperienceParam = new JobExperienceParam
@@ -73,7 +73,7 @@ class UserProfileServicesTest {
     val jobExperienceUid = uidGenerator.nextUid
     jobExperienceParam.id = jobExperienceUid
 
-    userProfileCommand.addJobExperience(userProfile.id, userProfile.version, jobExperienceParam, jobExperienceUid)
+    userProfileCommand.addJobExperience(new UID(0), userProfile.id, userProfile.version, jobExperienceParam, jobExperienceUid)
 
     userProfile = dataStore.getEntity(classOf[UserProfile], userProfileId).asInstanceOf[UserProfile]
 
@@ -95,7 +95,7 @@ class UserProfileServicesTest {
     jobExperienceParam.endDateOption = Option[LocalDate](new LocalDate(2006, 3, 1))
     jobExperienceParam.position = "CTO"
 
-    userProfileCommand.updateJobExperience(userProfile.id, userProfile.version, jobExperienceParam)
+    userProfileCommand.updateJobExperience(new UID(0), userProfile.id, userProfile.version, jobExperienceParam)
 
     userProfile = dataStore.getEntity(classOf[UserProfile], userProfileId).asInstanceOf[UserProfile]
 
@@ -107,7 +107,7 @@ class UserProfileServicesTest {
     assertEquals(experience.endDateOption.get, new LocalDate(2006, 3, 1))
     assertEquals(experience.position, "CTO")
 
-    userProfileCommand.removeJobExperience(userProfile.id, userProfile.version, jobExperienceUid)
+    userProfileCommand.removeJobExperience(new UID(0), userProfile.id, userProfile.version, jobExperienceUid)
 
     userProfile = dataStore.getEntity(classOf[UserProfile], userProfileId).asInstanceOf[UserProfile]
 

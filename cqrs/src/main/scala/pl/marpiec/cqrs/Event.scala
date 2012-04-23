@@ -7,4 +7,4 @@ import pl.marpiec.util.UID
  * @author Marcin Pieciukiewicz
  */
 
-class Event(var aggregateId:UID, val expectedVersion:Int, val event:CqrsEvent)
+class Event(var userId:UID, var aggregateId:UID, val expectedVersion:Int, val event:CqrsEvent)

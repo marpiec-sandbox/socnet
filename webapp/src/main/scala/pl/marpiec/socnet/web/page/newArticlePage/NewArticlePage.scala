@@ -43,7 +43,7 @@ class NewArticlePage extends SecureWebPage(SocnetRoles.ARTICLE_AUTHOR) {
       val model: NewArticleFormModel = getDefaultModelObject.asInstanceOf[NewArticleFormModel]
       val user:User = getSession.asInstanceOf[SocnetSession].user
       
-      articleCommand.createArticle(model.content, user.id)
+      articleCommand.createArticle(user.id, model.content, user.id)
       setResponsePage(classOf[HomePage])
     }
   })

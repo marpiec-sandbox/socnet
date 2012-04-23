@@ -10,26 +10,26 @@ import pl.marpiec.cqrs.{Event, UidGenerator, DataStore, EventStore}
  */
 
 class UserProfileCommandImpl(val eventStore: EventStore, val dataStore: DataStore, val uidGenerator:UidGenerator) extends UserProfileCommand {
-  def createUserProfile(userId: UID): UID = {
-    val createUserProfile = new CreateUserProfileEvent(userId)
+  def createUserProfile(userId:UID, userAggregateId: UID): UID = {
+    val createUserProfile = new CreateUserProfileEvent(userAggregateId)
     val id = uidGenerator.nextUid
-    eventStore.addEventForNewAggregate(id, new Event(id, 0, createUserProfile))
+    eventStore.addEventForNewAggregate(id, new Event(userId, id, 0, createUserProfile))
     id
   }
 
-  def updatePersonalSummary(id: UID, version: Int, personalSummary: PersonalSummary) {
-    eventStore.addEvent(new Event(id, version, new UpdatePersonalSummaryEvent(personalSummary)))
+  def updatePersonalSummary(userId:UID, id: UID, version: Int, personalSummary: PersonalSummary) {
+    eventStore.addEvent(new Event(userId, id, version, new UpdatePersonalSummaryEvent(personalSummary)))
   }
 
-  def addJobExperience(id: UID, version: Int, jobExperience: JobExperienceParam, jobExperienceId: UID) {
-    eventStore.addEvent(new Event(id, version, new AddJobExperienceEvent(jobExperience, jobExperienceId)))
+  def addJobExperience(userId:UID, id: UID, version: Int, jobExperience: JobExperienceParam, jobExperienceId: UID) {
+    eventStore.addEvent(new Event(userId, id, version, new AddJobExperienceEvent(jobExperience, jobExperienceId)))
   }
 
-  def updateJobExperience(id: UID, version: Int, jobExperience: JobExperienceParam) {
-    eventStore.addEvent(new Event(id, version, new UpdateJobExperienceEvent(jobExperience)))
+  def updateJobExperience(userId:UID, id: UID, version: Int, jobExperience: JobExperienceParam) {
+    eventStore.addEvent(new Event(userId, id, version, new UpdateJobExperienceEvent(jobExperience)))
   }
 
-  def removeJobExperience(id: UID, version: Int, jobExperienceId: UID) {
-    eventStore.addEvent(new Event(id, version, new RemoveJobExperienceEvent(jobExperienceId)))
+  def removeJobExperience(userId:UID, id: UID, version: Int, jobExperienceId: UID) {
+    eventStore.addEvent(new Event(userId, id, version, new RemoveJobExperienceEvent(jobExperienceId)))
   }
 }
