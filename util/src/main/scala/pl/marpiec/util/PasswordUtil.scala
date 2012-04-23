@@ -12,20 +12,28 @@ import org.apache.commons.codec.digest.DigestUtils
 object PasswordUtil {
   
   val saltLength = 24; //As recommended by OWASP
-  val hashComputationTimes = 16000;
-  val systemSalt = System.getProperty("SOCNET_SYSTEM_HASH")
+  val hashComputationTimes = 4000;
+  val systemSalt = System.getProperty("SOCNET_SYSTEM_SALT")
   
   def generateRandomSalt:String = Random.nextString(saltLength)
-  
+
   def hashPassword(password:String, salt:String):String = {
-    
+
     if (Strings.isBlank(systemSalt)) {
-      throw new IllegalStateException("SOCNET_SYSTEM_HASH is not defined!")
+      throw new IllegalStateException("SOCNET_SYSTEM_SALT is not defined!")
     }
 
-    var digest = systemSalt + password + salt
+    if (Strings.isBlank(password)) {
+      throw new IllegalArgumentException("Password musn't be empty")
+    }
+
+    if (Strings.isBlank(salt)) {
+      throw new IllegalArgumentException("Salt musn't be empty")
+    }
+
+    var digest = password.trim
     for (p <- 0 until hashComputationTimes) {
-      digest = systemSalt + DigestUtils.sha512Hex(digest) + salt
+      digest = DigestUtils.sha512Hex(systemSalt + digest + salt)
     }
     digest
   }
