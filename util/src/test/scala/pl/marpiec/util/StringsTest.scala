@@ -14,9 +14,18 @@ class StringsTest {
   def testNullSafeStringsComparition() {
     assertTrue(Strings.equal("AAAaaa","AAAaaa"))
     assertTrue(Strings.equal(null,null))
-    assertFalse(Strings.equal("AAAaaa","AAAAAA"))
-    assertFalse(Strings.equal("AAAaaa",null))
-    assertFalse(Strings.equal(null,"AAAAAA"))
+    assertTrue(Strings.isNotEqual("AAAaaa","AAAAAA"))
+    assertTrue(Strings.isNotEqual("AAAaaa",null))
+    assertTrue(Strings.isNotEqual(null,"AAAAAA"))
   }
 
+  def testNullBlankTest() {
+    assertTrue(Strings.isBlank("    "))
+    assertFalse(Strings.isNotBlank("    "))
+    assertTrue(Strings.isBlank("\n"))
+    assertTrue(Strings.isBlank(null))
+    assertFalse(Strings.isBlank("aaa"))
+    assertTrue(Strings.isNotBlank("aaa"))
+
+  }
 }
