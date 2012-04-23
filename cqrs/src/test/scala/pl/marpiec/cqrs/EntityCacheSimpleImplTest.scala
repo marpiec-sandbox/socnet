@@ -2,7 +2,6 @@ package pl.marpiec.cqrs
 
 import org.testng.annotations.Test
 import org.testng.Assert._
-import pl.marpiec.util.UID
 
 /**
  * @author Marcin Pieciukiewicz

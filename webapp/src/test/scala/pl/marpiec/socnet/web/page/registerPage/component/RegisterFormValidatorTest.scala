@@ -12,7 +12,8 @@ class RegisterFormValidatorTest {
   def createCorrectForm = {
     val form = new RegisterFormModel
     form.email = "marcin@socnet.pl"
-    form.username = "Marcin"
+    form.firstName = "Marcin"
+    form.lastName = "Pieciukiewicz"
     form.password = "haslo"
     form.repeatPassword = "haslo"
     form
@@ -27,9 +28,18 @@ class RegisterFormValidatorTest {
 
   }
 
-  def testIncorrectNameValidation() {
+  def testIncorrectFirstNameValidation() {
     val form = createCorrectForm
-    form.username = ""
+    form.firstName = ""
+
+    val result = RegisterFormValidator.validate(form)
+
+    assertTrue(result.isNotValid)
+  }
+
+  def testIncorrectLastNameValidation() {
+    val form = createCorrectForm
+    form.lastName = ""
 
     val result = RegisterFormValidator.validate(form)
 

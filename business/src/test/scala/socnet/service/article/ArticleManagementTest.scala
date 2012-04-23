@@ -5,7 +5,6 @@ import org.testng.Assert._
 import pl.marpiec.cqrs._
 import pl.marpiec.socnet.model.Article
 
-import pl.marpiec.socnet.database.{ArticleDatabaseMockImpl, ArticleDatabase}
 import pl.marpiec.util.UID
 
 /**
@@ -19,7 +18,7 @@ class ArticleManagementTest {
     val eventStore: EventStore = new EventStoreMockImpl
     val entityCache: EntityCache = new EntityCacheSimpleImpl
     val dataStore: DataStore = new DataStoreImpl(eventStore, entityCache)
-    val uidGenerator:UidGenerator = new UidGeneratorMockImpl
+    val uidGenerator: UidGenerator = new UidGeneratorMockImpl
 
     val articleCommand: ArticleCommand = new ArticleCommandImpl(eventStore, dataStore, uidGenerator)
 

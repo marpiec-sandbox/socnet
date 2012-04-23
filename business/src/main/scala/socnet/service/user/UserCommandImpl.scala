@@ -13,20 +13,20 @@ import pl.marpiec.cqrs._
 
 class UserCommandImpl(val eventStore: EventStore, val dataStore: DataStore, val userDatabase: UserDatabase, val uidGenerator:UidGenerator) extends UserCommand {
 
-  override def registerUser(name: String, email: String, password: String): UID = {
+  override def registerUser(firstName: String, lastName:String, email: String, password: String): UID = {
     if (userDatabase.getUserByEmail(email).isDefined) {
       throw new EntryAlreadyExistsException
     }
     //TODO pomyslec o synchronizacji
-    val registerUser = new RegisterUserEvent(name, email, password)
+    val registerUser = new RegisterUserEvent(firstName, lastName, email, password)
     val id = uidGenerator.nextUid
-    eventStore.addEventForNewAggregate(id, new Event(id, id, 0, registerUser))
+    eventStore.addEventForNewAggregate(id, new DatabaseEvent(id, id, 0, registerUser))
     id
   }
 
   def changeUserEmail(userId:UID, aggregateUserId: UID, version: Int, email: String) {
     val changeEmail = new ChangeEmailEvent(email)
-    eventStore.addEvent(new Event(userId, aggregateUserId, version, changeEmail))
+    eventStore.addEvent(new DatabaseEvent(userId, aggregateUserId, version, changeEmail))
   }
 
 

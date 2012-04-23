@@ -4,8 +4,7 @@ import org.testng.annotations.Test
 import org.testng.Assert._
 import org.joda.time.LocalDateTime
 import pl.marpiec.cqrs._
-import pl.marpiec.socnet.service.user.event.RegisterUserEvent
-import pl.marpiec.socnet.model.{User, Article}
+import pl.marpiec.socnet.model.Article
 import pl.marpiec.socnet.service.article.event.CreateArticleEvent
 import pl.marpiec.util.UID
 
@@ -17,15 +16,15 @@ import pl.marpiec.util.UID
 class ArticleDatabaseMockImplTest {
   def testBasicDatabaseOperations() {
 
-    val eventStore:EventStore = new EventStoreMockImpl
-    val entityCache:EntityCache = new EntityCacheSimpleImpl
-    val dataStore:DataStore = new DataStoreImpl(eventStore, entityCache)
-    val articleDatabase:ArticleDatabase = new ArticleDatabaseMockImpl(dataStore)
-    val uidGenerator:UidGenerator = new UidGeneratorMockImpl
-    
+    val eventStore: EventStore = new EventStoreMockImpl
+    val entityCache: EntityCache = new EntityCacheSimpleImpl
+    val dataStore: DataStore = new DataStoreImpl(eventStore, entityCache)
+    val articleDatabase: ArticleDatabase = new ArticleDatabaseMockImpl(dataStore)
+    val uidGenerator: UidGenerator = new UidGeneratorMockImpl
+
     val articleId = uidGenerator.nextUid
     val userId = uidGenerator.nextUid
-    
+
     val article = new Article
     article.id = articleId
     article.content = "tresc artykulu"
@@ -45,15 +44,15 @@ class ArticleDatabaseMockImplTest {
   }
 
   def testDataStoreListening() {
-    val eventStore:EventStore = new EventStoreMockImpl
-    val entityCache:EntityCache = new EntityCacheSimpleImpl
-    val dataStore:DataStore = new DataStoreImpl(eventStore, entityCache)
+    val eventStore: EventStore = new EventStoreMockImpl
+    val entityCache: EntityCache = new EntityCacheSimpleImpl
+    val dataStore: DataStore = new DataStoreImpl(eventStore, entityCache)
     val articleDatabase: ArticleDatabase = new ArticleDatabaseMockImpl(dataStore)
-    val uidGenerator:UidGenerator = new UidGeneratorMockImpl
+    val uidGenerator: UidGenerator = new UidGeneratorMockImpl
 
     val userId = uidGenerator.nextUid
     val articleId = uidGenerator.nextUid
-    eventStore.addEventForNewAggregate(articleId, new Event(new UID(0), articleId, 0, new CreateArticleEvent("Tresc artykulu", new LocalDateTime, userId)))
+    eventStore.addEventForNewAggregate(articleId, new DatabaseEvent(new UID(0), articleId, 0, new CreateArticleEvent("Tresc artykulu", new LocalDateTime, userId)))
 
     val article: Option[Article] = articleDatabase.getArticleById(articleId)
 

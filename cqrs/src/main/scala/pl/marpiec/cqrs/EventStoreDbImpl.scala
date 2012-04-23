@@ -17,13 +17,13 @@ class EventStoreDbImpl extends EventStore {
 
   var jsonSerializer = new JsonUtil
 
-  def getEventsForEntity(entityClass: Class[_], id: UID): ListBuffer[Event] = {
+  def getEventsForEntity(entityClass: Class[_], id: UID): ListBuffer[DatabaseEvent] = {
 
     val selectEvents = connection.prepareStatement("SELECT user_uid, aggregate_uid, version, event, event_type FROM events WHERE aggregate_uid = ? ORDER BY event_time")
     selectEvents.setLong(1, id.uid)
     val results = selectEvents.executeQuery
 
-    val events = new ListBuffer[Event]
+    val events = new ListBuffer[DatabaseEvent]
 
     while (results.next()) {
 
@@ -33,14 +33,14 @@ class EventStoreDbImpl extends EventStore {
       var event = results.getString(4)
       var eventType = results.getString(5)
 
-      events += new Event(new UID(userId), new UID(aggregateId), version, jsonSerializer.fromJson(event, Class.forName(eventType)).asInstanceOf[CqrsEvent])
+      events += new DatabaseEvent(new UID(userId), new UID(aggregateId), version, jsonSerializer.fromJson(event, Class.forName(eventType)).asInstanceOf[CqrsEvent])
 
     }
 
     events
   }
 
-  def addEvent(event: Event) {
+  def addEvent(event: DatabaseEvent) {
 
     val selectAggregateVersion = connection.prepareStatement("SELECT version FROM aggregates WHERE uid = ? AND class = ?")
     selectAggregateVersion.setLong(1, event.aggregateId.uid)
@@ -75,7 +75,7 @@ class EventStoreDbImpl extends EventStore {
 
   }
 
-  def addEventForNewAggregate(newAggregadeId: UID, event: Event) {
+  def addEventForNewAggregate(newAggregadeId: UID, event: DatabaseEvent) {
 
     event.aggregateId = newAggregadeId
 

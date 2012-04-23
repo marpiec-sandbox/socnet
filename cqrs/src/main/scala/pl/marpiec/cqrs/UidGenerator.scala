@@ -1,7 +1,6 @@
 package pl.marpiec.cqrs
 
 import pl.marpiec.util.UID
-import java.sql.{DriverManager, Connection}
 
 /**
  * ...
@@ -10,7 +9,6 @@ import java.sql.{DriverManager, Connection}
 
 trait UidGenerator {
 
-
-  def nextUid:UID
+  def nextUid: UID
 
 }

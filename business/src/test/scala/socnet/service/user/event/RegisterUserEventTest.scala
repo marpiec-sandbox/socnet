@@ -7,12 +7,14 @@ import pl.marpiec.socnet.model.User
 @Test
 class RegisterUserEventTest {
   def testApplyingEvent() {
-    val event = new RegisterUserEvent("Marcin", "m.pieciukiewicz@socnet", "Haslo")
+    val event = new RegisterUserEvent("Marcin", "Pieciukiewicz", "m.pieciukiewicz@socnet", "Haslo")
     val user = new User
 
     event.applyEvent(user)
 
-    assertEquals(user.name, "Marcin")
+    assertEquals(user.firstName, "Marcin")
+    assertEquals(user.lastName, "Pieciukiewicz")
+    assertEquals(user.displayName, "Marcin Pieciukiewicz")
     assertEquals(user.email, "m.pieciukiewicz@socnet")
     assertEquals(user.password, "Haslo")
   }

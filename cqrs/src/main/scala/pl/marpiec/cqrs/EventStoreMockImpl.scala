@@ -6,28 +6,28 @@ import pl.marpiec.util.UID
 
 class EventStoreMockImpl extends EventStore {
 
-  private val eventsByType = new HashMap[Class[_], Map[UID, ListBuffer[Event]]]
+  private val eventsByType = new HashMap[Class[_], Map[UID, ListBuffer[DatabaseEvent]]]
 
   private val listeners = new ListBuffer[EventStoreListener]
 
-  def addEventForNewAggregate(id:UID, event: Event) {
-    var eventsForType = eventsByType.getOrElseUpdate(event.event.entityClass, new HashMap[UID, ListBuffer[Event]])
-    var eventsForEntity = eventsForType.getOrElseUpdate(id, new ListBuffer[Event])
+  def addEventForNewAggregate(id:UID, event: DatabaseEvent) {
+    var eventsForType = eventsByType.getOrElseUpdate(event.event.entityClass, new HashMap[UID, ListBuffer[DatabaseEvent]])
+    var eventsForEntity = eventsForType.getOrElseUpdate(id, new ListBuffer[DatabaseEvent])
     event.aggregateId = id
     eventsForEntity += event
     callAllListenersAboutNewEvent(event.event.entityClass, event.aggregateId)
   }
 
-  def getEventsForEntity(entityClass: Class[_], id: UID): ListBuffer[Event] = {
+  def getEventsForEntity(entityClass: Class[_], id: UID): ListBuffer[DatabaseEvent] = {
 
     eventsByType.
       get(entityClass).getOrElse(throw new NoEventsForTypeException).
       get(id).getOrElse(throw new NoEventsForEntityException)
   }
 
-  def addEvent(event: Event) {
+  def addEvent(event: DatabaseEvent) {
     var eventsForType = eventsByType.getOrElse(event.event.entityClass, null)
-    var eventsForEntity = eventsForType.getOrElseUpdate(event.aggregateId, new ListBuffer[Event])
+    var eventsForEntity = eventsForType.getOrElseUpdate(event.aggregateId, new ListBuffer[DatabaseEvent])
     if (eventsForEntity.size > event.expectedVersion) {
       throw new ConcurrentAggregateModificationException
     }

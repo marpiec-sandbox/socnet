@@ -9,7 +9,7 @@ import pl.marpiec.util.UID
 
 class UidGeneratorMockImpl extends UidGenerator {
 
-  var uid:Long = 0
+  var uid: Long = 0
 
   def nextUid = {
     uid = uid + 1

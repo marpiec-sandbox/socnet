@@ -1,7 +1,5 @@
 package pl.marpiec.socnet.service.user
 
-import org.scalatest.FunSuite
-
 import pl.marpiec.socnet.database.{UserDatabaseMockImpl, UserDatabase}
 import pl.marpiec.cqrs._
 import exception.ConcurrentAggregateModificationException
@@ -16,7 +14,7 @@ import pl.marpiec.util.UID
  */
 
 @Test
-class UserServicesTest extends FunSuite {
+class UserServicesTest {
 
   val eventStore:EventStore = new EventStoreMockImpl
   val entityCache:EntityCache = new EntityCacheSimpleImpl
@@ -26,18 +24,22 @@ class UserServicesTest extends FunSuite {
 
   val userCommand:UserCommand = new UserCommandImpl(eventStore, dataStore, userDatabase, uidGenerator)
 
-  val userId = userCommand.registerUser("Marcin", "m.pieciukiewicz@socnet", "Haslo");
+  val userId = userCommand.registerUser("Marcin", "Pieciukiewicz", "m.pieciukiewicz@socnet", "Haslo");
 
   var user = dataStore.getEntity(classOf[User], userId).asInstanceOf[User]
 
-  assertEquals(user.name, "Marcin")
+  assertEquals(user.firstName, "Marcin")
+  assertEquals(user.lastName, "Pieciukiewicz")
+  assertEquals(user.displayName, "Marcin Pieciukiewicz")
   assertEquals(user.email, "m.pieciukiewicz@socnet")
 
   userCommand.changeUserEmail(new UID(0), userId, user.version, "m.pieciukiewicz@socnet.org")
 
   user = dataStore.getEntity(classOf[User], userId).asInstanceOf[User]
 
-  assertEquals(user.name, "Marcin")
+  assertEquals(user.firstName, "Marcin")
+  assertEquals(user.lastName, "Pieciukiewicz")
+  assertEquals(user.displayName, "Marcin Pieciukiewicz")
   assertEquals(user.email, "m.pieciukiewicz@socnet.org")
 
   try {

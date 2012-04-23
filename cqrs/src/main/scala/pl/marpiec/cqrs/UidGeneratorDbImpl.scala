@@ -12,8 +12,8 @@ import collection.Seq
 object UidGeneratorDbImpl {
   val UID_POOL_SIZE = 100
   val SELECT_UID = "SELECT uid FROM uids WHERE uidName = 'DEFAULT'"
-  val UPDATE_UID = "UPDATE uids SET uid = uid + "+UID_POOL_SIZE+" WHERE uidName = 'DEFAULT'"
-  val INSERT_UID = "INSERT INTO uids (id, uidName, uid) VALUES(NEXTVAL('uids_seq'), 'DEFAULT', "+(UID_POOL_SIZE + 1)+")"
+  val UPDATE_UID = "UPDATE uids SET uid = uid + " + UID_POOL_SIZE + " WHERE uidName = 'DEFAULT'"
+  val INSERT_UID = "INSERT INTO uids (id, uidName, uid) VALUES(NEXTVAL('uids_seq'), 'DEFAULT', " + (UID_POOL_SIZE + 1) + ")"
 }
 
 class UidGeneratorDbImpl extends UidGenerator {
@@ -22,7 +22,7 @@ class UidGeneratorDbImpl extends UidGenerator {
 
   var availbleUids = List[UID]()
 
-  override def nextUid:UID = {
+  override def nextUid: UID = {
 
     synchronized {
       if (availbleUids.isEmpty) {
@@ -42,7 +42,7 @@ class UidGeneratorDbImpl extends UidGenerator {
     val updateUid = connection.prepareStatement(UidGeneratorDbImpl.UPDATE_UID)
 
     val uidFromDb = selectUid.executeQuery()
-    var uid:Long = 1
+    var uid: Long = 1
     if (uidFromDb.next()) {
       uid = uidFromDb.getLong(1)
       updateUid.executeUpdate()
@@ -51,7 +51,7 @@ class UidGeneratorDbImpl extends UidGenerator {
       insertUid.executeUpdate()
     }
 
-    availbleUids =  Seq.iterate[UID](new UID(uid), UidGeneratorDbImpl.UID_POOL_SIZE)((u => new UID(u.uid + 1))).toList
+    availbleUids = Seq.iterate[UID](new UID(uid), UidGeneratorDbImpl.UID_POOL_SIZE)((u => new UID(u.uid + 1))).toList
 
   }
 }

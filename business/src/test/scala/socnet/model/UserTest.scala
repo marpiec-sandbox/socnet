@@ -2,7 +2,6 @@ package pl.marpiec.socnet.model
 
 import org.testng.annotations.Test
 import org.testng.Assert._
-import pl.marpiec.util.UID
 import pl.marpiec.cqrs.{UidGeneratorMockImpl, UidGenerator}
 
 /**
@@ -19,7 +18,9 @@ class UserTest {
     val user = new User
     user.id = uidGenerator.nextUid
     user.version = 1
-    user.name = "Marcin Pieciukiewicz"
+    user.firstName = "Marcin"
+    user.lastName = "Pieciukiewicz"
+    user.displayName = "Marcin Pieciukiewicz"
     user.password = "Haslo"
     user.email = "m.pieciukiewicz@socnet"
     
@@ -29,7 +30,9 @@ class UserTest {
 
     assertEquals(userCopy.id, user.id)
     assertEquals(userCopy.version, user.version)
-    assertEquals(userCopy.name, user.name)
+    assertEquals(userCopy.firstName, user.firstName)
+    assertEquals(userCopy.lastName, user.lastName)
+    assertEquals(userCopy.displayName, user.displayName)
     assertEquals(userCopy.password, user.password)
     assertEquals(userCopy.email, user.email)
 

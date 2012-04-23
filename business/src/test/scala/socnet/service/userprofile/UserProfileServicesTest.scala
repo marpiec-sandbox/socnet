@@ -4,11 +4,8 @@ import input.{JobExperienceParam, PersonalSummary}
 import org.testng.annotations.Test
 import org.testng.Assert._
 import pl.marpiec.cqrs._
-import pl.marpiec.socnet.database.{ArticleDatabaseMockImpl, ArticleDatabase}
-import pl.marpiec.socnet.service.article.{ArticleCommandImpl, ArticleCommand}
 import pl.marpiec.socnet.model.UserProfile
 import org.joda.time.LocalDate
-import pl.marpiec.socnet.model.userprofile.JobExperience
 import pl.marpiec.util.UID
 
 /**
@@ -22,7 +19,7 @@ class UserProfileServicesTest {
     val eventStore: EventStore = new EventStoreMockImpl
     val entityCache: EntityCache = new EntityCacheSimpleImpl
     val dataStore: DataStore = new DataStoreImpl(eventStore, entityCache)
-    val uidGenerator:UidGenerator = new UidGeneratorMockImpl
+    val uidGenerator: UidGenerator = new UidGeneratorMockImpl
     val userProfileCommand: UserProfileCommand = new UserProfileCommandImpl(eventStore, dataStore, uidGenerator)
 
     val userId = uidGenerator.nextUid
@@ -50,19 +47,19 @@ class UserProfileServicesTest {
     assertEquals(userProfile.wwwPage, personalSummary.wwwPage)
 
   }
-  
-  
+
+
   def testExperienceModification() {
     val eventStore: EventStore = new EventStoreMockImpl
     val entityCache: EntityCache = new EntityCacheSimpleImpl
     val dataStore: DataStore = new DataStoreImpl(eventStore, entityCache)
-    val uidGenerator:UidGenerator = new UidGeneratorMockImpl
+    val uidGenerator: UidGenerator = new UidGeneratorMockImpl
     val userProfileCommand: UserProfileCommand = new UserProfileCommandImpl(eventStore, dataStore, uidGenerator)
 
     val userId = uidGenerator.nextUid
     val userProfileId = userProfileCommand.createUserProfile(new UID(0), userId)
     var userProfile = dataStore.getEntity(classOf[UserProfile], userProfileId).asInstanceOf[UserProfile]
-    
+
     var jobExperienceParam = new JobExperienceParam
 
     jobExperienceParam.companyName = "socnet"
@@ -112,6 +109,6 @@ class UserProfileServicesTest {
     userProfile = dataStore.getEntity(classOf[UserProfile], userProfileId).asInstanceOf[UserProfile]
 
     assertEquals(userProfile.jobExperience.size, 0)
-    
+
   }
 }

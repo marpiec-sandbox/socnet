@@ -61,7 +61,7 @@ class PersonalSummaryPanel(id: String, val user: User, val userProfile: UserProf
     add(new TextField[String]("blogPage"))
     add(new TextArea[String]("summary"))
 
-    add(new Label("userName", user.name))
+    add(new Label("userName", user.fullName))
 
     add(new AjaxButton("cancelButton") {
       def onSubmit(target: AjaxRequestTarget, form: Form[_]) {

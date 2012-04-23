@@ -2,7 +2,6 @@ package pl.marpiec.socnet.model
 
 import org.testng.Assert._
 import org.joda.time.LocalDateTime
-import pl.marpiec.util.UID
 import pl.marpiec.cqrs.{UidGeneratorMockImpl, UidGenerator}
 
 /**

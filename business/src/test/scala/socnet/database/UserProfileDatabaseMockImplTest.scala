@@ -6,7 +6,6 @@ import pl.marpiec.socnet.model.UserProfile
 import pl.marpiec.socnet.model.userprofile.Education
 import org.joda.time.LocalDate
 import org.testng.Assert._
-import pl.marpiec.util.UID
 import pl.marpiec.cqrs._
 
 /**
@@ -19,11 +18,11 @@ class UserProfileDatabaseMockImplTest {
 
   def testBasicDatabaseOperations() {
     val userProfileDatabase: UserProfileDatabase = new UserProfileDatabaseMockImpl(new DataStoreImpl(new EventStoreMockImpl, new EntityCacheSimpleImpl))
-    val uidGenerator:UidGenerator = new UidGeneratorMockImpl
+    val uidGenerator: UidGenerator = new UidGeneratorMockImpl
 
     val profileId = uidGenerator.nextUid
     val userId = uidGenerator.nextUid
-    
+
     val profile = new UserProfile
     profile.id = profileId
     profile.userId = userId

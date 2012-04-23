@@ -36,7 +36,7 @@ class HomePage extends SimpleTemplatePage {
 
   val session: SocnetSession = getSession.asInstanceOf[SocnetSession]
   if (session.isSignedIn) {
-    add(new Label("userName", session.user.name))
+    add(new Label("userName", session.user.fullName))
   } else {
     add(new Label("userName", ""))
   }

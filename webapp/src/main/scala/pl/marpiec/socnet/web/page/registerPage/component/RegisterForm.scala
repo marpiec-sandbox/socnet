@@ -21,7 +21,8 @@ class RegisterForm(id: String) extends Panel(id) {
     setModel(new CompoundPropertyModel[RegisterFormModel](new RegisterFormModel))
 
     add(new Label("warningMessage", warningMessage))
-    add(new TextField[String]("username"))
+    add(new TextField[String]("firstName"))
+    add(new TextField[String]("lastName"))
     add(new TextField[String]("email"))
     add(new PasswordTextField("password"))
     add(new PasswordTextField("repeatPassword"))
@@ -45,7 +46,7 @@ class RegisterForm(id: String) extends Panel(id) {
         val validationResult = RegisterFormValidator.validate(model)
 
         if (validationResult.isValid) {
-          userCommand.registerUser(model.username, model.email, model.password)
+          userCommand.registerUser(model.firstName, model.lastName, model.email, model.password)
           setResponsePage(classOf[HomePage])
         } else {
           warningMessage.setObject(validationResult.errors.toString())

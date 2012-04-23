@@ -9,13 +9,15 @@ class ChangeEmailEventTest {
   def testApplyingEvent() {
     val event = new ChangeEmailEvent("marcin.p@socnet")
     val user = new User
-    user.name = "Marcin"
+    user.firstName = "Marcin"
+    user.lastName = "Pieciukiewicz"
     user.email = "m.pieciukiewicz@socnet"
     user.password = "Haslo"
 
     event.applyEvent(user)
 
-    assertEquals(user.name, "Marcin")
+    assertEquals(user.firstName, "Marcin")
+    assertEquals(user.lastName, "Pieciukiewicz")
     assertEquals(user.email, "marcin.p@socnet")
     assertEquals(user.password, "Haslo")
   }
