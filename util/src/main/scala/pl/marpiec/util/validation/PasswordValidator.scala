@@ -37,7 +37,7 @@ object PasswordValidator {
       return
     }
 
-    if (Strings.notEqual(password, repeatPassword)) {
+    if (Strings.isNotEqual(password, repeatPassword)) {
       result.addError(passwordNotTheSameMessage)
       return
     }

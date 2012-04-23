@@ -16,6 +16,4 @@ trait EventStore {
 
   def callListenersForAllAggregates
 
-  def initDatabaseIfNotExists
-
 }

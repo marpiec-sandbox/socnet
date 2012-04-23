@@ -35,9 +35,6 @@ class EventStoreMockImpl extends EventStore {
     callAllListenersAboutNewEvent(event.event.entityClass, event.aggregateId)
   }
 
-  def initDatabaseIfNotExists {
-    //not necessary for mock event store
-  }
 
   def callListenersForAllAggregates {
     //not necessary for mock event store

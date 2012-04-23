@@ -7,15 +7,15 @@ package pl.marpiec.util
 
 object Strings {
 
-  def notBlank(str: String): Boolean = {
-    str==null || str.trim.length == 0
+  def isNotBlank(str: String): Boolean = {
+    !isBlank(str)
   }
 
   def isBlank(str: String): Boolean = {
     str==null || str.trim.length == 0
   }
 
-  def notEqual(str1:String, str2:String):Boolean = {
+  def isNotEqual(str1:String, str2:String):Boolean = {
     !equal(str1, str2)
   }
 
