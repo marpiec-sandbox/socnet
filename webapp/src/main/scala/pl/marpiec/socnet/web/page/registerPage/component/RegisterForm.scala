@@ -4,7 +4,6 @@ import pl.marpiec.socnet.di.Factory
 import org.apache.wicket.model.{CompoundPropertyModel, Model}
 import org.apache.wicket.markup.html.basic.Label
 import pl.marpiec.socnet.web.page.homePage.HomePage
-import pl.marpiec.util.Strings
 import org.apache.wicket.markup.html.form._
 import org.apache.wicket.markup.html.panel.{Panel, FeedbackPanel}
 import pl.marpiec.socnet.database.exception.EntryAlreadyExistsException

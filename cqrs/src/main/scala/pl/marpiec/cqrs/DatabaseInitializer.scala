@@ -2,8 +2,8 @@ package pl.marpiec.cqrs
 
 import java.sql.{DriverManager, Connection}
 import io.Source
-import pl.marpiec.util.Strings
 import java.io.{FileReader, BufferedReader}
+import org.apache.commons.lang.StringUtils
 
 /**
  * @author Marcin Pieciukiewicz
@@ -30,7 +30,7 @@ object DatabaseInitializer {
   }
 
   private def executeSqlCommand(sqlCommand: String) {
-    if (Strings.isNotBlank(sqlCommand)) {
+    if (StringUtils.isNotBlank(sqlCommand)) {
       connection.prepareStatement(sqlCommand).execute
     }
   }

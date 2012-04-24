@@ -3,7 +3,8 @@ package pl.marpiec.socnet.service.user
 import pl.marpiec.socnet.database.UserDatabase
 import pl.marpiec.socnet.model.User
 import pl.marpiec.cqrs.DataStore
-import pl.marpiec.util.{PasswordUtil, Strings, UID}
+import pl.marpiec.util.{PasswordUtil, UID}
+import org.apache.commons.lang.StringUtils
 
 /**
  * ...
@@ -25,7 +26,7 @@ class UserQueryImpl(val socnetDatabase:UserDatabase, val dataStore:DataStore) ex
       val user = userOption.get;
       val passwordHash = PasswordUtil.hashPassword(password, user.passwordSalt)
 
-      if (Strings.equal(user.passwordHash, passwordHash)) {
+      if (StringUtils.equals(user.passwordHash, passwordHash)) {
         return userOption
       }
     }

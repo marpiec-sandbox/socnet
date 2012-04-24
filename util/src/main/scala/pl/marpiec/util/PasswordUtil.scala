@@ -3,7 +3,7 @@ package pl.marpiec.util
 import util.Random
 import java.security.MessageDigest
 import org.apache.commons.codec.digest.DigestUtils
-import org.apache.commons.lang.RandomStringUtils
+import org.apache.commons.lang.{StringUtils, RandomStringUtils}
 
 
 /**
@@ -20,15 +20,15 @@ object PasswordUtil {
 
   def hashPassword(password:String, salt:String):String = {
 
-    if (Strings.isBlank(systemSalt)) {
+    if (StringUtils.isBlank(systemSalt)) {
       throw new IllegalStateException("SOCNET_SYSTEM_SALT is not defined!")
     }
 
-    if (Strings.isBlank(password)) {
+    if (StringUtils.isBlank(password)) {
       throw new IllegalArgumentException("Password musn't be empty")
     }
 
-    if (Strings.isBlank(salt)) {
+    if (StringUtils.isBlank(salt)) {
       throw new IllegalArgumentException("Salt musn't be empty")
     }
 

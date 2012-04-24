@@ -1,6 +1,7 @@
 package pl.marpiec.util.validation
 
-import pl.marpiec.util.{ValidationResult, Strings}
+import pl.marpiec.util.ValidationResult
+import org.apache.commons.lang.StringUtils
 
 
 /**
@@ -37,7 +38,7 @@ object PasswordValidator {
       return
     }
 
-    if (Strings.isNotEqual(password, repeatPassword)) {
+    if (!StringUtils.equals(password, repeatPassword)) {
       result.addError(passwordNotTheSameMessage)
       return
     }

@@ -11,9 +11,7 @@ import pl.marpiec.socnet.di.Factory
 import pl.marpiec.socnet.service.userprofile.UserProfileCommand
 import pl.marpiec.socnet.service.userprofile.input.PersonalSummary
 import org.apache.wicket.markup.html.form.{TextArea, TextField, Form}
-import pl.marpiec.socnet.web.application.SocnetSession
 import org.apache.wicket.model.{PropertyModel, CompoundPropertyModel}
-import pl.marpiec.util.Strings
 import pl.marpiec.socnet.web.wicket.{SecureAjaxButton, SecureForm}
 
 /**
