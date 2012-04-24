@@ -13,6 +13,7 @@ import org.apache.wicket.model.{PropertyModel, CompoundPropertyModel}
 import pl.marpiec.socnet.web.wicket.{SecureAjaxButton, SecureForm}
 import pl.marpiec.socnet.web.page.editUserProfilePage.model.PersonalSummaryFormModel
 import org.apache.wicket.markup.html.form.{TextField, TextArea, Form}
+import scala.Predef._
 
 /**
  * ...
@@ -66,16 +67,12 @@ class PersonalSummaryPanel(id: String, val user: User, val userProfile: UserProf
 
     add(new Label("userName", user.fullName))
 
-    add(new AjaxButton("cancelButton") {
-      def onSubmit(target: AjaxRequestTarget, form: Form[_]) {
+    add(new SecureAjaxButton("cancelButton") {
+      def onSecureSubmit(target: AjaxRequestTarget, form: Form[_]) {
         val formModel = form.getModel.asInstanceOf[CompoundPropertyModel[PersonalSummaryFormModel]].getObject
         PersonalSummaryFormModel.copy(formModel, userProfile)
         edit = false
         target.add(PersonalSummaryPanel.this)
-      }
-
-      def onError(target: AjaxRequestTarget, form: Form[_]) {
-        throw new IllegalStateException("Problem processing AJAX request")
       }
     })
 
