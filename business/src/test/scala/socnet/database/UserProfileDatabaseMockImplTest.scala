@@ -17,7 +17,7 @@ import pl.marpiec.cqrs._
 class UserProfileDatabaseMockImplTest {
 
   def testBasicDatabaseOperations() {
-    val userProfileDatabase: UserProfileDatabase = new UserProfileDatabaseMockImpl(new DataStoreImpl(new EventStoreMockImpl, new EntityCacheSimpleImpl))
+    val userProfileDatabase: UserProfileDatabase = new UserProfileDatabaseMockImpl(new DataStoreImpl(new EventStoreMockImpl, new AggregateCacheSimpleImpl))
     val uidGenerator: UidGenerator = new UidGeneratorMockImpl
 
     val profileId = uidGenerator.nextUid

@@ -1,7 +1,7 @@
 package pl.marpiec.socnet.database
 
 import pl.marpiec.socnet.model.User
-import pl.marpiec.cqrs.{CqrsEntity, DataStore}
+import pl.marpiec.cqrs.{Aggregate, DataStore}
 import pl.marpiec.util.UID
 
 /**
@@ -15,8 +15,8 @@ class UserDatabaseMockImpl(dataStore: DataStore) extends AbstractDatabase[User](
 
   startListeningToDataStore(dataStore, classOf[User])
 
-  addIndex(NAME_INDEX, (entity: CqrsEntity) => {
-    val user = entity.asInstanceOf[User]
+  addIndex(NAME_INDEX, (aggregate: Aggregate) => {
+    val user = aggregate.asInstanceOf[User]
     user.email
   });
 

@@ -20,17 +20,17 @@ class UidGeneratorDbImpl extends UidGenerator {
 
   private val connection: Connection = DriverManager.getConnection("jdbc:h2:~/test", "sa", "sa");
 
-  var availbleUids = List[UID]()
+  var availableUids = List[UID]()
 
   override def nextUid: UID = {
 
     synchronized {
-      if (availbleUids.isEmpty) {
+      if (availableUids.isEmpty) {
         loadNewUids()
       }
 
-      val uid = availbleUids.head
-      availbleUids = availbleUids.tail
+      val uid = availableUids.head
+      availableUids = availableUids.tail
       uid
 
     }
@@ -51,7 +51,7 @@ class UidGeneratorDbImpl extends UidGenerator {
       insertUid.executeUpdate()
     }
 
-    availbleUids = Seq.iterate[UID](new UID(uid), UidGeneratorDbImpl.UID_POOL_SIZE)((u => new UID(u.uid + 1))).toList
+    availableUids = Seq.iterate[UID](new UID(uid), UidGeneratorDbImpl.UID_POOL_SIZE)((u => new UID(u.uid + 1))).toList
 
   }
 }

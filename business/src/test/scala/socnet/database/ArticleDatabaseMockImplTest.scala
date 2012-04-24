@@ -17,7 +17,7 @@ class ArticleDatabaseMockImplTest {
   def testBasicDatabaseOperations() {
 
     val eventStore: EventStore = new EventStoreMockImpl
-    val entityCache: EntityCache = new EntityCacheSimpleImpl
+    val entityCache: AggregateCache = new AggregateCacheSimpleImpl
     val dataStore: DataStore = new DataStoreImpl(eventStore, entityCache)
     val articleDatabase: ArticleDatabase = new ArticleDatabaseMockImpl(dataStore)
     val uidGenerator: UidGenerator = new UidGeneratorMockImpl
@@ -45,14 +45,14 @@ class ArticleDatabaseMockImplTest {
 
   def testDataStoreListening() {
     val eventStore: EventStore = new EventStoreMockImpl
-    val entityCache: EntityCache = new EntityCacheSimpleImpl
+    val entityCache: AggregateCache = new AggregateCacheSimpleImpl
     val dataStore: DataStore = new DataStoreImpl(eventStore, entityCache)
     val articleDatabase: ArticleDatabase = new ArticleDatabaseMockImpl(dataStore)
     val uidGenerator: UidGenerator = new UidGeneratorMockImpl
 
     val userId = uidGenerator.nextUid
     val articleId = uidGenerator.nextUid
-    eventStore.addEventForNewAggregate(articleId, new DatabaseEvent(new UID(0), articleId, 0, new CreateArticleEvent("Tresc artykulu", new LocalDateTime, userId)))
+    eventStore.addEventForNewAggregate(articleId, new EventRow(new UID(0), articleId, 0, new CreateArticleEvent("Tresc artykulu", new LocalDateTime, userId)))
 
     val article: Option[Article] = articleDatabase.getArticleById(articleId)
 

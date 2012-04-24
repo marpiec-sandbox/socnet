@@ -18,7 +18,7 @@ class UserDatabaseMockImplTest {
 
 
   def testBasicDatabaseOperations() {
-    val userDatabase: UserDatabase = new UserDatabaseMockImpl(new DataStoreImpl(new EventStoreMockImpl, new EntityCacheSimpleImpl))
+    val userDatabase: UserDatabase = new UserDatabaseMockImpl(new DataStoreImpl(new EventStoreMockImpl, new AggregateCacheSimpleImpl))
 
     val user: User = new User
     user.firstName = "Marcin"
@@ -42,13 +42,13 @@ class UserDatabaseMockImplTest {
 
   def testDataStoreListening() {
     val eventStore: EventStore = new EventStoreMockImpl
-    val entityCache: EntityCache = new EntityCacheSimpleImpl
+    val entityCache: AggregateCache = new AggregateCacheSimpleImpl
     val dataStore: DataStore = new DataStoreImpl(eventStore, entityCache)
     val userDatabase: UserDatabase = new UserDatabaseMockImpl(dataStore)
     val uidGenerator: UidGenerator = new UidGeneratorMockImpl
 
     val userId = uidGenerator.nextUid
-    eventStore.addEventForNewAggregate(userId, new DatabaseEvent(new UID(0), userId, 0, new RegisterUserEvent("Marcin", "Pieciukiewicz", "marcin@socnet", "haslo", "salt")))
+    eventStore.addEventForNewAggregate(userId, new EventRow(new UID(0), userId, 0, new RegisterUserEvent("Marcin", "Pieciukiewicz", "marcin@socnet", "haslo", "salt")))
 
     val user: Option[User] = userDatabase.getUserById(userId)
 

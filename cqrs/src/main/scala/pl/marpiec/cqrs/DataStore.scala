@@ -4,7 +4,7 @@ import pl.marpiec.util.UID
 
 trait DataStore {
 
-  def getEntity(entityClass:Class[_ <: CqrsEntity], id: UID):CqrsEntity
+  def getEntity(entityClass:Class[_ <: Aggregate], id: UID):Aggregate
 
-  def addListener(entityClass:Class[_ <: CqrsEntity], listener:DataStoreListener)
+  def addListener(entityClass:Class[_ <: Aggregate], listener:DataStoreListener)
 }

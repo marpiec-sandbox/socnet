@@ -1,6 +1,6 @@
 package pl.marpiec.socnet.model
 
-import pl.marpiec.cqrs.CqrsEntity
+import pl.marpiec.cqrs.Aggregate
 import userprofile.{JobExperience, Education}
 import collection.mutable.ListBuffer
 import pl.marpiec.util.UID
@@ -10,7 +10,7 @@ import pl.marpiec.util.UID
  * @author Marcin Pieciukiewicz
  */
 
-class UserProfile extends CqrsEntity(null, 0) {
+class UserProfile extends Aggregate(null, 0) {
   var userId:UID = _
   var professionalTitle:String = _
   var city:String = _
@@ -23,7 +23,7 @@ class UserProfile extends CqrsEntity(null, 0) {
   
   def jobExperienceById(id:UID):Option[JobExperience] = jobExperience.find(exp => exp.id == id)
 
-  def copy:CqrsEntity = {
+  def copy:Aggregate = {
     val profile = new UserProfile
     profile.id = this.id
     profile.version = this.version

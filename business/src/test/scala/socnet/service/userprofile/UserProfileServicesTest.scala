@@ -17,7 +17,7 @@ class UserProfileServicesTest {
 
   def testProfileCreationAndModification() {
     val eventStore: EventStore = new EventStoreMockImpl
-    val entityCache: EntityCache = new EntityCacheSimpleImpl
+    val entityCache: AggregateCache = new AggregateCacheSimpleImpl
     val dataStore: DataStore = new DataStoreImpl(eventStore, entityCache)
     val uidGenerator: UidGenerator = new UidGeneratorMockImpl
     val userProfileCommand: UserProfileCommand = new UserProfileCommandImpl(eventStore, dataStore, uidGenerator)
@@ -51,7 +51,7 @@ class UserProfileServicesTest {
 
   def testExperienceModification() {
     val eventStore: EventStore = new EventStoreMockImpl
-    val entityCache: EntityCache = new EntityCacheSimpleImpl
+    val entityCache: AggregateCache = new AggregateCacheSimpleImpl
     val dataStore: DataStore = new DataStoreImpl(eventStore, entityCache)
     val uidGenerator: UidGenerator = new UidGeneratorMockImpl
     val userProfileCommand: UserProfileCommand = new UserProfileCommandImpl(eventStore, dataStore, uidGenerator)

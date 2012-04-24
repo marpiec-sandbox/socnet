@@ -1,23 +1,22 @@
 package pl.marpiec.socnet.service.userprofile.event
 
 import pl.marpiec.socnet.model.UserProfile
-import pl.marpiec.socnet.service.userprofile.input.{JobExperienceParam, PersonalSummary}
-import pl.marpiec.cqrs.{CqrsEntity, CqrsEvent}
+import pl.marpiec.socnet.service.userprofile.input.JobExperienceParam
+import pl.marpiec.cqrs.{Aggregate, Event}
 import pl.marpiec.socnet.model.userprofile.JobExperience
 import pl.marpiec.util.UID
-import org.joda.time.LocalDate
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
 class AddJobExperienceEvent(val jobExperienceParam: JobExperienceParam,
-                             val jobExperienceId: UID) extends CqrsEvent{
+                            val jobExperienceId: UID) extends Event {
 
   def entityClass = classOf[UserProfile]
 
-  def applyEvent(entity: CqrsEntity) {
-    val userProfile = entity.asInstanceOf[UserProfile]
+  def applyEvent(aggregate: Aggregate) {
+    val userProfile = aggregate.asInstanceOf[UserProfile]
 
     val jobExperience = new JobExperience
     jobExperience.id = jobExperienceId

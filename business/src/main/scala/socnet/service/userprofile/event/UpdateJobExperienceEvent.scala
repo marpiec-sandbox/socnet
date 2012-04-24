@@ -2,25 +2,23 @@ package pl.marpiec.socnet.service.userprofile.event
 
 import pl.marpiec.socnet.service.userprofile.input.JobExperienceParam
 import pl.marpiec.socnet.model.UserProfile
-import pl.marpiec.cqrs.{CqrsEntity, CqrsEvent}
-import pl.marpiec.socnet.model.userprofile.JobExperience
-import pl.marpiec.util.UID
+import pl.marpiec.cqrs.{Aggregate, Event}
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
-class UpdateJobExperienceEvent(val jobExperienceParam: JobExperienceParam) extends CqrsEvent{
+class UpdateJobExperienceEvent(val jobExperienceParam: JobExperienceParam) extends Event {
 
   def entityClass = classOf[UserProfile]
 
-  def applyEvent(entity: CqrsEntity) {
+  def applyEvent(aggregate: Aggregate) {
 
-    val userProfile = entity.asInstanceOf[UserProfile]
+    val userProfile = aggregate.asInstanceOf[UserProfile]
 
     val jobExperiencOption = userProfile.jobExperienceById(jobExperienceParam.id)
-    
-    if(jobExperiencOption.isDefined) {
+
+    if (jobExperiencOption.isDefined) {
       val jobExperience = jobExperiencOption.get
 
       jobExperience.id = jobExperienceParam.id
@@ -34,7 +32,7 @@ class UpdateJobExperienceEvent(val jobExperienceParam: JobExperienceParam) exten
     } else {
       throw new IllegalStateException("No JobExperience with given id")
     }
-    
+
 
   }
 

@@ -2,7 +2,7 @@ package pl.marpiec.socnet.model
 
 import article.ArticleComment
 import org.joda.time.LocalDateTime
-import pl.marpiec.cqrs.CqrsEntity
+import pl.marpiec.cqrs.Aggregate
 import collection.mutable.ListBuffer
 import pl.marpiec.util.UID
 
@@ -10,14 +10,14 @@ import pl.marpiec.util.UID
  * @author Marcin Pieciukiewicz
  */
 
-class Article extends CqrsEntity(null, 0) {
+class Article extends Aggregate(null, 0) {
 
   var authorUserId:UID = _
   var content:String = _
   var comments = new ListBuffer[ArticleComment]
   var creationTime:LocalDateTime = _
 
-  def copy:CqrsEntity = {
+  def copy:Aggregate = {
     val article = new Article
     article.id = this.id
     article.version = this.version

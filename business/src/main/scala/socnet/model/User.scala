@@ -1,8 +1,8 @@
 package pl.marpiec.socnet.model
 
-import pl.marpiec.cqrs.CqrsEntity
+import pl.marpiec.cqrs.Aggregate
 
-class User extends CqrsEntity(null, 0) {
+class User extends Aggregate(null, 0) {
   var firstName: String = _
   var lastName: String = _
   var displayName: String = _
@@ -12,7 +12,7 @@ class User extends CqrsEntity(null, 0) {
 
   def fullName = firstName + " " + lastName
   
-  def copy:CqrsEntity = {
+  def copy:Aggregate = {
     val user = new User
     user.id = this.id
     user.version = this.version

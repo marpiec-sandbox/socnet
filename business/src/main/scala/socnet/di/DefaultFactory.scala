@@ -10,7 +10,7 @@ class DefaultFactory {
   val uidGenerator: UidGenerator = new UidGeneratorDbImpl
 
   val eventStore: EventStore = new EventStoreDbImpl
-  val entityCache: EntityCache = new EntityCacheSimpleImpl
+  val entityCache: AggregateCache = new AggregateCacheSimpleImpl
 
   val dataStore: DataStore = new DataStoreImpl(eventStore, entityCache)
 

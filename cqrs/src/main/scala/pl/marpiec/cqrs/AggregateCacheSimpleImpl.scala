@@ -8,11 +8,11 @@ import pl.marpiec.util.UID
  * @author Marcin Pieciukiewicz
  */
 
-class EntityCacheSimpleImpl extends EntityCache {
+class AggregateCacheSimpleImpl extends AggregateCache {
   
-  private val cache = new WeakHashMap[Class[_], WeakHashMap[UID, CqrsEntity]]
+  private val cache = new WeakHashMap[Class[_], WeakHashMap[UID, Aggregate]]
   
-  def get(entityClass: Class[_ <: CqrsEntity], id: UID):Option[CqrsEntity] = {
+  def get(entityClass: Class[_ <: Aggregate], id: UID):Option[Aggregate] = {
     var entitiesForType = cache.get(entityClass)
     entitiesForType match {
       case Some(entities) => {
@@ -24,8 +24,8 @@ class EntityCacheSimpleImpl extends EntityCache {
     }
   }
 
-  def put(entity: CqrsEntity) {
-    var entitiesForType = cache.getOrElseUpdate(entity.getClass, new WeakHashMap[UID, CqrsEntity])
+  def put(entity: Aggregate) {
+    var entitiesForType = cache.getOrElseUpdate(entity.getClass, new WeakHashMap[UID, Aggregate])
     entitiesForType += entity.id -> entity
   }
 }

@@ -1,7 +1,7 @@
 package pl.marpiec.socnet.database
 
 import exception.EntryAlreadyExistsException
-import pl.marpiec.cqrs.{CqrsEntity, DataStoreListener, DataStore}
+import pl.marpiec.cqrs.{Aggregate, DataStoreListener, DataStore}
 import collection.mutable.HashMap
 import pl.marpiec.socnet.model.{Article, UserProfile}
 import pl.marpiec.util.UID
@@ -11,21 +11,21 @@ import pl.marpiec.util.UID
  * @author Marcin Pieciukiewicz
  */
 
-class DatabaseIndex(val indexFunction: (CqrsEntity) => Any) {
-  val index = new HashMap[Any, CqrsEntity]
+class DatabaseIndex(val indexFunction: (Aggregate) => Any) {
+  val index = new HashMap[Any, Aggregate]
 }
 
-class AbstractDatabase[E <: CqrsEntity](dataStore: DataStore) extends DataStoreListener {
+class AbstractDatabase[E <: Aggregate](dataStore: DataStore) extends DataStoreListener {
 
   private val entityDatabase = new HashMap[UID, E]
   private val indexes = new HashMap[String, DatabaseIndex]
   
-  def addIndex(name:String, keyFunction:(CqrsEntity) => Any) {
+  def addIndex(name:String, keyFunction:(Aggregate) => Any) {
     indexes += name -> new DatabaseIndex(keyFunction)
   }
   
-  def onEntityChanged(cqrsEntity: CqrsEntity) {
-    val entity = cqrsEntity.asInstanceOf[E]
+  def onEntityChanged(aggregate: Aggregate) {
+    val entity = aggregate.asInstanceOf[E]
     addOrUpdate(entity)
   }
 

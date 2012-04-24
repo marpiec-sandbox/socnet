@@ -7,9 +7,9 @@ package pl.marpiec.cqrs
 
 trait DataStoreListener {
 
-  def startListeningToDataStore(dataStore: DataStore, entityClass: Class[_ <: CqrsEntity]) {
+  def startListeningToDataStore(dataStore: DataStore, entityClass: Class[_ <: Aggregate]) {
     dataStore.addListener(entityClass, this)
   }
 
-  def onEntityChanged(entity: CqrsEntity)
+  def onEntityChanged(entity: Aggregate)
 }

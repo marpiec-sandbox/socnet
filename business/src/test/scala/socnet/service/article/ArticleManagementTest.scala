@@ -16,7 +16,7 @@ class ArticleManagementTest {
 
   def testSimpleArticleCreationAndCommentsAdding() {
     val eventStore: EventStore = new EventStoreMockImpl
-    val entityCache: EntityCache = new EntityCacheSimpleImpl
+    val entityCache: AggregateCache = new AggregateCacheSimpleImpl
     val dataStore: DataStore = new DataStoreImpl(eventStore, entityCache)
     val uidGenerator: UidGenerator = new UidGeneratorMockImpl
 

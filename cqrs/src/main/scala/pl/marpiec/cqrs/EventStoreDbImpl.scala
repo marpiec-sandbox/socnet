@@ -17,13 +17,13 @@ class EventStoreDbImpl extends EventStore {
 
   var jsonSerializer = new JsonUtil
 
-  def getEventsForEntity(entityClass: Class[_], id: UID): ListBuffer[DatabaseEvent] = {
+  def getEventsForEntity(entityClass: Class[_], id: UID): ListBuffer[EventRow] = {
 
     val selectEvents = connection.prepareStatement("SELECT user_uid, aggregate_uid, version, event, event_type FROM events WHERE aggregate_uid = ? ORDER BY event_time")
     selectEvents.setLong(1, id.uid)
     val results = selectEvents.executeQuery
 
-    val events = new ListBuffer[DatabaseEvent]
+    val events = new ListBuffer[EventRow]
 
     while (results.next()) {
 
@@ -33,14 +33,14 @@ class EventStoreDbImpl extends EventStore {
       var event = results.getString(4)
       var eventType = results.getString(5)
 
-      events += new DatabaseEvent(new UID(userId), new UID(aggregateId), version, jsonSerializer.fromJson(event, Class.forName(eventType)).asInstanceOf[CqrsEvent])
+      events += new EventRow(new UID(userId), new UID(aggregateId), version, jsonSerializer.fromJson(event, Class.forName(eventType)).asInstanceOf[Event])
 
     }
 
     events
   }
 
-  def addEvent(event: DatabaseEvent) {
+  def addEvent(event: EventRow) {
 
     val selectAggregateVersion = connection.prepareStatement("SELECT version FROM aggregates WHERE uid = ? AND class = ?")
     selectAggregateVersion.setLong(1, event.aggregateId.uid)
@@ -75,7 +75,7 @@ class EventStoreDbImpl extends EventStore {
 
   }
 
-  def addEventForNewAggregate(newAggregadeId: UID, event: DatabaseEvent) {
+  def addEventForNewAggregate(newAggregadeId: UID, event: EventRow) {
 
     event.aggregateId = newAggregadeId
 
@@ -104,7 +104,7 @@ class EventStoreDbImpl extends EventStore {
     while (results.next()) {
       var className = results.getString(1)
       var uid = results.getLong(2)
-      callAllListenersAboutNewEvent(Class.forName(className).asInstanceOf[Class[_ <: CqrsEntity]], new UID(uid))
+      callAllListenersAboutNewEvent(Class.forName(className).asInstanceOf[Class[_ <: Aggregate]], new UID(uid))
     }
   }
 
@@ -113,7 +113,7 @@ class EventStoreDbImpl extends EventStore {
     listeners += listener
   }
 
-  private def callAllListenersAboutNewEvent(entityClass: Class[_ <: CqrsEntity], entityId: UID) {
+  private def callAllListenersAboutNewEvent(entityClass: Class[_ <: Aggregate], entityId: UID) {
     listeners.foreach(listener => {
       listener.onEntityChanged(entityClass, entityId)
     })

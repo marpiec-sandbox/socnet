@@ -17,7 +17,7 @@ import pl.marpiec.util.UID
 class UserServicesTest {
 
   val eventStore:EventStore = new EventStoreMockImpl
-  val entityCache:EntityCache = new EntityCacheSimpleImpl
+  val entityCache:AggregateCache = new AggregateCacheSimpleImpl
   val dataStore:DataStore = new DataStoreImpl(eventStore, entityCache)
   val userDatabase:UserDatabase = new UserDatabaseMockImpl(dataStore)
   val uidGenerator:UidGenerator = new UidGeneratorMockImpl

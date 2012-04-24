@@ -24,13 +24,13 @@ class UserCommandImpl(val eventStore: EventStore, val dataStore: DataStore, val 
 
     val registerUser = new RegisterUserEvent(firstName, lastName, email, passwordHash, passwordSalt)
     val id = uidGenerator.nextUid
-    eventStore.addEventForNewAggregate(id, new DatabaseEvent(id, id, 0, registerUser))
+    eventStore.addEventForNewAggregate(id, new EventRow(id, id, 0, registerUser))
     id
   }
 
   def changeUserEmail(userId:UID, aggregateUserId: UID, version: Int, email: String) {
     val changeEmail = new ChangeEmailEvent(email)
-    eventStore.addEvent(new DatabaseEvent(userId, aggregateUserId, version, changeEmail))
+    eventStore.addEvent(new EventRow(userId, aggregateUserId, version, changeEmail))
   }
 
 

@@ -6,28 +6,28 @@ import pl.marpiec.util.UID
 
 class EventStoreMockImpl extends EventStore {
 
-  private val eventsByType = new HashMap[Class[_], Map[UID, ListBuffer[DatabaseEvent]]]
+  private val eventsByType = new HashMap[Class[_], Map[UID, ListBuffer[EventRow]]]
 
   private val listeners = new ListBuffer[EventStoreListener]
 
-  def addEventForNewAggregate(id:UID, event: DatabaseEvent) {
-    var eventsForType = eventsByType.getOrElseUpdate(event.event.entityClass, new HashMap[UID, ListBuffer[DatabaseEvent]])
-    var eventsForEntity = eventsForType.getOrElseUpdate(id, new ListBuffer[DatabaseEvent])
+  def addEventForNewAggregate(id:UID, event: EventRow) {
+    var eventsForType = eventsByType.getOrElseUpdate(event.event.entityClass, new HashMap[UID, ListBuffer[EventRow]])
+    var eventsForEntity = eventsForType.getOrElseUpdate(id, new ListBuffer[EventRow])
     event.aggregateId = id
     eventsForEntity += event
     callAllListenersAboutNewEvent(event.event.entityClass, event.aggregateId)
   }
 
-  def getEventsForEntity(entityClass: Class[_], id: UID): ListBuffer[DatabaseEvent] = {
+  def getEventsForEntity(entityClass: Class[_], id: UID): ListBuffer[EventRow] = {
 
     eventsByType.
       get(entityClass).getOrElse(throw new NoEventsForTypeException).
       get(id).getOrElse(throw new NoEventsForEntityException)
   }
 
-  def addEvent(event: DatabaseEvent) {
+  def addEvent(event: EventRow) {
     var eventsForType = eventsByType.getOrElse(event.event.entityClass, null)
-    var eventsForEntity = eventsForType.getOrElseUpdate(event.aggregateId, new ListBuffer[DatabaseEvent])
+    var eventsForEntity = eventsForType.getOrElseUpdate(event.aggregateId, new ListBuffer[EventRow])
     if (eventsForEntity.size > event.expectedVersion) {
       throw new ConcurrentAggregateModificationException
     }
@@ -44,7 +44,7 @@ class EventStoreMockImpl extends EventStore {
     listeners += listener
   }
   
-  private def callAllListenersAboutNewEvent(entityClass:Class[_ <: CqrsEntity], entityId:UID) {
+  private def callAllListenersAboutNewEvent(entityClass:Class[_ <: Aggregate], entityId:UID) {
     listeners.foreach(listener => listener.onEntityChanged(entityClass, entityId))
   }
 }

@@ -11,7 +11,7 @@ import org.testng.Assert._
 class EntityCacheSimpleImplTest {
   def testSimpleCacheOperations() {
 
-    val entityCache:EntityCache = new EntityCacheSimpleImpl
+    val entityCache:AggregateCache = new AggregateCacheSimpleImpl
     val uidGenerator:UidGenerator = new UidGeneratorMockImpl
 
     if(entityCache.get(classOf[SimpleTestEntity], uidGenerator.nextUid).isDefined) {

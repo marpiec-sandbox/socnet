@@ -11,5 +11,5 @@ trait EventStoreListener {
     eventStore.addListener(this)
   }
 
-  def onEntityChanged(entityClass:Class[_ <: CqrsEntity], entityId:UID)
+  def onEntityChanged(entityClass:Class[_ <: Aggregate], entityId:UID)
 }
