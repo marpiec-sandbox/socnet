@@ -1,4 +1,4 @@
-package pl.marpiec.socnet.web.page.editUserProfilePage.component
+package pl.marpiec.socnet.web.page.editUserProfilePage.addJobExperiencePanel
 
 import pl.marpiec.socnet.model.userprofile.JobExperience
 import org.apache.wicket.markup.html.panel.Panel
@@ -7,12 +7,11 @@ import org.apache.wicket.markup.html.WebMarkupContainer
 import org.apache.wicket.ajax.markup.html.AjaxFallbackLink
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.model.{CompoundPropertyModel, PropertyModel}
-import pl.marpiec.socnet.service.userprofile.input.JobExperienceParam
 import org.apache.wicket.markup.html.form.{TextArea, TextField, Form}
-import org.apache.wicket.ajax.markup.html.form.AjaxButton
 import pl.marpiec.socnet.di.Factory
 import pl.marpiec.socnet.model.{UserProfile, User}
-import pl.marpiec.socnet.web.wicket.SecureForm
+import pl.marpiec.socnet.web.page.editUserProfilePage.model.JobExperienceFormModel
+import pl.marpiec.socnet.web.wicket.{SecureAjaxButton, SecureForm}
 
 /**
  * ...
@@ -23,7 +22,6 @@ class JobExperiencePanel(id: String, val user: User, val userProfile: UserProfil
   extends Panel(id) {
 
   val userProfileCommand = Factory.userProfileCommand
-
 
   var edit = false
 
@@ -59,58 +57,47 @@ class JobExperiencePanel(id: String, val user: User, val userProfile: UserProfil
 
   add(new SecureForm[JobExperienceFormModel]("experienceForm") {
 
-    val jobExperienceModel = new JobExperienceFormModel
-    jobExperienceModel.companyName = jobExperience.companyName
-    jobExperienceModel.position = jobExperience.position
-    jobExperienceModel.description = jobExperience.description
-    jobExperienceModel.id = jobExperience.id
+    override def onConfigure() {
+      setVisible(edit)
+    }
 
-    setModel(new CompoundPropertyModel[JobExperienceFormModel](jobExperienceModel))
+    val formModel = JobExperienceFormModel(jobExperience)
+
+    setModel(new CompoundPropertyModel[JobExperienceFormModel](formModel))
 
     add(new TextField[String]("companyName"))
     add(new TextField[String]("position"))
     add(new TextArea[String]("description"))
 
 
-    add(new AjaxButton("cancelButton") {
-      def onSubmit(target: AjaxRequestTarget, form: Form[_]) {
+    add(new SecureAjaxButton("cancelButton") {
+      def onSecureSubmit(target: AjaxRequestTarget, form: Form[_]) {
         val model = form.getModel.asInstanceOf[CompoundPropertyModel[JobExperienceFormModel]].getObject
-        model.companyName = jobExperience.companyName
-        model.position = jobExperience.position
-        model.description = jobExperience.description
-        model.id = null
+        JobExperienceFormModel.copy(model, jobExperience)
         edit = false
         target.add(JobExperiencePanel.this)
       }
-
-      def onError(target: AjaxRequestTarget, form: Form[_]) {
-        throw new IllegalStateException("Problem processing AJAX request")
-      }
     })
 
-    add(new AjaxButton("submitButton") {
-      def onSubmit(target: AjaxRequestTarget, form: Form[_]) {
-        val model = form.getModel.asInstanceOf[CompoundPropertyModel[JobExperienceFormModel]].getObject
-        jobExperience.companyName = model.companyName
-        jobExperience.position = model.position
-        jobExperience.description = model.description
-        jobExperience.id = model.id
+    add(new SecureAjaxButton("submitButton") {
+      def onSecureSubmit(target: AjaxRequestTarget, form: Form[_]) {
 
-        userProfileCommand.updateJobExperience(user.id, userProfile.id, userProfile.version, model)
+        val model = form.getModel.asInstanceOf[CompoundPropertyModel[JobExperienceFormModel]].getObject
+
+        //save changes
+        userProfileCommand.updateJobExperience(user.id, userProfile.id, userProfile.version, model.createJobExperienceParam)
+        //update display model
+        JobExperienceFormModel.copy(jobExperience, model)
+        //increment version for next updates
         userProfile.incrementVersion
 
         edit = false
         target.add(JobExperiencePanel.this)
       }
 
-      def onError(target: AjaxRequestTarget, form: Form[_]) {
-        throw new IllegalStateException("Problem processing AJAX request")
-      }
     })
 
-    override def onConfigure() {
-      setVisible(edit)
-    }
+
   });
 
 }

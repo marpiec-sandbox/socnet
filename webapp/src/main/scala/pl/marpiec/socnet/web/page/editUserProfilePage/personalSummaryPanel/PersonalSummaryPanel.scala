@@ -1,4 +1,4 @@
-package pl.marpiec.socnet.web.page.editUserProfilePage.component
+package pl.marpiec.socnet.web.page.editUserProfilePage.personalSummaryPanel
 
 import org.apache.wicket.markup.html.panel.Panel
 import org.apache.wicket.markup.html.WebMarkupContainer
@@ -13,6 +13,7 @@ import pl.marpiec.socnet.service.userprofile.input.PersonalSummary
 import org.apache.wicket.markup.html.form.{TextArea, TextField, Form}
 import org.apache.wicket.model.{PropertyModel, CompoundPropertyModel}
 import pl.marpiec.socnet.web.wicket.{SecureAjaxButton, SecureForm}
+import pl.marpiec.socnet.web.page.editUserProfilePage.model.PersonalSummaryFormModel
 
 /**
  * ...
@@ -86,11 +87,6 @@ class PersonalSummaryPanel(id: String, val user: User, val userProfile: UserProf
         edit = false
         target.add(PersonalSummaryPanel.this)
       }
-
-      def onError(target: AjaxRequestTarget, form: Form[_]) {
-        throw new IllegalStateException("Problem processing AJAX request")
-      }
-
     })
 
     override def onConfigure() {

@@ -26,4 +26,8 @@ abstract class SecureAjaxButton(id:String) extends AjaxButton(id) {
   }
 
   def onSecureSubmit(target: AjaxRequestTarget, form: Form[_])
+
+  def onError(target: AjaxRequestTarget, form: Form[_]) {
+    throw new IllegalStateException("Problem processing AJAX request")
+  }
 }

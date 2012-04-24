@@ -1,4 +1,4 @@
-package pl.marpiec.socnet.web.page.editUserProfilePage.component
+package pl.marpiec.socnet.web.page.editUserProfilePage.model
 
 import pl.marpiec.socnet.service.userprofile.input.PersonalSummary
 import pl.marpiec.socnet.web.wicket.SecureFormModel

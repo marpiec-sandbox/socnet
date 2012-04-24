@@ -1,6 +1,7 @@
 package pl.marpiec.socnet.web.page.editUserProfilePage
 
-import component.{JobExperienceListPanel, PersonalSummaryPanel}
+import jobExperienceListPanel.JobExperienceListPanel
+import personalSummaryPanel.PersonalSummaryPanel
 import pl.marpiec.socnet.database.UserProfileDatabase
 import pl.marpiec.socnet.di.Factory
 import pl.marpiec.socnet.model.UserProfile
@@ -16,11 +17,12 @@ import pl.marpiec.socnet.web.application.{SocnetRoles, SocnetSession}
 
 class EditUserProfilePage extends SecureWebPage(SocnetRoles.USER) {
 
-  setVersioned(false)
-
   val userProfileCommand: UserProfileCommand = Factory.userProfileCommand
   val userProfileDatabase: UserProfileDatabase = Factory.userProfileDatabase
   val session: SocnetSession = getSession.asInstanceOf[SocnetSession]
+
+
+  setVersioned(false)
 
   val userProfileOption = userProfileDatabase.getUserProfileByUserId(session.user.id)
   val userProfile = userProfileOption.getOrElse(createUserProfile)
