@@ -1,7 +1,7 @@
 package pl.marpiec.util
 
 import org.testng.Assert._
-import org.testng.annotations.{BeforeTest, Test}
+import org.testng.annotations.Test
 
 /**
  * ...
@@ -25,7 +25,7 @@ class PasswordUtilTest {
     val passwordHash = PasswordUtil.hashPassword("haslo", randomSalt)
     val duration = System.currentTimeMillis - start
     println("Password test finished in " + duration + " ms")
- //FIXIT   assertEquals(passwordHash, "ca6ceddc6c284089c3d979aff1c0a8349ad245fe31fb3b344010acbe005469770dce132b9673d95137aa20a41246597e5a60f63f42c43f17e0f3e5613d6c7c9d")
+    assertEquals(passwordHash, "3ba4a0e1349755d2da1c01fa7cca8b2fe4cc68efe8c81380fcad00877c9ca573b4c92fe693e9567910deed583c64c68de1e0fcee62e1559689b29d795a914e5d")
     assertTrue(duration < 100)
   }
 
@@ -34,16 +34,23 @@ class PasswordUtilTest {
     PasswordUtil.hashPassword("1", "1") //for crypt engine initialization
   }
 
-  @Test(expectedExceptions = Array(classOf[IllegalArgumentException]))
   def testIllegalArguments1() {
-    val randomSalt = PasswordUtil.generateRandomSalt
-    PasswordUtil.hashPassword("", randomSalt)
+    try {
+      val randomSalt = PasswordUtil.generateRandomSalt
+      PasswordUtil.hashPassword("", randomSalt)
+      fail("Should throw exception")
+    } catch {
+      case e: IllegalArgumentException => {}
+    }
   }
 
-  @Test(expectedExceptions = Array(classOf[IllegalArgumentException]))
   def testIllegalArguments2() {
-    val randomSalt = PasswordUtil.generateRandomSalt
-    PasswordUtil.hashPassword("haslo", "")
+    try {
+      PasswordUtil.hashPassword("haslo", "")
+      fail("Should throw exception")
+    } catch {
+      case e: IllegalArgumentException => {}
+    }
   }
 
 }
