@@ -26,7 +26,7 @@ class JobExperienceFormModel extends SecureFormModel {
     param
   }
 
-  def clean() {
+  def clear() {
     id = null
     companyName = ""
     position = ""

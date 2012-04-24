@@ -13,8 +13,9 @@ import org.apache.wicket.MarkupContainer
 import pl.marpiec.socnet.model.{UserProfile, User}
 import pl.marpiec.socnet.di.Factory
 import pl.marpiec.socnet.web.wicket.{SecureAjaxButton, SecureForm}
-import pl.marpiec.socnet.web.page.editUserProfilePage.addJobExperiencePanel.JobExperiencePanel
+import pl.marpiec.socnet.web.page.editUserProfilePage.jobExperiencePanel.JobExperiencePanel
 import pl.marpiec.socnet.web.page.editUserProfilePage.model.JobExperienceFormModel
+import pl.marpiec.util.UID
 
 /**
  * ...
@@ -24,21 +25,24 @@ import pl.marpiec.socnet.web.page.editUserProfilePage.model.JobExperienceFormMod
 class JobExperienceListPanel(id: String, val user: User, val userProfile: UserProfile,
                              val jobExperience: ListBuffer[JobExperience]) extends Panel(id) {
 
+  //dependencies
   val userProfileCommand = Factory.userProfileCommand
   val uidGenerator = Factory.uidGenerator
 
+  //configure
   setOutputMarkupId(true)
 
-  val jobExperienceList: RepeatingView = new RepeatingView("repeating") {
+  //schema
+  val jobExperienceList = new RepeatingView("repeating") {
     for (experience <- jobExperience) {
-      addExperienceToJobExperienceList(this, experience)
+      addExperience(experience)
     }
-  }
 
-  def addExperienceToJobExperienceList(repeating: RepeatingView, experience: JobExperience): MarkupContainer = {
-    val item: AbstractItem = new AbstractItem(repeating.newChildId());
-    item.add(new JobExperiencePanel("content", user, userProfile, experience))
-    repeating.add(item);
+    def addExperience(experience: JobExperience): MarkupContainer = {
+      val item: AbstractItem = new AbstractItem(this.newChildId());
+      item.add(new JobExperiencePanel("content", user, userProfile, experience))
+      this.add(item);
+    }
   }
 
 
@@ -53,35 +57,23 @@ class JobExperienceListPanel(id: String, val user: User, val userProfile: UserPr
     add(new TextArea[String]("description"))
 
 
-    add(new SecureAjaxButton("cancelButton") {
-      def onSecureSubmit(target: AjaxRequestTarget, form: Form[_]) {
-        val model = form.getModel.asInstanceOf[CompoundPropertyModel[JobExperienceFormModel]].getObject
-        model.clean()
+    add(new SecureAjaxButton[JobExperienceFormModel]("cancelButton") {
+      def onSecureSubmit(target: AjaxRequestTarget, formModel: JobExperienceFormModel) {
+        formModel.clear()
         newJobExperienceForm.setVisible(false)
         showNewExperienceFormLink.setVisible(true)
         target.add(JobExperienceListPanel.this)
       }
     })
 
-    add(new SecureAjaxButton("submitButton") {
-      def onSecureSubmit(target: AjaxRequestTarget, form: Form[_]) {
-
-        val model = form.getModel.asInstanceOf[CompoundPropertyModel[JobExperienceFormModel]].getObject
+    add(new SecureAjaxButton[JobExperienceFormModel]("submitButton") {
+      def onSecureSubmit(target: AjaxRequestTarget, formModel: JobExperienceFormModel) {
 
         val newExperienceId = uidGenerator.nextUid
 
-        val experience = new JobExperience
-        experience.companyName = model.companyName
-        experience.description = model.description
-        experience.position = model.position
-        experience.id = newExperienceId
-
-        userProfileCommand.addJobExperience(user.id, userProfile.id, userProfile.version, model.createJobExperienceParam, newExperienceId)
-        userProfile.incrementVersion
-
-        addExperienceToJobExperienceList(jobExperienceList, experience)
-
-        model.clean()
+        saveNewExperienceAndIncrementProfileVersion(formModel, newExperienceId)
+        addNewExperienceToList(formModel, newExperienceId)
+        clearFormData(formModel)
 
         newJobExperienceForm.setVisible(false)
         showNewExperienceFormLink.setVisible(true)
@@ -89,7 +81,6 @@ class JobExperienceListPanel(id: String, val user: User, val userProfile: UserPr
       }
     })
   }
-
 
   val showNewExperienceFormLink: AjaxLink[String] = new AjaxLink[String]("showNewExperienceFormLink") {
     setOutputMarkupId(true)
@@ -105,5 +96,25 @@ class JobExperienceListPanel(id: String, val user: User, val userProfile: UserPr
   add(jobExperienceList)
   add(newJobExperienceForm)
   add(showNewExperienceFormLink)
+
+
+
+  //methods
+  def clearFormData(formModel: JobExperienceFormModel) {
+    formModel.clear()
+  }
+
+  def addNewExperienceToList(formModel: JobExperienceFormModel, newExperienceId: UID) {
+    val experience = new JobExperience
+    JobExperienceFormModel.copy(experience, formModel)
+    experience.id = newExperienceId
+
+    jobExperienceList.addExperience(experience)
+  }
+
+  def saveNewExperienceAndIncrementProfileVersion(formModel: JobExperienceFormModel, newExperienceId: UID) {
+    userProfileCommand.addJobExperience(user.id, userProfile.id, userProfile.version, formModel.createJobExperienceParam, newExperienceId)
+    userProfile.incrementVersion
+  }
 
 }

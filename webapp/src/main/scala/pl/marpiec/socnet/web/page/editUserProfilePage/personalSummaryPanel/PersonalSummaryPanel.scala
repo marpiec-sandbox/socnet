@@ -51,7 +51,6 @@ class PersonalSummaryPanel(id: String, val user: User, val userProfile: UserProf
     }
   })
 
-
   add(new SecureForm[PersonalSummaryFormModel]("personalSummaryForm") {
 
     val model = PersonalSummaryFormModel(userProfile)
@@ -67,23 +66,19 @@ class PersonalSummaryPanel(id: String, val user: User, val userProfile: UserProf
 
     add(new Label("userName", user.fullName))
 
-    add(new SecureAjaxButton("cancelButton") {
-      def onSecureSubmit(target: AjaxRequestTarget, form: Form[_]) {
-        val formModel = form.getModel.asInstanceOf[CompoundPropertyModel[PersonalSummaryFormModel]].getObject
-        PersonalSummaryFormModel.copy(formModel, userProfile)
+    add(new SecureAjaxButton[PersonalSummaryFormModel]("cancelButton") {
+      def onSecureSubmit(target: AjaxRequestTarget, formModel: PersonalSummaryFormModel) {
+        revertFormData(formModel)
         edit = false
         target.add(PersonalSummaryPanel.this)
       }
     })
 
-    add(new SecureAjaxButton("submitButton") {
-      override def onSecureSubmit(target: AjaxRequestTarget, form: Form[_]) {
-        val formModel = form.getModel.asInstanceOf[CompoundPropertyModel[PersonalSummaryFormModel]].getObject
-
+    add(new SecureAjaxButton[PersonalSummaryFormModel]("submitButton") {
+      override def onSecureSubmit(target: AjaxRequestTarget, formModel: PersonalSummaryFormModel) {
         saveChangesToUserProfile(formModel)
-        copyFormDataIntoUserProfile(formModel)
+        copyFormDataIntoUserProfileAndIncrementVersion(formModel)
 
-        userProfile.incrementVersion
         edit = false
         target.add(PersonalSummaryPanel.this)
       }
@@ -94,9 +89,15 @@ class PersonalSummaryPanel(id: String, val user: User, val userProfile: UserProf
     }
   })
 
-  def copyFormDataIntoUserProfile(form: PersonalSummaryFormModel) {
+  //methods
+
+  def revertFormData(formModel: PersonalSummaryFormModel) {
+    PersonalSummaryFormModel.copy(formModel, userProfile)
+  }
+
+  def copyFormDataIntoUserProfileAndIncrementVersion(form: PersonalSummaryFormModel) {
     PersonalSummaryFormModel.copy(userProfile, form)
-    userProfile.version = userProfile.version + 1
+    userProfile.incrementVersion
   }
 
   def saveChangesToUserProfile(personalSummary: PersonalSummaryFormModel) {

@@ -11,7 +11,7 @@ import org.apache.commons.lang.StringUtils
  * @author Marcin Pieciukiewicz
  */
 
-abstract class SecureAjaxButton(id:String) extends AjaxButton(id) {
+abstract class SecureAjaxButton[F](id:String) extends AjaxButton(id) {
 
 
   final override def onSubmit(target: AjaxRequestTarget, form: Form[_]) {
@@ -22,10 +22,10 @@ abstract class SecureAjaxButton(id:String) extends AjaxButton(id) {
       throw new IllegalStateException("Incorrect session authentication data!")
     }
 
-    onSecureSubmit(target, form)
+    onSecureSubmit(target, getForm.getModel.asInstanceOf[CompoundPropertyModel[F]].getObject)
   }
 
-  def onSecureSubmit(target: AjaxRequestTarget, form: Form[_])
+  def onSecureSubmit(target: AjaxRequestTarget, formModel: F)
 
   def onError(target: AjaxRequestTarget, form: Form[_]) {
     throw new IllegalStateException("Problem processing AJAX request")
