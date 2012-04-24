@@ -6,6 +6,7 @@ import org.apache.wicket.authroles.authorization.strategies.role.Roles
 import pl.marpiec.socnet.model.User
 import pl.marpiec.socnet.di.Factory
 import org.apache.wicket.authroles.authorization.strategies.role.metadata.MetaDataRoleAuthorizationStrategy
+import org.apache.commons.lang.RandomStringUtils
 
 /**
  * Session class.
@@ -14,12 +15,13 @@ import org.apache.wicket.authroles.authorization.strategies.role.metadata.MetaDa
 
 class SocnetSession(request: Request) extends AuthenticatedWebSession(request) {
 
-  private val userQuery = Factory.userQuery
-
-  private var roles: Roles = initDefaultRoles
-
-  var user: User = null
+  val SESSION_TOKEN_LENGTH = 32
   
+  private val userQuery = Factory.userQuery
+  
+  private var roles: Roles = initDefaultRoles
+  var sessionToken:String = _
+  var user: User = null
   
   private def initDefaultRoles:Roles = {
     val r = new Roles
@@ -42,7 +44,10 @@ class SocnetSession(request: Request) extends AuthenticatedWebSession(request) {
   }
 
   private def initSessionData(registeredUser: User) {
+    
     this.user = registeredUser
+    
+    this.sessionToken = RandomStringUtils.randomAlphabetic(SESSION_TOKEN_LENGTH)
 
     roles.clear
     roles.add(SocnetRoles.USER)

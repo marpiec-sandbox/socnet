@@ -27,6 +27,8 @@
 
     <form wicket:id="personalSummaryForm">
 
+        <input type="hidden" wicket:id="sessionToken" />
+
         <div>
             Edycja profilu użytkownika <span wicket:id="userName">noname</span>
         </div>
@@ -59,6 +61,7 @@
             Podsumowanie:
             <textarea wicket:id="summary"/>
         </div>
+
 
         <div>
             <input type="submit" wicket:id="submitButton" value="zapisz"/>

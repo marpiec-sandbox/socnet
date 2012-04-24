@@ -7,11 +7,14 @@ import org.apache.wicket.ajax.markup.html.AjaxFallbackLink
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.ajax.markup.html.form.AjaxButton
 import pl.marpiec.socnet.model.{User, UserProfile}
-import org.apache.wicket.model.{PropertyModel, CompoundPropertyModel}
 import pl.marpiec.socnet.di.Factory
 import pl.marpiec.socnet.service.userprofile.UserProfileCommand
 import pl.marpiec.socnet.service.userprofile.input.PersonalSummary
 import org.apache.wicket.markup.html.form.{TextArea, TextField, Form}
+import pl.marpiec.socnet.web.application.SocnetSession
+import org.apache.wicket.model.{PropertyModel, CompoundPropertyModel}
+import pl.marpiec.util.Strings
+import pl.marpiec.socnet.web.wicket.{SecureAjaxButton, SecureForm}
 
 /**
  * ...
@@ -48,11 +51,11 @@ class PersonalSummaryPanel(id: String, val user: User, val userProfile: UserProf
   })
 
 
-  add(new Form[PersonalSummary]("personalSummaryForm") {
+  add(new SecureForm[PersonalSummaryFormModel]("personalSummaryForm") {
 
-    val model = copyModelFromUserProfile(new PersonalSummary)
+    val model = copyModelFromUserProfile(new PersonalSummaryFormModel)
 
-    setModel(new CompoundPropertyModel[PersonalSummary](model))
+    setModel(new CompoundPropertyModel[PersonalSummaryFormModel](model))
 
     add(new TextField[String]("professionalTitle"))
     add(new TextField[String]("city"))
@@ -65,7 +68,7 @@ class PersonalSummaryPanel(id: String, val user: User, val userProfile: UserProf
 
     add(new AjaxButton("cancelButton") {
       def onSubmit(target: AjaxRequestTarget, form: Form[_]) {
-        val personalSummaryFormModel = form.getModel.asInstanceOf[CompoundPropertyModel[PersonalSummary]].getObject
+        val personalSummaryFormModel = form.getModel.asInstanceOf[CompoundPropertyModel[PersonalSummaryFormModel]].getObject
         copyModelFromUserProfile(personalSummaryFormModel)
         edit = false
         target.add(PersonalSummaryPanel.this)
@@ -76,9 +79,10 @@ class PersonalSummaryPanel(id: String, val user: User, val userProfile: UserProf
       }
     })
 
-    add(new AjaxButton("submitButton") {
-      def onSubmit(target: AjaxRequestTarget, form: Form[_]) {
-        val personalSummaryFormModel = form.getModel.asInstanceOf[CompoundPropertyModel[PersonalSummary]].getObject
+    add(new SecureAjaxButton("submitButton") {
+      override def onSecureSubmit(target: AjaxRequestTarget, form: Form[_]) {
+        val personalSummaryFormModel = form.getModel.asInstanceOf[CompoundPropertyModel[PersonalSummaryFormModel]].getObject
+
         saveChangesToUserProfile(personalSummaryFormModel)
         copyFormDataIntoUserProfile(personalSummaryFormModel)
         edit = false
@@ -88,6 +92,7 @@ class PersonalSummaryPanel(id: String, val user: User, val userProfile: UserProf
       def onError(target: AjaxRequestTarget, form: Form[_]) {
         throw new IllegalStateException("Problem processing AJAX request")
       }
+
     })
 
     override def onConfigure() {
@@ -95,7 +100,7 @@ class PersonalSummaryPanel(id: String, val user: User, val userProfile: UserProf
     }
   })
 
-  def copyModelFromUserProfile(model:PersonalSummary) = {
+  def copyModelFromUserProfile(model: PersonalSummaryFormModel): PersonalSummaryFormModel = {
     model.blogPage = userProfile.blogPage
     model.wwwPage = userProfile.wwwPage
     model.professionalTitle = userProfile.professionalTitle
