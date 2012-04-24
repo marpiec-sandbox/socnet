@@ -9,11 +9,10 @@ import org.apache.wicket.ajax.markup.html.form.AjaxButton
 import pl.marpiec.socnet.model.{User, UserProfile}
 import pl.marpiec.socnet.di.Factory
 import pl.marpiec.socnet.service.userprofile.UserProfileCommand
-import pl.marpiec.socnet.service.userprofile.input.PersonalSummary
-import org.apache.wicket.markup.html.form.{TextArea, TextField, Form}
 import org.apache.wicket.model.{PropertyModel, CompoundPropertyModel}
 import pl.marpiec.socnet.web.wicket.{SecureAjaxButton, SecureForm}
 import pl.marpiec.socnet.web.page.editUserProfilePage.model.PersonalSummaryFormModel
+import org.apache.wicket.markup.html.form.{TextField, TextArea, Form}
 
 /**
  * ...
@@ -22,12 +21,14 @@ import pl.marpiec.socnet.web.page.editUserProfilePage.model.PersonalSummaryFormM
 
 class PersonalSummaryPanel(id: String, val user: User, val userProfile: UserProfile) extends Panel(id) {
 
+  //dependencies
   val userProfileCommand: UserProfileCommand = Factory.userProfileCommand
 
+  //initialization
   var edit = false
-
   setOutputMarkupId(true)
 
+  //schema
   add(new WebMarkupContainer("personalSummaryPreview") {
 
     add(new Label("professionalTitle", new PropertyModel(userProfile, "professionalTitle")))
@@ -52,7 +53,7 @@ class PersonalSummaryPanel(id: String, val user: User, val userProfile: UserProf
 
   add(new SecureForm[PersonalSummaryFormModel]("personalSummaryForm") {
 
-    val model = copyModelFromUserProfile(new PersonalSummaryFormModel)
+    val model = PersonalSummaryFormModel(userProfile)
 
     setModel(new CompoundPropertyModel[PersonalSummaryFormModel](model))
 
@@ -67,8 +68,8 @@ class PersonalSummaryPanel(id: String, val user: User, val userProfile: UserProf
 
     add(new AjaxButton("cancelButton") {
       def onSubmit(target: AjaxRequestTarget, form: Form[_]) {
-        val personalSummaryFormModel = form.getModel.asInstanceOf[CompoundPropertyModel[PersonalSummaryFormModel]].getObject
-        copyModelFromUserProfile(personalSummaryFormModel)
+        val formModel = form.getModel.asInstanceOf[CompoundPropertyModel[PersonalSummaryFormModel]].getObject
+        PersonalSummaryFormModel.copy(formModel, userProfile)
         edit = false
         target.add(PersonalSummaryPanel.this)
       }
@@ -80,10 +81,12 @@ class PersonalSummaryPanel(id: String, val user: User, val userProfile: UserProf
 
     add(new SecureAjaxButton("submitButton") {
       override def onSecureSubmit(target: AjaxRequestTarget, form: Form[_]) {
-        val personalSummaryFormModel = form.getModel.asInstanceOf[CompoundPropertyModel[PersonalSummaryFormModel]].getObject
+        val formModel = form.getModel.asInstanceOf[CompoundPropertyModel[PersonalSummaryFormModel]].getObject
 
-        saveChangesToUserProfile(personalSummaryFormModel)
-        copyFormDataIntoUserProfile(personalSummaryFormModel)
+        saveChangesToUserProfile(formModel)
+        copyFormDataIntoUserProfile(formModel)
+
+        userProfile.incrementVersion
         edit = false
         target.add(PersonalSummaryPanel.this)
       }
@@ -94,27 +97,12 @@ class PersonalSummaryPanel(id: String, val user: User, val userProfile: UserProf
     }
   })
 
-  def copyModelFromUserProfile(model: PersonalSummaryFormModel): PersonalSummaryFormModel = {
-    model.blogPage = userProfile.blogPage
-    model.wwwPage = userProfile.wwwPage
-    model.professionalTitle = userProfile.professionalTitle
-    model.city = userProfile.city
-    model.province = userProfile.province
-    model.summary = userProfile.summary
-    model
-  }
-
-  def copyFormDataIntoUserProfile(form: PersonalSummary) {
-    userProfile.professionalTitle = form.professionalTitle
-    userProfile.city = form.city
-    userProfile.province = form.province
-    userProfile.wwwPage = form.wwwPage
-    userProfile.blogPage = form.blogPage
-    userProfile.summary = form.summary
+  def copyFormDataIntoUserProfile(form: PersonalSummaryFormModel) {
+    PersonalSummaryFormModel.copy(userProfile, form)
     userProfile.version = userProfile.version + 1
   }
 
-  def saveChangesToUserProfile(personalSummary: PersonalSummary) {
-    userProfileCommand.updatePersonalSummary(user.id, userProfile.id, userProfile.version, personalSummary)
+  def saveChangesToUserProfile(personalSummary: PersonalSummaryFormModel) {
+    userProfileCommand.updatePersonalSummary(user.id, userProfile.id, userProfile.version, personalSummary.createPersonalSummary)
   }
 }

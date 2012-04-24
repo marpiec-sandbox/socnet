@@ -3,7 +3,6 @@ package pl.marpiec.socnet.web.page.editUserProfilePage.model
 import pl.marpiec.socnet.service.userprofile.input.JobExperienceParam
 import pl.marpiec.socnet.web.wicket.SecureFormModel
 import pl.marpiec.util.UID
-import org.joda.time.LocalDate
 import pl.marpiec.socnet.model.userprofile.JobExperience
 
 /**
@@ -38,22 +37,22 @@ class JobExperienceFormModel extends SecureFormModel {
 object JobExperienceFormModel {
 
   def apply(param:JobExperience) = {
+    val model = new JobExperienceFormModel
     copy(new JobExperienceFormModel, param)
+    model
   }
 
-  def copy(to:JobExperienceFormModel, from:JobExperience):JobExperienceFormModel = {
+  def copy(to:JobExperienceFormModel, from:JobExperience) {
     to.id = from.id
     to.companyName = from.companyName
     to.position = from.position
     to.description = from.description
-    to
   }
 
-  def copy(to:JobExperience, from:JobExperienceFormModel):JobExperience = {
+  def copy(to:JobExperience, from:JobExperienceFormModel) {
     to.id = from.id
     to.companyName = from.companyName
     to.position = from.position
     to.description = from.description
-    to
   }
 }
