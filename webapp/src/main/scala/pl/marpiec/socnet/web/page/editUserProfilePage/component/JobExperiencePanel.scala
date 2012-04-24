@@ -12,6 +12,7 @@ import org.apache.wicket.markup.html.form.{TextArea, TextField, Form}
 import org.apache.wicket.ajax.markup.html.form.AjaxButton
 import pl.marpiec.socnet.di.Factory
 import pl.marpiec.socnet.model.{UserProfile, User}
+import pl.marpiec.socnet.web.wicket.SecureForm
 
 /**
  * ...
@@ -56,15 +57,15 @@ class JobExperiencePanel(id: String, val user: User, val userProfile: UserProfil
   })
 
 
-  add(new Form[JobExperienceParam]("experienceForm") {
+  add(new SecureForm[JobExperienceFormModel]("experienceForm") {
 
-    val jobExperienceModel = new JobExperienceParam
+    val jobExperienceModel = new JobExperienceFormModel
     jobExperienceModel.companyName = jobExperience.companyName
     jobExperienceModel.position = jobExperience.position
     jobExperienceModel.description = jobExperience.description
     jobExperienceModel.id = jobExperience.id
 
-    setModel(new CompoundPropertyModel[JobExperienceParam](jobExperienceModel))
+    setModel(new CompoundPropertyModel[JobExperienceFormModel](jobExperienceModel))
 
     add(new TextField[String]("companyName"))
     add(new TextField[String]("position"))
@@ -73,7 +74,7 @@ class JobExperiencePanel(id: String, val user: User, val userProfile: UserProfil
 
     add(new AjaxButton("cancelButton") {
       def onSubmit(target: AjaxRequestTarget, form: Form[_]) {
-        val model = form.getModel.asInstanceOf[CompoundPropertyModel[JobExperienceParam]].getObject
+        val model = form.getModel.asInstanceOf[CompoundPropertyModel[JobExperienceFormModel]].getObject
         model.companyName = jobExperience.companyName
         model.position = jobExperience.position
         model.description = jobExperience.description
@@ -89,7 +90,7 @@ class JobExperiencePanel(id: String, val user: User, val userProfile: UserProfil
 
     add(new AjaxButton("submitButton") {
       def onSubmit(target: AjaxRequestTarget, form: Form[_]) {
-        val model = form.getModel.asInstanceOf[CompoundPropertyModel[JobExperienceParam]].getObject
+        val model = form.getModel.asInstanceOf[CompoundPropertyModel[JobExperienceFormModel]].getObject
         jobExperience.companyName = model.companyName
         jobExperience.position = model.position
         jobExperience.description = model.description

@@ -14,6 +14,7 @@ import org.apache.wicket.model.CompoundPropertyModel
 import org.apache.wicket.MarkupContainer
 import pl.marpiec.socnet.model.{UserProfile, User}
 import pl.marpiec.socnet.di.Factory
+import pl.marpiec.socnet.web.wicket.{SecureFormModel, SecureAjaxButton, SecureForm}
 
 /**
  * ...
@@ -42,11 +43,11 @@ class JobExperienceListPanel(id: String, val user: User, val userProfile: UserPr
   }
 
 
-  val newJobExperienceForm: Form[JobExperienceParam] = new Form[JobExperienceParam]("newJobExperienceForm") {
+  val newJobExperienceForm: SecureForm[JobExperienceFormModel] = new SecureForm[JobExperienceFormModel]("newJobExperienceForm") {
     setOutputMarkupPlaceholderTag(true)
     setVisible(false)
 
-    setModel(new CompoundPropertyModel[JobExperienceParam](new JobExperienceParam))
+    setModel(new CompoundPropertyModel[JobExperienceFormModel](new JobExperienceFormModel))
 
     add(new TextField[String]("companyName"))
     add(new TextField[String]("position"))
@@ -55,7 +56,7 @@ class JobExperienceListPanel(id: String, val user: User, val userProfile: UserPr
 
     add(new AjaxButton("cancelButton") {
       def onSubmit(target: AjaxRequestTarget, form: Form[_]) {
-        val model = form.getModel.asInstanceOf[CompoundPropertyModel[JobExperienceParam]].getObject
+        val model = form.getModel.asInstanceOf[CompoundPropertyModel[JobExperienceFormModel]].getObject
         cleanModel(model)
         newJobExperienceForm.setVisible(false)
         showNewExperienceFormLink.setVisible(true)
@@ -68,10 +69,10 @@ class JobExperienceListPanel(id: String, val user: User, val userProfile: UserPr
       }
     })
 
-    add(new AjaxButton("submitButton") {
-      def onSubmit(target: AjaxRequestTarget, form: Form[_]) {
+    add(new SecureAjaxButton("submitButton") {
+      def onSecureSubmit(target: AjaxRequestTarget, form: Form[_]) {
 
-        val model = form.getModel.asInstanceOf[CompoundPropertyModel[JobExperienceParam]].getObject
+        val model = form.getModel.asInstanceOf[CompoundPropertyModel[JobExperienceFormModel]].getObject
 
         val newExperienceId = uidGenerator.nextUid
 

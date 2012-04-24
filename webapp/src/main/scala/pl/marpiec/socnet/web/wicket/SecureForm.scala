@@ -10,7 +10,7 @@ import pl.marpiec.socnet.web.page.editUserProfilePage.component.PersonalSummaryF
  * @author Marcin Pieciukiewicz
  */
 
-class SecureForm[M](id:String) extends Form[M](id) {
+class SecureForm[M <: SecureFormModel](id:String) extends Form[M](id) {
 
 
   add(new HiddenField[String]("sessionToken"))
