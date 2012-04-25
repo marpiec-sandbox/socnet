@@ -15,24 +15,35 @@
         <input type="submit" wicket:id="editButton" value="edytuj"/>
         <input type="submit" wicket:id="deleteButton" value="usuń"/>
     </div>
-    <form wicket:id="experienceForm">
+    <form wicket:id="experienceForm" class="experienceForm">
 
         <input type="hidden" wicket:id="sessionToken" />
 
-        <div>
-            Nazwa firmy: <input wicket:id="companyName" />
+        <div class="input">
+            <span class="label">Nazwa firmy</span>
+            <span class="validatorMessage"></span>
+            <input wicket:id="companyName"/>
+        </div>
+        <div class="input">
+            <span class="label">Stanowisko</span>
+            <span class="validatorMessage"></span>
+            <input wicket:id="position"/>
+        </div>
+        <div class="input">
+            <span class="label">Opis</span>
+            <span class="validatorMessage"></span>
+            <textarea wicket:id="description"/>
         </div>
 
-        <div>
-            Stanowisko: <input wicket:id="position" />
-        </div>
-        <div>
-            Opis: <textarea wicket:id="description"/>
-        </div>
         <div>
             <input type="submit" wicket:id="cancelButton" value="anuluj"/>
             <input type="submit" wicket:id="submitButton" value="zapisz"/>
         </div>
+
+        <script type="text/javascript">
+            initForm(".experienceForm")
+            initValidation(".experienceForm")
+        </script>
     </form>
 </wicket:panel>
 </html>

@@ -3,6 +3,12 @@ function validateEmail(email) {
     return reg.test(email);
 }
 
+function validateUrl(url) {
+    var reg = /^(https:\/\/|http:\/\/)?[a-z0-9-\.]+\.[a-z]{2,4}\/?([^\s<>\#%"\,\{\}\\|\\\^\[\]`]+)?$/;
+    return reg.test(url);
+}
+
+
 function validateNumber(number) {
     return !isNaN(number);
 }
@@ -13,4 +19,12 @@ function validatePassword(password) {
 
 function validatePasswordRepeat(passwordRepeat, password) {
     return passwordRepeat !=null && passwordRepeat == password
+}
+
+function isEmpty(value) {
+    return !isNotEmpty(value)
+}
+
+function isNotEmpty(value) {
+    return value && value.length > 0
 }

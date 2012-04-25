@@ -5,16 +5,19 @@ import pl.marpiec.socnet.web.page.editUserProfilePage.PersonalSummaryPanel
 import pl.marpiec.socnet.web.page.editUserProfilePage.model.PersonalSummaryFormModel
 import pl.marpiec.socnet.service.userprofile.UserProfileCommand
 import pl.marpiec.socnet.di.Factory
-import org.apache.wicket.model.CompoundPropertyModel
 import org.apache.wicket.markup.html.form.{TextArea, TextField}
 import pl.marpiec.socnet.web.wicket.{SecureAjaxButton, SecureForm}
 import org.apache.wicket.ajax.AjaxRequestTarget
+import org.apache.wicket.markup.html.basic.Label
+import org.apache.wicket.model.{Model, CompoundPropertyModel}
 
 
 class PersonalSummaryEditForm(id: String, userProfile: UserProfile, user: User, parent: PersonalSummaryPanel) extends SecureForm[PersonalSummaryFormModel](id) {
 
   val userProfileCommand: UserProfileCommand = Factory.userProfileCommand
 
+  val warningMessage = new Model[String]("")
+  
   def initialize {
     val model = PersonalSummaryFormModel(userProfile)
     setModel(new CompoundPropertyModel[PersonalSummaryFormModel](model))
@@ -23,6 +26,7 @@ class PersonalSummaryEditForm(id: String, userProfile: UserProfile, user: User, 
 
   def buildSchema {
 
+   // add(new Label("warningMessage", warningMessage))
     add(new TextField[String]("professionalTitle"))
     add(new TextField[String]("city"))
     add(new TextField[String]("province"))

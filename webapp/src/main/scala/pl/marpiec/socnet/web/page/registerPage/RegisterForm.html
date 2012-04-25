@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <html xmlns:wicket="http://wicket.apache.org">
 <wicket:panel>
-    <form wicket:id="form" id="registerForm" class="formValidator">
+    <form wicket:id="form" class="registerForm">
         <span wicket:id="warningMessage"></span>
 
         <div class="input">
@@ -38,5 +38,9 @@
     <div id="feedbackPanel">
         <span wicket:id="feedback"></span>
     </div>
+    <script type="text/javascript">
+        initForm(".registerForm")
+        initValidation(".registerForm")
+    </script>
 </wicket:panel>
 </html>

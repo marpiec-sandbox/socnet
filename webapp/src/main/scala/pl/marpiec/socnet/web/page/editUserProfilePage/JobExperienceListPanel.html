@@ -9,24 +9,34 @@
 
     <a wicket:id="showNewExperienceFormLink">Dodaj</a>
 
-    <form wicket:id="newJobExperienceForm">
+    <form wicket:id="newJobExperienceForm" class="newJobExperienceForm">
 
         <input type="hidden" wicket:id="sessionToken" />
 
-        <div>
-            Nazwa firmy: <input wicket:id="companyName" />
+        <div class="input">
+            <span class="label">Nazwa firmy</span>
+            <span class="validatorMessage"></span>
+            <input wicket:id="companyName"/>
+        </div>
+        <div class="input">
+            <span class="label">Stanowisko</span>
+            <span class="validatorMessage"></span>
+            <input wicket:id="position"/>
+        </div>
+        <div class="input">
+            <span class="label">Opis</span>
+            <span class="validatorMessage"></span>
+            <textarea wicket:id="description"/>
         </div>
 
-        <div>
-            Stanowisko: <input wicket:id="position" />
-        </div>
-        <div>
-            Opis: <textarea wicket:id="description"/>
-        </div>
         <div>
             <input type="submit" wicket:id="cancelButton" value="anuluj"/>
             <input type="submit" wicket:id="submitButton" value="zapisz"/>
         </div>
+        <script type="text/javascript">
+            initForm(".newJobExperienceForm")
+            initValidation(".newJobExperienceForm")
+        </script>
     </form>
 
 </wicket:panel>

@@ -1,4 +1,4 @@
-var validatorGroups = ["requiredValidator", "emailValidator", "numberValidator", "passwordValidator", "passwordRepeatValidator"]
+var validatorGroups = ["requiredValidator", "emailValidator", "urlValidator", "numberValidator", "passwordValidator", "passwordRepeatValidator"]
 
 
 function passwordValidator(jqElement){
@@ -30,11 +30,23 @@ function emailValidator(jqElement){
 
     var value = jqElement.val();
 
-    if(validateEmail(value)){
+    if(isEmpty(value) || validateEmail(value)){
         hideValidationMessage(jqElement);
     } else {
         jqElement.data("valResult", false);
         showValidationMessage(jqElement, "Niepoprawny adres email");
+    }
+}
+
+function urlValidator(jqElement){
+
+    var value = jqElement.val();
+
+    if(isEmpty(value) || validateUrl(value)){
+        hideValidationMessage(jqElement);
+    } else {
+        jqElement.data("valResult", false);
+        showValidationMessage(jqElement, "Niepoprawny url");
     }
 }
 
@@ -155,50 +167,59 @@ function elementValidator(){
     }
 }
 
-jQuery(function(){
+function initValidation(formSelector) {
 
-    jQuery(".requiredValidator").each(function(){
-        addValidator(jQuery(this),requiredValidator);
-        jQuery(this).blur(elementValidator);
+    jQuery(function() {
+
+        var jqForm = jQuery(formSelector)
+
+        jqForm.find(".requiredValidator").each(function(){
+            addValidator(jQuery(this),requiredValidator);
+            jQuery(this).blur(elementValidator);
+        });
+
+        jqForm.find(".emailValidator").each(function(){
+            addValidator(jQuery(this),emailValidator);
+            jQuery(this).blur(elementValidator);
+        });
+
+        jqForm.find(".urlValidator").each(function(){
+            addValidator(jQuery(this),urlValidator);
+            jQuery(this).blur(elementValidator);
+        });
+
+        jqForm.find(".numberValidator").each(function(){
+            addValidator(jQuery(this),numberValidator);
+            jQuery(this).blur(elementValidator);
+        });
+
+        jqForm.find(".passwordValidator").each(function(){
+            addValidator(jQuery(this),passwordValidator);
+            jQuery(this).blur(elementValidator);
+        });
+
+        jqForm.find(".passwordRepeatValidator").each(function(){
+            addValidator(jQuery(this),passwordRepeatValidator);
+            jQuery(this).blur(elementValidator);
+        });
+
+        jqForm.submit(function(){
+            var jqThis = jQuery(this);
+            clearValidationResults(jqThis);
+
+            var selector = "";
+            for(var p=0;p<validatorGroups.length;p++) {
+                selector += "."+validatorGroups[p] + ", "
+            }
+            selector = selector.substr(0, selector.length - 2)
+
+            jqThis.find(selector).each(elementValidator);
+
+            if(isFormValidatedOK(jqThis)){
+                return true;
+            } else {
+                return false;
+            }
+        });
     });
-
-    jQuery(".emailValidator").each(function(){
-        addValidator(jQuery(this),emailValidator);
-        jQuery(this).blur(elementValidator);
-    });
-
-    jQuery(".numberValidator").each(function(){
-        addValidator(jQuery(this),numberValidator);
-        jQuery(this).blur(elementValidator);
-    });
-
-    jQuery(".passwordValidator").each(function(){
-        addValidator(jQuery(this),passwordValidator);
-        jQuery(this).blur(elementValidator);
-    });
-
-    jQuery(".passwordRepeatValidator").each(function(){
-        addValidator(jQuery(this),passwordRepeatValidator);
-        jQuery(this).blur(elementValidator);
-    });
-
-    jQuery("form.formValidator").submit(function(){
-        var jqThis = jQuery(this);
-        clearValidationResults(jqThis);
-
-        var selector = "";
-        for(var p=0;p<validatorGroups.length;p++) {
-            selector += "."+validatorGroups[p] + ", "
-        }
-        selector = selector.substr(0, selector.length - 2)
-
-        jqThis.find(selector).each(elementValidator);
-        
-        if(isFormValidatedOK(jqThis)){
-            return true;
-        } else {
-            return false;
-        }
-    });
-
-});
+}
