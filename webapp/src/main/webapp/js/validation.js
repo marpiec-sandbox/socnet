@@ -167,6 +167,14 @@ function elementValidator(){
     }
 }
 
+function showFormValidationError(jqForm) {
+    jqForm.find(".warningMessage").html("There are validation errors!");
+}
+
+function blinkForm(jqForm) {
+    jqForm.stop().animate({opacity:0.4}, 200).animate({opacity:1}, 300).animate({opacity:0.6}, 400).animate({opacity:1}, 400)
+}
+
 function initValidation(formSelector) {
 
     jQuery(function() {
@@ -218,6 +226,9 @@ function initValidation(formSelector) {
             if(isFormValidatedOK(jqThis)){
                 return true;
             } else {
+                showFormValidationError(jqThis);
+                blinkForm(jqThis);
+
                 return false;
             }
         });
