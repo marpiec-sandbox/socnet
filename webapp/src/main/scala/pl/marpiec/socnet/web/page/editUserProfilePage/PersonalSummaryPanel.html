@@ -25,43 +25,45 @@
 
     </div>
 
-    <form wicket:id="personalSummaryForm" class="personalSummaryForm">
+    <form wicket:id="personalSummaryForm" class="horizontalForm personalSummaryForm">
+
+        <span class="warningMessage"></span>
 
         <input type="hidden" wicket:id="sessionToken" />
 
         <div class="input">
             <span class="label">Tytuł zawodowy</span>
             <span class="validatorMessage"></span>
-            <input wicket:id="professionalTitle"/>
+            <input type="text" wicket:id="professionalTitle"/>
         </div>
 
         <div class="input">
             <span class="label">Miasto</span>
             <span class="validatorMessage"></span>
-            <input wicket:id="city"/>
+            <input type="text" wicket:id="city"/>
         </div>
 
         <div class="input">
             <span class="label">Województwo</span>
             <span class="validatorMessage"></span>
-            <input wicket:id="province"/>
+            <input type="text" wicket:id="province"/>
         </div>
 
         <div class="input">
             <span class="label">Strona WWW</span>
             <span class="validatorMessage"></span>
-            <input wicket:id="wwwPage" class="urlValidator"/>
+            <input type="text" wicket:id="wwwPage" class="urlValidator"/>
         </div>
 
         <div class="input">
             <span class="label">Blog</span>
             <span class="validatorMessage"></span>
-            <input wicket:id="blogPage" class="urlValidator"/>
+            <input type="text" wicket:id="blogPage" class="urlValidator"/>
         </div>
         <div class="input">
             <span class="label">Podsumowanie</span>
             <span class="validatorMessage"></span>
-            <textarea wicket:id="summary"/>
+            <textarea wicket:id="summary"  class="requiredValidator"/>
         </div>
 
 

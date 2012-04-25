@@ -15,19 +15,21 @@
         <input type="submit" wicket:id="editButton" value="edytuj"/>
         <input type="submit" wicket:id="deleteButton" value="usuń"/>
     </div>
-    <form wicket:id="experienceForm" class="experienceForm">
+    <form wicket:id="experienceForm" class="horizontalForm experienceForm">
+
+        <span class="warningMessage"></span>
 
         <input type="hidden" wicket:id="sessionToken" />
 
         <div class="input">
             <span class="label">Nazwa firmy</span>
             <span class="validatorMessage"></span>
-            <input wicket:id="companyName"/>
+            <input type="text" wicket:id="companyName"/>
         </div>
         <div class="input">
             <span class="label">Stanowisko</span>
             <span class="validatorMessage"></span>
-            <input wicket:id="position"/>
+            <input type="text" wicket:id="position"/>
         </div>
         <div class="input">
             <span class="label">Opis</span>

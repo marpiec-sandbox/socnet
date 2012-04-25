@@ -7,6 +7,7 @@ import pl.marpiec.socnet.web.page.HomePage
 import org.apache.wicket.markup.html.form._
 import org.apache.wicket.markup.html.panel.{Panel, FeedbackPanel}
 import pl.marpiec.socnet.database.exception.EntryAlreadyExistsException
+import org.apache.wicket.markup.html.link.BookmarkablePageLink
 
 class RegisterForm(id: String) extends Panel(id) {
 
@@ -27,14 +28,7 @@ class RegisterForm(id: String) extends Panel(id) {
     add(new PasswordTextField("repeatPassword"))
     add(new Button("saveButton"))
 
-    add(new Button("cancelButton") {
-
-      setDefaultFormProcessing(false)
-
-      override def onSubmit() {
-        setResponsePage(classOf[HomePage])
-      }
-    })
+    add(new BookmarkablePageLink("cancelLink", classOf[HomePage]))
 
 
     override def onSubmit() {

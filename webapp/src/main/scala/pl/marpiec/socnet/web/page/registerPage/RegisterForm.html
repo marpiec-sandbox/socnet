@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <html xmlns:wicket="http://wicket.apache.org">
 <wicket:panel>
-    <form wicket:id="form" class="registerForm">
+    <form wicket:id="form" class="horizontalForm registerForm">
         <span wicket:id="warningMessage" class="warningMessage"></span>
 
         <div class="input">
@@ -31,8 +31,8 @@
                    class="requiredValidator passwordRepeatValidator"/>
         </div>
         <div>
+            <a wicket:id="cancelLink">Anuluj</a>
             <input type="submit" wicket:id="saveButton" value="save"/>
-            <input type="submit" wicket:id="cancelButton" value="reset"/>
         </div>
     </form>
     <div id="feedbackPanel">
