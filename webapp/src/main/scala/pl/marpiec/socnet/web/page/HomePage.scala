@@ -1,18 +1,13 @@
-package pl.marpiec.socnet.web.page.homePage
+package pl.marpiec.socnet.web.page
 
-import component.ArticleList
-import org.apache.wicket.markup.html.WebPage
+import homePage.ArticleList
 import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.markup.html.link.BookmarkablePageLink
 import org.apache.wicket.authroles.authentication.panel.SignInPanel
 import pl.marpiec.socnet.web.application.SocnetSession
 import pl.marpiec.socnet.database.ArticleDatabase
 import pl.marpiec.socnet.di.Factory
-import pl.marpiec.socnet.web.page.registerPage.RegisterPage
-import pl.marpiec.socnet.web.page.signOutPage.SignOutPage
-import pl.marpiec.socnet.web.page.newArticlePage.NewArticlePage
-import pl.marpiec.socnet.web.page.editUserProfilePage.EditUserProfilePage
-import pl.marpiec.socnet.web.authorization.{SecureWebPage, UnauthorizeAll, AuthorizeUser}
+import pl.marpiec.socnet.web.authorization.{UnauthorizeAll, AuthorizeUser}
 import pl.marpiec.socnet.web.page.template.SimpleTemplatePage
 
 class HomePage extends SimpleTemplatePage {

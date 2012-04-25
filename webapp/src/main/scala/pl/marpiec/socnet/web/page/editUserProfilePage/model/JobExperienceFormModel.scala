@@ -38,7 +38,7 @@ object JobExperienceFormModel {
 
   def apply(param:JobExperience) = {
     val model = new JobExperienceFormModel
-    copy(new JobExperienceFormModel, param)
+    copy(model, param)
     model
   }
 

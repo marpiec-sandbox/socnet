@@ -1,4 +1,4 @@
-package pl.marpiec.socnet.web.page.homePage.component
+package pl.marpiec.socnet.web.page.homePage
 
 import org.apache.wicket.markup.html.panel.Panel
 import org.apache.wicket.markup.html.basic.Label
@@ -7,7 +7,7 @@ import org.apache.wicket.markup.repeater.RepeatingView
 import org.apache.wicket.markup.html.list.AbstractItem
 import org.apache.wicket.markup.html.link.BookmarkablePageLink
 import org.apache.wicket.request.mapper.parameter.PageParameters
-import pl.marpiec.socnet.web.page.articlePage.ArticlePage
+import pl.marpiec.socnet.web.page.ArticlePage
 
 /**
  * @author Marcin Pieciukiewicz

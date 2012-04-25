@@ -1,4 +1,4 @@
-package pl.marpiec.socnet.web.page.articlePage
+package pl.marpiec.socnet.web.page
 
 import org.apache.wicket.request.mapper.parameter.PageParameters
 import org.apache.wicket.markup.html.WebPage
@@ -15,7 +15,7 @@ import pl.marpiec.socnet.web.page.template.SimpleTemplatePage
  * @author Marcin Pieciukiewicz
  */
 
-class ArticlePage (parameters: PageParameters) extends SimpleTemplatePage {
+class ArticlePage(parameters: PageParameters) extends SimpleTemplatePage {
 
   private val articleDatabase = Factory.articleDatabase
   private val userDatabase = Factory.userDatabase
@@ -29,7 +29,7 @@ class ArticlePage (parameters: PageParameters) extends SimpleTemplatePage {
       val authorOption = userDatabase.getUserById(article.authorUserId)
 
       var authorName = "autor nieznany"
-      if(authorOption.isDefined) {
+      if (authorOption.isDefined) {
         authorName = authorOption.get.displayName
       }
 

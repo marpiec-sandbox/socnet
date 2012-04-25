@@ -1,4 +1,4 @@
-package pl.marpiec.socnet.web.page.registerPage.component
+package pl.marpiec.socnet.web.page.registerPage
 
 import pl.marpiec.util.ValidationResult
 import pl.marpiec.util.validation.{EmailValidator, PasswordValidator, StringValidator}
@@ -10,26 +10,26 @@ import pl.marpiec.util.validation.{EmailValidator, PasswordValidator, StringVali
 
 object RegisterFormValidator {
 
-  def validate(form:RegisterFormModel):ValidationResult = {
+  def validate(form: RegisterFormModel): ValidationResult = {
     val result = new ValidationResult()
 
-      validateFirstName(result, form)
-      validateLastName(result, form)
-      validateEmail(result, form)
-      validatePassword(result, form)
+    validateFirstName(result, form)
+    validateLastName(result, form)
+    validateEmail(result, form)
+    validatePassword(result, form)
 
     result
   }
 
-  private def validateFirstName(result:ValidationResult, model: RegisterFormModel) {
+  private def validateFirstName(result: ValidationResult, model: RegisterFormModel) {
     StringValidator.validate(result, model.firstName, 2, 50, "First name has to be at least 2 chars, and maximum 50 chars")
   }
 
-  private def validateLastName(result:ValidationResult, model: RegisterFormModel) {
+  private def validateLastName(result: ValidationResult, model: RegisterFormModel) {
     StringValidator.validate(result, model.lastName, 2, 50, "Last name has to be at least 2 chars, and maximum 50 chars")
   }
 
-  private def validateEmail(result:ValidationResult, model: RegisterFormModel) {
+  private def validateEmail(result: ValidationResult, model: RegisterFormModel) {
     EmailValidator.validate(result, model.email)
   }
 

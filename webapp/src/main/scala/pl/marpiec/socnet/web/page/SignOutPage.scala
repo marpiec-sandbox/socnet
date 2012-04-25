@@ -1,9 +1,8 @@
-package pl.marpiec.socnet.web.page.signOutPage
+package pl.marpiec.socnet.web.page
 
 import org.apache.wicket.markup.html.WebPage
 import org.apache.wicket.request.mapper.parameter.PageParameters
 import org.apache.wicket.RestartResponseAtInterceptPageException
-import pl.marpiec.socnet.web.page.homePage.HomePage
 
 /**
  * ...

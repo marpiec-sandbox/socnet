@@ -1,6 +1,6 @@
-package pl.marpiec.socnet.web.page.registerPage
+package pl.marpiec.socnet.web.page
 
-import component.RegisterForm
+import pl.marpiec.socnet.web.page.registerPage.RegisterForm
 import pl.marpiec.socnet.web.page.template.SimpleTemplatePage
 import org.apache.wicket.request.mapper.parameter.PageParameters
 

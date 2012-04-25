@@ -1,10 +1,6 @@
 package pl.marpiec.socnet.web.application
 
-import pl.marpiec.socnet.web.page.registerPage.RegisterPage
-import pl.marpiec.socnet.web.page.signOutPage.SignOutPage
-import pl.marpiec.socnet.web.page.newArticlePage.NewArticlePage
-import pl.marpiec.socnet.web.page.articlePage.ArticlePage
-import pl.marpiec.socnet.web.page.editUserProfilePage.EditUserProfilePage
+import pl.marpiec.socnet.web.page._
 
 /**
  * @author Marcin Pieciukiewicz
