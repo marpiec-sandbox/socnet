@@ -232,6 +232,10 @@ function initValidation(formSelector, submitButtonSelector) {
             jQuery(this).blur(elementValidator);
         });
 
+        jqForm.find(submitButtonSelector).each(function() {
+            jQuery(this).attr("onclick", "if (!validateForm(jQuery(this).parents('form'))) return false;" + jQuery(this).attr("onclick"));
+        });
+
         jqForm.submit(function() {
             return validateForm(jQuery(this));
         });
