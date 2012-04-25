@@ -175,7 +175,28 @@ function blinkForm(jqForm) {
     jqForm.stop().animate({opacity:0.4}, 200).animate({opacity:1}, 300).animate({opacity:0.6}, 400).animate({opacity:1}, 400)
 }
 
-function initValidation(formSelector) {
+function validateForm(jqForm) {
+    clearValidationResults(jqForm);
+
+    var selector = "";
+    for(var p=0;p<validatorGroups.length;p++) {
+        selector += "."+validatorGroups[p] + ", "
+    }
+    selector = selector.substr(0, selector.length - 2)
+
+    jqForm.find(selector).each(elementValidator);
+
+    if(isFormValidatedOK(jqForm)){
+        return true;
+    } else {
+        showFormValidationError(jqForm);
+        blinkForm(jqForm);
+
+        return false;
+    }
+}
+
+function initValidation(formSelector, submitButtonSelector) {
 
     jQuery(function() {
 
@@ -211,26 +232,12 @@ function initValidation(formSelector) {
             jQuery(this).blur(elementValidator);
         });
 
-        jqForm.submit(function(){
-            var jqThis = jQuery(this);
-            clearValidationResults(jqThis);
-
-            var selector = "";
-            for(var p=0;p<validatorGroups.length;p++) {
-                selector += "."+validatorGroups[p] + ", "
-            }
-            selector = selector.substr(0, selector.length - 2)
-
-            jqThis.find(selector).each(elementValidator);
-
-            if(isFormValidatedOK(jqThis)){
-                return true;
-            } else {
-                showFormValidationError(jqThis);
-                blinkForm(jqThis);
-
-                return false;
-            }
+        jqForm.submit(function() {
+            return validateForm(jQuery(this));
         });
+
     });
+
+
+
 }

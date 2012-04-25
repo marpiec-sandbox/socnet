@@ -10,6 +10,8 @@ import pl.marpiec.socnet.web.wicket.{SecureAjaxButton, SecureForm}
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.model.{Model, CompoundPropertyModel}
+import org.apache.wicket.ajax.calldecorator.AjaxCallDecorator
+import org.apache.wicket.Component
 
 
 class PersonalSummaryEditForm(id: String, userProfile: UserProfile, user: User, parent: PersonalSummaryPanel) extends SecureForm[PersonalSummaryFormModel](id) {
@@ -52,6 +54,14 @@ class PersonalSummaryEditForm(id: String, userProfile: UserProfile, user: User, 
 
   def addSubmitButton {
     add(new SecureAjaxButton[PersonalSummaryFormModel]("submitButton") {
+
+
+      override def getAjaxCallDecorator = new AjaxCallDecorator() {
+        override def decorateScript(c: Component, script: CharSequence): CharSequence = {
+          "if (!validateForm(jQuery(this).parents(\"form\"))) return false;" + script;
+        }
+      }
+
       override def onSecureSubmit(target: AjaxRequestTarget, formModel: PersonalSummaryFormModel) {
         saveChangesToUserProfile(formModel)
         copyFormDataIntoUserProfileAndIncrementVersion(formModel)
