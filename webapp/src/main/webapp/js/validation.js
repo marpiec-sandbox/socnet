@@ -172,7 +172,7 @@ function showFormValidationError(jqForm) {
 }
 
 function blinkForm(jqForm) {
-    jqForm.stop().animate({opacity:0.4}, 200).animate({opacity:1}, 300).animate({opacity:0.6}, 400).animate({opacity:1}, 400)
+    jqForm.stop().css({opacity:0}).animate({opacity:1}, 300)
 }
 
 function validateForm(jqForm) {
