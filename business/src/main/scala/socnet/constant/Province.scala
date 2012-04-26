@@ -29,14 +29,7 @@ object Province extends SEnumObject[Province] {
     MALOPOLSKIE, MAZOWIECKIE, OPOLSKIE, PODKARPACIE, PODLASKIE, POMORSKIE,
     SLASKIE, SWIETOKRZYSKIE, WARMINSKO_MAZURSKIE, WIELKOPOLSKIE, ZACHODNIOPOMORSKIE)
 
-  def getByName(name: String):Province = {
-    for (value <- values) {
-      if(value.name == name) {
-        return value
-      }
-    }
-    throw new IllegalArgumentException("Incorrect name!")
-  }
+  def getValues = values
 }
 
 case class Province(name:String, translation:String) extends SEnum[Province] {

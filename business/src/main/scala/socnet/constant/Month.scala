@@ -24,14 +24,7 @@ object Month extends SEnumObject[Month] {
 
   val values = List(JANUARY, FEBRUARY, MARCH, APRIL, MAY, JUNE, JULY, AUGUST, SEPTEMBER, OCTOBER, NOVEMBER, DECEMBER)
 
-  def getByName(name: String):Month = {
-    for (value <- values) {
-      if(value.name == name) {
-        return value
-      }
-    }
-    throw new IllegalArgumentException("Incorrect name!")
-  }
+  def getValues() = values
 
   def getByOrderNumber(order:Int):Month = {
     for (value <- values) {
