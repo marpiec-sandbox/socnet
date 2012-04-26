@@ -1,5 +1,6 @@
 package pl.marpiec.socnet.web.page.editUserProfilePage.jobExperienceListPanel
 
+import scala.collection.JavaConversions._
 import pl.marpiec.socnet.model.userprofile.JobExperience
 import org.apache.wicket.markup.html.panel.Panel
 import org.apache.wicket.markup.html.basic.Label
@@ -9,13 +10,11 @@ import org.apache.wicket.ajax.AjaxRequestTarget
 import pl.marpiec.socnet.di.Factory
 import pl.marpiec.socnet.model.{UserProfile, User}
 import pl.marpiec.socnet.web.wicket.{SecureAjaxButton, SecureForm}
-import org.apache.wicket.markup.html.form.{DropDownChoice, CheckBox, TextArea, TextField}
-import socnet.constant.Month
-import scala.collection.JavaConversions._
-import pl.marpiec.socnet.web.page.registerPage.RegisterFormValidator
-import pl.marpiec.socnet.web.page.HomePage
+
 import pl.marpiec.socnet.web.page.editUserProfilePage.model.{JobExperienceFormModelValidator, JobExperienceFormModel}
-import org.apache.wicket.model.{Model, PropertyModel, CompoundPropertyModel}
+import org.apache.wicket.model.{PropertyModel, CompoundPropertyModel}
+import org.apache.wicket.markup.html.form._
+import socnet.constant.{Province, Month}
 
 /**
  * ...
@@ -77,8 +76,8 @@ class JobExperiencePanel(id: String, val user: User, val userProfile: UserProfil
       add(new TextField[String]("fromYear"))
       add(new TextField[String]("toYear"))
 
-      add(new DropDownChoice[Month.Value]("fromMonth", Month.values.toList))
-      add(new DropDownChoice[Month.Value]("toMonth", Month.values.toList))
+      add(new DropDownChoice[Month]("fromMonth", Month.values, new ChoiceRenderer[Month]("translation")))
+      add(new DropDownChoice[Month]("toMonth", Month.values, new ChoiceRenderer[Month]("translation")))
 
       addCancelButton
       addSubmitButton

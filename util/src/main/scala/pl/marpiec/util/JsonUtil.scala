@@ -1,8 +1,9 @@
 package pl.marpiec.util
 
 import com.google.gson._
-import json.{OptionSerializer, InstantTypeConverter, LocalDateTypeConverter, LocalDateTimeTypeConverter}
+import json._
 import org.joda.time.{Instant, LocalDate, LocalDateTime}
+import senum.SEnum
 
 /**
  * @author Marcin Pieciukiewicz
@@ -18,6 +19,7 @@ class JsonUtil {
     gsonBuilder.registerTypeAdapter(classOf[LocalDate], new LocalDateTypeConverter)
     gsonBuilder.registerTypeAdapter(classOf[Instant], new InstantTypeConverter)
     gsonBuilder.registerTypeAdapter(classOf[Option[Any]], new OptionSerializer)
+    gsonBuilder.registerTypeHierarchyAdapter(classOf[SEnum[Any]], new SEnumTypeConverter)
     gsonBuilder.create
   }
 

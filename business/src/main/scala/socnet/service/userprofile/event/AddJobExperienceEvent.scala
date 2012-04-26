@@ -21,9 +21,11 @@ class AddJobExperienceEvent(val jobExperienceParam: JobExperienceParam,
     val jobExperience = new JobExperience
     jobExperience.id = jobExperienceId
     jobExperience.companyName = jobExperienceParam.companyName
-    jobExperience.startDateOption = jobExperienceParam.startDateOption
-    jobExperience.endDateOption = jobExperienceParam.endDateOption
-    jobExperience.durationMonthsOption = jobExperienceParam.durationMonthsOption
+    jobExperience.fromYear = jobExperienceParam.fromYear
+    jobExperience.fromMonthOption = jobExperienceParam.fromMonthOption
+    jobExperience.toYear = jobExperienceParam.toYear
+    jobExperience.toMonthOption = jobExperienceParam.toMonthOption
+    jobExperience.currentJob = jobExperience.currentJob
     jobExperience.position = jobExperienceParam.position
     jobExperience.description = jobExperienceParam.description
 

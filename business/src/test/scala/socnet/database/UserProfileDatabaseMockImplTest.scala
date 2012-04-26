@@ -7,6 +7,7 @@ import pl.marpiec.socnet.model.userprofile.Education
 import org.joda.time.LocalDate
 import org.testng.Assert._
 import pl.marpiec.cqrs._
+import socnet.constant.Province
 
 /**
  * ...
@@ -27,7 +28,7 @@ class UserProfileDatabaseMockImplTest {
     profile.id = profileId
     profile.userId = userId
     profile.city = "Warszawa"
-    profile.province = "Mazowieckie"
+    profile.province = Province.MAZOWIECKIE
     profile.wwwPage = "socnet.pl"
 
     var education = new Education

@@ -3,6 +3,7 @@ package pl.marpiec.socnet.web.page.editUserProfilePage.model
 import pl.marpiec.socnet.service.userprofile.input.PersonalSummary
 import pl.marpiec.socnet.web.wicket.SecureFormModel
 import pl.marpiec.socnet.model.UserProfile
+import socnet.constant.Province
 
 /**
  * @author Marcin Pieciukiewicz
@@ -11,7 +12,7 @@ import pl.marpiec.socnet.model.UserProfile
 class PersonalSummaryFormModel extends SecureFormModel {
   var professionalTitle: String = _
   var city: String = _
-  var province: String = _
+  var province: Province = _
   var wwwPage: String = _
   var blogPage: String = _
   var summary: String = _

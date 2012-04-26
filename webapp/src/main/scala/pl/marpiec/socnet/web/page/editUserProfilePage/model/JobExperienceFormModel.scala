@@ -5,6 +5,7 @@ import pl.marpiec.socnet.web.wicket.SecureFormModel
 import pl.marpiec.util.UID
 import pl.marpiec.socnet.model.userprofile.JobExperience
 import socnet.constant.Month
+import org.joda.time.LocalDate
 
 /**
  * ...
@@ -20,10 +21,10 @@ class JobExperienceFormModel extends SecureFormModel {
   
   var currentJob: Boolean = false
 
-  var fromMonth: Month.Value = null
+  var fromMonth: Month = null
   var fromYear: Int = _
   
-  var toMonth: Month.Value = null
+  var toMonth: Month = null
   var toYear: Int = _
 
   def createJobExperienceParam:JobExperienceParam = {
@@ -32,6 +33,18 @@ class JobExperienceFormModel extends SecureFormModel {
     param.companyName = this.companyName
     param.position = this.position
     param.description = this.description
+    param.fromYear = this.fromYear
+    param.fromMonthOption = Option(this.fromMonth)
+    param.currentJob = this.currentJob
+    if(currentJob) {
+      param.toYear = 0
+      param.toMonthOption = None
+    } else {
+      param.toYear = this.toYear
+      param.toMonthOption = Option(this.toMonth)
+    }
+
+    
     param
   }
 
@@ -40,6 +53,11 @@ class JobExperienceFormModel extends SecureFormModel {
     companyName = ""
     position = ""
     description = ""
+    currentJob = false
+    fromMonth = null
+    fromYear = 0
+    toMonth = null
+    toYear = 0
   }
 }
 
@@ -56,6 +74,18 @@ object JobExperienceFormModel {
     to.companyName = from.companyName
     to.position = from.position
     to.description = from.description
+    to.currentJob = from.currentJob
+    
+    to.fromYear = from.fromYear
+    to.fromMonth = from.fromMonthOption.getOrElse(null)
+    
+    if(from.currentJob) {
+      to.toYear = 0
+      to.toMonth = null
+    } else {
+      to.toYear = from.toYear
+      to.toMonth = from.toMonthOption.getOrElse(null)
+    }
   }
 
   def copy(to:JobExperience, from:JobExperienceFormModel) {
@@ -63,5 +93,15 @@ object JobExperienceFormModel {
     to.companyName = from.companyName
     to.position = from.position
     to.description = from.description
+    to.fromYear = from.fromYear
+    to.fromMonthOption = Option(from.fromMonth)
+    to.currentJob = from.currentJob
+    if(to.currentJob) {
+      to.toYear = 0
+      to.toMonthOption = None
+    } else {
+      to.toYear = from.toYear
+      to.toMonthOption = Option(from.toMonth)
+    }
   }
 }

@@ -1,5 +1,7 @@
 package pl.marpiec.socnet.service.userprofile.input
 
+import socnet.constant.Province
+
 
 /**
  * @author Marcin Pieciukiewicz
@@ -8,7 +10,7 @@ package pl.marpiec.socnet.service.userprofile.input
 class PersonalSummary {
   var professionalTitle: String = _
   var city: String = _
-  var province: String = _
+  var province: Province = _
   var wwwPage: String = _
   var blogPage: String = _
   var summary: String = _

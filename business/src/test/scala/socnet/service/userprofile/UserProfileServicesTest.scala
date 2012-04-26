@@ -7,6 +7,8 @@ import pl.marpiec.cqrs._
 import pl.marpiec.socnet.model.UserProfile
 import org.joda.time.LocalDate
 import pl.marpiec.util.UID
+import scala.Option
+import socnet.constant.{Province, Month}
 
 /**
  * @author Marcin Pieciukiewicz
@@ -31,7 +33,7 @@ class UserProfileServicesTest {
 
     personalSummary.professionalTitle = "Mr. "
     personalSummary.city = "Warszawa"
-    personalSummary.province = "mazowieckie"
+    personalSummary.province = Province.MAZOWIECKIE
     personalSummary.blogPage = ""
     personalSummary.wwwPage = "socnet.pl"
 
@@ -64,8 +66,12 @@ class UserProfileServicesTest {
 
     jobExperienceParam.companyName = "socnet"
     jobExperienceParam.description = "coding and programming"
-    jobExperienceParam.startDateOption = Option[LocalDate](new LocalDate(2002, 10, 1))
-    jobExperienceParam.endDateOption = Option[LocalDate](new LocalDate(2006, 3, 1))
+    jobExperienceParam.fromYear = 2002
+    jobExperienceParam.fromMonthOption = Option(Month.OCTOBER)
+
+    jobExperienceParam.toYear = 2006
+    jobExperienceParam.toMonthOption = Option(Month.MARCH)
+
     jobExperienceParam.position = "Programmer"
     val jobExperienceUid = uidGenerator.nextUid
     jobExperienceParam.id = jobExperienceUid
@@ -78,8 +84,10 @@ class UserProfileServicesTest {
     var experience = userProfile.jobExperience.head
     assertEquals(experience.companyName, "socnet")
     assertEquals(experience.description, "coding and programming")
-    assertEquals(experience.startDateOption.get, new LocalDate(2002, 10, 1))
-    assertEquals(experience.endDateOption.get, new LocalDate(2006, 3, 1))
+    assertEquals(experience.fromYear, 2002)
+    assertEquals(experience.fromMonthOption.get, Month.OCTOBER)
+    assertEquals(experience.toYear, 2006)
+    assertEquals(experience.toMonthOption.get, Month.MARCH)
     assertEquals(experience.position, "Programmer")
 
 
@@ -88,8 +96,11 @@ class UserProfileServicesTest {
     jobExperienceParam.id = jobExperienceUid
     jobExperienceParam.companyName = "socnet"
     jobExperienceParam.description = "coding and programming"
-    jobExperienceParam.startDateOption = Option[LocalDate](new LocalDate(2002, 10, 1))
-    jobExperienceParam.endDateOption = Option[LocalDate](new LocalDate(2006, 3, 1))
+    jobExperienceParam.fromYear = 2002
+    jobExperienceParam.fromMonthOption = Option(Month.OCTOBER)
+
+    jobExperienceParam.toYear = 2006
+    jobExperienceParam.toMonthOption = Option(Month.MARCH)
     jobExperienceParam.position = "CTO"
 
     userProfileCommand.updateJobExperience(new UID(0), userProfile.id, userProfile.version, jobExperienceParam)
@@ -100,8 +111,10 @@ class UserProfileServicesTest {
     experience = userProfile.jobExperience.head
     assertEquals(experience.companyName, "socnet")
     assertEquals(experience.description, "coding and programming")
-    assertEquals(experience.startDateOption.get, new LocalDate(2002, 10, 1))
-    assertEquals(experience.endDateOption.get, new LocalDate(2006, 3, 1))
+    assertEquals(experience.fromYear, 2002)
+    assertEquals(experience.fromMonthOption.get, Month.OCTOBER)
+    assertEquals(experience.toYear, 2006)
+    assertEquals(experience.toMonthOption.get, Month.MARCH)
     assertEquals(experience.position, "CTO")
 
     userProfileCommand.removeJobExperience(new UID(0), userProfile.id, userProfile.version, jobExperienceUid)

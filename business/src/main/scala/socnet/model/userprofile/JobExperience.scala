@@ -1,7 +1,7 @@
 package pl.marpiec.socnet.model.userprofile
 
-import org.joda.time.LocalDate
 import pl.marpiec.util.UID
+import socnet.constant.Month
 
 /**
  * ...
@@ -11,9 +11,15 @@ import pl.marpiec.util.UID
 class JobExperience {
   var id:UID = _
   var companyName: String = _
-  var startDateOption: Option[LocalDate] = None
-  var endDateOption: Option[LocalDate] = None
-  var durationMonthsOption: Option[Int] = None
   var position: String = _
+
+  var currentJob: Boolean = false
+
+  var fromMonthOption: Option[Month] = None
+  var fromYear: Int = _
+
+  var toMonthOption: Option[Month] = None
+  var toYear: Int = _
+
   var description: String = _
 }

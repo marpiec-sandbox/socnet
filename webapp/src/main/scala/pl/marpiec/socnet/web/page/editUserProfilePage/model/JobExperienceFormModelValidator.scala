@@ -31,7 +31,7 @@ object JobExperienceFormModelValidator {
   }
 
   private def validateYearTo(result: ValidationResult, model: JobExperienceFormModel) {
-    if (!model.currentJob && model.toYear <= 1900 || model.toYear >= 2040) {
+    if (!model.currentJob && (model.toYear <= 1900 || model.toYear >= 2040)) {
       result.addError("To year must be between 1900 and 2040")
     }
   }
