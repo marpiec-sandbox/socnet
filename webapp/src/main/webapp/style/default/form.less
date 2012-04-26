@@ -11,7 +11,7 @@ form {
         color: @validationErrorColor;
     }
 
-    div.input {
+    div.formRow {
         position: relative;
         border-radius: 4px;
         border: 1px solid white;
@@ -49,6 +49,13 @@ form {
             border-radius: 2px;
         }
 
+        div.validatorRow {
+            position: relative;
+            span.validatorMessage {
+                top: 0px;
+                left: @defaultFormInputWidth + 6px;
+            }
+        }
 
         &.invalid, div.invalid {
             span.label {
@@ -66,20 +73,20 @@ form {
             border: 1px solid @formInputBorderColor;
         }
 
-        &.invalid:hover {
+        &.invalid:hover, div.invalid:hover {
             span.validatorMessage {
                 opacity: 0.5;
             }
         }
 
-        &.focused.invalid, &.invalid:hover {
+        &.focused.invalid, &.invalid:hover, div.focused.invalid, div.invalid:hover {
             span.validatorMessage {
                 display: block;
                 padding: 2px 5px;
             }
         }
 
-        &.focused.invalid:hover {
+        &.focused.invalid:hover, div.focused.invalid:hover {
             span.validatorMessage {
                 opacity: 1;
             }

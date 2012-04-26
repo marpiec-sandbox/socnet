@@ -6,4 +6,5 @@ package pl.marpiec.socnet.web.wicket
 
 trait SecureFormModel {
   var sessionToken:String = _
+  var warningMessage:String = _
 }

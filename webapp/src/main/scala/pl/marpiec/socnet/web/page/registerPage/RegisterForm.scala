@@ -42,7 +42,7 @@ class RegisterForm(id: String) extends Panel(id) {
           userCommand.registerUser(model.firstName, model.lastName, model.email, model.password)
           setResponsePage(classOf[HomePage])
         } else {
-          warningMessage.setObject(validationResult.errors.toString())
+          warningMessage.setObject("Formularz nie zosta? wype?niony poprawnie")
         }
 
       } catch {

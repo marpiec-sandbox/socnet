@@ -1,4 +1,7 @@
-var validatorGroups = ["requiredValidator", "emailValidator", "urlValidator", "numberValidator", "passwordValidator", "passwordRepeatValidator"]
+var validatorGroups = ["requiredValidator",
+    "emailValidator", "urlValidator",
+    "numberValidator", "stringValidator",
+    "passwordValidator", "passwordRepeatValidator"]
 
 
 function passwordValidator(jqElement){
@@ -72,18 +75,38 @@ function numberValidator(jqElement){
     }
 }
 
+function stringValidator(jqElement){
+    var value = jqElement.val();
+    var constraints = eval('(' + jqElement.attr('alt') + ')');
+    if(validateString(value, constraints)){
+        hideValidationMessage(jqElement);
+    } else {
+        jqElement.data("valResult", false);
+        showValidationMessage(jqElement, "Warto?? wymagana");
+    }
+}
+
 function getMessageContainer(element){
     return element.parent().find(".validatorMessage");
 }
 
 function hideValidationMessage(element){
     getMessageContainer(element).html("");
-    element.parents("div.input").removeClass("invalid");
+    element.parent("div").removeClass("invalid");
 }
 
 function showValidationMessage(element, message){
-    getMessageContainer(element).html(message);
-    element.parents("div.input").addClass("invalid");
+
+    var msg = message;
+    if(element.attr("alt") !== undefined) {
+       var attr = eval("("+element.attr("alt")+")");
+       if(attr.msg !== undefined) {
+           msg = attr.msg;
+       }
+    }
+
+    getMessageContainer(element).html(msg);
+    element.parent("div").addClass("invalid");
 }
 
 function isElementValid(jqElement){
@@ -158,12 +181,14 @@ function elementValidator(){
     }
 
     clearValidationResult(jqThis);
+    
+    if(isVisible(jqThis)) {
+        for(var p=0; p<validators.length; p++){
+            validator = validators[p];
 
-    for(var p=0; p<validators.length; p++){
-        validator = validators[p];
-
-        if(isElementValid(jqThis)){
-            validator(jqThis);
+            if(isElementValid(jqThis)){
+                validator(jqThis);
+            }
         }
     }
 }
@@ -220,6 +245,11 @@ function initValidation(formSelector, submitButtonSelector) {
 
         jqForm.find(".numberValidator").each(function(){
             addValidator(jQuery(this),numberValidator);
+            jQuery(this).blur(elementValidator);
+        });
+
+        jqForm.find(".stringValidator").each(function(){
+            addValidator(jQuery(this),stringValidator);
             jQuery(this).blur(elementValidator);
         });
 

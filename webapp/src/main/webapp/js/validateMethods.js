@@ -25,6 +25,19 @@ function validateNumber(number, constraints) {
     return true;
 }
 
+function validateString(value, constraints) {
+
+    if(constraints !== undefined) {
+        if(constraints.min != undefined && value.length < constraints.min) {
+            return false;
+        }
+        if(constraints.min != undefined && value.length > constraints.max) {
+            return false;
+        }
+    }
+    return true;
+}
+
 function validatePassword(password) {
     return password !=null && password.length >=5 && password.length <= 64;
 }

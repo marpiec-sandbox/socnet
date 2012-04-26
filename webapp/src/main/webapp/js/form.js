@@ -11,9 +11,11 @@ function initForm(formSelector) {
 function initInput() {
     var jqThis = $(this)
     jqThis.focus(function() {
-        jqThis.parents("div.input").addClass("focused")
+        jqThis.parent().addClass("focused")
+        jqThis.parents("div.formRow").addClass("focused")
     })
     jqThis.blur(function() {
-        jqThis.parents("div.input").removeClass("focused")
+        jqThis.parent().removeClass("focused")
+        jqThis.parents("div.formRow").removeClass("focused")
     })
 }

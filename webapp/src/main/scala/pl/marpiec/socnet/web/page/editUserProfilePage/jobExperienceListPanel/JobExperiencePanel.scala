@@ -8,12 +8,14 @@ import org.apache.wicket.ajax.markup.html.AjaxFallbackLink
 import org.apache.wicket.ajax.AjaxRequestTarget
 import pl.marpiec.socnet.di.Factory
 import pl.marpiec.socnet.model.{UserProfile, User}
-import pl.marpiec.socnet.web.page.editUserProfilePage.model.JobExperienceFormModel
 import pl.marpiec.socnet.web.wicket.{SecureAjaxButton, SecureForm}
-import org.apache.wicket.model.{PropertyModel, CompoundPropertyModel}
 import org.apache.wicket.markup.html.form.{DropDownChoice, CheckBox, TextArea, TextField}
 import socnet.constant.Month
 import scala.collection.JavaConversions._
+import pl.marpiec.socnet.web.page.registerPage.RegisterFormValidator
+import pl.marpiec.socnet.web.page.HomePage
+import pl.marpiec.socnet.web.page.editUserProfilePage.model.{JobExperienceFormModelValidator, JobExperienceFormModel}
+import org.apache.wicket.model.{Model, PropertyModel, CompoundPropertyModel}
 
 /**
  * ...
@@ -67,6 +69,7 @@ class JobExperiencePanel(id: String, val user: User, val userProfile: UserProfil
 
 
     def buildSchema() {
+      add(new Label("warningMessage"))
       add(new TextField[String]("companyName"))
       add(new TextField[String]("position"))
       add(new TextArea[String]("description"))
@@ -99,18 +102,24 @@ class JobExperiencePanel(id: String, val user: User, val userProfile: UserProfil
       add(new SecureAjaxButton[JobExperienceFormModel]("submitButton") {
         def onSecureSubmit(target: AjaxRequestTarget, formModel: JobExperienceFormModel) {
 
-          saveChangesToExperience(formModel)
-          copyDataIntoJobExperienceAndIncrementVersion(formModel)
 
-          edit = false
+          val validationResult = JobExperienceFormModelValidator.validate(formModel)
+
+          if (validationResult.isValid) {
+            saveChangesToExperience(formModel)
+            copyDataIntoJobExperienceAndIncrementVersion(formModel)
+
+            edit = false
+          } else {
+            formModel.warningMessage = "Formularz nie zosta? wype?niony poprawnie"
+          }
+
+
           target.add(JobExperiencePanel.this)
         }
       })
     }
-
-
   })
-
 
   def copyDataIntoJobExperienceAndIncrementVersion(formModel: JobExperienceFormModel) {
     JobExperienceFormModel.copy(jobExperience, formModel)
