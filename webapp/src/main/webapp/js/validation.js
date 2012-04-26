@@ -63,7 +63,8 @@ function requiredValidator(jqElement){
 
 function numberValidator(jqElement){
     var value = jqElement.val();
-    if(validateNumber(value)){
+    var constraints = eval('(' + jqElement.attr('alt') + ')');
+    if(validateNumber(value, constraints)){
         hideValidationMessage(jqElement);
     } else {
         jqElement.data("valResult", false);
@@ -77,12 +78,12 @@ function getMessageContainer(element){
 
 function hideValidationMessage(element){
     getMessageContainer(element).html("");
-    element.parent().removeClass("invalid")
+    element.parents("div.input").removeClass("invalid");
 }
 
 function showValidationMessage(element, message){
     getMessageContainer(element).html(message);
-    element.parent().addClass("invalid")
+    element.parents("div.input").addClass("invalid");
 }
 
 function isElementValid(jqElement){

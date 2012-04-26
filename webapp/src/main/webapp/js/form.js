@@ -3,6 +3,7 @@ function initForm(formSelector) {
         var jqForm = jQuery(formSelector);
         jqForm.find("input").each(initInput)
         jqForm.find("textarea").each(initInput)
+        jqForm.find("select").each(initInput)
     })
 }
 

@@ -6,12 +6,14 @@ import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.markup.html.WebMarkupContainer
 import org.apache.wicket.ajax.markup.html.AjaxFallbackLink
 import org.apache.wicket.ajax.AjaxRequestTarget
-import org.apache.wicket.markup.html.form.{TextArea, TextField}
 import pl.marpiec.socnet.di.Factory
 import pl.marpiec.socnet.model.{UserProfile, User}
 import pl.marpiec.socnet.web.page.editUserProfilePage.model.JobExperienceFormModel
 import pl.marpiec.socnet.web.wicket.{SecureAjaxButton, SecureForm}
 import org.apache.wicket.model.{PropertyModel, CompoundPropertyModel}
+import org.apache.wicket.markup.html.form.{DropDownChoice, CheckBox, TextArea, TextField}
+import socnet.constant.Month
+import scala.collection.JavaConversions._
 
 /**
  * ...
@@ -68,6 +70,12 @@ class JobExperiencePanel(id: String, val user: User, val userProfile: UserProfil
       add(new TextField[String]("companyName"))
       add(new TextField[String]("position"))
       add(new TextArea[String]("description"))
+      add(new CheckBox("currentJob"))
+      add(new TextField[String]("fromYear"))
+      add(new TextField[String]("toYear"))
+
+      add(new DropDownChoice[Month.Value]("fromMonth", Month.values.toList))
+      add(new DropDownChoice[Month.Value]("toMonth", Month.values.toList))
 
       addCancelButton
       addSubmitButton

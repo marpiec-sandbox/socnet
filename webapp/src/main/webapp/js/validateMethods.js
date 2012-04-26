@@ -9,8 +9,20 @@ function validateUrl(url) {
 }
 
 
-function validateNumber(number) {
-    return !isNaN(number);
+function validateNumber(number, constraints) {
+    if(isNaN(number)) {
+        return false;
+    }
+
+    if(constraints !== undefined) {
+        if(constraints.min != undefined && number < constraints.min) {
+            return false;
+        }
+        if(constraints.min != undefined && number > constraints.max) {
+            return false;
+        }
+    }
+    return true;
 }
 
 function validatePassword(password) {

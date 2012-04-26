@@ -4,6 +4,7 @@ import pl.marpiec.socnet.service.userprofile.input.JobExperienceParam
 import pl.marpiec.socnet.web.wicket.SecureFormModel
 import pl.marpiec.util.UID
 import pl.marpiec.socnet.model.userprofile.JobExperience
+import socnet.constant.Month
 
 /**
  * ...
@@ -16,6 +17,14 @@ class JobExperienceFormModel extends SecureFormModel {
   var companyName: String = ""
   var position: String = ""
   var description: String = ""
+  
+  var currentJob: Boolean = false
+
+  var fromMonth: Month.Value = null
+  var fromYear: Int = _
+  
+  var toMonth: Month.Value = null
+  var toYear: Int = _
 
   def createJobExperienceParam:JobExperienceParam = {
     val param = new JobExperienceParam
