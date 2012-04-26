@@ -8,18 +8,41 @@ import org.apache.wicket.markup.html.WebMarkupContainer
 import org.apache.wicket.ajax.markup.html.AjaxFallbackLink
 import org.apache.wicket.ajax.AjaxRequestTarget
 import pl.marpiec.socnet.di.Factory
-import pl.marpiec.socnet.model.{UserProfile, User}
 import pl.marpiec.socnet.web.wicket.{SecureAjaxButton, SecureForm}
 
 import pl.marpiec.socnet.web.page.editUserProfilePage.model.{JobExperienceFormModelValidator, JobExperienceFormModel}
-import org.apache.wicket.model.{PropertyModel, CompoundPropertyModel}
+import socnet.constant.Month
 import org.apache.wicket.markup.html.form._
-import socnet.constant.{Province, Month}
+import org.apache.wicket.model._
+import pl.marpiec.socnet.model.{User, UserProfile}
 
 /**
  * ...
  * @author Marcin Pieciukiewicz
  */
+
+class ExperienceDateModel(val jobExperience: JobExperience) extends AbstractReadOnlyModel[String] {
+  def getObject: String = {
+    val from = formatDate(jobExperience.fromYear, jobExperience.fromMonthOption)
+    if (jobExperience.currentJob) {
+      "od "+from
+    } else {
+      val to = formatDate(jobExperience.toYear, jobExperience.toMonthOption)
+      "od "+from+" do "+to
+    }
+  }
+
+  private def formatDate(year:Int, monthOption:Option[Month]):String = {
+    if (monthOption.isDefined) {
+      monthOption.get.translation + " " + year
+    } else if (year > 0){
+      year.toString
+    } else {
+      ""
+    }
+  }
+}
+
 
 class JobExperiencePanel(id: String, val user: User, val userProfile: UserProfile, val jobExperience: JobExperience)
   extends Panel(id) {
@@ -34,6 +57,9 @@ class JobExperiencePanel(id: String, val user: User, val userProfile: UserProfil
     add(new Label("companyName", new PropertyModel[String](jobExperience, "companyName")))
     add(new Label("position", new PropertyModel[String](jobExperience, "position")))
     add(new Label("description", new PropertyModel[String](jobExperience, "description")))
+
+    add(new Label("experienceDate", new ExperienceDateModel(jobExperience)))
+
 
     add(new AjaxFallbackLink("editButton") {
       def onClick(target: AjaxRequestTarget) {
@@ -73,8 +99,8 @@ class JobExperiencePanel(id: String, val user: User, val userProfile: UserProfil
       add(new TextField[String]("position"))
       add(new TextArea[String]("description"))
       add(new CheckBox("currentJob"))
-      add(new TextField[String]("fromYear"))
-      add(new TextField[String]("toYear"))
+      add(new TextField[Int]("fromYear"))
+      add(new TextField[Int]("toYear"))
 
       add(new DropDownChoice[Month]("fromMonth", Month.values, new ChoiceRenderer[Month]("translation")))
       add(new DropDownChoice[Month]("toMonth", Month.values, new ChoiceRenderer[Month]("translation")))
