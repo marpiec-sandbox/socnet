@@ -33,10 +33,14 @@ class JobExperienceListPanel(id: String, val user: User, val userProfile: UserPr
 
   //schema
   val jobExperienceList = addJobExperienceList
+
   val addJobExperienceForm:JobExperienceFormPanel = addAndReturn(new JobExperienceFormPanel("addJobExperienceForm", true, new JobExperience) {
+
+
+
     def onFormSubmit(target: AjaxRequestTarget, formModel: JobExperienceFormModel) {
       saveNewExperience(formModel)
-
+      closeAllEditedExperiences()
       formModel.clear()
       hideAddExperienceForm
       target.add(JobExperienceListPanel.this)
@@ -100,6 +104,13 @@ class JobExperienceListPanel(id: String, val user: User, val userProfile: UserPr
     val item: AbstractItem = new AbstractItem(experienceList.newChildId());
     item.add(new JobExperiencePanel("content", user, userProfile, experience))
     experienceList.add(item);
+  }
+
+  def closeAllEditedExperiences() {
+    for (p <- 0 until jobExperienceList.size()) {
+      val panel = jobExperienceList.get(p).asInstanceOf[AbstractItem].get(0).asInstanceOf[JobExperiencePanel]
+      panel.switchToPreviewMode
+    }
   }
 
   def addJobExperienceList(): RepeatingView = {
