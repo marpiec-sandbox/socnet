@@ -21,20 +21,31 @@ class JobExperienceListPanel(id: String, val user: User, val userProfile: UserPr
                              val jobExperience: ListBuffer[JobExperience]) extends Panel(id) {
 
 
-  //configure
-  setOutputMarkupId(true)
-
-
   //schema
   val jobExperienceList = addJobExperienceList
-
-
-  var jobExperienceAdditionPanel: JobExperienceAdditionPanel = addAndReturn(new JobExperienceAdditionPanel("jobExperienceAdditionPanel", this, user, userProfile));
-
+  var jobExperienceAdditionPanel = addJobExperienceAdditionPanel
   val showNewExperienceFormLink = addShowNewExperienceFormLink
 
 
   //methods
+
+  def addJobExperienceList(): RepeatingView = {
+    addAndReturn(new RepeatingView("repeating") {
+      for (experience <- jobExperience) {
+        addExperienceToList(this, experience)
+      }
+    })
+  }
+
+  def addExperienceToList(experienceList: RepeatingView, experience: JobExperience): MarkupContainer = {
+    val item: AbstractItem = new AbstractItem(experienceList.newChildId());
+    item.add(new JobExperiencePanel("content", user, userProfile, experience))
+    experienceList.add(item);
+  }
+
+  def addJobExperienceAdditionPanel():JobExperienceAdditionPanel = {
+    addAndReturn(new JobExperienceAdditionPanel("jobExperienceAdditionPanel", this, user, userProfile));
+  }
 
   def addShowNewExperienceFormLink(): AjaxLink[String] = {
     addAndReturn(new AjaxLink[String]("showNewExperienceFormLink") {
@@ -59,23 +70,10 @@ class JobExperienceListPanel(id: String, val user: User, val userProfile: UserPr
     showNewExperienceFormLink.setVisible(false)
   }
 
-  def setNewJobExperienceAdditionPanel(panel: JobExperienceAdditionPanel) {
+  def changeCurrentJobExperienceAdditionPanel(panel: JobExperienceAdditionPanel) {
     jobExperienceAdditionPanel = panel
   }
 
-  def addJobExperienceList(): RepeatingView = {
-    addAndReturn(new RepeatingView("repeating") {
-      for (experience <- jobExperience) {
-        addExperience(this, experience)
-      }
-    })
-  }
-
-  def addExperience(experienceList: RepeatingView, experience: JobExperience): MarkupContainer = {
-    val item: AbstractItem = new AbstractItem(experienceList.newChildId());
-    item.add(new JobExperiencePanel("content", user, userProfile, experience))
-    experienceList.add(item);
-  }
 
 
   private def addAndReturn[E <: Component](child: E): E = {

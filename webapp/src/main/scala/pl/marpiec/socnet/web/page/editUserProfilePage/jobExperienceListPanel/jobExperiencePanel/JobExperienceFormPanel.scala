@@ -1,4 +1,4 @@
-package pl.marpiec.socnet.web.page.editUserProfilePage.jobExperienceListPanel
+package pl.marpiec.socnet.web.page.editUserProfilePage.jobExperienceListPanel.jobExperiencePanel
 
 import org.apache.wicket.model.CompoundPropertyModel
 import org.apache.wicket.markup.html.basic.Label
@@ -25,6 +25,7 @@ abstract class JobExperienceFormPanel(id: String, newExperience: Boolean, val jo
   setVisible(false)
 
   def onFormSubmit(target: AjaxRequestTarget, formModel: JobExperienceFormModel)
+
   def onFormCanceled(target: AjaxRequestTarget, formModel: JobExperienceFormModel)
 
 

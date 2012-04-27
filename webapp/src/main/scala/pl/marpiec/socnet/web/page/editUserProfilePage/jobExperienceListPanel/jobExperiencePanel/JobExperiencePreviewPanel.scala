@@ -1,4 +1,4 @@
-package pl.marpiec.socnet.web.page.editUserProfilePage.jobExperienceListPanel
+package pl.marpiec.socnet.web.page.editUserProfilePage.jobExperienceListPanel.jobExperiencePanel
 
 import org.apache.wicket.markup.html.panel.Panel
 import org.apache.wicket.markup.html.basic.Label
@@ -9,12 +9,13 @@ import pl.marpiec.socnet.di.Factory
 import pl.marpiec.socnet.model.userprofile.JobExperience
 import pl.marpiec.socnet.model.{User, UserProfile}
 import pl.marpiec.socnet.web.page.editUserProfilePage.model.JobExperienceDateModel
+import pl.marpiec.socnet.web.page.editUserProfilePage.jobExperienceListPanel.JobExperiencePanel
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
-class JobExperiencePreviewPanel(id:String, parent:JobExperiencePanel, val jobExperience: JobExperience,
+class JobExperiencePreviewPanel(id: String, parent: JobExperiencePanel, val jobExperience: JobExperience,
                                 val userProfile: UserProfile, val user: User) extends Panel(id) {
 
   val userProfileCommand = Factory.userProfileCommand

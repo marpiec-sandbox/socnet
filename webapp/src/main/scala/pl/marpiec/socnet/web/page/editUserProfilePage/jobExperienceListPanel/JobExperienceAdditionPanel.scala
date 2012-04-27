@@ -1,14 +1,15 @@
 package pl.marpiec.socnet.web.page.editUserProfilePage.jobExperienceListPanel
 
+import jobExperiencePanel.JobExperienceFormPanel
 import pl.marpiec.socnet.model.userprofile.JobExperience
 import org.apache.wicket.ajax.AjaxRequestTarget
-import pl.marpiec.socnet.web.page.editUserProfilePage.model.JobExperienceFormModel
 import pl.marpiec.util.UID
 import org.apache.wicket.Component
 import pl.marpiec.socnet.web.page.editUserProfilePage.JobExperienceListPanel
 import pl.marpiec.socnet.di.Factory
 import pl.marpiec.socnet.model.{UserProfile, User}
 import org.apache.wicket.markup.html.panel.{EmptyPanel, Panel}
+import pl.marpiec.socnet.web.page.editUserProfilePage.model.{JobExperienceFormModelValidator, JobExperienceFormModel}
 
 /**
  * @author Marcin Pieciukiewicz
@@ -32,14 +33,26 @@ class JobExperienceAdditionPanel(id: String, val parent: JobExperienceListPanel,
     setVisible(true)
 
     def onFormSubmit(target: AjaxRequestTarget, formModel: JobExperienceFormModel) {
-      val experience = saveNewExperience(formModel)
-      showAddedExperience(experience)
-      formModel.clear()
-      parent.setNewJobExperienceAdditionPanel(addAndReturn(new JobExperienceAdditionPanel("jobExperienceAdditionPanel", parent, user, userProfile)))
-      this.setVisible(false)
-      parent.hideAddExperienceForm
+
+      formModel.warningMessage = ""
+      val validationResult = JobExperienceFormModelValidator.validate(formModel)
+
+      if (validationResult.isValid) {
+        val experience = saveNewExperience(formModel)
+        showAddedExperience(experience)
+        changeCurrentJobExperienceAdditionPanel
+
+        formModel.clear()
+        this.setVisible(false)
+        parent.hideAddExperienceForm
+        target.add(parent.showNewExperienceFormLink)
+
+      } else {
+        formModel.warningMessage = "Formularz nie zostal wypelniony poprawnie"
+      }
+
       target.add(JobExperienceAdditionPanel.this)
-      target.add(parent.showNewExperienceFormLink)
+
     }
 
     def onFormCanceled(target: AjaxRequestTarget, formModel: JobExperienceFormModel) {
@@ -49,6 +62,10 @@ class JobExperienceAdditionPanel(id: String, val parent: JobExperienceListPanel,
       target.add(parent.showNewExperienceFormLink)
     }
   })
+
+  def changeCurrentJobExperienceAdditionPanel {
+    parent.changeCurrentJobExperienceAdditionPanel(addAndReturn(new JobExperienceAdditionPanel("jobExperienceAdditionPanel", parent, user, userProfile)))
+  }
   
   def showAddedExperience(experience: JobExperience) {
     addOrReplace(new JobExperiencePanel("jobExperiencePanel", user, userProfile, experience))

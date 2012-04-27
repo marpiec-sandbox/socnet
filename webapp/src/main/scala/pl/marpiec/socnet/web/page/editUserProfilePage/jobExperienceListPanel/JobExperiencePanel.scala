@@ -1,5 +1,6 @@
 package pl.marpiec.socnet.web.page.editUserProfilePage.jobExperienceListPanel
 
+import jobExperiencePanel.{JobExperienceFormPanel, JobExperiencePreviewPanel}
 import pl.marpiec.socnet.model.userprofile.JobExperience
 import org.apache.wicket.markup.html.panel.Panel
 
@@ -18,40 +19,49 @@ import pl.marpiec.socnet.di.Factory
 class JobExperiencePanel(id: String, val user: User, val userProfile: UserProfile, val jobExperience: JobExperience)
   extends Panel(id) {
 
+  //dependencies
   val userProfileCommand = Factory.userProfileCommand
 
-  //sonfigure
+  //configure
   setOutputMarkupId(true)
 
-
   //schema
-  val previewPanel = addAndReturn(new JobExperiencePreviewPanel("experiencePreview", this, jobExperience, userProfile, user))
-  val editForm:JobExperienceFormPanel = addAndReturn(new JobExperienceFormPanel("experienceForm", false, jobExperience) {
-    def onFormSubmit(target: AjaxRequestTarget, formModel: JobExperienceFormModel) = {
-      val validationResult = JobExperienceFormModelValidator.validate(formModel)
-
-      if (validationResult.isValid) {
-        saveChangesToExperience(formModel)
-        copyDataIntoJobExperienceAndIncrementVersion(formModel)
-
-        switchToPreviewMode
-        formModel.warningMessage = ""
-      } else {
-        formModel.warningMessage = "Formularz nie zostal wypelniony poprawnie"
-      }
-
-      target.add(JobExperiencePanel.this)
-    }
-
-    def onFormCanceled(target: AjaxRequestTarget, formModel: JobExperienceFormModel) = {
-      revertFormData(formModel)
-      switchToPreviewMode
-      target.add(JobExperiencePanel.this)
-    }
-  })
+  val previewPanel = addPreviewPanel
+  val editForm = addEditForm
 
 
   //methods
+
+  def addPreviewPanel():JobExperiencePreviewPanel = {
+    addAndReturn(new JobExperiencePreviewPanel("experiencePreview", this, jobExperience, userProfile, user))
+  }
+
+  def addEditForm:JobExperienceFormPanel = {
+    addAndReturn(new JobExperienceFormPanel("experienceForm", false, jobExperience) {
+      def onFormSubmit(target: AjaxRequestTarget, formModel: JobExperienceFormModel) = {
+
+        formModel.warningMessage = ""
+        val validationResult = JobExperienceFormModelValidator.validate(formModel)
+
+        if (validationResult.isValid) {
+          saveChangesToExperience(formModel)
+          copyDataIntoJobExperienceAndIncrementVersion(formModel)
+          switchToPreviewMode
+        } else {
+          formModel.warningMessage = "Formularz nie zostal wypelniony poprawnie"
+        }
+
+        target.add(JobExperiencePanel.this)
+      }
+
+      def onFormCanceled(target: AjaxRequestTarget, formModel: JobExperienceFormModel) = {
+        revertFormData(formModel)
+        switchToPreviewMode
+        target.add(JobExperiencePanel.this)
+      }
+    })
+  }
+
 
   def revertFormData(formModel: JobExperienceFormModel) {
     JobExperienceFormModel.copy(formModel, jobExperience)
