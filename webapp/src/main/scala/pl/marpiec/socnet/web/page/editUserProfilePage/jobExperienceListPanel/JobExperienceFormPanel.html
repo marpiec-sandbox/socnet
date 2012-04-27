@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:wicket="http://wicket.apache.org">
+<wicket:panel>
+    <form wicket:id="form" class="horizontalForm experienceForm">
+
+        <span class="warningMessage" wicket:id="warningMessage"></span>
+
+        <input type="hidden" wicket:id="sessionToken" />
+
+        <div class="formRow">
+            <span class="label">Nazwa firmy</span>
+            <span class="validatorMessage"></span>
+            <input type="text" wicket:id="companyName"/>
+        </div>
+        <div class="formRow">
+            <span class="label">Stanowisko</span>
+            <span class="validatorMessage"></span>
+            <input type="text" wicket:id="position" class="requiredValidator stringValidator" alt="{min:3, max:100, msg:'Stanowisko jest wymagane (minimum 3 litery)'}"/>
+        </div>
+        <div class="formRow">
+            <div>
+                <input type="checkbox" wicket:id="currentJob" class="currentJob"/>
+                Aktualne miejsce pracy
+            </div>
+            <div class="validatorRow">
+                Od:
+                <select wicket:id="fromMonth"></select>
+                <input type="text" wicket:id="fromYear" class="year numberValidator" maxlength="4" alt="{min:1900, max:2040, msg:'Wymagany poprawny rok np. 2012'}"/>
+                <span class="validatorMessage"></span>
+            </div>
+            <div class="validatorRow toDate">
+                Do:
+                <select wicket:id="toMonth"></select>
+                <input type="text" wicket:id="toYear" class="year numberValidator" maxlength="4" alt="{min:1900, max:2040, msg:'Wymagany poprawny rok np. 2012'}"/>
+                <span class="validatorMessage"></span>
+            </div>
+        </div>
+        <div class="formRow">
+            <span class="label">Opis</span>
+            <span class="validatorMessage"></span>
+            <textarea wicket:id="description"/>
+        </div>
+
+        <div>
+            <input type="submit" wicket:id="cancelButton" value="anuluj"/>
+            <input type="submit" wicket:id="submitButton" value="zapisz" class="submitButton"/>
+        </div>
+
+        <script type="text/javascript">
+            function disableToDateIfCurrentJob(jqThis) {
+                var jqForm = jqThis.parents("form");
+                var checked = jqForm.find(".currentJob").attr("checked");
+                var newVisibility = checked?'hidden':'visible';
+                jqForm.find(".toDate").css({visibility:newVisibility});
+            }
+
+            initForm(".experienceForm");
+            initValidation(".experienceForm", ".submitButton");
+
+
+            jQuery(function() {
+                //disableToDateIfCurrentJob(jQuery(".experienceForm"));
+                jQuery(".experienceForm .currentJob").change(function() {
+                    disableToDateIfCurrentJob(jQuery(this))
+                });
+            })
+
+
+        </script>
+    </form>
+
+</wicket:panel>
+</html>

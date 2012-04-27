@@ -1,6 +1,6 @@
 package pl.marpiec.socnet.web.page.editUserProfilePage
 
-import jobExperienceListPanel.{AddJobExperienceForm, JobExperiencePanel}
+import jobExperienceListPanel.{JobExperienceFormPanel, AddJobExperienceForm, JobExperiencePanel}
 import org.apache.wicket.markup.html.panel.Panel
 import collection.mutable.ListBuffer
 import pl.marpiec.socnet.model.userprofile.JobExperience
@@ -30,14 +30,41 @@ class JobExperienceListPanel(id: String, val user: User, val userProfile: UserPr
   //configure
   setOutputMarkupId(true)
 
+
   //schema
   val jobExperienceList = addJobExperienceList
-  val addJobExperienceForm = addAndReturn(new AddJobExperienceForm("newJobExperienceForm", this))
+  val addJobExperienceForm:JobExperienceFormPanel = addAndReturn(new JobExperienceFormPanel("addJobExperienceForm", true, new JobExperience) {
+    def onFormSubmit(target: AjaxRequestTarget, formModel: JobExperienceFormModel) {
+      saveNewExperience(formModel)
+
+      formModel.clear()
+      hideAddExperienceForm
+      target.add(JobExperienceListPanel.this)
+    }
+
+    def onFormCanceled(target: AjaxRequestTarget, formModel: JobExperienceFormModel) {
+      formModel.clear()
+      hideAddExperienceForm
+      target.add(addJobExperienceForm)
+      target.add(showNewExperienceFormLink)
+    }
+  })
   val showNewExperienceFormLink = addShowNewExperienceFormLink
 
   //methods
 
+  def addShowNewExperienceFormLink(): AjaxLink[String] = {
+    addAndReturn(new AjaxLink[String]("showNewExperienceFormLink") {
+      setOutputMarkupId(true)
+      setOutputMarkupPlaceholderTag(true)
 
+      def onClick(target: AjaxRequestTarget) {
+        showAddExperienceForm()
+        target.add(addJobExperienceForm)
+        target.add(this)
+      }
+    })
+  }
 
   def hideAddExperienceForm() {
     addJobExperienceForm.setVisible(false)
@@ -82,19 +109,6 @@ class JobExperienceListPanel(id: String, val user: User, val userProfile: UserPr
       }
     })
   }
-
-  def addShowNewExperienceFormLink(): AjaxLink[String] = {
-    addAndReturn(new AjaxLink[String]("showNewExperienceFormLink") {
-      setOutputMarkupId(true)
-
-      def onClick(target: AjaxRequestTarget) {
-        showAddExperienceForm()
-        target.add(addJobExperienceForm)
-        target.add(this)
-      }
-    })
-  }
-
 
   private def addAndReturn[E <: Component](child: E): E = {
     add(child)
