@@ -1,14 +1,13 @@
 package pl.marpiec.socnet.web.page.editUserProfilePage.elementListPanel
 
-import pl.marpiec.socnet.web.page.editUserProfilePage.jobExperience.{JobExperienceFormPanel, JobExperiencePreviewPanel}
+import pl.marpiec.socnet.web.page.editUserProfilePage.jobExperience.{FormPanel, PreviewPanel}
 import org.apache.wicket.markup.html.panel.Panel
 
 import pl.marpiec.socnet.model.{User, UserProfile}
 import org.apache.wicket.Component
 import org.apache.wicket.ajax.AjaxRequestTarget
-import pl.marpiec.socnet.web.page.editUserProfilePage.model.{JobExperienceFormModelValidator, JobExperienceFormModel}
 import pl.marpiec.socnet.di.Factory
-import pl.marpiec.socnet.model.userprofile.JobExperience
+import pl.marpiec.socnet.web.wicket.SecureFormModel
 
 /**
  * ...
@@ -16,7 +15,7 @@ import pl.marpiec.socnet.model.userprofile.JobExperience
  */
 
 
-class ElementPanel[T](id: String, val user: User, val userProfile: UserProfile, val element: T)
+class ElementPanel[T, TM](id: String, mainListPanel:ElementListPanel[T, TM], val user: User, val userProfile: UserProfile, val element: T)
   extends Panel(id) {
 
   //dependencies
@@ -32,20 +31,21 @@ class ElementPanel[T](id: String, val user: User, val userProfile: UserProfile, 
 
   //methods
 
-  def addPreviewPanel():JobExperiencePreviewPanel = {
-    addAndReturn(new JobExperiencePreviewPanel("elementPreview", this, element.asInstanceOf[JobExperience], userProfile, user))
+  def addPreviewPanel():Panel = {
+    addAndReturn(new PreviewPanel("elementPreview", mainListPanel, this, element, userProfile))
   }
 
-  def addEditForm:JobExperienceFormPanel = {
-    addAndReturn(new JobExperienceFormPanel("elementForm", false, element.asInstanceOf[JobExperience]) {
-      def onFormSubmit(target: AjaxRequestTarget, formModel: JobExperienceFormModel) = {
+  def addEditForm:FormPanel[T, TM] = {
+    addAndReturn(new FormPanel[T, TM]("elementForm", mainListPanel, false, element) {
+      def onFormSubmit(target: AjaxRequestTarget, formModel: SecureFormModel) = {
 
         formModel.warningMessage = ""
-        val validationResult = JobExperienceFormModelValidator.validate(formModel)
+
+        val validationResult = mainListPanel.validate(formModel.asInstanceOf[TM])
 
         if (validationResult.isValid) {
-          saveChangesToElement(formModel)
-          copyDataIntoElementAndIncrementProfileVersion(formModel)
+          saveChangesToElement(formModel.asInstanceOf[TM])
+          copyDataIntoElementAndIncrementProfileVersion(formModel.asInstanceOf[TM])
           switchToPreviewMode
         } else {
           formModel.warningMessage = "Formularz nie zostal wypelniony poprawnie"
@@ -54,26 +54,27 @@ class ElementPanel[T](id: String, val user: User, val userProfile: UserProfile, 
         target.add(ElementPanel.this)
       }
 
-      def onFormCanceled(target: AjaxRequestTarget, formModel: JobExperienceFormModel) = {
+      def onFormCanceled(target: AjaxRequestTarget, formModel: TM) = {
         revertFormData(formModel)
         switchToPreviewMode
         target.add(ElementPanel.this)
       }
+
     })
   }
 
 
-  def revertFormData(formModel: JobExperienceFormModel) {
-    JobExperienceFormModel.copy(formModel, element.asInstanceOf[JobExperience])
+  def revertFormData(formModel: TM) {
+    mainListPanel.copyElementToModel(formModel, element.asInstanceOf[T])
   }
 
-  def saveChangesToElement(formModel: JobExperienceFormModel) {
+  def saveChangesToElement(formModel: TM) {
     userProfileCommand.updateJobExperience(user.id, userProfile.id, userProfile.version, formModel.createJobExperienceParam)
   }
 
 
-  def copyDataIntoElementAndIncrementProfileVersion(formModel: JobExperienceFormModel) {
-    JobExperienceFormModel.copy(element.asInstanceOf[JobExperience], formModel)
+  def copyDataIntoElementAndIncrementProfileVersion(formModel: TM) {
+    mainListPanel.copyModelToElement(element, formModel)
     userProfile.incrementVersion
   }
 
@@ -87,7 +88,7 @@ class ElementPanel[T](id: String, val user: User, val userProfile: UserProfile, 
     previewPanel.setVisible(false)
   }
 
-  def hideJobExperience {
+  def hideRemovedElement {
     this.setVisible(false)
   }
 

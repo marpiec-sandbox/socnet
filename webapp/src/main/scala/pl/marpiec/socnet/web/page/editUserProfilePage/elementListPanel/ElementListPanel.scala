@@ -8,43 +8,56 @@ import org.apache.wicket.ajax.markup.html.AjaxLink
 import org.apache.wicket.ajax.AjaxRequestTarget
 import pl.marpiec.socnet.model.{UserProfile, User}
 import org.apache.wicket.{Component, MarkupContainer}
+import org.apache.wicket.markup.html.form.Form
+import pl.marpiec.util.ValidationResult
+import pl.marpiec.socnet.web.wicket.SecureFormModel
 
 
 /**
- * ...
  * @author Marcin Pieciukiewicz
  */
 
-class ElementListPanel[T](id: String, val user: User, val userProfile: UserProfile,
-                          val elements: ListBuffer[T]) extends Panel(id) {
+abstract class ElementListPanel[T, TM](id: String, val user: User, val userProfile: UserProfile,
+                                       val elements: ListBuffer[T]) extends Panel(id) {
+
+
 
   //schema
   val elementList = addElementList
   var elementAdditionPanel = addElementAdditionPanel
   val showNewElementFormLink = addShowElementFormLink
 
-  //methods
+  //abstract methods
+  def removeElement(element: T)
+  def createNewElement: T
+  def buildFormSchema(form: Form)
+  def buildPreviewSchema(panel: Panel, element: T)
+  def validate(form: TM): ValidationResult
+  def createModelFromElement(element: T): TM
+  def copyElementToModel(model: TM, element: T)
+  def copyModelToElement(element: T, model: TM)
 
+  //methods
   def addElementList(): RepeatingView = {
     addAndReturn(new RepeatingView("repeating") {
-      for (experience <- elements) {
-        addElementToList(this, experience)
+      for (element <- elements) {
+        addElementToList(this, element)
       }
     })
   }
 
-  def addElementToList(experienceList: RepeatingView, element: T): MarkupContainer = {
-    val item: AbstractItem = new AbstractItem(experienceList.newChildId());
-    item.add(new ElementPanel[T]("content", user, userProfile, element))
-    experienceList.add(item);
+  def addElementToList(elementList: RepeatingView, element: T): MarkupContainer = {
+    val item: AbstractItem = new AbstractItem(elementList.newChildId());
+    item.add(new ElementPanel[T, TM]("content", this, user, userProfile, element))
+    elementList.add(item);
   }
 
-  def addElementAdditionPanel(): ElementAdditionPanel[T] = {
-    addAndReturn(new ElementAdditionPanel("jobExperienceAdditionPanel", this, user, userProfile))
+  def addElementAdditionPanel(): ElementAdditionPanel[T, TM] = {
+    addAndReturn(new ElementAdditionPanel("elementAdditionPanel", this, user, userProfile))
   }
 
   def addShowElementFormLink(): AjaxLink[String] = {
-    addAndReturn(new AjaxLink[String]("showNewExperienceFormLink") {
+    addAndReturn(new AjaxLink[String]("showNewElementFormLink") {
       setOutputMarkupId(true)
       setOutputMarkupPlaceholderTag(true)
 
@@ -66,7 +79,7 @@ class ElementListPanel[T](id: String, val user: User, val userProfile: UserProfi
     showNewElementFormLink.setVisible(false)
   }
 
-  def changeCurrentElementAdditionPanel(panel: ElementAdditionPanel[T]) {
+  def changeCurrentElementAdditionPanel(panel: ElementAdditionPanel[T, TM]) {
     elementAdditionPanel = panel
   }
 
