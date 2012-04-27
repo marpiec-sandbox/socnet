@@ -1,4 +1,4 @@
-package pl.marpiec.socnet.web.page.editUserProfilePage.jobExperienceListPanel.jobExperiencePanel
+package pl.marpiec.socnet.web.page.editUserProfilePage.jobExperience
 
 import org.apache.wicket.model.CompoundPropertyModel
 import org.apache.wicket.markup.html.basic.Label

@@ -1,7 +1,6 @@
-package pl.marpiec.socnet.web.page.editUserProfilePage.jobExperienceListPanel
+package pl.marpiec.socnet.web.page.editUserProfilePage.elementListPanel
 
-import jobExperiencePanel.{JobExperienceFormPanel, JobExperiencePreviewPanel}
-import pl.marpiec.socnet.model.userprofile.JobExperience
+import pl.marpiec.socnet.web.page.editUserProfilePage.jobExperience.{JobExperienceFormPanel, JobExperiencePreviewPanel}
 import org.apache.wicket.markup.html.panel.Panel
 
 import pl.marpiec.socnet.model.{User, UserProfile}
@@ -9,6 +8,7 @@ import org.apache.wicket.Component
 import org.apache.wicket.ajax.AjaxRequestTarget
 import pl.marpiec.socnet.web.page.editUserProfilePage.model.{JobExperienceFormModelValidator, JobExperienceFormModel}
 import pl.marpiec.socnet.di.Factory
+import pl.marpiec.socnet.model.userprofile.JobExperience
 
 /**
  * ...
@@ -16,7 +16,7 @@ import pl.marpiec.socnet.di.Factory
  */
 
 
-class JobExperiencePanel(id: String, val user: User, val userProfile: UserProfile, val jobExperience: JobExperience)
+class ElementPanel[T](id: String, val user: User, val userProfile: UserProfile, val element: T)
   extends Panel(id) {
 
   //dependencies
@@ -33,47 +33,47 @@ class JobExperiencePanel(id: String, val user: User, val userProfile: UserProfil
   //methods
 
   def addPreviewPanel():JobExperiencePreviewPanel = {
-    addAndReturn(new JobExperiencePreviewPanel("experiencePreview", this, jobExperience, userProfile, user))
+    addAndReturn(new JobExperiencePreviewPanel("elementPreview", this, element.asInstanceOf[JobExperience], userProfile, user))
   }
 
   def addEditForm:JobExperienceFormPanel = {
-    addAndReturn(new JobExperienceFormPanel("experienceForm", false, jobExperience) {
+    addAndReturn(new JobExperienceFormPanel("elementForm", false, element.asInstanceOf[JobExperience]) {
       def onFormSubmit(target: AjaxRequestTarget, formModel: JobExperienceFormModel) = {
 
         formModel.warningMessage = ""
         val validationResult = JobExperienceFormModelValidator.validate(formModel)
 
         if (validationResult.isValid) {
-          saveChangesToExperience(formModel)
-          copyDataIntoJobExperienceAndIncrementVersion(formModel)
+          saveChangesToElement(formModel)
+          copyDataIntoElementAndIncrementProfileVersion(formModel)
           switchToPreviewMode
         } else {
           formModel.warningMessage = "Formularz nie zostal wypelniony poprawnie"
         }
 
-        target.add(JobExperiencePanel.this)
+        target.add(ElementPanel.this)
       }
 
       def onFormCanceled(target: AjaxRequestTarget, formModel: JobExperienceFormModel) = {
         revertFormData(formModel)
         switchToPreviewMode
-        target.add(JobExperiencePanel.this)
+        target.add(ElementPanel.this)
       }
     })
   }
 
 
   def revertFormData(formModel: JobExperienceFormModel) {
-    JobExperienceFormModel.copy(formModel, jobExperience)
+    JobExperienceFormModel.copy(formModel, element.asInstanceOf[JobExperience])
   }
 
-  def saveChangesToExperience(formModel: JobExperienceFormModel) {
+  def saveChangesToElement(formModel: JobExperienceFormModel) {
     userProfileCommand.updateJobExperience(user.id, userProfile.id, userProfile.version, formModel.createJobExperienceParam)
   }
 
 
-  def copyDataIntoJobExperienceAndIncrementVersion(formModel: JobExperienceFormModel) {
-    JobExperienceFormModel.copy(jobExperience, formModel)
+  def copyDataIntoElementAndIncrementProfileVersion(formModel: JobExperienceFormModel) {
+    JobExperienceFormModel.copy(element.asInstanceOf[JobExperience], formModel)
     userProfile.incrementVersion
   }
 

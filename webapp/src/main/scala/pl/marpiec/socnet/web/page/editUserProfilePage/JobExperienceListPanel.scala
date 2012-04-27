@@ -1,85 +1,15 @@
 package pl.marpiec.socnet.web.page.editUserProfilePage
 
-import jobExperienceListPanel.{JobExperienceAdditionPanel, JobExperiencePanel}
-import org.apache.wicket.markup.html.panel.Panel
-import collection.mutable.ListBuffer
+import elementListPanel.ElementListPanel
 import pl.marpiec.socnet.model.userprofile.JobExperience
-import org.apache.wicket.markup.repeater.RepeatingView
-import org.apache.wicket.markup.html.list.AbstractItem
-import org.apache.wicket.ajax.markup.html.AjaxLink
-import org.apache.wicket.ajax.AjaxRequestTarget
 import pl.marpiec.socnet.model.{UserProfile, User}
-import org.apache.wicket.{Component, MarkupContainer}
-
+import collection.mutable.ListBuffer
 
 /**
- * ...
  * @author Marcin Pieciukiewicz
  */
 
-class JobExperienceListPanel(id: String, val user: User, val userProfile: UserProfile,
-                             val jobExperience: ListBuffer[JobExperience]) extends Panel(id) {
-
-
-  //schema
-  val jobExperienceList = addJobExperienceList
-  var jobExperienceAdditionPanel = addJobExperienceAdditionPanel
-  val showNewExperienceFormLink = addShowNewExperienceFormLink
-
-
-  //methods
-
-  def addJobExperienceList(): RepeatingView = {
-    addAndReturn(new RepeatingView("repeating") {
-      for (experience <- jobExperience) {
-        addExperienceToList(this, experience)
-      }
-    })
-  }
-
-  def addExperienceToList(experienceList: RepeatingView, experience: JobExperience): MarkupContainer = {
-    val item: AbstractItem = new AbstractItem(experienceList.newChildId());
-    item.add(new JobExperiencePanel("content", user, userProfile, experience))
-    experienceList.add(item);
-  }
-
-  def addJobExperienceAdditionPanel():JobExperienceAdditionPanel = {
-    addAndReturn(new JobExperienceAdditionPanel("jobExperienceAdditionPanel", this, user, userProfile));
-  }
-
-  def addShowNewExperienceFormLink(): AjaxLink[String] = {
-    addAndReturn(new AjaxLink[String]("showNewExperienceFormLink") {
-      setOutputMarkupId(true)
-      setOutputMarkupPlaceholderTag(true)
-
-      def onClick(target: AjaxRequestTarget) {
-        showAddExperienceForm()
-        target.add(jobExperienceAdditionPanel)
-        target.add(this)
-      }
-    })
-  }
-
-  def hideAddExperienceForm() {
-    jobExperienceAdditionPanel.setVisible(false)
-    showNewExperienceFormLink.setVisible(true)
-  }
-
-  def showAddExperienceForm() {
-    jobExperienceAdditionPanel.setVisible(true)
-    showNewExperienceFormLink.setVisible(false)
-  }
-
-  def changeCurrentJobExperienceAdditionPanel(panel: JobExperienceAdditionPanel) {
-    jobExperienceAdditionPanel = panel
-  }
-
-
-
-  private def addAndReturn[E <: Component](child: E): E = {
-    add(child)
-    child
-  }
-
+class JobExperienceListPanel(id: String, user: User, userProfile: UserProfile, jobExperienceList: ListBuffer[JobExperience])
+  extends ElementListPanel[JobExperience](id, user, userProfile, jobExperienceList) {
 
 }
