@@ -39,9 +39,11 @@ object JobExperienceFormModelValidator {
 
   private def validateYearTo(result: ValidationResult, model: JobExperienceFormModel) {
     try {
-      val yearInt = model.toYear.toInt
-      if (yearInt <= 1900 || yearInt >= 2040) {
-        result.addError("To year must be between 1900 and 2040")
+      if(!model.currentJob) {
+        val yearInt = model.toYear.toInt
+        if (yearInt <= 1900 || yearInt >= 2040) {
+          result.addError("To year must be between 1900 and 2040")
+        }
       }
     } catch {
       case e: NumberFormatException => result.addError("Value is not correct number")

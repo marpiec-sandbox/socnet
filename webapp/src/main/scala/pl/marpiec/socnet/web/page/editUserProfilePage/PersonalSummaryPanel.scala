@@ -22,6 +22,7 @@ class PersonalSummaryPanel(id: String, val user: User, val userProfile: UserProf
   val personalSummaryPreview = addAndReturn(new PersonalSummaryPreview("personalSummaryPreview", userProfile, this))
   val personalSummaryForm = addAndReturn(new PersonalSummaryEditForm("personalSummaryForm", userProfile, user, this))
 
+
   //methods
 
   def switchToPreviewMode {

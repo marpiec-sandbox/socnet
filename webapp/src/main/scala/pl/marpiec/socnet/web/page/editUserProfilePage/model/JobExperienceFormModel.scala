@@ -76,14 +76,14 @@ object JobExperienceFormModel {
     to.description = from.description
     to.currentJob = from.currentJob
     
-    to.fromYear = from.fromYear.toString
+    to.fromYear = emptyIfZero(from.fromYear)
     to.fromMonth = from.fromMonthOption.getOrElse(null)
     
     if(from.currentJob) {
       to.toYear = ""
       to.toMonth = null
     } else {
-      to.toYear = from.toYear.toString
+      to.toYear = emptyIfZero(from.toYear)
       to.toMonth = from.toMonthOption.getOrElse(null)
     }
   }
@@ -102,6 +102,14 @@ object JobExperienceFormModel {
     } else {
       to.toYear = from.toYear.toInt
       to.toMonthOption = Option(from.toMonth)
+    }
+  }
+  
+  private def emptyIfZero(value:Int):String = {
+    if (value==0) {
+      ""
+    } else {
+      value.toString
     }
   }
 }
