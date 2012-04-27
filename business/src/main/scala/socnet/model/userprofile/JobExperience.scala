@@ -2,14 +2,15 @@ package pl.marpiec.socnet.model.userprofile
 
 import pl.marpiec.util.UID
 import socnet.constant.Month
+import socnet.model.userprofile.Identifiable
 
 /**
  * ...
  * @author Marcin Pieciukiewicz
  */
 
-class JobExperience {
-  var id:UID = _
+class JobExperience extends Identifiable {
+
   var companyName: String = _
   var position: String = _
 

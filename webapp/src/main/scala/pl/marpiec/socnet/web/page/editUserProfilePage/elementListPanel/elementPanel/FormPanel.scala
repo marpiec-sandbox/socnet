@@ -1,4 +1,4 @@
-package pl.marpiec.socnet.web.page.editUserProfilePage.jobExperience
+package pl.marpiec.socnet.web.page.editUserProfilePage.elementListPanel.elementPanel
 
 import org.apache.wicket.model.CompoundPropertyModel
 import org.apache.wicket.markup.html.basic.Label
@@ -7,18 +7,24 @@ import org.apache.wicket.markup.html.panel.Panel
 import org.apache.wicket.Component
 import pl.marpiec.socnet.web.page.editUserProfilePage.elementListPanel.ElementListPanel
 import pl.marpiec.socnet.web.wicket.{SecureFormModel, SecureAjaxButton, SecureForm}
+import socnet.model.userprofile.Identifiable
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
-abstract class FormPanel[T, TM](id: String, mainListPanel: ElementListPanel[T, TM], newElement: Boolean, val element: T) extends Panel(id) {
+abstract class FormPanel[T <: Identifiable, TM <: SecureFormModel](id: String, mainListPanel: ElementListPanel[T, TM], newElement: Boolean, val element: T) extends Panel(id) {
+
 
 
   setOutputMarkupId(true)
   setOutputMarkupPlaceholderTag(true)
 
   setVisible(false)
+
+
+  override def getVariation = mainListPanel.getPageVariation
+
 
   def onFormSubmit(target: AjaxRequestTarget, formModel: SecureFormModel)
   def onFormCanceled(target: AjaxRequestTarget, formModel: SecureFormModel)

@@ -1,6 +1,6 @@
 package pl.marpiec.socnet.web.page.editUserProfilePage.elementListPanel
 
-import pl.marpiec.socnet.web.page.editUserProfilePage.jobExperience.FormPanel
+import elementPanel.FormPanel
 import org.apache.wicket.ajax.AjaxRequestTarget
 import pl.marpiec.util.UID
 import org.apache.wicket.Component
@@ -8,12 +8,13 @@ import pl.marpiec.socnet.di.Factory
 import pl.marpiec.socnet.model.{UserProfile, User}
 import org.apache.wicket.markup.html.panel.{EmptyPanel, Panel}
 import pl.marpiec.socnet.web.wicket.SecureFormModel
+import socnet.model.userprofile.Identifiable
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
-class ElementAdditionPanel[T, TM](id: String, mainListPanel: ElementListPanel[T, TM],
+class ElementAdditionPanel[T <: Identifiable, TM <: SecureFormModel](id: String, mainListPanel: ElementListPanel[T, TM],
                                   val user: User, val userProfile: UserProfile) extends Panel(id) {
 
   //dependencies
@@ -63,7 +64,8 @@ class ElementAdditionPanel[T, TM](id: String, mainListPanel: ElementListPanel[T,
   })
 
   def changeCurrentElementAdditionPanel {
-    mainListPanel.changeCurrentElementAdditionPanel(addAndReturn(new ElementAdditionPanel[T, TM]("elementAdditionPanel", mainListPanel, parent, user, userProfile)))
+    mainListPanel.changeCurrentElementAdditionPanel(addAndReturn(
+        new ElementAdditionPanel[T, TM]("elementAdditionPanel", mainListPanel, user, userProfile)))
   }
 
   def showAddedElement(element: T) {
@@ -76,14 +78,14 @@ class ElementAdditionPanel[T, TM](id: String, mainListPanel: ElementListPanel[T,
     saveNewElementAndIncrementProfileVersion(formModel, newElementId)
 
     val element = mainListPanel.createNewElement
-    mainListPanel.copyModelToElement(element, formModel)
+    mainListPanel.copyModelToElement(element, formModel.asInstanceOf[TM])
     element.id = newElementId
     element
   }
 
 
   def saveNewElementAndIncrementProfileVersion(formModel: SecureFormModel, newElementId: UID) {
-    userProfileCommand.addJobExperience(user.id, userProfile.id, userProfile.version, formModel.createJobExperienceParam, newElementId)
+    mainListPanel.saveNewElement(formModel.asInstanceOf[TM], newElementId)
     userProfile.incrementVersion
   }
 

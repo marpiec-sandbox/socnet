@@ -1,17 +1,20 @@
-package pl.marpiec.socnet.web.page.editUserProfilePage.jobExperience
+package pl.marpiec.socnet.web.page.editUserProfilePage.elementListPanel.elementPanel
 
 import org.apache.wicket.markup.html.panel.Panel
 import org.apache.wicket.ajax.markup.html.AjaxFallbackLink
 import org.apache.wicket.ajax.AjaxRequestTarget
 import pl.marpiec.socnet.model.UserProfile
 import pl.marpiec.socnet.web.page.editUserProfilePage.elementListPanel.{ElementListPanel, ElementPanel}
+import socnet.model.userprofile.Identifiable
+import pl.marpiec.socnet.web.wicket.SecureFormModel
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
-class PreviewPanel[T, TM](id: String, mainListPanel: ElementListPanel[T, TM], parent: ElementPanel[T, TM], val element: T,
-                      val userProfile: UserProfile) extends Panel(id) {
+class PreviewPanel[T <: Identifiable, TM <: SecureFormModel](id: String, mainListPanel: ElementListPanel[T, TM], parent: ElementPanel[T, TM], val element: T,
+                          val userProfile: UserProfile) extends Panel(id) {
+
 
 
   mainListPanel.buildPreviewSchema(this, element)
@@ -33,5 +36,5 @@ class PreviewPanel[T, TM](id: String, mainListPanel: ElementListPanel[T, TM], pa
     }
   })
 
-
+  override def getVariation = mainListPanel.getPageVariation
 }

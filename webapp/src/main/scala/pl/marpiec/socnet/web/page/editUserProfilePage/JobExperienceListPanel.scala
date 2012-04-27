@@ -13,6 +13,7 @@ import org.apache.wicket.model.PropertyModel
 import org.apache.wicket.markup.html.panel.Panel
 import pl.marpiec.socnet.di.Factory
 import pl.marpiec.socnet.web.wicket.SecureFormModel
+import pl.marpiec.util.UID
 
 /**
  * @author Marcin Pieciukiewicz
@@ -33,7 +34,7 @@ class JobExperienceListPanel(id: String, user: User, userProfile: UserProfile, j
     panel.add(new Label("experienceDate", new JobExperienceDateModel(jobExperience)))
   }
 
-  def buildFormSchema(form: Form) = {
+  def buildFormSchema(form: Form[JobExperienceFormModel]) = {
     form.add(new TextField[String]("companyName"))
     form.add(new TextField[String]("position"))
     form.add(new TextArea[String]("description"))
@@ -64,4 +65,14 @@ class JobExperienceListPanel(id: String, user: User, userProfile: UserProfile, j
   def copyModelToElement(element: JobExperience, model: JobExperienceFormModel) {
     JobExperienceFormModel.copy(element, model)
   }
+
+  def saveNewElement(element: JobExperienceFormModel, newId: UID) {
+    userProfileCommand.addJobExperience(user.id, userProfile.id, userProfile.version, element.createJobExperienceParam, newId)
+  }
+
+  def saveChangesToElement(model: JobExperienceFormModel) {
+    userProfileCommand.updateJobExperience(user.id, userProfile.id, userProfile.version, model.createJobExperienceParam)
+  }
+
+  def getPageVariation = "JobExperience"
 }

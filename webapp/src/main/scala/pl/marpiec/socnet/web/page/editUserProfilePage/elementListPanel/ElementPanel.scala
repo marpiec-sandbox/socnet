@@ -1,6 +1,6 @@
 package pl.marpiec.socnet.web.page.editUserProfilePage.elementListPanel
 
-import pl.marpiec.socnet.web.page.editUserProfilePage.jobExperience.{FormPanel, PreviewPanel}
+import elementPanel.{PreviewPanel, FormPanel}
 import org.apache.wicket.markup.html.panel.Panel
 
 import pl.marpiec.socnet.model.{User, UserProfile}
@@ -8,6 +8,7 @@ import org.apache.wicket.Component
 import org.apache.wicket.ajax.AjaxRequestTarget
 import pl.marpiec.socnet.di.Factory
 import pl.marpiec.socnet.web.wicket.SecureFormModel
+import socnet.model.userprofile.Identifiable
 
 /**
  * ...
@@ -15,7 +16,8 @@ import pl.marpiec.socnet.web.wicket.SecureFormModel
  */
 
 
-class ElementPanel[T, TM](id: String, mainListPanel:ElementListPanel[T, TM], val user: User, val userProfile: UserProfile, val element: T)
+class ElementPanel[T <: Identifiable, TM <: SecureFormModel](id: String, mainListPanel:ElementListPanel[T, TM],
+                                          val user: User, val userProfile: UserProfile, val element: T)
   extends Panel(id) {
 
   //dependencies
@@ -54,8 +56,8 @@ class ElementPanel[T, TM](id: String, mainListPanel:ElementListPanel[T, TM], val
         target.add(ElementPanel.this)
       }
 
-      def onFormCanceled(target: AjaxRequestTarget, formModel: TM) = {
-        revertFormData(formModel)
+      def onFormCanceled(target: AjaxRequestTarget, formModel: SecureFormModel) = {
+        revertFormData(formModel.asInstanceOf[TM])
         switchToPreviewMode
         target.add(ElementPanel.this)
       }
@@ -69,7 +71,8 @@ class ElementPanel[T, TM](id: String, mainListPanel:ElementListPanel[T, TM], val
   }
 
   def saveChangesToElement(formModel: TM) {
-    userProfileCommand.updateJobExperience(user.id, userProfile.id, userProfile.version, formModel.createJobExperienceParam)
+    mainListPanel.saveChangesToElement(formModel)
+
   }
 
 

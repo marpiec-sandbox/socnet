@@ -27,6 +27,15 @@ class PersonalSummaryFormModel extends SecureFormModel {
     summary.summary = this.summary
     summary
   }
+
+  def clear() {
+    professionalTitle = ""
+    city = ""
+    province = null
+    wwwPage = ""
+    blogPage = ""
+    summary = ""
+  }
 }
 
 object PersonalSummaryFormModel {
