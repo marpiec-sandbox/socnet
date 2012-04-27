@@ -15,8 +15,10 @@ object JobExperienceFormModelValidator {
     validatePosition(result, form)
     validateYearFrom(result, form)
     validateYearTo(result, form)
-    validateDateOrder(result, form)
-    
+    if (result.isValid) {
+      validateDateOrder(result, form)
+    }
+
     result
   }
 
@@ -25,21 +27,38 @@ object JobExperienceFormModelValidator {
   }
 
   private def validateYearFrom(result: ValidationResult, model: JobExperienceFormModel) {
-    if (model.fromYear <= 1900 || model.fromYear >= 2040) {
-      result.addError("From year must be between 1900 and 2040")
+    try {
+      val yearInt = model.fromYear.toInt
+      if (yearInt <= 1900 || yearInt >= 2040) {
+        result.addError("From year must be between 1900 and 2040")
+      }
+    } catch {
+      case e: NumberFormatException => result.addError("Value is not correct number")
     }
   }
 
   private def validateYearTo(result: ValidationResult, model: JobExperienceFormModel) {
-    if (!model.currentJob && (model.toYear <= 1900 || model.toYear >= 2040)) {
-      result.addError("To year must be between 1900 and 2040")
+    try {
+      val yearInt = model.toYear.toInt
+      if (yearInt <= 1900 || yearInt >= 2040) {
+        result.addError("To year must be between 1900 and 2040")
+      }
+    } catch {
+      case e: NumberFormatException => result.addError("Value is not correct number")
     }
   }
+
   private def validateDateOrder(result: ValidationResult, model: JobExperienceFormModel) {
-    if(!model.currentJob && model.toYear < model.fromYear) {
-      result.addError("The date order is incorrect")
+    if (!model.currentJob) {
+      if (model.toYear < model.fromYear) {
+        result.addError("The date order is incorrect")
+      } else if (model.toYear == model.fromYear) {
+        if (model.toMonth != null && model.fromMonth != null && model.toMonth.order < model.fromMonth.order) {
+          result.addError("The date order is incorrect")
+        }
+      }
     }
   }
-  
+
 
 }

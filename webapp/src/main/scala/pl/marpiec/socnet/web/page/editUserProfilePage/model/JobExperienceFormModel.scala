@@ -22,10 +22,10 @@ class JobExperienceFormModel extends SecureFormModel {
   var currentJob: Boolean = false
 
   var fromMonth: Month = null
-  var fromYear: Int = _
+  var fromYear: String = _
   
   var toMonth: Month = null
-  var toYear: Int = _
+  var toYear: String = _
 
   def createJobExperienceParam:JobExperienceParam = {
     val param = new JobExperienceParam
@@ -33,14 +33,14 @@ class JobExperienceFormModel extends SecureFormModel {
     param.companyName = this.companyName
     param.position = this.position
     param.description = this.description
-    param.fromYear = this.fromYear
+    param.fromYear = this.fromYear.toInt
     param.fromMonthOption = Option(this.fromMonth)
     param.currentJob = this.currentJob
     if(currentJob) {
       param.toYear = 0
       param.toMonthOption = None
     } else {
-      param.toYear = this.toYear
+      param.toYear = this.toYear.toInt
       param.toMonthOption = Option(this.toMonth)
     }
 
@@ -55,9 +55,9 @@ class JobExperienceFormModel extends SecureFormModel {
     description = ""
     currentJob = false
     fromMonth = null
-    fromYear = 0
+    fromYear = ""
     toMonth = null
-    toYear = 0
+    toYear = ""
   }
 }
 
@@ -76,14 +76,14 @@ object JobExperienceFormModel {
     to.description = from.description
     to.currentJob = from.currentJob
     
-    to.fromYear = from.fromYear
+    to.fromYear = from.fromYear.toString
     to.fromMonth = from.fromMonthOption.getOrElse(null)
     
     if(from.currentJob) {
-      to.toYear = 0
+      to.toYear = ""
       to.toMonth = null
     } else {
-      to.toYear = from.toYear
+      to.toYear = from.toYear.toString
       to.toMonth = from.toMonthOption.getOrElse(null)
     }
   }
@@ -93,14 +93,14 @@ object JobExperienceFormModel {
     to.companyName = from.companyName
     to.position = from.position
     to.description = from.description
-    to.fromYear = from.fromYear
+    to.fromYear = from.fromYear.toInt
     to.fromMonthOption = Option(from.fromMonth)
     to.currentJob = from.currentJob
     if(to.currentJob) {
       to.toYear = 0
       to.toMonthOption = None
     } else {
-      to.toYear = from.toYear
+      to.toYear = from.toYear.toInt
       to.toMonthOption = Option(from.toMonth)
     }
   }

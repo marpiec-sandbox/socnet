@@ -12,7 +12,7 @@ class PersonalSummaryPreview(id: String, userProfile: UserProfile, parent: Perso
 
   add(new Label("professionalTitle", new PropertyModel(userProfile, "professionalTitle")))
   add(new Label("city", new PropertyModel(userProfile, "city")))
-  add(new Label("province", new PropertyModel(userProfile, "province")))
+  add(new Label("province", new PropertyModel(userProfile, "province.translation")))
   add(new Label("wwwPage", new PropertyModel(userProfile, "wwwPage")))
   add(new Label("blogPage", new PropertyModel(userProfile, "blogPage")))
   add(new Label("summary", new PropertyModel(userProfile, "summary")))
