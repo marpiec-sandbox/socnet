@@ -3,7 +3,6 @@ package pl.marpiec.socnet.web.page.editUserProfilePage.personalSummaryPanel
 import scala.collection.JavaConversions._
 import pl.marpiec.socnet.model.{User, UserProfile}
 import pl.marpiec.socnet.web.page.editUserProfilePage.PersonalSummaryPanel
-import pl.marpiec.socnet.web.page.editUserProfilePage.model.PersonalSummaryFormModel
 import pl.marpiec.socnet.service.userprofile.UserProfileCommand
 import pl.marpiec.socnet.di.Factory
 import pl.marpiec.socnet.web.wicket.{SecureAjaxButton, SecureForm}
@@ -11,13 +10,13 @@ import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.model.{Model, CompoundPropertyModel}
 import socnet.constant.Province
 import org.apache.wicket.markup.html.form._
+import pl.marpiec.socnet.web.page.editUserProfilePage.model.{PersonalSummaryFormModelValidator, JobExperienceFormModelValidator, PersonalSummaryFormModel}
+import org.apache.wicket.markup.html.basic.Label
 
 
 class PersonalSummaryEditForm(id: String, userProfile: UserProfile, user: User, parent: PersonalSummaryPanel) extends SecureForm[PersonalSummaryFormModel](id) {
 
   val userProfileCommand: UserProfileCommand = Factory.userProfileCommand
-
-  val warningMessage = new Model[String]("")
 
   def initialize {
     val model = PersonalSummaryFormModel(userProfile)
@@ -27,7 +26,7 @@ class PersonalSummaryEditForm(id: String, userProfile: UserProfile, user: User, 
 
   def buildSchema {
 
-    // add(new Label("warningMessage", warningMessage))
+    add(new Label("warningMessage"))
     add(new TextField[String]("professionalTitle"))
     add(new TextField[String]("city"))
     add(new DropDownChoice[Province]("province", Province.values, new ChoiceRenderer[Province]("translation")))
@@ -56,10 +55,18 @@ class PersonalSummaryEditForm(id: String, userProfile: UserProfile, user: User, 
     add(new SecureAjaxButton[PersonalSummaryFormModel]("submitButton") {
 
       override def onSecureSubmit(target: AjaxRequestTarget, formModel: PersonalSummaryFormModel) {
-        saveChangesToUserProfile(formModel)
-        copyFormDataIntoUserProfileAndIncrementVersion(formModel)
 
-        parent.switchToPreviewMode
+
+        val validationResult = PersonalSummaryFormModelValidator.validate(formModel)
+        if (validationResult.isValid) {
+          saveChangesToUserProfile(formModel)
+          copyFormDataIntoUserProfileAndIncrementVersion(formModel)
+
+          parent.switchToPreviewMode
+          formModel.warningMessage = ""
+        } else {
+          formModel.warningMessage = "Formularz nie zostal wypelniony poprawnie"
+        }
         target.add(parent)
       }
     })

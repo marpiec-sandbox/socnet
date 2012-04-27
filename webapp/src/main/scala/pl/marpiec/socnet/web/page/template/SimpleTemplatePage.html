@@ -13,6 +13,14 @@
 <script src="js/form.js"></script>
 </head>
 <body>
-    <wicket:child/>
+    <div>
+        <a wicket:id="homeLink">Socnet</a>
+        <span>Zalogowany użytkownik <span wicket:id="userName">nieznany</span></span>
+        <a wicket:id="signoutLink">Wyloguj</a>
+    </div>
+    <div>
+        <wicket:child/>
+    </div>
+
 </body>
 </html>

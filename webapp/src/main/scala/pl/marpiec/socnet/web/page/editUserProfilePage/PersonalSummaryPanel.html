@@ -27,7 +27,7 @@
 
     <form wicket:id="personalSummaryForm" class="horizontalForm personalSummaryForm">
 
-        <span class="warningMessage"></span>
+        <span class="warningMessage" wicket:id="warningMessage"></span>
 
         <input type="hidden" wicket:id="sessionToken" />
 
@@ -64,7 +64,7 @@
         <div class="formRow">
             <span class="label">Podsumowanie</span>
             <span class="validatorMessage"></span>
-            <textarea wicket:id="summary"  class="requiredValidator"/>
+            <textarea wicket:id="summary" />
         </div>
 
 

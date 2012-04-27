@@ -25,17 +25,17 @@ class ExperienceDateModel(val jobExperience: JobExperience) extends AbstractRead
   def getObject: String = {
     val from = formatDate(jobExperience.fromYear, jobExperience.fromMonthOption)
     if (jobExperience.currentJob) {
-      "od "+from
+      "od " + from
     } else {
       val to = formatDate(jobExperience.toYear, jobExperience.toMonthOption)
-      "od "+from+" do "+to
+      "od " + from + " do " + to
     }
   }
 
-  private def formatDate(year:Int, monthOption:Option[Month]):String = {
+  private def formatDate(year: Int, monthOption: Option[Month]): String = {
     if (monthOption.isDefined) {
       monthOption.get.translation + " " + year
-    } else if (year > 0){
+    } else if (year > 0) {
       year.toString
     } else {
       ""
@@ -135,6 +135,7 @@ class JobExperiencePanel(id: String, val user: User, val userProfile: UserProfil
             copyDataIntoJobExperienceAndIncrementVersion(formModel)
 
             edit = false
+            formModel.warningMessage = ""
           } else {
             formModel.warningMessage = "Formularz nie zosta? wype?niony poprawnie"
           }

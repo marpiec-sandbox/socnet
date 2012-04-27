@@ -38,6 +38,7 @@ object PersonalSummaryFormModel {
   }
 
   def copy(to: PersonalSummaryFormModel, from: UserProfile) {
+    to.warningMessage = ""
     to.professionalTitle = from.professionalTitle
     to.city = from.city
     to.province = from.province
