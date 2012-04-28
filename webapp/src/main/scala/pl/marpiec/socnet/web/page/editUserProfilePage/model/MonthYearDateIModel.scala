@@ -8,7 +8,7 @@ import socnet.constant.Month
  * @author Marcin Pieciukiewicz
  */
 
-class JobExperienceDateModel(val jobExperience: JobExperience) extends AbstractReadOnlyModel[String] {
+class MonthYearDateIModel(val jobExperience: JobExperience) extends AbstractReadOnlyModel[String] {
   def getObject: String = {
     val from = formatDate(jobExperience.fromYear, jobExperience.fromMonthOption)
     if (jobExperience.currentJob) {

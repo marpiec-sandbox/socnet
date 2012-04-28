@@ -12,6 +12,8 @@ import socnet.constant.Province
  */
 
 class UserProfile extends Aggregate(null, 0) {
+
+
   var userId:UID = _
   var professionalTitle:String = _
   var city:String = _
@@ -23,6 +25,8 @@ class UserProfile extends Aggregate(null, 0) {
   var summary:String = _
   
   def jobExperienceById(id:UID):Option[JobExperience] = jobExperience.find(exp => exp.id == id)
+
+  def educationById(uid: UID):Option[Education] = education.find(exp => exp.id == id)
 
   def copy:Aggregate = {
     val profile = new UserProfile

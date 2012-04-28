@@ -1,8 +1,8 @@
 package pl.marpiec.socnet.web.page.editUserProfilePage.model
 
 import pl.marpiec.socnet.web.wicket.SecureFormModel
-import pl.marpiec.socnet.model.userprofile.JobExperience
 import socnet.constant.Month
+import pl.marpiec.socnet.model.userprofile.Education
 import pl.marpiec.util.{Conversion, BeanUtil, UID}
 
 /**
@@ -10,38 +10,38 @@ import pl.marpiec.util.{Conversion, BeanUtil, UID}
  * @author Marcin Pieciukiewicz
  */
 
-class JobExperienceFormModel extends SecureFormModel {
+class EducationFormModel extends SecureFormModel {
 
   var id: UID = null
-  var companyName: String = ""
-  var position: String = ""
-  var description: String = ""
-  
-  var currentJob: Boolean = false
+  var schoolName: String = ""
+  var level: String = ""
+  var major: String = ""
 
+  var fromYear: String = ""
   var fromMonth: Month = null
-  var fromYear: String = _
-  
+  var toYear: String = ""
   var toMonth: Month = null
-  var toYear: String = _
+
+  var stillStudying: Boolean = false
+
+  var description: String = ""
 
 }
 
-object JobExperienceFormModel {
-
-  def apply(param:JobExperience) = {
-    val model = new JobExperienceFormModel
+object EducationFormModel {
+  def apply(param: Education) = {
+    val model = new EducationFormModel
     copy(model, param)
     model
   }
 
-  def copy(to:JobExperienceFormModel, from:JobExperience):JobExperienceFormModel = {
+  def copy(to: EducationFormModel, from: Education):EducationFormModel = {
     BeanUtil.copyProperties(to, from)
-    
+
     to.fromYear = Conversion.emptyIfZero(from.fromYear)
     to.fromMonth = from.fromMonthOption.getOrElse(null)
-    
-    if(from.currentJob) {
+
+    if (from.stillStudying) {
       to.toYear = ""
       to.toMonth = null
     } else {
@@ -51,12 +51,14 @@ object JobExperienceFormModel {
     to
   }
 
-  def copy(to:JobExperience, from:JobExperienceFormModel):JobExperience = {
+  def copy(to: Education, from: EducationFormModel):Education =  {
+
     BeanUtil.copyProperties(to, from)
 
     to.fromYear = from.fromYear.toInt
     to.fromMonthOption = Option(from.fromMonth)
-    if(to.currentJob) {
+
+    if (to.stillStudying) {
       to.toYear = 0
       to.toMonthOption = None
     } else {
@@ -65,5 +67,6 @@ object JobExperienceFormModel {
     }
     to
   }
+
 
 }

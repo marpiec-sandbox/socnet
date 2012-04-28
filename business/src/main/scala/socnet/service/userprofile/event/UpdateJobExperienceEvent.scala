@@ -1,14 +1,15 @@
 package pl.marpiec.socnet.service.userprofile.event
 
-import pl.marpiec.socnet.service.userprofile.input.JobExperienceParam
 import pl.marpiec.socnet.model.UserProfile
 import pl.marpiec.cqrs.{Aggregate, Event}
+import pl.marpiec.socnet.model.userprofile.JobExperience
+import pl.marpiec.util.BeanUtil
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
-class UpdateJobExperienceEvent(val param: JobExperienceParam) extends Event {
+class UpdateJobExperienceEvent(val param: JobExperience) extends Event {
 
   def entityClass = classOf[UserProfile]
 
@@ -21,15 +22,12 @@ class UpdateJobExperienceEvent(val param: JobExperienceParam) extends Event {
     if (jobExperiencOption.isDefined) {
       val jobExperience = jobExperiencOption.get
 
-      jobExperience.id = param.id
-      jobExperience.companyName = param.companyName
-      jobExperience.fromYear = param.fromYear
-      jobExperience.fromMonthOption = param.fromMonthOption
-      jobExperience.toYear = param.toYear
-      jobExperience.toMonthOption = param.toMonthOption
-      jobExperience.currentJob = param.currentJob
-      jobExperience.position = param.position
-      jobExperience.description = param.description
+      BeanUtil.copyProperties(jobExperience, param)
+
+      if (param.currentJob) {
+        jobExperience.toYear = 0
+        jobExperience.toMonthOption = None
+      }
 
     } else {
       throw new IllegalStateException("No JobExperience with given id")

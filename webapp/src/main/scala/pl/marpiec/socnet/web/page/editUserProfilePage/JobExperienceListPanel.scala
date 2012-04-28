@@ -1,9 +1,8 @@
 package pl.marpiec.socnet.web.page.editUserProfilePage
 
-import model.{JobExperienceFormModel, JobExperienceFormModelValidator, JobExperienceDateModel}
+import model.{JobExperienceFormModel, JobExperienceFormModelValidator, MonthYearDateIModel}
 import scala.collection.JavaConversions._
 import elementListPanel.ElementListPanel
-import pl.marpiec.socnet.model.userprofile.JobExperience
 import pl.marpiec.socnet.model.{UserProfile, User}
 import collection.mutable.ListBuffer
 import socnet.constant.Month
@@ -14,6 +13,7 @@ import org.apache.wicket.markup.html.panel.Panel
 import pl.marpiec.socnet.di.Factory
 import pl.marpiec.socnet.web.wicket.SecureFormModel
 import pl.marpiec.util.UID
+import pl.marpiec.socnet.model.userprofile.JobExperience
 
 /**
  * @author Marcin Pieciukiewicz
@@ -31,7 +31,7 @@ class JobExperienceListPanel(id: String, user: User, userProfile: UserProfile, j
     panel.add(new Label("position", new PropertyModel[String](jobExperience, "position")))
     panel.add(new Label("description", new PropertyModel[String](jobExperience, "description")))
 
-    panel.add(new Label("experienceDate", new JobExperienceDateModel(jobExperience)))
+    panel.add(new Label("experienceDate", new MonthYearDateIModel(jobExperience)))
   }
 
   def buildFormSchema(form: Form[JobExperienceFormModel]) = {
@@ -66,12 +66,17 @@ class JobExperienceListPanel(id: String, user: User, userProfile: UserProfile, j
     JobExperienceFormModel.copy(element, model)
   }
 
-  def saveNewElement(element: JobExperienceFormModel, newId: UID) {
-    userProfileCommand.addJobExperience(user.id, userProfile.id, userProfile.version, element.createJobExperienceParam, newId)
+  def saveNewElement(model: JobExperienceFormModel, newId: UID) {
+    val jobExperience = new JobExperience
+    JobExperienceFormModel.copy(jobExperience, model)
+
+    userProfileCommand.addJobExperience(user.id, userProfile.id, userProfile.version, jobExperience, newId)
   }
 
   def saveChangesToElement(model: JobExperienceFormModel) {
-    userProfileCommand.updateJobExperience(user.id, userProfile.id, userProfile.version, model.createJobExperienceParam)
+    val jobExperience = new JobExperience
+    JobExperienceFormModel.copy(jobExperience, model)
+    userProfileCommand.updateJobExperience(user.id, userProfile.id, userProfile.version, jobExperience)
   }
 
   def getPageVariation = "JobExperience"

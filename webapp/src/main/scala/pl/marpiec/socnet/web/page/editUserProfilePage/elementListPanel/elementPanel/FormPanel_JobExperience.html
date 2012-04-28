@@ -59,7 +59,11 @@
 
 
             jQuery(function() {
-                //disableToDateIfCurrentJob(jQuery(".experienceForm"));
+
+                jQuery(".experienceForm .currentJob").each(function() {
+                    disableToDateIfCurrentJob(jQuery(this));
+                })
+
                 jQuery(".experienceForm .currentJob").change(function() {
                     disableToDateIfCurrentJob(jQuery(this))
                 });

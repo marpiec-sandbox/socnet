@@ -7,7 +7,7 @@ import pl.marpiec.socnet.model.userprofile.Education
 import org.joda.time.LocalDate
 import org.testng.Assert._
 import pl.marpiec.cqrs._
-import socnet.constant.Province
+import socnet.constant.{Month, Province}
 
 /**
  * ...
@@ -33,8 +33,10 @@ class UserProfileDatabaseMockImplTest {
 
     var education = new Education
     education.schoolName = "Politechnika Warszawska"
-    education.startDateOption = Option(new LocalDate(2002, 10, 1))
-    education.endDateOption = Option(new LocalDate(2008, 6, 1))
+    education.fromYear = 2002
+    education.fromMonthOption = Option[Month](Month.OCTOBER)
+    education.toYear = 2008
+    education.toMonthOption = Option[Month](Month.JUNE)
     education.major = "Elektronika i Inżynieria Komputerowa"
     education.level = "Magisterskie"
 

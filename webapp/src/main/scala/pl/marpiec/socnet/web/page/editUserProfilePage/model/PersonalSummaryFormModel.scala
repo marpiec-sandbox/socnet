@@ -4,6 +4,7 @@ import pl.marpiec.socnet.service.userprofile.input.PersonalSummary
 import pl.marpiec.socnet.web.wicket.SecureFormModel
 import pl.marpiec.socnet.model.UserProfile
 import socnet.constant.Province
+import pl.marpiec.util.BeanUtil
 
 /**
  * @author Marcin Pieciukiewicz
@@ -18,23 +19,7 @@ class PersonalSummaryFormModel extends SecureFormModel {
   var summary: String = _
 
   def createPersonalSummary():PersonalSummary = {
-    val summary = new PersonalSummary
-    summary.professionalTitle = this.professionalTitle
-    summary.city = this.city
-    summary.province = this.province
-    summary.wwwPage = this.wwwPage
-    summary.blogPage = this.blogPage
-    summary.summary = this.summary
-    summary
-  }
-
-  def clear() {
-    professionalTitle = ""
-    city = ""
-    province = null
-    wwwPage = ""
-    blogPage = ""
-    summary = ""
+    BeanUtil.copyProperties(new PersonalSummary, this)
   }
 }
 
@@ -47,21 +32,11 @@ object PersonalSummaryFormModel {
   }
 
   def copy(to: PersonalSummaryFormModel, from: UserProfile) {
+    BeanUtil.copyProperties(to, from)
     to.warningMessage = ""
-    to.professionalTitle = from.professionalTitle
-    to.city = from.city
-    to.province = from.province
-    to.wwwPage = from.wwwPage
-    to.blogPage = from.blogPage
-    to.summary = from.summary
   }
 
   def copy(to: UserProfile, from: PersonalSummaryFormModel) {
-    to.professionalTitle = from.professionalTitle
-    to.city = from.city
-    to.province = from.province
-    to.wwwPage = from.wwwPage
-    to.blogPage = from.blogPage
-    to.summary = from.summary
+    BeanUtil.copyProperties(to, from)
   }
 }

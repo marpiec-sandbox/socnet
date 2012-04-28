@@ -1,14 +1,15 @@
 package pl.marpiec.socnet.service.userprofile
 
-import input.{JobExperienceParam, PersonalSummary}
+import input.PersonalSummary
 import org.testng.annotations.Test
 import org.testng.Assert._
-import pl.marpiec.cqrs._
-import pl.marpiec.socnet.model.UserProfile
-import org.joda.time.LocalDate
 import pl.marpiec.util.UID
 import scala.Option
 import socnet.constant.{Province, Month}
+import pl.marpiec.cqrs._
+import pl.marpiec.socnet.model.UserProfile
+import pl.marpiec.socnet.model.userprofile.{Education, JobExperience}
+import org.apache.commons.lang.StringUtils
 
 /**
  * @author Marcin Pieciukiewicz
@@ -62,21 +63,21 @@ class UserProfileServicesTest {
     val userProfileId = userProfileCommand.createUserProfile(new UID(0), userId)
     var userProfile = dataStore.getEntity(classOf[UserProfile], userProfileId).asInstanceOf[UserProfile]
 
-    var jobExperienceParam = new JobExperienceParam
+    var jobExperience = new JobExperience
 
-    jobExperienceParam.companyName = "socnet"
-    jobExperienceParam.description = "coding and programming"
-    jobExperienceParam.fromYear = 2002
-    jobExperienceParam.fromMonthOption = Option(Month.OCTOBER)
+    jobExperience.companyName = "socnet"
+    jobExperience.description = "coding and programming"
+    jobExperience.fromYear = 2002
+    jobExperience.fromMonthOption = Option(Month.OCTOBER)
 
-    jobExperienceParam.toYear = 2006
-    jobExperienceParam.toMonthOption = Option(Month.MARCH)
+    jobExperience.toYear = 2006
+    jobExperience.toMonthOption = Option(Month.MARCH)
 
-    jobExperienceParam.position = "Programmer"
+    jobExperience.position = "Programmer"
     val jobExperienceUid = uidGenerator.nextUid
-    jobExperienceParam.id = jobExperienceUid
+    jobExperience.id = jobExperienceUid
 
-    userProfileCommand.addJobExperience(new UID(0), userProfile.id, userProfile.version, jobExperienceParam, jobExperienceUid)
+    userProfileCommand.addJobExperience(new UID(0), userProfile.id, userProfile.version, jobExperience, jobExperienceUid)
 
     userProfile = dataStore.getEntity(classOf[UserProfile], userProfileId).asInstanceOf[UserProfile]
 
@@ -91,19 +92,19 @@ class UserProfileServicesTest {
     assertEquals(experience.position, "Programmer")
 
 
-    jobExperienceParam = new JobExperienceParam
+    jobExperience = new JobExperience
 
-    jobExperienceParam.id = jobExperienceUid
-    jobExperienceParam.companyName = "socnet"
-    jobExperienceParam.description = "coding and programming"
-    jobExperienceParam.fromYear = 2002
-    jobExperienceParam.fromMonthOption = Option(Month.OCTOBER)
+    jobExperience.id = jobExperienceUid
+    jobExperience.companyName = "socnet"
+    jobExperience.description = "coding and programming"
+    jobExperience.fromYear = 2002
+    jobExperience.fromMonthOption = Option(Month.OCTOBER)
 
-    jobExperienceParam.toYear = 2006
-    jobExperienceParam.toMonthOption = Option(Month.MARCH)
-    jobExperienceParam.position = "CTO"
+    jobExperience.toYear = 2006
+    jobExperience.toMonthOption = Option(Month.MARCH)
+    jobExperience.position = "CTO"
 
-    userProfileCommand.updateJobExperience(new UID(0), userProfile.id, userProfile.version, jobExperienceParam)
+    userProfileCommand.updateJobExperience(new UID(0), userProfile.id, userProfile.version, jobExperience)
 
     userProfile = dataStore.getEntity(classOf[UserProfile], userProfileId).asInstanceOf[UserProfile]
 
@@ -123,5 +124,68 @@ class UserProfileServicesTest {
 
     assertEquals(userProfile.jobExperience.size, 0)
 
+  }
+
+  def testEducationModification() {
+    val eventStore: EventStore = new EventStoreMockImpl
+    val entityCache: AggregateCache = new AggregateCacheSimpleImpl
+    val dataStore: DataStore = new DataStoreImpl(eventStore, entityCache)
+    val uidGenerator: UidGenerator = new UidGeneratorMockImpl
+    val userProfileCommand: UserProfileCommand = new UserProfileCommandImpl(eventStore, dataStore, uidGenerator)
+
+    val userId = uidGenerator.nextUid
+    val userProfileId = userProfileCommand.createUserProfile(new UID(0), userId)
+    var userProfile = dataStore.getEntity(classOf[UserProfile], userProfileId).asInstanceOf[UserProfile]
+
+    var education = new Education
+    education.schoolName = "Politechnika Warszawska"
+    education.level = "Magisterskie"
+    education.major = "Elektronika i inzynieria komputerowa"
+    education.fromYear = 2002
+    education.fromMonthOption = Option[Month](Month.SEPTEMBER)
+    education.toYear = 2009
+    education.toMonthOption = Option[Month](Month.JUNE)
+    education.stillStudying = false
+
+    val educationUid = uidGenerator.nextUid
+    education.id = educationUid
+
+    userProfileCommand.addEducation(new UID(0), userProfile.id, userProfile.version, education, educationUid)
+
+    userProfile = dataStore.getEntity(classOf[UserProfile], userProfileId).asInstanceOf[UserProfile]
+
+    assertEquals(userProfile.education.size, 1)
+    val loadedEducation = userProfile.education.head
+    assertEquals(loadedEducation.schoolName, "Politechnika Warszawska")
+    assertEquals(loadedEducation.level, "Magisterskie")
+    assertEquals(loadedEducation.major, "Elektronika i inzynieria komputerowa")
+    assertTrue(StringUtils.isEmpty(loadedEducation.description))
+    assertEquals(loadedEducation.fromYear, 2002)
+    assertEquals(loadedEducation.fromMonthOption.get, Month.SEPTEMBER)
+    assertEquals(loadedEducation.toYear, 2009)
+    assertEquals(loadedEducation.toMonthOption.get, Month.JUNE)
+    assertEquals(loadedEducation.stillStudying, false)
+
+    education.level = "Magistersko - Inzynieryjne"
+    education.stillStudying = true
+    userProfileCommand.updateEducation(new UID(0), userProfile.id, userProfile.version, education)
+
+    userProfile = dataStore.getEntity(classOf[UserProfile], userProfileId).asInstanceOf[UserProfile]
+
+    assertEquals(loadedEducation.schoolName, "Politechnika Warszawska")
+    assertEquals(loadedEducation.level, "Magistersko - Inzynieryjne")
+    assertEquals(loadedEducation.major, "Elektronika i inzynieria komputerowa")
+    assertTrue(StringUtils.isEmpty(loadedEducation.description))
+    assertEquals(loadedEducation.fromYear, 2002)
+    assertEquals(loadedEducation.fromMonthOption.get, Month.SEPTEMBER)
+    assertEquals(loadedEducation.toYear, 0)
+    assertTrue(loadedEducation.toMonthOption.isEmpty)
+    assertEquals(loadedEducation.stillStudying, true)
+
+    userProfileCommand.removeEducation(new UID(0), userProfile.id, userProfile.version, educationUid)
+
+    userProfile = dataStore.getEntity(classOf[UserProfile], userProfileId).asInstanceOf[UserProfile]
+
+    assertEquals(userProfile.education.size, 0)
   }
 }

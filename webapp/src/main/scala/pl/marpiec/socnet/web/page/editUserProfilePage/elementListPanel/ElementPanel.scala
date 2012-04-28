@@ -61,7 +61,6 @@ class ElementPanel[T <: Identifiable, TM <: SecureFormModel](id: String, mainLis
         switchToPreviewMode
         target.add(ElementPanel.this)
       }
-
     })
   }
 
@@ -72,9 +71,7 @@ class ElementPanel[T <: Identifiable, TM <: SecureFormModel](id: String, mainLis
 
   def saveChangesToElement(formModel: TM) {
     mainListPanel.saveChangesToElement(formModel)
-
   }
-
 
   def copyDataIntoElementAndIncrementProfileVersion(formModel: TM) {
     mainListPanel.copyModelToElement(element, formModel)
@@ -95,11 +92,9 @@ class ElementPanel[T <: Identifiable, TM <: SecureFormModel](id: String, mainLis
     this.setVisible(false)
   }
 
-
   private def addAndReturn[E <: Component](child: E): E = {
     add(child)
     child
   }
-
 
 }

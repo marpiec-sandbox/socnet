@@ -1,9 +1,11 @@
 package pl.marpiec.socnet.service.userprofile
 
 import event._
-import input.{JobExperienceParam, PersonalSummary}
+import input.PersonalSummary
 import pl.marpiec.util.UID
 import pl.marpiec.cqrs.{EventRow, UidGenerator, DataStore, EventStore}
+import pl.marpiec.socnet.model.userprofile.{Education, JobExperience}
+import socnet.service.userprofile.event.{RemoveEducationEvent, UpdateEducationEvent, AddEducationEvent}
 
 /**
  * @author Marcin Pieciukiewicz
@@ -21,15 +23,27 @@ class UserProfileCommandImpl(val eventStore: EventStore, val dataStore: DataStor
     eventStore.addEvent(new EventRow(userId, id, version, new UpdatePersonalSummaryEvent(personalSummary)))
   }
 
-  def addJobExperience(userId:UID, id: UID, version: Int, jobExperience: JobExperienceParam, jobExperienceId: UID) {
+  def addJobExperience(userId:UID, id: UID, version: Int, jobExperience: JobExperience, jobExperienceId: UID) {
     eventStore.addEvent(new EventRow(userId, id, version, new AddJobExperienceEvent(jobExperience, jobExperienceId)))
   }
 
-  def updateJobExperience(userId:UID, id: UID, version: Int, jobExperience: JobExperienceParam) {
+  def updateJobExperience(userId:UID, id: UID, version: Int, jobExperience: JobExperience) {
     eventStore.addEvent(new EventRow(userId, id, version, new UpdateJobExperienceEvent(jobExperience)))
   }
 
   def removeJobExperience(userId:UID, id: UID, version: Int, jobExperienceId: UID) {
     eventStore.addEvent(new EventRow(userId, id, version, new RemoveJobExperienceEvent(jobExperienceId)))
+  }
+
+  def addEducation(userId: UID, id: UID, version: Int, education: Education, educationId: UID) {
+    eventStore.addEvent(new EventRow(userId, id, version, new AddEducationEvent(education, educationId)))
+  }
+
+  def updateEducation(userId: UID, id: UID, version: Int, education: Education) {
+    eventStore.addEvent(new EventRow(userId, id, version, new UpdateEducationEvent(education)))
+  }
+
+  def removeEducation(userId: UID, id: UID, version: Int, educationId: UID) {
+    eventStore.addEvent(new EventRow(userId, id, version, new RemoveEducationEvent(educationId)))
   }
 }
