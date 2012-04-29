@@ -1,6 +1,8 @@
 package pl.marpiec.util
 
-import java.lang.reflect.Field
+import java.lang.reflect.{Field, Method}
+import scala.Predef._
+import scala.Int
 
 
 /**
@@ -10,34 +12,31 @@ import java.lang.reflect.Field
 
 object BeanUtil {
 
-  private var fieldsCache = Map[Class[_], List[Field]]()
+  private var fieldsCache = Map[Class[_], List[String]]()
   private var fieldCache = Map[(Class[_], String), Field]()
+  private var gettersCache = Map[Field, Method]()
+  private var settersCache = Map[Field, Method]()
+  private val FIELDS_CACHE_LOCK = new Object
+  private val FIELD_CACHE_LOCK = new Object
+  private val ZERO:java.lang.Integer = 0
 
   def clearProperties(bean: AnyRef) {
 
-    getDeclaredFields(bean.asInstanceOf[AnyRef].getClass).foreach((field:Field) => {
+    getDeclaredFields(bean.asInstanceOf[AnyRef].getClass).foreach((fieldName:String) => {
 
-      val isAccessible = field.isAccessible
-
-      if (!isAccessible) {
-        field.setAccessible(true)
-      }
-
+      val field = getDeclaredField(bean.asInstanceOf[AnyRef].getClass, fieldName)
+      val setter = settersCache.get(field).get
       val t = field.getGenericType
       if (t == classOf[Int]) {
-        field.set(bean, 0)
+        setter.invoke(bean, ZERO)
       } else if (t == classOf[Boolean]) {
-        field.set(bean, false)
+        setter.invoke(bean, java.lang.Boolean.FALSE)
       } else if (t == classOf[String]) {
-        field.set(bean, "")
+        setter.invoke(bean, "")
       } else if (t == classOf[Option[_]]) {
-        field.set(bean, None)
+        setter.invoke(bean, None)
       } else {
-        field.set(bean, null)
-      }
-
-      if (!isAccessible) {
-        field.setAccessible(false)
+        setter.invoke(bean, null)
       }
 
     })
@@ -46,25 +45,14 @@ object BeanUtil {
 
   def copyProperties[T](to:T, from:AnyRef):T = {
 
-    getDeclaredFields(to.asInstanceOf[AnyRef].getClass).foreach((toField:Field) => {
+    getDeclaredFields(to.asInstanceOf[AnyRef].getClass).foreach((fieldName:String) => {
       try {
-        val fromField = getDeclaredField(from.getClass, toField.getName)
+        val fromField = getDeclaredField(from.getClass, fieldName)
+        val toField = getDeclaredField(to.asInstanceOf[AnyRef].getClass, fieldName)
         if (fromField.getGenericType == toField.getGenericType) {
-          var fromAccessible = fromField.isAccessible
-          var toAccessible = toField.isAccessible
-          if (!fromAccessible) {
-            fromField.setAccessible(true)
-          }
-          if (!toAccessible) {
-            toField.setAccessible(true)
-          }
-          toField.set(to, fromField.get(from))
-          if (!fromAccessible) {
-            fromField.setAccessible(false)
-          }
-          if (!toAccessible) {
-            toField.setAccessible(false)
-          }
+          val getter = gettersCache.get(fromField).get
+          val setter = settersCache.get(toField).get
+          setter.invoke(to, getter.invoke(from))
         }
       } catch {
         case ex:NoSuchFieldException => {}
@@ -75,42 +63,74 @@ object BeanUtil {
   }
 
 
-  private def getDeclaredFields(fromClazz:Class[_]):List[Field] = {
+  private def getDeclaredFields(fromClazz:Class[_]):List[String] = {
     val fieldsOption = fieldsCache.get(fromClazz)
     if (fieldsOption.isEmpty) {
-      var clazz = fromClazz
-      var fields = List[Field]()
-      do {
-        fields ++= clazz.getDeclaredFields
-        clazz = clazz.getSuperclass
-      } while (clazz!=null)
-      fieldsCache += fromClazz -> fields
-      fields
+      FIELDS_CACHE_LOCK.synchronized {
+        getFieldsAndInsertToCache(fromClazz)
+      }
     } else {
       fieldsOption.get
     }
   }
 
+
+  def getFieldsAndInsertToCache(fromClazz: Class[_]): List[String] = {
+    var clazz = fromClazz
+    var fields = List[Field]()
+    do {
+      fields ++= clazz.getDeclaredFields
+      clazz = clazz.getSuperclass
+    } while (clazz != null)
+    var fieldsNames = List[String]()
+    fields.foreach((f:Field) => {
+      fieldsNames = f.getName :: fieldsNames
+    })
+    fieldsCache += fromClazz -> fieldsNames
+    fieldsNames
+  }
+
   private def getDeclaredField(fromClazz:Class[_], name:String):Field = {
     val fieldOption = fieldCache.get((fromClazz, name))
     if (fieldOption.isEmpty) {
-      var clazz = fromClazz
-      var field: Field = null
-      do {
-        try {
-          field = clazz.getDeclaredField(name)
-        } catch {
-          case ex:NoSuchFieldException => {/*ignore*/}
-        }
-        clazz = clazz.getSuperclass
-      } while (field==null && clazz!=null)
-      if (field==null) {
-        throw new NoSuchFieldException()
+      FIELD_CACHE_LOCK.synchronized {
+        getFieldAndInsertToCache(fromClazz, name)
       }
-      fieldCache += (fromClazz, name) -> field
-      field
     } else {
       fieldOption.get
     }
   }
+
+  def getFieldAndInsertToCache(fromClazz: Class[_], name: String): Field = {
+    var clazz = fromClazz
+    var field: Field = null
+    var getter: Method = null
+    var setter: Method = null
+    do {
+      try {
+        field = clazz.getDeclaredField(name)
+      } catch {
+        case ex: NoSuchFieldException => {
+          /*ignore*/
+        }
+      }
+      if(field==null) {
+        clazz = clazz.getSuperclass
+      }
+    } while (field == null && clazz != null)
+    if (field == null) {
+      throw new NoSuchFieldException()
+    }
+
+    getter = clazz.getMethod(name)
+    setter = clazz.getMethod(name + "_$eq", field.getType)
+
+    fieldCache += (fromClazz, name) -> field
+    gettersCache += field -> getter
+    settersCache += field -> setter
+
+    field
+  }
+
+
 }
