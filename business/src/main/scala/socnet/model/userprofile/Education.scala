@@ -16,9 +16,9 @@ class Education extends Identifiable {
   var major: String = _
 
   var fromYear: Int = _
-  var fromMonthOption: Option[Month] = _
+  var fromMonthOption: Option[Month] = None
   var toYear: Int = _
-  var toMonthOption: Option[Month] = _
+  var toMonthOption: Option[Month] = None
 
   var stillStudying:Boolean = _
 

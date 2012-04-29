@@ -6,10 +6,10 @@ import org.testng.Assert._
 import pl.marpiec.util.UID
 import scala.Option
 import socnet.constant.{Province, Month}
-import pl.marpiec.cqrs._
-import pl.marpiec.socnet.model.UserProfile
 import pl.marpiec.socnet.model.userprofile.{Education, JobExperience}
 import org.apache.commons.lang.StringUtils
+import pl.marpiec.cqrs._
+import pl.marpiec.socnet.model.UserProfile
 
 /**
  * @author Marcin Pieciukiewicz
@@ -155,7 +155,7 @@ class UserProfileServicesTest {
     userProfile = dataStore.getEntity(classOf[UserProfile], userProfileId).asInstanceOf[UserProfile]
 
     assertEquals(userProfile.education.size, 1)
-    val loadedEducation = userProfile.education.head
+    var loadedEducation = userProfile.education.head
     assertEquals(loadedEducation.schoolName, "Politechnika Warszawska")
     assertEquals(loadedEducation.level, "Magisterskie")
     assertEquals(loadedEducation.major, "Elektronika i inzynieria komputerowa")
@@ -172,6 +172,8 @@ class UserProfileServicesTest {
 
     userProfile = dataStore.getEntity(classOf[UserProfile], userProfileId).asInstanceOf[UserProfile]
 
+    assertEquals(userProfile.education.size, 1)
+    loadedEducation = userProfile.education.head
     assertEquals(loadedEducation.schoolName, "Politechnika Warszawska")
     assertEquals(loadedEducation.level, "Magistersko - Inzynieryjne")
     assertEquals(loadedEducation.major, "Elektronika i inzynieria komputerowa")

@@ -1,0 +1,17 @@
+package pl.marpiec.socnet.web.page.editUserProfilePage.model
+
+import pl.marpiec.util.ValidationResult
+
+/**
+ * ...
+ * @author Marcin Pieciukiewicz
+ */
+
+object EducationFormModelValidator {
+  def validate(form: EducationFormModel): ValidationResult = {
+    val result = new ValidationResult()
+
+
+    result
+  }
+}

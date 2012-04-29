@@ -24,9 +24,9 @@ class UserProfile extends Aggregate(null, 0) {
   var blogPage:String = _
   var summary:String = _
   
-  def jobExperienceById(id:UID):Option[JobExperience] = jobExperience.find(exp => exp.id == id)
+  def jobExperienceById(uid:UID):Option[JobExperience] = jobExperience.find(exp => exp.id == uid)
 
-  def educationById(uid: UID):Option[Education] = education.find(exp => exp.id == id)
+  def educationById(uid: UID):Option[Education] = education.find(edu => edu.id == uid)
 
   def copy:Aggregate = {
     val profile = new UserProfile

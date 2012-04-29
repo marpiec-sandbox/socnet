@@ -1,6 +1,6 @@
 package pl.marpiec.socnet.web.page.editUserProfilePage
 
-import model.{JobExperienceFormModel, JobExperienceFormModelValidator, MonthYearDateIModel}
+import model.{JobExperienceFormModel, JobExperienceFormModelValidator, JobExperienceDateIModel}
 import scala.collection.JavaConversions._
 import elementListPanel.ElementListPanel
 import pl.marpiec.socnet.model.{UserProfile, User}
@@ -31,7 +31,7 @@ class JobExperienceListPanel(id: String, user: User, userProfile: UserProfile, j
     panel.add(new Label("position", new PropertyModel[String](jobExperience, "position")))
     panel.add(new Label("description", new PropertyModel[String](jobExperience, "description")))
 
-    panel.add(new Label("experienceDate", new MonthYearDateIModel(jobExperience)))
+    panel.add(new Label("experienceDate", new JobExperienceDateIModel(jobExperience)))
   }
 
   def buildFormSchema(form: Form[JobExperienceFormModel]) = {
