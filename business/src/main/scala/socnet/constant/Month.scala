@@ -9,18 +9,18 @@ import pl.marpiec.util.senum.{SEnum, SEnumObject}
 
 object Month extends SEnumObject[Month] {
 
-  val JANUARY = new Month("JANUARY", "Styczen", 1)
-  val FEBRUARY = new Month("FEBRUARY", "Luty", 2)
-  val MARCH = new Month("MARCH", "Marzec", 3)
-  val APRIL = new Month("APRIL", "Kwiecien", 4)
-  val MAY = new Month("MAY", "Maj", 5)
-  val JUNE = new Month("JUNE", "Czerwiec", 6)
-  val JULY = new Month("JULY", "Lipiec", 7)
-  val AUGUST = new Month("AUGUST", "Sierpien", 8)
-  val SEPTEMBER = new Month("SEPTEMBER", "Wrzesien", 9)
-  val OCTOBER = new Month("OCTOBER", "Pazdziernik", 10)
-  val NOVEMBER = new Month("NOVEMBER", "Listopad", 11)
-  val DECEMBER = new Month("DECEMBER", "Grudzien", 12)
+  val JANUARY = new Month("JANUARY", "styczen", 1)
+  val FEBRUARY = new Month("FEBRUARY", "luty", 2)
+  val MARCH = new Month("MARCH", "marzec", 3)
+  val APRIL = new Month("APRIL", "kwiecien", 4)
+  val MAY = new Month("MAY", "maj", 5)
+  val JUNE = new Month("JUNE", "czerwiec", 6)
+  val JULY = new Month("JULY", "lipiec", 7)
+  val AUGUST = new Month("AUGUST", "sierpien", 8)
+  val SEPTEMBER = new Month("SEPTEMBER", "wrzesien", 9)
+  val OCTOBER = new Month("OCTOBER", "pazdziernik", 10)
+  val NOVEMBER = new Month("NOVEMBER", "listopad", 11)
+  val DECEMBER = new Month("DECEMBER", "grudzien", 12)
 
   val values = List(JANUARY, FEBRUARY, MARCH, APRIL, MAY, JUNE, JULY, AUGUST, SEPTEMBER, OCTOBER, NOVEMBER, DECEMBER)
 

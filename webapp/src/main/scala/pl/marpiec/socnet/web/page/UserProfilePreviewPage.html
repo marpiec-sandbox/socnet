@@ -2,22 +2,33 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
 <body>
 <wicket:extend>
+    <div class="userProfilePreview">
 
-    <div wicket:id="userPreviewPanel">userPreviewPanel</div>
-    <div wicket:id="personalSummaryPreview">personalSummaryPreview</div>
+        <div wicket:id="userPreviewPanel">userPreviewPanel</div>
+        <div wicket:id="personalSummaryPreview">personalSummaryPreview</div>
 
-    <div wicket:id="jobExperiencePreview">
-        <div wicket:id="content">content</div>
+        <div class="jobExperienceTitle">
+            Doświadczenie zawodowe
+        </div>
+        <div wicket:id="jobExperiencePreview">
+            <div wicket:id="content">content</div>
+        </div>
+
+        <div class="educationTitle">
+            Wykształcenie
+        </div>
+        <div wicket:id="educationPreview">
+            <div wicket:id="content">content</div>
+        </div>
+
+        <div class="additionalInfoTitle">
+            Dodatkowe informacje
+        </div>
+        <div wicket:id="additionalInfoPreview">
+            <div wicket:id="content">content</div>
+        </div>
+
     </div>
-
-    <div wicket:id="educationPreview">
-        <div wicket:id="content">content</div>
-    </div>
-
-    <div wicket:id="additionalInfoPreview">
-        <div wicket:id="content">content</div>
-    </div>
-
 </wicket:extend>
 </body>
 </html>

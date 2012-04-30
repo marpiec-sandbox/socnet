@@ -12,10 +12,10 @@ class JobExperienceDateIModel(val jobExperience: JobExperience) extends Abstract
   def getObject: String = {
     val from = formatDate(jobExperience.fromYear, jobExperience.fromMonthOption)
     if (jobExperience.currentJob) {
-      "od " + from
+      from
     } else {
       val to = formatDate(jobExperience.toYear, jobExperience.toMonthOption)
-      "od " + from + " do " + to
+      from + " - " + to
     }
   }
 

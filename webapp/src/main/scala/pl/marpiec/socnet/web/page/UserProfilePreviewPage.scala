@@ -20,7 +20,7 @@ import userProfilePreviewPage._
  * @author Marcin Pieciukiewicz
  */
 
-class UserProfilePreviewPage(parameters: PageParameters) extends SecureWebPage(SocnetRoles.USER) {
+class UserProfilePreviewPage(parameters: PageParameters) extends SecureWebPage(SocnetRoles.NO_ROLES_REQUIRED) {
 
   //dependencies
   val userProfileDatabase: UserProfileDatabase = Factory.userProfileDatabase

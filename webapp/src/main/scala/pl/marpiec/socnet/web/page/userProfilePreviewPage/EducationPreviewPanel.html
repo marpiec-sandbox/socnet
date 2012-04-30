@@ -2,23 +2,22 @@
 <html xmlns:wicket="http://wicket.apache.org">
 <wicket:panel>
 
-    <div>
-        <span wicket:id="educationDate">educationDate</span>
-    </div>
-    <div>
-        <span wicket:id="schoolName">schoolName</span>
-    </div>
-    <div>
-        <span wicket:id="faculty">faculty</span>
-    </div>
-    <div>
-        <span wicket:id="major">major</span>
-    </div>
-    <div>
-        <span wicket:id="level">level</span>
-    </div>
-    <div>
-        <span wicket:id="description">description</span>
+    <div class="educationPreview">
+        <div class="profileDateInfo">
+            <span wicket:id="educationDate">educationDate</span>
+        </div>
+        <div class="major">
+            <span wicket:id="major">major</span>
+        </div>
+        <div class="schoolName">
+            <span wicket:id="schoolName">schoolName</span><span class="faculty">, <span wicket:id="faculty">faculty</span></span>
+        </div>
+        <div class="level">
+            <span wicket:id="level">level</span>
+        </div>
+        <div class="description">
+            <span wicket:id="description">description</span>
+        </div>
     </div>
 
 </wicket:panel>

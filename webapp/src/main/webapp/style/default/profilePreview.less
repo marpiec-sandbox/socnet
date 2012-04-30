@@ -1,0 +1,121 @@
+.userProfilePreview {
+
+    .userPreview {
+        .userName {
+            font-size:20px;
+            font-weight: bold;
+            color: @mainThemeFontColor;
+        }
+    }
+
+    .personalSummaryPreview {
+       .professionalTitle {
+          font-weight: bold;
+          font-size: 18px;
+       }
+       .city {
+          color: @lightFontColor;
+          font-size: @smallFontSize;
+          margin-bottom: 10px;
+       }
+
+       .summary {
+          color: @lightFontColor;
+          font-size: @defaultFontSize;
+          margin-top: 15px;
+       }
+       .wwwPage, .blogPage {
+
+            a {
+              color: @mainThemeFontColor;
+              text-decoration: none;
+
+              &:hover {
+                 text-decoration:underline;
+              }
+            }
+       }
+    }
+
+    .jobExperienceTitle, .educationTitle, .additionalInfoTitle {
+       border-bottom: 2px solid #444444;
+       color: #254F87;
+       font-size: 20px;
+       font-weight: bold;
+       margin-bottom: 10px;
+       margin-top: 30px;
+       padding-bottom: 3px;
+    }
+
+    .jobExperiencePreview, .educationPreview, .additionalInfoPreview {
+       margin-bottom: 30px;
+
+       .profileDateInfo {
+         color: @lightFontColor;
+         font-size: @smallFontSize;
+       }
+    }
+
+
+    .defaultTitle {
+        font-weight: bold;
+        font-size: @defaultFontSize;
+        color: @mainThemeFontColor;
+    }
+
+    .default-description {
+        margin-top: 6px;
+        color: @lightFontColor;
+        font-size: @defaultFontSize;
+    }
+
+    .jobExperiencePreview {
+
+        .position{
+            .defaultTitle
+        }
+
+        .companyName {
+            font-weight: bold;
+        }
+
+        .description {
+            .default-description
+        }
+    }
+
+    .educationPreview {
+
+        .major {
+            .defaultTitle;
+        }
+
+        .schoolName {
+             font-weight: bold;
+
+            .faculty {
+              font-size:@smallFontSize;
+              color: @lightFontColor;
+              font-weight: normal;
+            }
+        }
+
+
+
+        .description {
+            .default-description
+        }
+    }
+
+    .additionalInfoPreview {
+        .title {
+           .defaultTitle
+        }
+
+        .description {
+            .default-description
+        }
+    }
+
+
+}

@@ -13,10 +13,10 @@ class AdditionalInfoDateIModel(val additionalInfo: AdditionalInfo) extends Abstr
   def getObject: String = {
     val from = formatDate(additionalInfo.fromYear, additionalInfo.fromMonthOption)
     if (additionalInfo.oneDate) {
-      "od " + from
+      from
     } else {
       val to = formatDate(additionalInfo.toYear, additionalInfo.toMonthOption)
-      "od " + from + " do " + to
+      from + " - " + to
     }
   }
 

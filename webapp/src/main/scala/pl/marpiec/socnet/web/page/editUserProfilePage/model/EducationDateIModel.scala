@@ -12,10 +12,10 @@ class EducationDateIModel(val education: Education) extends AbstractReadOnlyMode
   def getObject: String = {
     val from = formatDate(education.fromYear, education.fromMonthOption)
     if (education.stillStudying) {
-      "od " + from
+      from
     } else {
       val to = formatDate(education.toYear, education.toMonthOption)
-      "od " + from + " do " + to
+      from + " - " + to
     }
   }
 
