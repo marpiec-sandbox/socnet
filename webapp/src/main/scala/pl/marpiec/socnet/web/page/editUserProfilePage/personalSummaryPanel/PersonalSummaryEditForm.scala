@@ -12,6 +12,7 @@ import socnet.constant.Province
 import org.apache.wicket.markup.html.form._
 import pl.marpiec.socnet.web.page.editUserProfilePage.model.{PersonalSummaryFormModelValidator, JobExperienceFormModelValidator, PersonalSummaryFormModel}
 import org.apache.wicket.markup.html.basic.Label
+import org.apache.wicket.ajax.markup.html.AjaxFallbackLink
 
 
 class PersonalSummaryEditForm(id: String, userProfile: UserProfile, user: User, parent: PersonalSummaryPanel) extends SecureForm[PersonalSummaryFormModel](id) {
@@ -42,12 +43,14 @@ class PersonalSummaryEditForm(id: String, userProfile: UserProfile, user: User, 
 
 
   def addCancelButton {
-    add(new SecureAjaxButton[PersonalSummaryFormModel]("cancelButton") {
-      def onSecureSubmit(target: AjaxRequestTarget, formModel: PersonalSummaryFormModel) {
+    add(new AjaxFallbackLink[PersonalSummaryFormModel]("cancelButton") {
+      def onSubmit(target: AjaxRequestTarget, formModel: PersonalSummaryFormModel) {
         revertFormData(formModel)
         parent.switchToPreviewMode
         target.add(parent)
       }
+
+      def onClick(target: AjaxRequestTarget) {}
     })
   }
 

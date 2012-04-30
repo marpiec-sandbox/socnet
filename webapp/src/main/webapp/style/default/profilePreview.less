@@ -131,19 +131,31 @@
 
 
 .userProfileEdit {
+
     .editButtons {
         position:absolute;
         top: 0px;
         right:0px;
+    }
 
-        a {
-            color: @mainThemeFontColor;
-            font-weight: bold;
-            text-decoration: none;
-            margin-left: 30px;
-            &:hover {
-                text-decoration: underline;
-            }
+    .profileEditActionButtons {
+        margin: 20px 0;
+        text-align: center;
+
+        input, a {
+            margin-right: 100px;
         }
     }
+
+    .editButtons, .profileEditActionButtons {
+            a {
+                color: @mainThemeFontColor;
+                font-weight: bold;
+                text-decoration: none;
+                margin-left: 30px;
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
 }
