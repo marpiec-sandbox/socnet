@@ -18,7 +18,10 @@ object BeanUtil {
   private var settersCache = Map[Field, Method]()
   private val FIELDS_CACHE_LOCK = new Object
   private val FIELD_CACHE_LOCK = new Object
-  private val ZERO:java.lang.Integer = 0
+  private val ZERO_INT:java.lang.Integer = 0
+  private val ZERO_LONG:java.lang.Long = 0L
+  private val ZERO_FLOAT:java.lang.Float = 0.0f
+  private val ZERO_DOUBLE:java.lang.Double = 0.0
 
   def clearProperties(bean: AnyRef) {
 
@@ -27,12 +30,19 @@ object BeanUtil {
       val field = getDeclaredField(bean.asInstanceOf[AnyRef].getClass, fieldName)
       val setter = settersCache.get(field).get
       val t = field.getGenericType
+
       if (t == classOf[Int]) {
-        setter.invoke(bean, ZERO)
+        setter.invoke(bean, ZERO_INT)
       } else if (t == classOf[Boolean]) {
         setter.invoke(bean, java.lang.Boolean.FALSE)
       } else if (t == classOf[String]) {
         setter.invoke(bean, "")
+      } else if(t == classOf[Long]) {
+        setter.invoke(bean, ZERO_LONG)
+      } else if(t == classOf[Float]) {
+        setter.invoke(bean, ZERO_FLOAT)
+      } else if(t == classOf[Double]) {
+        setter.invoke(bean, ZERO_DOUBLE)
       } else if (t == classOf[Option[_]]) {
         setter.invoke(bean, None)
       } else {
