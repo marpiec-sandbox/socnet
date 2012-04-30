@@ -7,6 +7,7 @@ import pl.marpiec.socnet.model.User
 import pl.marpiec.socnet.di.Factory
 import org.apache.wicket.authroles.authorization.strategies.role.metadata.MetaDataRoleAuthorizationStrategy
 import org.apache.commons.lang.RandomStringUtils
+import pl.marpiec.util.UID
 
 /**
  * Session class.
@@ -63,6 +64,18 @@ class SocnetSession(request: Request) extends AuthenticatedWebSession(request) {
   override def invalidate {
     super.invalidate()
     clearSessionData
+  }
+
+  def isAuthenticated():Boolean = {
+    user != null
+  }
+  
+  def userId():UID = {
+    if (isAuthenticated()) {
+      user.id
+    } else {
+      null
+    }
   }
 
 

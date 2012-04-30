@@ -1,12 +1,10 @@
 package pl.marpiec.socnet.web.page
 
 import org.apache.wicket.request.mapper.parameter.PageParameters
-import org.apache.wicket.markup.html.WebPage
 import org.apache.wicket.markup.html.basic.Label
 
 
 import pl.marpiec.socnet.di.Factory
-import pl.marpiec.socnet.model.{User, Article}
 import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException
 import pl.marpiec.util.UID
 import pl.marpiec.socnet.web.page.template.SimpleTemplatePage

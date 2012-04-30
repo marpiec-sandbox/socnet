@@ -14,5 +14,6 @@ object SocnetBookmakablePages {
     application.mountPage("new-article", classOf[NewArticlePage])
     application.mountPage("article", classOf[ArticlePage])
     application.mountPage("edit-profile", classOf[EditUserProfilePage])
+    application.mountPage("profile", classOf[UserProfilePreviewPage])
   }
 }
