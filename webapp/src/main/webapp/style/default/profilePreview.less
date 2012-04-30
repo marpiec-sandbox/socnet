@@ -1,5 +1,7 @@
 .userProfilePreview {
 
+    width: 600px;
+
     .userPreview {
         .userName {
             font-size:20px;
@@ -10,6 +12,8 @@
     }
 
     .personalSummaryPreview {
+        position: relative;
+
        .professionalTitle {
           font-weight: bold;
           font-size: 16px;
@@ -36,6 +40,7 @@
               }
             }
        }
+
     }
 
     .jobExperienceTitle, .educationTitle, .additionalInfoTitle {
@@ -50,6 +55,7 @@
 
     .jobExperiencePreview, .educationPreview, .additionalInfoPreview {
        margin-bottom: 30px;
+       position:relative;
 
        .profileDateInfo {
          color: @lightFontColor;
@@ -119,4 +125,13 @@
     }
 
 
+}
+
+
+.userProfileEdit {
+    .editButtons {
+        position:absolute;
+        top: 0px;
+        right:0px;
+    }
 }

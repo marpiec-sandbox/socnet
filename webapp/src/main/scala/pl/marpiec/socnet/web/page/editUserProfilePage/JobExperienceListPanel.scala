@@ -7,12 +7,12 @@ import pl.marpiec.socnet.model.{UserProfile, User}
 import collection.mutable.ListBuffer
 import socnet.constant.Month
 import org.apache.wicket.markup.html.form._
-import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.model.PropertyModel
 import org.apache.wicket.markup.html.panel.Panel
 import pl.marpiec.socnet.di.Factory
 import pl.marpiec.util.UID
 import pl.marpiec.socnet.model.userprofile.JobExperience
+import org.apache.wicket.markup.html.basic.{MultiLineLabel, Label}
 
 /**
  * @author Marcin Pieciukiewicz
@@ -28,7 +28,7 @@ class JobExperienceListPanel(id: String, user: User, userProfile: UserProfile, j
   def buildPreviewSchema(panel: Panel, jobExperience: JobExperience) = {
     panel.add(new Label("companyName", new PropertyModel[String](jobExperience, "companyName")))
     panel.add(new Label("position", new PropertyModel[String](jobExperience, "position")))
-    panel.add(new Label("description", new PropertyModel[String](jobExperience, "description")))
+    panel.add(new MultiLineLabel("description", new PropertyModel[String](jobExperience, "description")))
 
     panel.add(new Label("experienceDate", new JobExperienceDateIModel(jobExperience)))
   }

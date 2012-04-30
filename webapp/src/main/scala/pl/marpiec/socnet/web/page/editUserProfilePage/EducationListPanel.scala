@@ -6,13 +6,13 @@ import elementListPanel.ElementListPanel
 import pl.marpiec.socnet.model.{UserProfile, User}
 import collection.mutable.ListBuffer
 import socnet.constant.Month
-import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.markup.html.panel.Panel
 import pl.marpiec.socnet.di.Factory
 import pl.marpiec.util.UID
 import org.apache.wicket.markup.html.form._
 import org.apache.wicket.model.PropertyModel
 import pl.marpiec.socnet.model.userprofile.Education
+import org.apache.wicket.markup.html.basic.{MultiLineLabel, Label}
 
 /**
  * @author Marcin Pieciukiewicz
@@ -30,7 +30,7 @@ class EducationListPanel(id: String, user: User, userProfile: UserProfile, educa
     panel.add(new Label("faculty", new PropertyModel[String](education, "faculty")))
     panel.add(new Label("major", new PropertyModel[String](education, "major")))
     panel.add(new Label("level", new PropertyModel[String](education, "level")))
-    panel.add(new Label("description", new PropertyModel[String](education, "description")))
+    panel.add(new MultiLineLabel("description", new PropertyModel[String](education, "description")))
 
     panel.add(new Label("educationDate", new EducationDateIModel(education)))
   }

@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <html xmlns:wicket="http://wicket.apache.org">
 <wicket:panel>
-    <div>
-        Tytuł: <span wicket:id="title">title</span>
+    <div class="additionalInfoPreview">
+        <div class="profileDateInfo">
+            <span wicket:id="additionalInfoDate">additionalInfoDate</span>
+        </div>
+        <div class="title">
+            <span wicket:id="title">title</span>
+        </div>
+        <div class="description">
+            <span wicket:id="description">description</span>
+        </div>
+        <div class="editButtons">
+            <input type="submit" wicket:id="editButton" value="edytuj"/>
+            <input type="submit" wicket:id="deleteButton" value="usuń"/>
+        </div>
     </div>
-    <div>
-        <span wicket:id="additionalInfoDate">additionalInfoDate</span>
-    </div>
-    <div>
-        Opis: <span wicket:id="description">description</span>
-    </div>
-    <input type="submit" wicket:id="editButton" value="edytuj"/>
-    <input type="submit" wicket:id="deleteButton" value="usuń"/>
 </wicket:panel>
 </html>

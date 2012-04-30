@@ -1,29 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <html xmlns:wicket="http://wicket.apache.org">
 <wicket:panel>
+
     <div wicket:id="personalSummaryPreview">
 
-        <div>
-            Tytuł zawodowy: <span wicket:id="professionalTitle">professionalTitle</span>
-        </div>
-        <div>
-            Miasto: <span wicket:id="city">city</span>
-        </div>
-        <div>
-            Województwo: <span wicket:id="province">province</span>
-        </div>
-        <div>
-            Strona WWW: <span wicket:id="wwwPage">wwwPage</span>
-        </div>
-        <div>
-            Blog: <span wicket:id="blogPage">blogPage</span>
-        </div>
-        <div>
-            Podsumowanie: <span wicket:id="summary">summary</span>
-        </div>
-        <input type="submit" wicket:id="editButton" value="edytuj"/>
+        <div class="personalSummaryPreview">
+            <div class="professionalTitle">
+                <span wicket:id="professionalTitle">professionalTitle</span>
+            </div>
 
+            <div class="city">
+                <span wicket:id="city">city</span>, woj. <span wicket:id="province">province</span>
+            </div>
+
+            <div class="wwwPage">
+                Strona www: <a wicket:id="wwwPage">wwwPage</a>
+            </div>
+
+            <div class="blogPage">
+                Blog: <a wicket:id="blogPage">blogPage</a>
+            </div>
+
+            <div class="summary">
+                <span wicket:id="summary">summary</span>
+            </div>
+            <div class="editButtons">
+                <input type="submit" wicket:id="editButton" value="edytuj"/>
+            </div>
+        </div>
     </div>
+
 
     <form wicket:id="personalSummaryForm" class="horizontalForm personalSummaryForm">
 

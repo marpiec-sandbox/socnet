@@ -5,7 +5,6 @@ import scala.collection.JavaConversions._
 import elementListPanel.ElementListPanel
 import pl.marpiec.socnet.model.{UserProfile, User}
 import collection.mutable.ListBuffer
-import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.markup.html.panel.Panel
 import pl.marpiec.socnet.di.Factory
 import pl.marpiec.util.UID
@@ -13,6 +12,7 @@ import org.apache.wicket.markup.html.form._
 import org.apache.wicket.model.PropertyModel
 import socnet.model.userprofile.AdditionalInfo
 import socnet.constant.Month
+import org.apache.wicket.markup.html.basic.{MultiLineLabel, Label}
 
 /**
  * @author Marcin Pieciukiewicz
@@ -27,7 +27,7 @@ class AdditionalInfoListPanel(id: String, user: User, userProfile: UserProfile, 
 
   def buildPreviewSchema(panel: Panel, additionalInfo: AdditionalInfo) = {
     panel.add(new Label("title", new PropertyModel[String](additionalInfo, "title")))
-    panel.add(new Label("description", new PropertyModel[String](additionalInfo, "description")))
+    panel.add(new MultiLineLabel("description", new PropertyModel[String](additionalInfo, "description")))
 
     panel.add(new Label("additionalInfoDate", new AdditionalInfoDateIModel(additionalInfo)))
   }
