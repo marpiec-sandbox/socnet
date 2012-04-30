@@ -1,8 +1,8 @@
 package pl.marpiec.util
 
-import java.lang.reflect.{Field, Method}
 import scala.Predef._
 import scala.Int
+import java.lang.reflect.{Type, Field, Method}
 
 
 /**
@@ -12,71 +12,83 @@ import scala.Int
 
 object BeanUtil {
 
-  private var fieldsCache = Map[Class[_], List[String]]()
-  private var fieldCache = Map[(Class[_], String), Field]()
-  private var gettersCache = Map[Field, Method]()
-  private var settersCache = Map[Field, Method]()
-  private val FIELDS_CACHE_LOCK = new Object
-  private val FIELD_CACHE_LOCK = new Object
+  private val CACHE_LOCK = new Object
   private val ZERO_INT:java.lang.Integer = 0
   private val ZERO_LONG:java.lang.Long = 0L
   private val ZERO_FLOAT:java.lang.Float = 0.0f
   private val ZERO_DOUBLE:java.lang.Double = 0.0
 
+  private var fieldsCache = Map[Class[_], List[String]]()
+  private var fieldCache = Map[(Class[_], String), Field]()
+  private var gettersCache = Map[Field, Method]()
+  private var settersCache = Map[Field, Method]()
+
+
   def clearProperties(bean: AnyRef) {
 
-    getDeclaredFields(bean.asInstanceOf[AnyRef].getClass).foreach((fieldName:String) => {
+    val beanClass = bean.getClass
 
-      val field = getDeclaredField(bean.asInstanceOf[AnyRef].getClass, fieldName)
+    getDeclaredFields(beanClass).foreach((fieldName:String) => {
+      val field = getDeclaredField(beanClass, fieldName)
       val setter = settersCache.get(field).get
-      val t = field.getGenericType
-
-      if (t == classOf[Int]) {
-        setter.invoke(bean, ZERO_INT)
-      } else if (t == classOf[Boolean]) {
-        setter.invoke(bean, java.lang.Boolean.FALSE)
-      } else if (t == classOf[String]) {
-        setter.invoke(bean, "")
-      } else if(t == classOf[Long]) {
-        setter.invoke(bean, ZERO_LONG)
-      } else if(t == classOf[Float]) {
-        setter.invoke(bean, ZERO_FLOAT)
-      } else if(t == classOf[Double]) {
-        setter.invoke(bean, ZERO_DOUBLE)
-      } else if (t == classOf[Option[_]]) {
-        setter.invoke(bean, None)
-      } else {
-        setter.invoke(bean, null)
-      }
-
+      val fieldType = field.getGenericType
+      setDefaultValueIntoField(bean, setter, fieldType)
     })
 
   }
 
-  def copyProperties[T](to:T, from:AnyRef):T = {
 
-    getDeclaredFields(to.asInstanceOf[AnyRef].getClass).foreach((fieldName:String) => {
+  private def setDefaultValueIntoField(bean: AnyRef, setter:Method, fieldType: Type): AnyRef = {
+    if (fieldType == classOf[Int]) {
+      setter.invoke(bean, ZERO_INT)
+    } else if (fieldType == classOf[Boolean]) {
+      setter.invoke(bean, java.lang.Boolean.FALSE)
+    } else if (fieldType == classOf[String]) {
+      setter.invoke(bean, "")
+    } else if (fieldType == classOf[Long]) {
+      setter.invoke(bean, ZERO_LONG)
+    } else if (fieldType == classOf[Float]) {
+      setter.invoke(bean, ZERO_FLOAT)
+    } else if (fieldType == classOf[Double]) {
+      setter.invoke(bean, ZERO_DOUBLE)
+    } else if (fieldType == classOf[Option[_]]) {
+      setter.invoke(bean, None)
+    } else {
+      setter.invoke(bean, null)
+    }
+  }
+
+
+
+  def copyProperties[T <: AnyRef](toBean:T, fromBean:AnyRef):T = {
+
+    getDeclaredFields(toBean.getClass).foreach((fieldName:String) => {
       try {
-        val fromField = getDeclaredField(from.getClass, fieldName)
-        val toField = getDeclaredField(to.asInstanceOf[AnyRef].getClass, fieldName)
-        if (fromField.getGenericType == toField.getGenericType) {
-          val getter = gettersCache.get(fromField).get
-          val setter = settersCache.get(toField).get
-          setter.invoke(to, getter.invoke(from))
-        }
+        val fromField = getDeclaredField(fromBean.getClass, fieldName)
+        val toField = getDeclaredField(toBean.getClass, fieldName)
+
+        copyValuesIfTypeMatches(toBean, toField, fromBean, fromField)
       } catch {
         case ex:NoSuchFieldException => {}
       }
     })
 
-    to
+    toBean
+  }
+
+  private def copyValuesIfTypeMatches[T <: AnyRef](toBean: T, toField:Field, fromBean: AnyRef, fromField:Field): Any = {
+    if (fromField.getGenericType == toField.getGenericType) {
+      val getter = gettersCache.get(fromField).get
+      val setter = settersCache.get(toField).get
+      setter.invoke(toBean, getter.invoke(fromBean))
+    }
   }
 
 
   private def getDeclaredFields(fromClazz:Class[_]):List[String] = {
     val fieldsOption = fieldsCache.get(fromClazz)
     if (fieldsOption.isEmpty) {
-      FIELDS_CACHE_LOCK.synchronized {
+      CACHE_LOCK.synchronized {
         getFieldsAndInsertToCache(fromClazz)
       }
     } else {
@@ -85,25 +97,30 @@ object BeanUtil {
   }
 
 
-  def getFieldsAndInsertToCache(fromClazz: Class[_]): List[String] = {
+  private def getFieldsAndInsertToCache(fromClazz: Class[_]): List[String] = {
     var clazz = fromClazz
     var fields = List[Field]()
     do {
       fields ++= clazz.getDeclaredFields
       clazz = clazz.getSuperclass
     } while (clazz != null)
+
+    getFieldNamesAfterPuttingIntoCache(fromClazz, fields)
+  }
+
+  private def getFieldNamesAfterPuttingIntoCache(clazz: Class[_], fields:List[Field]): List[String] = {
     var fieldsNames = List[String]()
-    fields.foreach((f:Field) => {
+    fields.foreach((f: Field) => {
       fieldsNames = f.getName :: fieldsNames
     })
-    fieldsCache += fromClazz -> fieldsNames
+    fieldsCache += clazz -> fieldsNames
     fieldsNames
   }
 
   private def getDeclaredField(fromClazz:Class[_], name:String):Field = {
     val fieldOption = fieldCache.get((fromClazz, name))
     if (fieldOption.isEmpty) {
-      FIELD_CACHE_LOCK.synchronized {
+      CACHE_LOCK.synchronized {
         getFieldAndInsertToCache(fromClazz, name)
       }
     } else {
@@ -111,35 +128,34 @@ object BeanUtil {
     }
   }
 
-  def getFieldAndInsertToCache(fromClazz: Class[_], name: String): Field = {
-    var clazz = fromClazz
-    var field: Field = null
-    var getter: Method = null
-    var setter: Method = null
-    do {
-      try {
-        field = clazz.getDeclaredField(name)
-      } catch {
-        case ex: NoSuchFieldException => {
-          /*ignore*/
-        }
-      }
-      if(field==null) {
-        clazz = clazz.getSuperclass
-      }
-    } while (field == null && clazz != null)
-    if (field == null) {
-      throw new NoSuchFieldException()
-    }
+  private def getFieldAndInsertToCache(fromClazz: Class[_], name: String): Field = {
 
-    getter = clazz.getMethod(name)
-    setter = clazz.getMethod(name + "_$eq", field.getType)
+    val (field, clazz) = findFieldInClass(name, fromClazz)
+
+    val getter = clazz.getMethod(name)
+    val setter = clazz.getMethod(name + "_$eq", field.getType)
 
     fieldCache += (fromClazz, name) -> field
     gettersCache += field -> getter
     settersCache += field -> setter
 
     field
+  }
+
+  private def findFieldInClass(name: String, fromClazz: Class[_]): (Field, Class[_]) = {
+    var clazz = fromClazz
+    do {
+      try {
+        val field = clazz.getDeclaredField(name)
+        return (field, clazz)
+      } catch {
+        case ex: NoSuchFieldException => {/*ignore*/}
+      }
+      clazz = clazz.getSuperclass
+    } while (clazz != null)
+
+    throw new NoSuchFieldException()
+
   }
 
 
