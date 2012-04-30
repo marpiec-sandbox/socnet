@@ -14,6 +14,7 @@ class EducationFormModel extends SecureFormModel {
 
   var id: UID = null
   var schoolName: String = ""
+  var faculty: String = ""
   var level: String = ""
   var major: String = ""
 

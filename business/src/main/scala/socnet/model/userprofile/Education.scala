@@ -1,6 +1,5 @@
 package pl.marpiec.socnet.model.userprofile
 
-import org.joda.time.LocalDate
 import socnet.model.userprofile.Identifiable
 import socnet.constant.Month
 
@@ -13,6 +12,7 @@ class Education extends Identifiable {
 
   var schoolName: String = _
   var level: String = _
+  var faculty: String = _
   var major: String = _
 
   var fromYear: Int = _
@@ -20,7 +20,7 @@ class Education extends Identifiable {
   var toYear: Int = _
   var toMonthOption: Option[Month] = None
 
-  var stillStudying:Boolean = _
+  var stillStudying: Boolean = _
 
   var description: String = _
 }

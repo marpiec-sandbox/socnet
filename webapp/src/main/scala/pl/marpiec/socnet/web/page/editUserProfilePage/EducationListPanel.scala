@@ -27,6 +27,7 @@ class EducationListPanel(id: String, user: User, userProfile: UserProfile, educa
 
   def buildPreviewSchema(panel: Panel, education: Education) = {
     panel.add(new Label("schoolName", new PropertyModel[String](education, "schoolName")))
+    panel.add(new Label("faculty", new PropertyModel[String](education, "faculty")))
     panel.add(new Label("major", new PropertyModel[String](education, "major")))
     panel.add(new Label("level", new PropertyModel[String](education, "level")))
     panel.add(new Label("description", new PropertyModel[String](education, "description")))
@@ -36,6 +37,7 @@ class EducationListPanel(id: String, user: User, userProfile: UserProfile, educa
 
   def buildFormSchema(form: Form[EducationFormModel]) = {
     form.add(new TextField[String]("schoolName"))
+    form.add(new TextField[String]("faculty"))
     form.add(new TextField[String]("major"))
     form.add(new TextField[String]("level"))
 

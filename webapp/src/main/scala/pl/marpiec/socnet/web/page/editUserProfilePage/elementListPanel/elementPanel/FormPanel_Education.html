@@ -10,8 +10,14 @@
         <div class="formRow">
             <span class="label">Nazwa uczelni/szkoły</span>
             <span class="validatorMessage"></span>
-            <input type="text" wicket:id="schoolName"class="requiredValidator stringValidator" alt="{min:3, max:100, msg:'Nazwa szkoły jest wymagana (minimum 3 litery)'}"/>
+            <input type="text" wicket:id="schoolName" class="requiredValidator stringValidator" alt="{min:3, max:100, msg:'Nazwa szkoły jest wymagana (minimum 3 litery)'}"/>
         </div>
+        <div class="formRow">
+            <span class="label">Wydział</span>
+            <span class="validatorMessage"></span>
+            <input type="text" wicket:id="faculty"/>
+        </div>
+
         <div class="formRow">
             <span class="label">Kierunek</span>
             <span class="validatorMessage"></span>
