@@ -5,6 +5,7 @@ import userprofile.{JobExperience, Education}
 import collection.mutable.ListBuffer
 import pl.marpiec.util.UID
 import socnet.constant.Province
+import socnet.model.userprofile.AdditionalInfo
 
 /**
  * ...
@@ -20,6 +21,7 @@ class UserProfile extends Aggregate(null, 0) {
   var province:Province = _
   var jobExperience = new ListBuffer[JobExperience]
   var education = new ListBuffer[Education]
+  var additionalInfo = new ListBuffer[AdditionalInfo]
   var wwwPage:String = _
   var blogPage:String = _
   var summary:String = _
@@ -27,6 +29,8 @@ class UserProfile extends Aggregate(null, 0) {
   def jobExperienceById(uid:UID):Option[JobExperience] = jobExperience.find(exp => exp.id == uid)
 
   def educationById(uid: UID):Option[Education] = education.find(edu => edu.id == uid)
+
+  def additionalInfoById(uid: UID):Option[AdditionalInfo] = additionalInfo.find(info => info.id == uid)
 
   def copy:Aggregate = {
     val profile = new UserProfile
@@ -37,6 +41,7 @@ class UserProfile extends Aggregate(null, 0) {
     profile.province = this.province
     profile.jobExperience = this.jobExperience.clone
     profile.education = this.education.clone
+    profile.additionalInfo = this.additionalInfo.clone
     profile.wwwPage = this.wwwPage
     profile.blogPage = this.blogPage
     profile.summary = this.summary

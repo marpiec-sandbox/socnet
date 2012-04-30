@@ -5,7 +5,8 @@ import input.PersonalSummary
 import pl.marpiec.util.UID
 import pl.marpiec.cqrs.{EventRow, UidGenerator, DataStore, EventStore}
 import pl.marpiec.socnet.model.userprofile.{Education, JobExperience}
-import socnet.service.userprofile.event.{RemoveEducationEvent, UpdateEducationEvent, AddEducationEvent}
+import socnet.model.userprofile.AdditionalInfo
+import socnet.service.userprofile.event._
 
 /**
  * @author Marcin Pieciukiewicz
@@ -45,5 +46,17 @@ class UserProfileCommandImpl(val eventStore: EventStore, val dataStore: DataStor
 
   def removeEducation(userId: UID, id: UID, version: Int, educationId: UID) {
     eventStore.addEvent(new EventRow(userId, id, version, new RemoveEducationEvent(educationId)))
+  }
+
+  def addAdditionalInfo(userId: UID, id: UID, version: Int, additionalInfo: AdditionalInfo, additionalInfoId: UID) {
+    eventStore.addEvent(new EventRow(userId, id, version, new AddAdditionalInfoEvent(additionalInfo, additionalInfoId)))
+  }
+
+  def updateAdditionalInfo(userId: UID, id: UID, version: Int, additionalInfo: AdditionalInfo) {
+    eventStore.addEvent(new EventRow(userId, id, version, new UpdateAdditionalInfoEvent(additionalInfo)))
+  }
+
+  def removeAdditionalInfo(userId: UID, id: UID, version: Int, additionalInfoId: UID) {
+    eventStore.addEvent(new EventRow(userId, id, version, new RemoveAdditionalInfoEvent(additionalInfoId)))
   }
 }

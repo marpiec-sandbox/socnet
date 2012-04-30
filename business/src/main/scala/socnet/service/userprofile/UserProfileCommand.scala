@@ -3,6 +3,7 @@ package pl.marpiec.socnet.service.userprofile
 import input.PersonalSummary
 import pl.marpiec.util.UID
 import pl.marpiec.socnet.model.userprofile.{Education, JobExperience}
+import socnet.model.userprofile.AdditionalInfo
 
 
 /**
@@ -21,4 +22,9 @@ trait UserProfileCommand {
   def addEducation(userId: UID, id: UID, version: Int, education: Education, educationId: UID)
   def updateEducation(userId: UID, id: UID, version: Int, education: Education)
   def removeEducation(userId: UID, id: UID, version: Int, educationId: UID)
+
+  def addAdditionalInfo(userId: UID, id: UID, version: Int, additionalInfo: AdditionalInfo, additionalInfoId: UID)
+  def updateAdditionalInfo(userId: UID, id: UID, version: Int, additionalInfo: AdditionalInfo)
+  def removeAdditionalInfo(userId: UID, id: UID, version: Int, additionalInfoId: UID)
+
 }

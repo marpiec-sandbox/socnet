@@ -11,7 +11,6 @@ import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.model.PropertyModel
 import org.apache.wicket.markup.html.panel.Panel
 import pl.marpiec.socnet.di.Factory
-import pl.marpiec.socnet.web.wicket.SecureFormModel
 import pl.marpiec.util.UID
 import pl.marpiec.socnet.model.userprofile.JobExperience
 
