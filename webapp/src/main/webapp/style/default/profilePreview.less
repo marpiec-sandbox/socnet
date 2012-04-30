@@ -1,3 +1,5 @@
+
+
 .userProfilePreview {
 
     width: 600px;
@@ -45,7 +47,7 @@
 
     .jobExperienceTitle, .educationTitle, .additionalInfoTitle {
        border-bottom: 2px solid #444444;
-       color: #254F87;
+       color: @mainThemeFontColor;
        font-size: 18px;
        font-weight: bold;
        margin-bottom: 10px;
@@ -133,5 +135,15 @@
         position:absolute;
         top: 0px;
         right:0px;
+
+        a {
+            color: @mainThemeFontColor;
+            font-weight: bold;
+            text-decoration: none;
+            margin-left: 30px;
+            &:hover {
+                text-decoration: underline;
+            }
+        }
     }
 }
