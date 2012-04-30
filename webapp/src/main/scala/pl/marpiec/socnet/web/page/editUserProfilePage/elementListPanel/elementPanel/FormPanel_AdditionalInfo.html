@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:wicket="http://wicket.apache.org">
+<wicket:panel>
+    <form wicket:id="form" class="horizontalForm educationForm">
+
+        <span class="warningMessage" wicket:id="warningMessage"></span>
+
+        <input type="hidden" wicket:id="sessionToken" />
+
+        <div class="formRow">
+            <span class="label">Tytuł</span>
+            <span class="validatorMessage"></span>
+            <input type="text" wicket:id="title" class="requiredValidator" alt="{msg:'Tytuł jest wymagany (minimum 3 litery)'}"/>
+        </div>
+
+        <div class="formRow">
+            <span class="label">Opis</span>
+            <span class="validatorMessage"></span>
+            <textarea wicket:id="description" class="requiredValidator" alt="{msg:'Opis jest wymagany (minimum 3 litery)'}"/>
+        </div>
+
+        <div>
+            <input type="submit" wicket:id="cancelButton" value="anuluj"/>
+            <input type="submit" wicket:id="submitButton" value="zapisz" class="submitButton"/>
+        </div>
+
+        <script type="text/javascript">
+            initForm(".educationForm");
+            initValidation(".educationForm", ".submitButton");
+        </script>
+    </form>
+
+</wicket:panel>
+</html>

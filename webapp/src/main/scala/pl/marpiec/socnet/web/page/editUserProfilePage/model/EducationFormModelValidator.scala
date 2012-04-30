@@ -11,6 +11,7 @@ object EducationFormModelValidator {
   def validate(form: EducationFormModel): ValidationResult = {
     val result = new ValidationResult()
 
+    //TODO uzupe?ni? walidacj?!!!
 
     result
   }

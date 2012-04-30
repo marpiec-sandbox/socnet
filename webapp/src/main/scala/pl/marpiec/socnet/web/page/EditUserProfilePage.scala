@@ -1,6 +1,6 @@
 package pl.marpiec.socnet.web.page
 
-import editUserProfilePage.{EducationListPanel, JobExperienceListPanel, PersonalSummaryPanel}
+import editUserProfilePage.{AdditionalInfoListPanel, EducationListPanel, JobExperienceListPanel, PersonalSummaryPanel}
 import pl.marpiec.socnet.database.UserProfileDatabase
 import pl.marpiec.socnet.di.Factory
 import pl.marpiec.socnet.model.UserProfile
@@ -32,6 +32,7 @@ class EditUserProfilePage extends SecureWebPage(SocnetRoles.USER) {
   add(new PersonalSummaryPanel("personalSummaryPanel", session.user, userProfile));
   add(new JobExperienceListPanel("jobExperienceListPanel", session.user, userProfile, userProfile.jobExperience))
   add(new EducationListPanel("educationListPanel", session.user, userProfile, userProfile.education))
+  add(new AdditionalInfoListPanel("additionalInfoListPanel", session.user, userProfile, userProfile.additionalInfo))
 
 
   //methods
