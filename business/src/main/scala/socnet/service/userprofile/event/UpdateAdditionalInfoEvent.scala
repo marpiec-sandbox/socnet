@@ -25,6 +25,11 @@ class UpdateAdditionalInfoEvent(val param: AdditionalInfo) extends Event {
 
       BeanUtil.copyProperties(additionalInfo, param)
 
+      if (param.oneDate) {
+        param.toYear = 0
+        param.toMonthOption = None
+      }
+
     } else {
       throw new IllegalStateException("No AdditionalInfo with given id")
     }
