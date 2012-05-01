@@ -13,9 +13,17 @@ class PersonalSummaryPreviewPanel(id: String, val userProfile: UserProfile) exte
   
   //schema
   add(new Label("professionalTitle", userProfile.professionalTitle))
-  add(new Label("city", userProfile.city+", woj. "+userProfile.province.translation))
+  add(new Label("city", userProfile.city+", woj. "+getProvinceOrNull))
   add(new ExternalLink("wwwPage", "http://"+userProfile.wwwPage, userProfile.wwwPage))
   add(new ExternalLink("blogPage", "http://"+userProfile.blogPage, userProfile.blogPage))
   add(new MultiLineLabel("summary", userProfile.summary))
-  
+
+  def getProvinceOrNull: String = {
+    if(userProfile.province==null) {
+      null
+    } else {
+      userProfile.province.translation
+    }
+  }
+
 }

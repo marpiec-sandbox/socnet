@@ -26,7 +26,7 @@ class PasswordUtilTest {
     val duration = System.currentTimeMillis - start
     println("Password test finished in " + duration + " ms")
     assertEquals(passwordHash, "3ba4a0e1349755d2da1c01fa7cca8b2fe4cc68efe8c81380fcad00877c9ca573b4c92fe693e9567910deed583c64c68de1e0fcee62e1559689b29d795a914e5d")
-    assertTrue(duration < 100)
+    assertTrue(duration < 100, "Hashing didn't finished in 100ms")
   }
 
 

@@ -13,14 +13,23 @@
 <script src="js/form.js"></script>
 </head>
 <body>
-    <div>
-        <a wicket:id="homeLink">Socnet</a>
-        <span>Zalogowany użytkownik <span wicket:id="userName">nieznany</span></span>
-        <a wicket:id="signoutLink">Wyloguj</a>
+    <div class="pageHeader">
+        <a wicket:id="homeLink" class="mainLogo">Socnet</a>
+        <div class="userInfo" wicket:id="userInfo"></div>
     </div>
-    <div style="margin-top: 30px;">
+    <div class="pageContent">
         <wicket:child/>
     </div>
 
 </body>
+
+<wicket:fragment wicket:id="loggedUser">
+    <span>
+        Zalogowany użytkownik
+        <span wicket:id="userName">nieznany</span>
+    </span>
+    <a wicket:id="signoutLink" class="signoutLink">Wyloguj</a>
+</wicket:fragment>
+
+
 </html>
