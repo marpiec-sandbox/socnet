@@ -1,6 +1,7 @@
 package pl.marpiec.socnet.web.application
 
 import pl.marpiec.socnet.web.page._
+import registration.{TriggerUserRegistrationPage, RegisterPage}
 
 /**
  * @author Marcin Pieciukiewicz
@@ -15,5 +16,7 @@ object SocnetBookmakablePages {
     application.mountPage("article", classOf[ArticlePage])
     application.mountPage("edit-profile", classOf[EditUserProfilePage])
     application.mountPage("profile", classOf[UserProfilePreviewPage])
+
+    application.mountPage("cr", classOf[TriggerUserRegistrationPage])
   }
 }

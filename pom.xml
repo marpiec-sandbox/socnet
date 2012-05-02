@@ -174,8 +174,9 @@
 
 
     <modules>
-        <module>cqrs</module>
         <module>util</module>
+        <module>mailsender</module>
+        <module>cqrs</module>
         <module>business</module>
         <module>webapp</module>
         <module>h2console</module>

@@ -8,8 +8,8 @@ import pl.marpiec.socnet.di.Factory
 import pl.marpiec.socnet.web.authorization.{UnauthorizeAll, AuthorizeUser}
 import pl.marpiec.socnet.web.page.template.SimpleTemplatePage
 import pl.marpiec.socnet.web.application.SocnetSession
-import org.apache.wicket.markup.html.panel.Panel
 import org.apache.wicket.markup.html.WebMarkupContainer
+import registration.RegisterPage
 
 class HomePage extends SimpleTemplatePage {
 

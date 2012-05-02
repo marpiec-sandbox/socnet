@@ -9,11 +9,9 @@ import org.apache.commons.lang.StringUtils
  * @author Marcin Pieciukiewicz
  */
 
-object DatabaseInitializer {
+class DatabaseInitializer(val connectionPool:DatabaseConnectionPool) {
 
   val FILE_NAME = "eventStore.sql"
-
-  private val connection: Connection = DriverManager.getConnection("jdbc:h2:~/test", "sa", "sa");
 
   def initDatabase() {
 
@@ -25,13 +23,12 @@ object DatabaseInitializer {
     });
 
     source.close()
-    connection.close()
 
   }
 
   private def executeSqlCommand(sqlCommand: String) {
     if (StringUtils.isNotBlank(sqlCommand)) {
-      connection.prepareStatement(sqlCommand).execute
+      connectionPool.getConnection().prepareStatement(sqlCommand).execute
     }
   }
 }

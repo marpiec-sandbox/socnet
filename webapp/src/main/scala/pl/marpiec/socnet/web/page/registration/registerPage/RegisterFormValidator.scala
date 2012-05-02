@@ -1,4 +1,4 @@
-package pl.marpiec.socnet.web.page.registerPage
+package pl.marpiec.socnet.web.page.registration.registerPage
 
 import pl.marpiec.util.ValidationResult
 import pl.marpiec.util.validation.{EmailValidator, PasswordValidator, StringValidator}

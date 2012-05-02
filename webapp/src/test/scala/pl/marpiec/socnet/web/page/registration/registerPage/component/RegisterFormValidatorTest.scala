@@ -2,7 +2,7 @@ package pl.marpiec.socnet.web.page.registerPage.component
 
 import org.testng.annotations.Test
 import org.testng.Assert._
-import pl.marpiec.socnet.web.page.registerPage.{RegisterFormValidator, RegisterFormModel}
+import pl.marpiec.socnet.web.page.registration.registerPage.{RegisterFormValidator, RegisterFormModel}
 
 /**
  * @author Marcin Pieciukiewicz

@@ -36,9 +36,18 @@
 
     <script type="text/javascript">
 
+        function showProfilePopup() {
+            jQuery(".profilePopup").css({display:"block"});
+        }
+
         jQuery(function() {
-            jQuery(".profileLink").mouseenter(function() {
-                jQuery(".profilePopup").css({display:"block"})
+            var jqProfileLink = jQuery(".profileLink");
+            jqProfileLink.focus(showProfilePopup)
+            jqProfileLink.mouseenter(showProfilePopup)
+            jqProfileLink.click(showProfilePopup)
+
+            jQuery(".profilePopup .title").click(function() {
+                jQuery(".profilePopup").css({display:"none"})
             })
             jQuery(".profilePopup").mouseleave(function() {
                 jQuery(".profilePopup").css({display:"none"})

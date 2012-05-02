@@ -10,7 +10,9 @@ import pl.marpiec.util.UID
 
 trait UserCommand {
 
-  def registerUser(firstName:String, lastName:String, email:String, password:String):UID
+  def createRegisterUserTrigger(firstName:String, lastName:String, email:String, password:String):String
+
+  def triggerUserRegistration(trigger: String):UID
 
   def changeUserEmail(userId:UID, aggregateUserId: UID, version: Int, email: String)
 

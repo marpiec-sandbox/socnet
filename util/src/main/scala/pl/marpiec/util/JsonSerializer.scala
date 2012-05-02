@@ -9,7 +9,7 @@ import senum.SEnum
  * @author Marcin Pieciukiewicz
  */
 
-class JsonUtil {
+class JsonSerializer {
 
   val gson = buildGson
 

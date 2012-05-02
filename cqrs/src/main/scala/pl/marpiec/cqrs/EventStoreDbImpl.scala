@@ -4,22 +4,21 @@ import collection.mutable.ListBuffer
 import exception.ConcurrentAggregateModificationException
 import java.sql._
 import java.util.Date
-import pl.marpiec.util.{JsonUtil, UID}
+import pl.marpiec.util.{JsonSerializer, UID}
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
-class EventStoreDbImpl extends EventStore {
+class EventStoreDbImpl(val connectionPool:DatabaseConnectionPool) extends EventStore {
 
-  private val connection: Connection = DriverManager.getConnection("jdbc:h2:~/test", "sa", "sa");
   private val listeners = new ListBuffer[EventStoreListener]
 
-  var jsonSerializer = new JsonUtil
+  var jsonSerializer = new JsonSerializer
 
   def getEventsForEntity(entityClass: Class[_], id: UID): ListBuffer[EventRow] = {
 
-    val selectEvents = connection.prepareStatement("SELECT user_uid, aggregate_uid, version, event, event_type FROM events WHERE aggregate_uid = ? ORDER BY event_time")
+    val selectEvents = connectionPool.getConnection.prepareStatement("SELECT user_uid, aggregate_uid, version, event, event_type FROM events WHERE aggregate_uid = ? ORDER BY event_time")
     selectEvents.setLong(1, id.uid)
     val results = selectEvents.executeQuery
 
@@ -41,6 +40,8 @@ class EventStoreDbImpl extends EventStore {
   }
 
   def addEvent(event: EventRow) {
+
+    val connection = connectionPool.getConnection
 
     val selectAggregateVersion = connection.prepareStatement("SELECT version FROM aggregates WHERE uid = ? AND class = ?")
     selectAggregateVersion.setLong(1, event.aggregateId.uid)
@@ -77,6 +78,8 @@ class EventStoreDbImpl extends EventStore {
 
   def addEventForNewAggregate(newAggregadeId: UID, event: EventRow) {
 
+    val connection = connectionPool.getConnection
+
     event.aggregateId = newAggregadeId
 
     val insertAggregate = connection.prepareStatement("INSERT INTO aggregates (id, class, uid, version) VALUES (NEXTVAL('aggregates_seq'), ?,?,?)")
@@ -99,7 +102,7 @@ class EventStoreDbImpl extends EventStore {
   }
 
   def callListenersForAllAggregates {
-    val selectAggregates = connection.prepareStatement("SELECT class, uid FROM aggregates")
+    val selectAggregates = connectionPool.getConnection.prepareStatement("SELECT class, uid FROM aggregates")
     val results = selectAggregates.executeQuery
     while (results.next()) {
       var className = results.getString(1)

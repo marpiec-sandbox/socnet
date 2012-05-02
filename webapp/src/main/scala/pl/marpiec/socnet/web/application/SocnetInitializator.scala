@@ -15,7 +15,7 @@ object SocnetInitializator {
 
   def apply() {
 
-    DatabaseInitializer.initDatabase()
+    new DatabaseInitializer(Factory.connectionPool).initDatabase()
 
     // for faster jodatime initialization (first new LocalDateTime call took about 1 sec, now its about 50 mills)
     System.setProperty("org.joda.time.DateTimeZone.Provider", "org.joda.time.tz.UTCProvider");

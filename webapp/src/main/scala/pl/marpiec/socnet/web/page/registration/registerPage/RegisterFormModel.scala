@@ -1,4 +1,4 @@
-package pl.marpiec.socnet.web.page.registerPage
+package pl.marpiec.socnet.web.page.registration.registerPage
 
 class RegisterFormModel {
   var firstName: String = _

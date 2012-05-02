@@ -7,6 +7,8 @@ import org.testng.Assert._
 import org.testng.annotations.Test
 import pl.marpiec.socnet.model.User
 import pl.marpiec.util.UID
+import pl.marpiec.mailsender.{MailSender, MailSenderMockImpl}
+import socnet.template.{TemplateRepositoryMockImpl, TemplateRepository}
 
 /**
  * ...
@@ -21,10 +23,14 @@ class UserServicesTest {
   val dataStore:DataStore = new DataStoreImpl(eventStore, entityCache)
   val userDatabase:UserDatabase = new UserDatabaseMockImpl(dataStore)
   val uidGenerator:UidGenerator = new UidGeneratorMockImpl
+  val triggeredEvents:TriggeredEvents = new TriggeredEventsMockImpl
+  val mailSender:MailSender = new MailSenderMockImpl
+  val templateRepository:TemplateRepository = new TemplateRepositoryMockImpl
 
-  val userCommand:UserCommand = new UserCommandImpl(eventStore, dataStore, userDatabase, uidGenerator)
+  val userCommand:UserCommand = new UserCommandImpl(eventStore, dataStore, triggeredEvents, userDatabase, uidGenerator, mailSender, templateRepository)
 
-  val userId = userCommand.registerUser("Marcin", "Pieciukiewicz", "m.pieciukiewicz@socnet", "Haslo");
+  val trigger = userCommand.createRegisterUserTrigger("Marcin", "Pieciukiewicz", "m.pieciukiewicz@socnet", "Haslo");
+  val userId = userCommand.triggerUserRegistration(trigger)
 
   var user = dataStore.getEntity(classOf[User], userId).asInstanceOf[User]
 

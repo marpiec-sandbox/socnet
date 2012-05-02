@@ -16,9 +16,7 @@ object UidGeneratorDbImpl {
   val INSERT_UID = "INSERT INTO uids (id, uidName, uid) VALUES(NEXTVAL('uids_seq'), 'DEFAULT', " + (UID_POOL_SIZE + 1) + ")"
 }
 
-class UidGeneratorDbImpl extends UidGenerator {
-
-  private val connection: Connection = DriverManager.getConnection("jdbc:h2:~/test", "sa", "sa");
+class UidGeneratorDbImpl(val connectionPool:DatabaseConnectionPool) extends UidGenerator {
 
   var availableUids = List[UID]()
 
@@ -38,6 +36,7 @@ class UidGeneratorDbImpl extends UidGenerator {
 
   def loadNewUids() {
 
+    val connection = connectionPool.getConnection
     val selectUid = connection.prepareStatement(UidGeneratorDbImpl.SELECT_UID)
     val updateUid = connection.prepareStatement(UidGeneratorDbImpl.UPDATE_UID)
 

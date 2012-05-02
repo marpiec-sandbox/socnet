@@ -9,28 +9,23 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <packaging>jar</packaging>
+
     <groupId>pl.marpiec</groupId>
-    <artifactId>business</artifactId>
+    <artifactId>mailsender</artifactId>
     <version>1.0</version>
 
     <dependencies>
-        <dependency>
-            <groupId>pl.marpiec</groupId>
-            <artifactId>cqrs</artifactId>
-            <version>1.0</version>
-        </dependency>
         <dependency>
             <groupId>pl.marpiec</groupId>
             <artifactId>util</artifactId>
             <version>1.0</version>
         </dependency>
         <dependency>
-            <groupId>pl.marpiec</groupId>
-            <artifactId>mailsender</artifactId>
-            <version>1.0</version>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.4.5</version>
         </dependency>
-
-
     </dependencies>
 
 

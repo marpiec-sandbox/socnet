@@ -23,18 +23,18 @@ class OptionalDataObject {
 }
 
 @Test
-class JsonUtilTest {
+class JsonSerializerTest {
   
   def testSimpleObjectSerializationAndDeserialization {
-    val jsonUtil = new JsonUtil
+    val jsonSerializer = new JsonSerializer
     
     val sdo = new SimpleDataObject
     sdo.longValue = 4
     sdo.stringValue = "testString"
     
-    val simpleJson = jsonUtil.toJson(sdo)
+    val simpleJson = jsonSerializer.toJson(sdo)
     
-    val sdoFromJson = jsonUtil.fromJson(simpleJson, classOf[SimpleDataObject])
+    val sdoFromJson = jsonSerializer.fromJson(simpleJson, classOf[SimpleDataObject])
     
     assertTrue(sdoFromJson.isInstanceOf[SimpleDataObject])
     assertEquals(sdoFromJson.asInstanceOf[SimpleDataObject].longValue, sdo.longValue)
@@ -43,7 +43,7 @@ class JsonUtilTest {
   
   def testEmptyOptionSerializationAndDeserialization {
 
-    val jsonUtil = new JsonUtil
+    val jsonSerializer = new JsonSerializer
 
     val odo = new OptionalDataObject
     odo.intOption = None
@@ -52,9 +52,9 @@ class JsonUtilTest {
     odo.booleanOption = None
     odo.stringOption = None
 
-    val simpleJson = jsonUtil.toJson(odo)
+    val simpleJson = jsonSerializer.toJson(odo)
 
-    val dataObject = jsonUtil.fromJson(simpleJson, classOf[OptionalDataObject])
+    val dataObject = jsonSerializer.fromJson(simpleJson, classOf[OptionalDataObject])
 
     assertTrue(dataObject.isInstanceOf[OptionalDataObject])
 
@@ -70,7 +70,7 @@ class JsonUtilTest {
 
   def testFilledOptionSerializationAndDeserialization {
 
-    val jsonUtil = new JsonUtil
+    val jsonSerializer = new JsonSerializer
 
     val odo = new OptionalDataObject
     odo.intOption = Option[Int](3)
@@ -85,9 +85,9 @@ class JsonUtilTest {
     sdo.stringValue = "testString"
     odo.sdo = Option[SimpleDataObject](sdo)
 
-    val simpleJson = jsonUtil.toJson(odo)
+    val simpleJson = jsonSerializer.toJson(odo)
 
-    val dataObject = jsonUtil.fromJson(simpleJson, classOf[OptionalDataObject])
+    val dataObject = jsonSerializer.fromJson(simpleJson, classOf[OptionalDataObject])
 
     assertTrue(dataObject.isInstanceOf[OptionalDataObject])
 

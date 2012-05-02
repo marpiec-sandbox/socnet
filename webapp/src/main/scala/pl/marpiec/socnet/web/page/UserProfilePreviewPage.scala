@@ -15,6 +15,7 @@ import org.apache.wicket.markup.html.list.AbstractItem
 import pl.marpiec.socnet.model.userprofile.{Education, JobExperience}
 import socnet.model.userprofile.AdditionalInfo
 import userProfilePreviewPage._
+import pl.marpiec.socnet.model.UserProfile
 
 /**
  * @author Marcin Pieciukiewicz
@@ -41,7 +42,7 @@ class UserProfilePreviewPage(parameters: PageParameters) extends SecureWebPage(S
 
   val user = userOption.get
 
-  val userProfile = userProfileDatabase.getUserProfileByUserId(userId).get
+  val userProfile = userProfileDatabase.getUserProfileByUserId(userId).getOrElse(new UserProfile)
 
   //schema
   add(new UserPreviewPanel("userPreviewPanel", user));

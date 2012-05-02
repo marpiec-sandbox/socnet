@@ -1,4 +1,4 @@
-package pl.marpiec.socnet.web.page.registerPage
+package pl.marpiec.socnet.web.page.registration.registerPage
 
 import pl.marpiec.socnet.di.Factory
 import org.apache.wicket.model.{CompoundPropertyModel, Model}
@@ -8,6 +8,7 @@ import org.apache.wicket.markup.html.form._
 import org.apache.wicket.markup.html.panel.{Panel, FeedbackPanel}
 import pl.marpiec.socnet.database.exception.EntryAlreadyExistsException
 import org.apache.wicket.markup.html.link.BookmarkablePageLink
+import pl.marpiec.socnet.web.page.registration.ConfirmRegistrationPage
 
 class RegisterForm(id: String) extends Panel(id) {
 
@@ -39,8 +40,9 @@ class RegisterForm(id: String) extends Panel(id) {
         val validationResult = RegisterFormValidator.validate(model)
 
         if (validationResult.isValid) {
-          userCommand.registerUser(model.firstName, model.lastName, model.email, model.password)
-          setResponsePage(classOf[HomePage])
+
+          userCommand.createRegisterUserTrigger(model.firstName, model.lastName, model.email, model.password)
+          setResponsePage(classOf[ConfirmRegistrationPage])
         } else {
           warningMessage.setObject("Formularz nie zosta? wype?niony poprawnie")
         }
