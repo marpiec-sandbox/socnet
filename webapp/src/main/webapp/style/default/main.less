@@ -21,3 +21,15 @@ input[type=text],input[type=password],textarea {
     border: 1px solid @defaultInputBorderColor;
     padding: 2px 3px;
 }
+
+input[type=submit], input[type=button], input[type=reset], button {
+    background-color: @mainThemeFontColor;
+    border: 1px solid black;
+    border-radius: 3px 3px 3px 3px;
+    color: white;
+    padding: 2px 30px 3px;
+
+    &:active {
+      padding: 2px 29px 3px 31px;
+    }
+}

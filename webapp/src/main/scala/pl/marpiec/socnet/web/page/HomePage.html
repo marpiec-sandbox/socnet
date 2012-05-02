@@ -4,31 +4,24 @@
 <wicket:extend>
 
     <div>
-
-        <a wicket:id="registerLink">
-            Rejestracja
-        </a>
-    </div>
-    <div>
         <a wicket:id="newArticleLink">
             Nowy artykuł
         </a>
     </div>
-    <div>
-        <a wicket:id="editProfileLink">
-            Edytuj profil
-        </a>
-    </div>
-    <div>
-        <a wicket:id="previewProfileLink">
-            Podgląd profilu
-        </a>
-    </div>
 
-    <span wicket:id="signInPanel" ></span>
 
     <div wicket:id="articleList"></div>
 
+    <div wicket:id="loginPanel" class="loginPanel">
+        <div>
+            <span wicket:id="signInPanel"></span>
+        </div>
+        <div>
+            <a wicket:id="registerLink">
+                Załóż nowe konto
+            </a>
+        </div>
+    </div>
 
 </wicket:extend>
 </body>

@@ -43,14 +43,12 @@ class PersonalSummaryEditForm(id: String, userProfile: UserProfile, user: User, 
 
 
   def addCancelButton {
-    add(new AjaxFallbackLink[PersonalSummaryFormModel]("cancelButton") {
-      def onSubmit(target: AjaxRequestTarget, formModel: PersonalSummaryFormModel) {
+    add(new SecureAjaxButton[PersonalSummaryFormModel]("cancelButton") {
+      def onSecureSubmit(target: AjaxRequestTarget, formModel: PersonalSummaryFormModel) {
         revertFormData(formModel)
         parent.switchToPreviewMode
         target.add(parent)
       }
-
-      def onClick(target: AjaxRequestTarget) {}
     })
   }
 

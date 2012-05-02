@@ -8,7 +8,8 @@ import pl.marpiec.socnet.di.Factory
 import pl.marpiec.socnet.web.authorization.{UnauthorizeAll, AuthorizeUser}
 import pl.marpiec.socnet.web.page.template.SimpleTemplatePage
 import pl.marpiec.socnet.web.application.SocnetSession
-import org.apache.wicket.request.mapper.parameter.PageParameters
+import org.apache.wicket.markup.html.panel.Panel
+import org.apache.wicket.markup.html.WebMarkupContainer
 
 class HomePage extends SimpleTemplatePage {
 
@@ -18,24 +19,15 @@ class HomePage extends SimpleTemplatePage {
 
   private val articleDatabase: ArticleDatabase = Factory.articleDatabase
 
-  add(UnauthorizeAll(new BookmarkablePageLink("registerLink", classOf[RegisterPage])))
-  add(AuthorizeUser(new BookmarkablePageLink("newArticleLink", classOf[NewArticlePage])))
-  add(AuthorizeUser(new BookmarkablePageLink("editProfileLink", classOf[EditUserProfilePage])))
-  add(AuthorizeUser(new BookmarkablePageLink("previewProfileLink", classOf[UserProfilePreviewPage], createParametersForProfilePreview)))
 
-  add(UnauthorizeAll(new SignInPanel("signInPanel", false)))
+  add(AuthorizeUser(new BookmarkablePageLink("newArticleLink", classOf[NewArticlePage])))
 
   add(AuthorizeUser(new ArticleList("articleList", articleDatabase.getAllArticles)))
 
+  add(UnauthorizeAll(new WebMarkupContainer("loginPanel") {
+    add(UnauthorizeAll(new SignInPanel("signInPanel", false)))
+    add(UnauthorizeAll(new BookmarkablePageLink("registerLink", classOf[RegisterPage])))
+  }))
 
 
-  private def createParametersForProfilePreview: PageParameters = {
-    if (session.isAuthenticated()) {
-      new PageParameters()
-        .add(UserProfilePreviewPage.USER_ID_PARAM, session.userId())
-        .add("n", session.user.fullName)
-    } else {
-      null
-    }
-}
 }

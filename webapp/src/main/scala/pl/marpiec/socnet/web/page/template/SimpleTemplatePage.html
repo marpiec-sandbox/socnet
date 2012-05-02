@@ -24,10 +24,34 @@
 </body>
 
 <wicket:fragment wicket:id="loggedUser">
-    <span>
-        <span wicket:id="userName">nieznany</span>
-    </span>
+    <a wicket:id="previewProfileLink">Podgląd profilu</a>
+    <a wicket:id="editProfileLink">Edytuj profil</a>
+    <span class="userName" wicket:id="userName">nieznany</span>
     <a wicket:id="signoutLink" class="signoutLink">Wyloguj</a>
+</wicket:fragment>
+
+<wicket:fragment wicket:id="userNotLoggedIn">
+    <a href="#" class="loginFormLink">Zaloguj się</a>
+    <div class="signInPopup">
+        <div class="title">Zaloguj się</div>
+        <span wicket:id="signInPanel"></span>
+        <div>
+            <a href="#" class="cancelLoginLink">Anuluj</a>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+
+        jQuery(function() {
+           jQuery(".loginFormLink").click(function() {
+               jQuery(".signInPopup").css({display:"block"})
+           })
+           jQuery(".cancelLoginLink").click(function() {
+               jQuery(".signInPopup").css({display:"none"})
+           })
+        })
+
+    </script>
 </wicket:fragment>
 
 

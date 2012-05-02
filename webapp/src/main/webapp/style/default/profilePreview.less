@@ -132,20 +132,30 @@
 
 .userProfileEdit {
 
+    form {
+        border: 1px solid @mainThemeFontColor;
+        border-radius: 6px;
+        display: inline-block;
+        margin-bottom: 30px;
+
+         .profileEditActionButtons {
+            margin: 20px 0;
+            text-align: center;
+
+            input, a {
+                margin: 0 70px;
+            }
+        }
+    }
+
+
     .editButtons {
         position:absolute;
         top: 0px;
         right:0px;
     }
 
-    .profileEditActionButtons {
-        margin: 20px 0;
-        text-align: center;
 
-        input, a {
-            margin-right: 100px;
-        }
-    }
 
     .editButtons, .profileEditActionButtons {
             a {
