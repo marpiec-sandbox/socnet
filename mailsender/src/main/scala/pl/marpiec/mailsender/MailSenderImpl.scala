@@ -31,7 +31,7 @@ class SendMailTask(val subject:String, val template:String, val address:String, 
       message.setFrom(new InternetAddress("marpiec.socnet@gmail.com"));
       message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(address).asInstanceOf[Array[Address]]);
       message.setSubject(subject);
-      message.setText(TemplateUtil.fillTemplate(template, params));
+      message.setContent(TemplateUtil.fillTemplate(template, params), "text/html; charset=UTF-8")
 
       Transport.send(message);
 
