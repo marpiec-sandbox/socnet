@@ -4,6 +4,7 @@ import org.apache.commons.pool.impl.GenericObjectPool
 import org.apache.commons.dbcp.{PoolingDataSource, PoolableConnectionFactory, DriverManagerConnectionFactory, ConnectionFactory}
 import org.apache.commons.pool.{PoolableObjectFactory, ObjectPool}
 import javax.sql.DataSource
+import javax.naming.{NoInitialContextException, InitialContext}
 
 
 /**
@@ -15,12 +16,20 @@ class DatabaseConnectionPoolImpl extends DatabaseConnectionPool {
   val datasource = initDataSource
 
   def initDataSource:DataSource = {
-    val connectionFactory: ConnectionFactory = new DriverManagerConnectionFactory("jdbc:h2:~/test", "sa", "sa");
-    val connectionPool:ObjectPool = new GenericObjectPool(null);
 
-    val poolableConnectionFactory = new PoolableConnectionFactory(connectionFactory, connectionPool,null,null,false,true);
+    try {
+      val cxt = new InitialContext()
+      val ds = cxt.lookup( "java:/comp/env/jdbc/socnetDB" ).asInstanceOf[DataSource]
+      if ( ds == null ) {
+        throw new Exception("Data source not found!");
+      }
+      ds
+    } catch {
+      case ex:NoInitialContextException => {
+        null //its test if there's no context - so ignore
+      }
+    }
 
-    new PoolingDataSource(connectionPool)
   }
 
   def getConnection() = datasource.getConnection()

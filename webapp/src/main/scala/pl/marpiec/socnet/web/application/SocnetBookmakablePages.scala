@@ -1,7 +1,7 @@
 package pl.marpiec.socnet.web.application
 
 import pl.marpiec.socnet.web.page._
-import registration.{TriggerUserRegistrationPage, RegisterPage}
+import registration.{ConfirmRegistrationPage, TriggerUserRegistrationPage, RegisterPage}
 
 /**
  * @author Marcin Pieciukiewicz
@@ -18,5 +18,6 @@ object SocnetBookmakablePages {
     application.mountPage("profile", classOf[UserProfilePreviewPage])
 
     application.mountPage("cr", classOf[TriggerUserRegistrationPage])
+    application.mountPage("confirm-registration", classOf[ConfirmRegistrationPage])
   }
 }
