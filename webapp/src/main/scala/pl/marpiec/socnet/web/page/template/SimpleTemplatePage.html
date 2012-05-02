@@ -24,10 +24,29 @@
 </body>
 
 <wicket:fragment wicket:id="loggedUser">
-    <a wicket:id="previewProfileLink">Podgląd profilu</a>
-    <a wicket:id="editProfileLink">Edytuj profil</a>
+    <a href="#" class="profileLink">Profil</a>
+    <div class="profilePopup">
+        <div class="title">Profil</div>
+        <a wicket:id="previewProfileLink">Podgląd profilu</a>
+        <a wicket:id="editProfileLink">Edytuj profil</a>
+    </div>
+
     <span class="userName" wicket:id="userName">nieznany</span>
     <a wicket:id="signoutLink" class="signoutLink">Wyloguj</a>
+
+    <script type="text/javascript">
+
+        jQuery(function() {
+            jQuery(".profileLink").mouseenter(function() {
+                jQuery(".profilePopup").css({display:"block"})
+            })
+            jQuery(".profilePopup").mouseleave(function() {
+                jQuery(".profilePopup").css({display:"none"})
+            })
+        })
+
+    </script>
+
 </wicket:fragment>
 
 <wicket:fragment wicket:id="userNotLoggedIn">
