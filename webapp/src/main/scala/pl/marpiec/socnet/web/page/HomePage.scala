@@ -10,6 +10,7 @@ import pl.marpiec.socnet.web.page.template.SimpleTemplatePage
 import pl.marpiec.socnet.web.application.SocnetSession
 import org.apache.wicket.markup.html.WebMarkupContainer
 import registration.RegisterPage
+import signin.SignInFormPanel
 
 class HomePage extends SimpleTemplatePage {
 
@@ -25,7 +26,7 @@ class HomePage extends SimpleTemplatePage {
   add(AuthorizeUser(new ArticleList("articleList", articleDatabase.getAllArticles)))
 
   add(UnauthorizeAll(new WebMarkupContainer("loginPanel") {
-    add(UnauthorizeAll(new SignInPanel("signInPanel", false)))
+    add(UnauthorizeAll(new SignInFormPanel("signInPanel")))
     add(UnauthorizeAll(new BookmarkablePageLink("registerLink", classOf[RegisterPage])))
   }))
 

@@ -5,12 +5,12 @@ import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.model.Model
 import org.apache.wicket.markup.html.link.BookmarkablePageLink
 import pl.marpiec.socnet.web.application.SocnetSession
-import org.apache.wicket.markup.html.panel.{EmptyPanel, Fragment}
-import pl.marpiec.socnet.web.authorization.UnauthorizeAll._
+import org.apache.wicket.markup.html.panel.Fragment
 import org.apache.wicket.authroles.authentication.panel.SignInPanel
-import pl.marpiec.socnet.web.authorization.{UnauthorizeAll, AuthorizeUser}
+import pl.marpiec.socnet.web.authorization.AuthorizeUser
 import pl.marpiec.socnet.web.page.{UserProfilePreviewPage, EditUserProfilePage, HomePage, SignOutPage}
 import org.apache.wicket.request.mapper.parameter.PageParameters
+import pl.marpiec.socnet.web.page.signin.SignInFormPanel
 
 /**
  * ...
@@ -36,7 +36,7 @@ class SimpleTemplatePage extends WebPage {
     })
   } else {
     add(new Fragment("userInfo", "userNotLoggedIn", this) {
-      add(new SignInPanel("signInPanel", false))
+      add(new SignInFormPanel("signInPanel"))
     })
   }
 

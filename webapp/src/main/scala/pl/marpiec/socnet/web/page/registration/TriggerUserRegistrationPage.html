@@ -6,8 +6,12 @@
 
     <div wicket:id="triggerResult">triggerResult</div>
 
-    <wicket:fragment wicket:id="userRegisteredOK">
+    <wicket:fragment wicket:id="registrationSuccessfull">
         <div>Użytkownik (tu podać imie i nazwisko) został zarejestrowany</div>
+    </wicket:fragment>
+
+    <wicket:fragment wicket:id="incorrectCode">
+        <div>Podany link aktywacyjny wygasł lub jest niepoprawny</div>
     </wicket:fragment>
 
     <wicket:fragment wicket:id="userAlreadyRegistered">

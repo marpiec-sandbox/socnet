@@ -7,6 +7,8 @@ import pl.marpiec.socnet.database.exception.EntryAlreadyExistsException
 import pl.marpiec.cqrs.exception.IncorrectTriggerException
 import org.apache.wicket.markup.html.panel.Fragment
 import pl.marpiec.socnet.web.page.template.SimpleTemplatePage
+import org.apache.wicket.RestartResponseAtInterceptPageException
+import pl.marpiec.socnet.web.page.HomePage
 
 /**
  * @author Marcin Pieciukiewicz
@@ -25,14 +27,14 @@ class TriggerUserRegistrationPage(parameters: PageParameters) extends SimpleTemp
   try {
     userCommand.triggerUserRegistration(triggerValue.toString)
 
-    add(new Fragment("triggerResult", "userRegisteredOK", this))
+    add(new Fragment("triggerResult", "registrationSuccessfull", this))
 
   } catch {
     case ex: EntryAlreadyExistsException => {
       add(new Fragment("triggerResult", "userAlreadyRegistered", this))
     }
     case ex: IncorrectTriggerException => {
-      throw new AbortWithHttpErrorCodeException(404);
+      add(new Fragment("triggerResult", "incorrectCode", this))
     }
   }
 
