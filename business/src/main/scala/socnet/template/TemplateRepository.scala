@@ -7,7 +7,6 @@ package socnet.template
 trait TemplateRepository {
 
   def getConfirmRegistrationMail:String
-
-
+  def getChangeForgottenPasswordMail:String
   
 }

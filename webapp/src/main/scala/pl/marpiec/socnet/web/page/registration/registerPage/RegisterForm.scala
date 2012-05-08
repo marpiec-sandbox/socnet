@@ -27,7 +27,6 @@ class RegisterForm(id: String) extends Panel(id) {
     add(new TextField[String]("email"))
     add(new PasswordTextField("password"))
     add(new PasswordTextField("repeatPassword"))
-    add(new Button("saveButton"))
 
     add(new BookmarkablePageLink("cancelLink", classOf[HomePage]))
 

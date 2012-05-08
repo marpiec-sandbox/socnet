@@ -17,8 +17,6 @@ import pl.marpiec.socnet.web.page.HomePage
 class TriggerUserRegistrationPage(parameters: PageParameters) extends SimpleTemplatePage {
   private val userCommand = Factory.userCommand
 
-  setStatelessHint(true)
-
   val triggerValue = parameters.get(TriggerUserRegistrationPage.TRIGGER_PARAM)
   if (triggerValue.isEmpty) {
     throw new AbortWithHttpErrorCodeException(404);

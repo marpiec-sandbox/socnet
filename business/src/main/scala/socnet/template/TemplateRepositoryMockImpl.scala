@@ -7,4 +7,6 @@ package socnet.template
 class TemplateRepositoryMockImpl extends TemplateRepository {
 
    def getConfirmRegistrationMail:String = ""
- }
+
+  def getChangeForgottenPasswordMail:String = ""
+}

@@ -1,6 +1,7 @@
 package pl.marpiec.socnet.web.application
 
 import pl.marpiec.socnet.web.page._
+import forgotPassword.{ConfirmForgotPasswordPage, TriggerChangeForgottenPasswordPage, ForgotPasswordPage}
 import registration.{ConfirmRegistrationPage, TriggerUserRegistrationPage, RegisterPage}
 
 /**
@@ -18,7 +19,13 @@ object SocnetBookmakablePages {
     application.mountPage("profile", classOf[UserProfilePreviewPage])
 
     application.mountPage("register", classOf[RegisterPage])
-    application.mountPage("cr", classOf[TriggerUserRegistrationPage])
     application.mountPage("confirm-registration", classOf[ConfirmRegistrationPage])
+    application.mountPage("cr", classOf[TriggerUserRegistrationPage])
+
+
+    application.mountPage("forgot-password", classOf[ForgotPasswordPage])
+    application.mountPage("confirm-forgot-password", classOf[ConfirmForgotPasswordPage])
+    application.mountPage("cfp", classOf[TriggerChangeForgottenPasswordPage])
+
   }
 }

@@ -6,7 +6,10 @@ package pl.marpiec.util
  */
 
 object FileReadUtil {
+
+  val defaultEncoding = "UTF-8"
+
   def readClasspathFile(fileName:String):String = {
-    io.Source.fromInputStream(getClass.getClassLoader.getResourceAsStream(fileName)).mkString
+    io.Source.fromInputStream(getClass.getClassLoader.getResourceAsStream(fileName), defaultEncoding).mkString
   }
 }

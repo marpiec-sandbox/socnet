@@ -36,26 +36,37 @@ class TriggeredEventsDatabaseImpl(val connectionPool:DatabaseConnectionPool) ext
   }
 
 
+
+
   def getEventForTrigger(trigger: String):Option[Event] = {
-    val selectTrigger = connectionPool.getConnection.prepareStatement("SELECT creation_time, event_type, event FROM trigger_events WHERE execution_time IS NULL AND trigger = ?")
+    val resultOption = getUserIdAndEventForTrigger(trigger)
+    if (resultOption.isDefined) {
+      val (userId, event) = resultOption.get
+      Option(event)
+    } else {
+      None
+    }
+  }
+
+  def getUserIdAndEventForTrigger(trigger: String):(Option[(UID, Event)]) = {
+    val selectTrigger = connectionPool.getConnection.prepareStatement("SELECT user_uid, creation_time, event_type, event FROM trigger_events WHERE execution_time IS NULL AND trigger = ?")
 
     selectTrigger.setString(1, trigger)
 
     val result = selectTrigger.executeQuery()
-    
+
     if(result.next()) {
 
-      val creationTime = result.getTimestamp(1)
-      val eventType = result.getString(2)
-      val event = result.getString(3)
+      val userId = new UID(result.getLong(1))
+      val creationTime = result.getTimestamp(2)
+      val eventType = result.getString(3)
+      val event = result.getString(4)
 
       val currentTime = (new Date).getTime
-      
-      if(currentTime - creationTime.getTime < MILLS_IN_24H) {
-        
 
+      if(currentTime - creationTime.getTime < MILLS_IN_24H) {
         val eventObject = jsonSerializer.fromJson(event, Class.forName(eventType)).asInstanceOf[Event]
-        Option[Event](eventObject)        
+        Option[(UID, Event)]((userId, eventObject))
       } else {
         None
       }

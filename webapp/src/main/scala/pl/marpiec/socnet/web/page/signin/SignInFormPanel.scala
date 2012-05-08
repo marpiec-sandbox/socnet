@@ -4,6 +4,8 @@ import org.apache.wicket.authroles.authentication.AuthenticatedWebSession
 import org.apache.wicket.model.CompoundPropertyModel
 import org.apache.wicket.markup.html.panel.{FeedbackPanel, Panel}
 import org.apache.wicket.markup.html.form._
+import org.apache.wicket.markup.html.link.BookmarkablePageLink
+import pl.marpiec.socnet.web.page.forgotPassword.ForgotPasswordPage
 
 /**
  * ...
@@ -25,6 +27,7 @@ class SignInFormPanel(id: String) extends Panel(id) {
     add(new TextField[String]("username"))
     add(new PasswordTextField("password"))
     add(new CheckBox("rememberMe"))
+    add(new BookmarkablePageLink("forgotPasswordLink", classOf[ForgotPasswordPage]))
 
     override def onSubmit() {
 

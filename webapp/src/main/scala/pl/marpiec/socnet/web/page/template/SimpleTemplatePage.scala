@@ -22,6 +22,8 @@ class SimpleTemplatePage extends WebPage {
   val titleLabelModel = new Model[String]("Socnet")
   private val session: SocnetSession = getSession.asInstanceOf[SocnetSession]
 
+  setStatelessHint(true)
+
   add(new BookmarkablePageLink("homeLink", classOf[HomePage]))
 
   add(new Label("pageTitle", titleLabelModel))

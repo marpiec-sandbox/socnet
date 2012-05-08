@@ -11,18 +11,26 @@ class TriggeredEventsMockImpl extends TriggeredEvents {
 
   private val TRIGGER_LENGTH = 128
 
-  var eventsDatabase:Map[String, Event] = Map[String, Event]()
-  
+  var eventsDatabase:Map[String, (UID, Event)] = Map[String, (UID, Event)]()
+
   def addNewTriggeredEvent(userId: UID, event: Event):String = {
     val trigger = generateRandomTrigger
-    eventsDatabase += trigger -> event
+    eventsDatabase += trigger -> (userId, event)
     trigger
   }
 
   def getEventForTrigger(trigger: String) = {
-    eventsDatabase.get(trigger)
+    val resultOption = eventsDatabase.get(trigger)
+    if (resultOption.isDefined) {
+      Option(resultOption.get._2)
+    } else {
+      None
+    }
   }
 
+  def getUserIdAndEventForTrigger(trigger: String) = {
+    eventsDatabase.get(trigger)
+  }
 
   def markEventAsExecuted(trigger: String) {
     //do nothing
@@ -31,4 +39,6 @@ class TriggeredEventsMockImpl extends TriggeredEvents {
   private def generateRandomTrigger():String = {
     return RandomStringUtils.randomAlphanumeric(TRIGGER_LENGTH);
   }
+
+
 }
