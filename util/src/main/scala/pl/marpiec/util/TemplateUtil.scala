@@ -1,18 +1,85 @@
 package pl.marpiec.util
 
+import util.matching.Regex.Match
+
 /**
  * @author Marcin Pieciukiewicz
  */
 
-object TemplateUtil {
-  def fillTemplate(template:String, properties:Map[String, String]):String = {
+trait TemplatePart {
+  def apply(stringBuilder:StringBuilder, properties: Map[String, String])
+}
 
-    var temp = template
-    
-    for ((key, value) <- properties) {
-      temp = temp.replace("#"+key+"#", value)
+class ConstantString(val value:String) extends TemplatePart {
+  def apply(stringBuilder: StringBuilder, properties: Map[String, String]) {
+    stringBuilder.append(value)
+  }
+}
+
+class SimpleTagValue(val tagName:String) extends TemplatePart {
+  def apply(stringBuilder: StringBuilder, properties: Map[String, String]) {
+    stringBuilder.append(properties(tagName))
+  }
+}
+
+
+object TemplateUtil {
+
+  val tagRegexp = "#[A-Za-z0-9]+#".r
+  var cache: Map[String, List[TemplatePart]] = Map[String, List[TemplatePart]]()
+
+  def fillTemplate(templateName: String, template: String, properties: Map[String, String]): String = {
+
+    val templateSequence = getTemplateSequenceFromCache(templateName, template)
+
+    val sb = new StringBuilder();
+
+    templateSequence.foreach(templatePart => templatePart.apply(sb, properties))
+
+    sb.toString()
+
+  }
+
+  private def getTemplateSequenceFromCache(templateName: String, template: String):List[TemplatePart] = {
+    var templateSequenceOption = cache.get(templateName);
+    if (templateSequenceOption.isDefined) {
+      templateSequenceOption.get
+    } else {
+      var templateSequence = createTemplateSequence(template);
+      cache += templateName -> templateSequence
+      templateSequence
+    }
+  }
+
+
+  private def createTemplateSequence(template: String): List[TemplatePart] = {
+
+    var templateSequence = List[TemplatePart]()
+    var matchOption:Option[Match] = None
+    var templateTail:CharSequence = template
+
+    do {
+      matchOption = tagRegexp.findFirstMatchIn(templateTail)
+
+      if(matchOption.isDefined) {
+        val tagMatch = matchOption.get
+        if (tagMatch.start > 0) {
+          templateSequence ::= new ConstantString(tagMatch.before.toString)
+        }
+        templateSequence ::= new SimpleTagValue(removeHashes(tagMatch.matched))
+
+        templateTail = tagMatch.after
+      }
+    } while (matchOption.isDefined)
+
+    if(templateTail.length() > 0) {
+      templateSequence ::= new ConstantString(templateTail.toString)
     }
 
-    temp
+    templateSequence.reverse
+  }
+
+  private def removeHashes(value:String):String = {
+    value.substring(1, value.length() - 1)
   }
 }
