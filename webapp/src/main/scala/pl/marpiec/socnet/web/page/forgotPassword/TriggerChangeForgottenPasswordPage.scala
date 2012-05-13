@@ -69,6 +69,7 @@ class TriggerChangeForgottenPasswordPage(parameters: PageParameters) extends Sim
 
       if (validatorResult.isValid) {
         userCommand.triggerChangePassword(user.id, user.id, user.version, password, trigger)
+        setResponsePage(classOf[PasswordHaveBeenChangedPage])
       } else {
         error(validatorResult.errors.toString())
       }
