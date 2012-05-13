@@ -51,7 +51,7 @@ class SimpleTemplatePage extends WebPage {
     if (session.isAuthenticated()) {
       new PageParameters()
         .add(UserProfilePreviewPage.USER_ID_PARAM, session.userId())
-        .add("n", session.user.fullName)
+        .add(UserProfilePreviewPage.USER_NAME_PARAM, session.user.fullName)
     } else {
       null
     }
