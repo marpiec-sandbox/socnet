@@ -28,6 +28,6 @@ object SocnetBookmakablePages {
     application.mountPage("cfp", classOf[TriggerChangeForgottenPasswordPage])
     application.mountPage("forgotted-password-changed", classOf[PasswordHaveBeenChangedPage])
 
-
+    application.mountPage("find-people", classOf[FindPeoplePage])
   }
 }

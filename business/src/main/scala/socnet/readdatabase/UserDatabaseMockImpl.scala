@@ -30,4 +30,9 @@ class UserDatabaseMockImpl @Autowired() (dataStore: DataStore) extends AbstractD
   def getUserByEmail(email: String) = getByIndex(NAME_INDEX, email)
 
   def getUserById(id: UID) = getById(id)
+
+  def findUser(query: String):List[User] = {
+    //TODO this is stub implementation
+    super.getAll
+  }
 }

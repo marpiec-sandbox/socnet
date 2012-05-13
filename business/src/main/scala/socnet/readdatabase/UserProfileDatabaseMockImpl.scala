@@ -1,10 +1,10 @@
 package pl.marpiec.socnet.readdatabase
 
 import pl.marpiec.cqrs.{Aggregate, DataStore}
-import pl.marpiec.socnet.model.UserProfile
 import pl.marpiec.util.UID
 import org.springframework.stereotype.Repository
 import org.springframework.beans.factory.annotation.Autowired
+import pl.marpiec.socnet.model.{User, UserProfile}
 
 
 /**
@@ -31,4 +31,18 @@ class UserProfileDatabaseMockImpl @Autowired() (dataStore: DataStore) extends Ab
   def getUserProfileByUserId(userId: UID) = getByIndex(USER_ID_INDEX, userId)
 
   def getUserProfileById(id: UID) = getById(id)
+
+  def getUserProfiles(users: List[User]):Map[User, UserProfile] = {
+     var userProfileMap = Map[User, UserProfile]()
+
+     users.foreach(user => {
+       val profile = getUserProfileByUserId(user.id)
+
+       if (profile.isDefined) {
+        userProfileMap += user -> profile.get
+       }
+     })
+
+    userProfileMap
+  }
 }

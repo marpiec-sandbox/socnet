@@ -21,7 +21,6 @@ class NewArticlePage extends SecureWebPage(SocnetRoles.ARTICLE_AUTHOR) {
 
   add(new Form[NewArticleFormModel]("newArticleForm") {
 
-
     private val warningMessage: Model[String] = new Model[String]("");
 
     setModel(new CompoundPropertyModel[NewArticleFormModel](new NewArticleFormModel))
