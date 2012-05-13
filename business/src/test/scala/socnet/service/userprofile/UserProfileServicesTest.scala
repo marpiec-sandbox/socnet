@@ -23,10 +23,12 @@ class UserProfileServicesTest {
     val entityCache: AggregateCache = new AggregateCacheSimpleImpl
     val dataStore: DataStore = new DataStoreImpl(eventStore, entityCache)
     val uidGenerator: UidGenerator = new UidGeneratorMockImpl
-    val userProfileCommand: UserProfileCommand = new UserProfileCommandImpl(eventStore, dataStore, uidGenerator)
+    val userProfileCommand: UserProfileCommand = new UserProfileCommandImpl(eventStore)
 
     val userId = uidGenerator.nextUid
-    val userProfileId = userProfileCommand.createUserProfile(new UID(0), userId)
+    val userProfileId = uidGenerator.nextUid
+
+    userProfileCommand.createUserProfile(new UID(0), userId, userProfileId)
 
     var userProfile = dataStore.getEntity(classOf[UserProfile], userProfileId).asInstanceOf[UserProfile]
 
@@ -57,10 +59,11 @@ class UserProfileServicesTest {
     val entityCache: AggregateCache = new AggregateCacheSimpleImpl
     val dataStore: DataStore = new DataStoreImpl(eventStore, entityCache)
     val uidGenerator: UidGenerator = new UidGeneratorMockImpl
-    val userProfileCommand: UserProfileCommand = new UserProfileCommandImpl(eventStore, dataStore, uidGenerator)
+    val userProfileCommand: UserProfileCommand = new UserProfileCommandImpl(eventStore)
 
     val userId = uidGenerator.nextUid
-    val userProfileId = userProfileCommand.createUserProfile(new UID(0), userId)
+    val userProfileId = uidGenerator.nextUid
+    userProfileCommand.createUserProfile(new UID(0), userId, userProfileId)
     var userProfile = dataStore.getEntity(classOf[UserProfile], userProfileId).asInstanceOf[UserProfile]
 
     var jobExperience = new JobExperience
@@ -131,10 +134,11 @@ class UserProfileServicesTest {
     val entityCache: AggregateCache = new AggregateCacheSimpleImpl
     val dataStore: DataStore = new DataStoreImpl(eventStore, entityCache)
     val uidGenerator: UidGenerator = new UidGeneratorMockImpl
-    val userProfileCommand: UserProfileCommand = new UserProfileCommandImpl(eventStore, dataStore, uidGenerator)
+    val userProfileCommand: UserProfileCommand = new UserProfileCommandImpl(eventStore)
 
     val userId = uidGenerator.nextUid
-    val userProfileId = userProfileCommand.createUserProfile(new UID(0), userId)
+    val userProfileId = uidGenerator.nextUid
+    userProfileCommand.createUserProfile(new UID(0), userId, userProfileId)
     var userProfile = dataStore.getEntity(classOf[UserProfile], userProfileId).asInstanceOf[UserProfile]
 
     var education = new Education

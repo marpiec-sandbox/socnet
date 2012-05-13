@@ -12,7 +12,7 @@ import socnet.model.userprofile.AdditionalInfo
 
 trait UserProfileCommand {
 
-  def createUserProfile(userId:UID, id: UID):UID
+  def createUserProfile(userId:UID, userAggregateId: UID, newUserProfileId:UID)
   def updatePersonalSummary(userId:UID, id: UID, version: Int, personalSummary: PersonalSummary)
 
   def addJobExperience(userId:UID, id: UID, version: Int, jobExperience: JobExperience, jobExperienceId: UID)

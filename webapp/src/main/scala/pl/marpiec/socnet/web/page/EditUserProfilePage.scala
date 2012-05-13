@@ -7,6 +7,7 @@ import pl.marpiec.socnet.service.userprofile.UserProfileCommand
 import pl.marpiec.socnet.web.authorization.SecureWebPage
 import pl.marpiec.socnet.web.application.{SocnetRoles, SocnetSession}
 import org.apache.wicket.spring.injection.annot.SpringBean
+import pl.marpiec.cqrs.UidGenerator
 
 
 /**
@@ -21,6 +22,9 @@ class EditUserProfilePage extends SecureWebPage(SocnetRoles.USER) {
   var userProfileCommand: UserProfileCommand = _
   @SpringBean
   var userProfileDatabase: UserProfileDatabase = _
+  @SpringBean
+  var uidGenerator:UidGenerator = _
+
   val session: SocnetSession = getSession.asInstanceOf[SocnetSession]
 
   //configure
@@ -39,7 +43,8 @@ class EditUserProfilePage extends SecureWebPage(SocnetRoles.USER) {
 
   //methods
   def createUserProfile: UserProfile = {
-    val userProfileId = userProfileCommand.createUserProfile(session.user.id, session.user.id)
+    val userProfileId = uidGenerator.nextUid
+    userProfileCommand.createUserProfile(session.user.id, session.user.id, userProfileId)
     val userProfile = new UserProfile
     userProfile.id = userProfileId;
     userProfile.version = 1

@@ -3,7 +3,7 @@ package pl.marpiec.socnet.service.userprofile
 import event._
 import input.PersonalSummary
 import pl.marpiec.util.UID
-import pl.marpiec.cqrs.{EventRow, UidGenerator, DataStore, EventStore}
+import pl.marpiec.cqrs.{EventRow, EventStore}
 import pl.marpiec.socnet.model.userprofile.{Education, JobExperience}
 import socnet.model.userprofile.AdditionalInfo
 import socnet.service.userprofile.event._
@@ -15,12 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired
  */
 
 @Service("userProfileCommand")
-class UserProfileCommandImpl @Autowired() (val eventStore: EventStore, val dataStore: DataStore, val uidGenerator:UidGenerator) extends UserProfileCommand {
-  def createUserProfile(userId:UID, userAggregateId: UID): UID = {
+class UserProfileCommandImpl @Autowired() (val eventStore: EventStore) extends UserProfileCommand {
+  def createUserProfile(userId:UID, userAggregateId: UID, newUserProfileId:UID) {
     val createUserProfile = new CreateUserProfileEvent(userAggregateId)
-    val id = uidGenerator.nextUid
-    eventStore.addEventForNewAggregate(id, new EventRow(userId, id, 0, createUserProfile))
-    id
+    eventStore.addEventForNewAggregate(newUserProfileId, new EventRow(userId, newUserProfileId, 0, createUserProfile))
   }
 
   def updatePersonalSummary(userId:UID, id: UID, version: Int, personalSummary: PersonalSummary) {
