@@ -11,9 +11,11 @@ import org.apache.wicket.markup.html.list.AbstractItem
 import pl.marpiec.socnet.model.userprofile.{Education, JobExperience}
 import socnet.model.userprofile.AdditionalInfo
 import userProfilePreviewPage._
-import pl.marpiec.socnet.model.UserProfile
 import pl.marpiec.socnet.readdatabase.{UserDatabase, UserProfileDatabase}
 import org.apache.wicket.spring.injection.annot.SpringBean
+import org.apache.wicket.markup.html.link.BookmarkablePageLink
+import pl.marpiec.socnet.model.{User, UserProfile}
+import org.apache.wicket.markup.html.basic.Label
 
 /**
  * @author Marcin Pieciukiewicz
@@ -88,4 +90,9 @@ class UserProfilePreviewPage(parameters: PageParameters) extends SecureWebPage(S
 
 object UserProfilePreviewPage {
   val USER_ID_PARAM = "k"
+
+  def getLink(user:User):BookmarkablePageLink[_] = {
+    new BookmarkablePageLink("profileLink", classOf[UserProfilePreviewPage],
+      new PageParameters().add(UserProfilePreviewPage.USER_ID_PARAM, user.id).add("n", user.fullName))
+  }
 }

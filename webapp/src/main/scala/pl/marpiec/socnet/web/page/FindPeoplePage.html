@@ -3,21 +3,24 @@
 <body>
 <wicket:extend>
 
-    <div>
-        Lista znalezionych ludzi.
-    </div>
+    <div class="foundPeopleList">
 
-    <div wicket:id="foundUsers">
-        <div>
-            <span wicket:id="fullName">fullName</span>
+        <div class="sectionTitle">
+            Lista znalezionych ludzi.
         </div>
 
-        <div wicket:id="profile">
-            <span wicket:id="city">city</span>
-            <span wicket:id="professionalTitle">professionalTitle</span>
+        <div wicket:id="foundUsers" class="foundUser">
+            <div class="avatar"></div>
+            <div class="userName">
+                <a wicket:id="profileLink"><span wicket:id="userName">fullName</span></a>
+            </div>
+            <div wicket:id="profile" class="profile">
+                <span wicket:id="professionalTitle" class="professionalTitle">professionalTitle</span><span class="separator">, </span>
+                <span wicket:id="city" class="city">city</span>
+            </div>
         </div>
-    </div>
 
+    </div>
 </wicket:extend>
 </body>
 </html>

@@ -9,6 +9,7 @@ import org.apache.wicket.markup.repeater.RepeatingView
 import org.apache.wicket.markup.html.list.AbstractItem
 import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.markup.html.WebMarkupContainer
+import org.apache.wicket.markup.html.link.BookmarkablePageLink
 
 /**
  * @author Marcin Pieciukiewicz
@@ -31,7 +32,7 @@ class FindPeoplePage(parameters: PageParameters) extends SecureWebPage(SocnetRol
   add(new RepeatingView("foundUsers") {
     foundUsers.foreach(user => {
       add(new AbstractItem(newChildId()) {
-        add(new Label("fullName", user.fullName))
+        add(UserProfilePreviewPage.getLink(user).add(new Label("userName", user.fullName)))
 
         val profileOption = userProfiles.get(user)
         if (profileOption.isDefined) {
