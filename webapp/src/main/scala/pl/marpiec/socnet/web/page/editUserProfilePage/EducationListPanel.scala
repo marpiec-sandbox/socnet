@@ -7,12 +7,13 @@ import pl.marpiec.socnet.model.{UserProfile, User}
 import collection.mutable.ListBuffer
 import socnet.constant.Month
 import org.apache.wicket.markup.html.panel.Panel
-import pl.marpiec.socnet.di.Factory
 import pl.marpiec.util.UID
 import org.apache.wicket.markup.html.form._
 import org.apache.wicket.model.PropertyModel
 import pl.marpiec.socnet.model.userprofile.Education
 import org.apache.wicket.markup.html.basic.{MultiLineLabel, Label}
+import pl.marpiec.socnet.service.userprofile.UserProfileCommand
+import org.apache.wicket.spring.injection.annot.SpringBean
 
 /**
  * @author Marcin Pieciukiewicz
@@ -21,7 +22,8 @@ import org.apache.wicket.markup.html.basic.{MultiLineLabel, Label}
 class EducationListPanel(id: String, user: User, userProfile: UserProfile, educationList: ListBuffer[Education])
   extends ElementListPanel[Education, EducationFormModel](id, user, userProfile, educationList) {
 
-  val userProfileCommand = Factory.userProfileCommand
+  @SpringBean
+  var userProfileCommand: UserProfileCommand = _
 
   def createNewElement = new Education
 

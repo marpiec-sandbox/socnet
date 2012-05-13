@@ -1,17 +1,21 @@
 package pl.marpiec.socnet.service.user
 
-import pl.marpiec.socnet.database.UserDatabase
 import pl.marpiec.socnet.model.User
 import pl.marpiec.cqrs.DataStore
 import pl.marpiec.util.{PasswordUtil, UID}
 import org.apache.commons.lang.StringUtils
+import org.springframework.stereotype.Service
+import org.springframework.beans.factory.annotation.Autowired
+import pl.marpiec.socnet.readdatabase.UserDatabase
 
 /**
  * ...
  * @author Marcin Pieciukiewicz
  */
 
-class UserQueryImpl(val socnetDatabase:UserDatabase, val dataStore:DataStore) extends UserQuery {
+
+@Service("userQuery")
+class UserQueryImpl @Autowired() (val socnetDatabase:UserDatabase, val dataStore:DataStore) extends UserQuery {
 
   def getUserById(id: UID):User = {
     dataStore.getEntity(classOf[User], id).asInstanceOf[User]

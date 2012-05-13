@@ -1,12 +1,12 @@
 package pl.marpiec.socnet.web.page
 
 import editUserProfilePage.{AdditionalInfoListPanel, EducationListPanel, JobExperienceListPanel, PersonalSummaryPanel}
-import pl.marpiec.socnet.database.UserProfileDatabase
-import pl.marpiec.socnet.di.Factory
+import pl.marpiec.socnet.readdatabase.UserProfileDatabase
 import pl.marpiec.socnet.model.UserProfile
 import pl.marpiec.socnet.service.userprofile.UserProfileCommand
 import pl.marpiec.socnet.web.authorization.SecureWebPage
 import pl.marpiec.socnet.web.application.{SocnetRoles, SocnetSession}
+import org.apache.wicket.spring.injection.annot.SpringBean
 
 
 /**
@@ -17,8 +17,10 @@ import pl.marpiec.socnet.web.application.{SocnetRoles, SocnetSession}
 class EditUserProfilePage extends SecureWebPage(SocnetRoles.USER) {
 
   //dependencies
-  val userProfileCommand: UserProfileCommand = Factory.userProfileCommand
-  val userProfileDatabase: UserProfileDatabase = Factory.userProfileDatabase
+  @SpringBean
+  var userProfileCommand: UserProfileCommand = _
+  @SpringBean
+  var userProfileDatabase: UserProfileDatabase = _
   val session: SocnetSession = getSession.asInstanceOf[SocnetSession]
 
   //configure

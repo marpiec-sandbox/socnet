@@ -17,6 +17,7 @@
         <scala.version>2.9.1</scala.version>
         <scalatest.version>1.7.1</scalatest.version>
         <wicket.version>1.5.5</wicket.version>
+        <org.springframework.version>3.0.5.RELEASE</org.springframework.version>
     </properties>
 
     <repositories>
@@ -58,6 +59,29 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- spring -->
+
+        <!-- Application Context (depends on spring-core, spring-expression, spring-aop,
+  spring-beans) This is the central artifact for Spring's Dependency Injection
+  Container and is generally always defined -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${org.springframework.version}</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aspects</artifactId>
+            <version>${org.springframework.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>${org.springframework.version}</version>
+        </dependency>
 
         <!-- logging -->
         <dependency>

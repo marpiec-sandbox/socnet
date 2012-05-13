@@ -2,9 +2,13 @@ package pl.marpiec.cqrs
 
 import collection.mutable.{ListBuffer, HashMap}
 import pl.marpiec.util.UID
+import org.springframework.stereotype.Repository
+import org.springframework.beans.factory.annotation.Autowired
 
 
-class DataStoreImpl (val eventStore:EventStore, val entityCache:AggregateCache) extends EventStoreListener with DataStore {
+@Repository("dataStore")
+class DataStoreImpl @Autowired() (val eventStore:EventStore, val entityCache:AggregateCache)
+  extends EventStoreListener with DataStore {
 
   private val listeners = new HashMap[Class[_ <: Aggregate], ListBuffer[DataStoreListener]]
 

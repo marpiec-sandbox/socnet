@@ -1,4 +1,4 @@
-package pl.marpiec.socnet.database
+package pl.marpiec.socnet.readdatabase
 
 import exception.EntryAlreadyExistsException
 import pl.marpiec.cqrs.{Aggregate, DataStoreListener, DataStore}

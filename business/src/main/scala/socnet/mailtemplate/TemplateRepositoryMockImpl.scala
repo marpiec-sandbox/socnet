@@ -1,4 +1,4 @@
-package socnet.template
+package socnet.mailtemplate
 
 /**
  * @author Marcin Pieciukiewicz

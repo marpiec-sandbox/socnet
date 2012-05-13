@@ -2,12 +2,14 @@ package pl.marpiec.cqrs
 
 import collection.mutable.{ListBuffer, HashMap, WeakHashMap}
 import pl.marpiec.util.UID
+import org.springframework.stereotype.Component
 
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
+@Component("aggregateCache")
 class AggregateCacheSimpleImpl extends AggregateCache {
   
   private val cache = new WeakHashMap[Class[_], WeakHashMap[UID, Aggregate]]

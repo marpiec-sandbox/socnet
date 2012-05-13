@@ -1,4 +1,4 @@
-package pl.marpiec.socnet.database
+package pl.marpiec.socnet.readdatabase
 
 import pl.marpiec.socnet.model.UserProfile
 import pl.marpiec.util.UID

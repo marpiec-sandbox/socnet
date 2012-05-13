@@ -1,34 +1,37 @@
 package pl.marpiec.socnet.service.user
 
 import event.{ChangeEmailEvent, RegisterUserEvent}
-import pl.marpiec.socnet.database.UserDatabase
-import pl.marpiec.socnet.database.exception.EntryAlreadyExistsException
 import pl.marpiec.cqrs._
 import exception.IncorrectTriggerException
 import pl.marpiec.mailsender.MailSender
-import socnet.template.TemplateRepository
-import pl.marpiec.util.{TemplateUtil, PasswordUtil, UID}
+import socnet.mailtemplate.TemplateRepository
+import pl.marpiec.util.{PasswordUtil, UID}
 import pl.marpiec.socnet.model.User
 import socnet.service.exception.EmailDoesNotExistsException
 import socnet.service.user.event.ChangeForgottenPasswordEvent
 import scala.Predef._
+import org.springframework.stereotype.Service
+import org.springframework.beans.factory.annotation.Autowired
+import pl.marpiec.socnet.readdatabase.UserDatabase
+import pl.marpiec.socnet.readdatabase.exception.EntryAlreadyExistsException
 
 /**
  * ...
  * @author Marcin Pieciukiewicz
  */
 
-class UserCommandImpl(val eventStore: EventStore, val dataStore: DataStore,
-                      val triggeredEvents:TriggeredEvents, val userDatabase: UserDatabase,
-                      val uidGenerator:UidGenerator, mailSender:MailSender,
-                      templateRepository:TemplateRepository) extends UserCommand {
+@Service("userCommand")
+class UserCommandImpl @Autowired()(val eventStore: EventStore, val dataStore: DataStore,
+                                   val triggeredEvents: TriggeredEvents, val userDatabase: UserDatabase,
+                                   val uidGenerator: UidGenerator, val mailSender: MailSender,
+                                   val templateRepository: TemplateRepository) extends UserCommand {
 
-  
-  override def triggerUserRegistration(trigger: String):UID = {
+
+  override def triggerUserRegistration(trigger: String): UID = {
 
     val eventOption = triggeredEvents.getEventForTrigger(trigger)
-    
-    if(eventOption.isEmpty || !eventOption.get.isInstanceOf[RegisterUserEvent]) {
+
+    if (eventOption.isEmpty || !eventOption.get.isInstanceOf[RegisterUserEvent]) {
       throw new IncorrectTriggerException
     }
 
@@ -65,18 +68,17 @@ class UserCommandImpl(val eventStore: EventStore, val dataStore: DataStore,
   private def sendConfirmRegistrationEmail(email: String, trigger: String) {
 
     val template = templateRepository.getConfirmRegistrationMail
-    
-    val properties = Map[String, String](("link", "http://localhost:8080/socnet/cr?t="+trigger))
+
+    val properties = Map[String, String](("link", "http://localhost:8080/socnet/cr?t=" + trigger))
 
     mailSender.sendMail("Rejestracja w sieci Socnet", template, email, properties)
-    
+
   }
 
-  def changeUserEmail(userId:UID, aggregateUserId: UID, version: Int, email: String) {
+  def changeUserEmail(userId: UID, aggregateUserId: UID, version: Int, email: String) {
     val changeEmail = new ChangeEmailEvent(email)
     eventStore.addEvent(new EventRow(userId, aggregateUserId, version, changeEmail))
   }
-
 
 
   def createChangeForgottenPasswordTrigger(email: String) {
@@ -93,7 +95,7 @@ class UserCommandImpl(val eventStore: EventStore, val dataStore: DataStore,
 
   }
 
-  private def createChangeForgottenPasswordTrigger(user:User) {
+  private def createChangeForgottenPasswordTrigger(user: User) {
     val changeForgottenPasswordEvent = new ChangeForgottenPasswordEvent()
 
     val trigger = triggeredEvents.addNewTriggeredEvent(user.id, changeForgottenPasswordEvent)
@@ -107,16 +109,16 @@ class UserCommandImpl(val eventStore: EventStore, val dataStore: DataStore,
   def sendChangeForgottenPasswordEmail(email: String, trigger: String) {
     val template = templateRepository.getChangeForgottenPasswordMail
 
-    val properties = Map[String, String](("link", "http://localhost:8080/socnet/cfp?t="+trigger))
+    val properties = Map[String, String](("link", "http://localhost:8080/socnet/cfp?t=" + trigger))
 
     mailSender.sendMail("Zmiana hasla w sieci Socnet", template, email, properties)
   }
 
-  def triggerChangePassword(userId: UID, aggregateUserId: UID, version: Int, newPassword: String, trigger:String) {
+  def triggerChangePassword(userId: UID, aggregateUserId: UID, version: Int, newPassword: String, trigger: String) {
 
     val eventOption = triggeredEvents.getEventForTrigger(trigger)
 
-    if(eventOption.isEmpty || !eventOption.get.isInstanceOf[ChangeForgottenPasswordEvent]) {
+    if (eventOption.isEmpty || !eventOption.get.isInstanceOf[ChangeForgottenPasswordEvent]) {
       throw new IncorrectTriggerException
     }
 

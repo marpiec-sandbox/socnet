@@ -1,21 +1,22 @@
 package pl.marpiec.socnet.web.page.registration
 
 import org.apache.wicket.request.mapper.parameter.PageParameters
-import pl.marpiec.socnet.di.Factory
 import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException
-import pl.marpiec.socnet.database.exception.EntryAlreadyExistsException
+import pl.marpiec.socnet.readdatabase.exception.EntryAlreadyExistsException
 import pl.marpiec.cqrs.exception.IncorrectTriggerException
 import org.apache.wicket.markup.html.panel.Fragment
 import pl.marpiec.socnet.web.page.template.SimpleTemplatePage
-import org.apache.wicket.RestartResponseAtInterceptPageException
-import pl.marpiec.socnet.web.page.HomePage
+import pl.marpiec.socnet.service.user.UserCommand
+import org.apache.wicket.spring.injection.annot.SpringBean
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
 class TriggerUserRegistrationPage(parameters: PageParameters) extends SimpleTemplatePage {
-  private val userCommand = Factory.userCommand
+
+  @SpringBean
+  private var userCommand: UserCommand = _
 
   val triggerValue = parameters.get(TriggerUserRegistrationPage.TRIGGER_PARAM)
   if (triggerValue.isEmpty) {

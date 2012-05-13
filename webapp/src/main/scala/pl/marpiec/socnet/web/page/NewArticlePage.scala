@@ -5,9 +5,10 @@ import org.apache.wicket.model.{CompoundPropertyModel, Model}
 import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.markup.html.form.{TextArea, Button, Form}
 import pl.marpiec.socnet.model.User
-import pl.marpiec.socnet.di.Factory
 import pl.marpiec.socnet.web.authorization.SecureWebPage
 import pl.marpiec.socnet.web.application.{SocnetRoles, SocnetSession}
+import pl.marpiec.socnet.service.article.ArticleCommand
+import org.apache.wicket.spring.injection.annot.SpringBean
 
 /**
  * @author Marcin Pieciukiewicz
@@ -15,11 +16,11 @@ import pl.marpiec.socnet.web.application.{SocnetRoles, SocnetSession}
 
 class NewArticlePage extends SecureWebPage(SocnetRoles.ARTICLE_AUTHOR) {
 
-  setStatelessHint(false)
+  @SpringBean
+  private var articleCommand: ArticleCommand = _
 
   add(new Form[NewArticleFormModel]("newArticleForm") {
 
-    private val articleCommand = Factory.articleCommand
 
     private val warningMessage: Model[String] = new Model[String]("");
 

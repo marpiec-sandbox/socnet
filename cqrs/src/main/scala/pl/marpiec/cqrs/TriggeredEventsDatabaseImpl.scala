@@ -1,15 +1,19 @@
 package pl.marpiec.cqrs
 
 import org.apache.commons.lang.RandomStringUtils
-import java.sql.{Timestamp, DriverManager, Connection}
+import java.sql.Timestamp
 import java.util.Date
 import pl.marpiec.util.{JsonSerializer, UID}
+import org.springframework.jdbc.core.JdbcTemplate
+import org.springframework.stereotype.Repository
+import org.springframework.beans.factory.annotation.Autowired
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
-class TriggeredEventsDatabaseImpl(val connectionPool:DatabaseConnectionPool) extends TriggeredEvents {
+@Repository("triggeredEventsDatabase")
+class TriggeredEventsDatabaseImpl @Autowired()(val jdbcTemplate: JdbcTemplate) extends TriggeredEvents {
 
   private val TRIGGER_LENGTH = 128
   private val MILLS_IN_24H = 86400000
@@ -17,28 +21,21 @@ class TriggeredEventsDatabaseImpl(val connectionPool:DatabaseConnectionPool) ext
 
   var jsonSerializer = new JsonSerializer
 
-  def addNewTriggeredEvent(userId: UID, event: Event):String = {
+  def addNewTriggeredEvent(userId: UID, event: Event): String = {
 
     val trigger = generateRandomTrigger
 
-    val insertEvent = connectionPool.getConnection.prepareStatement("INSERT INTO trigger_events (id, user_uid, creation_time, execution_time, trigger, event_type, event) " +
-      "VALUES (NEXTVAL('trigger_events_seq'), ?, ?, NULL, ?, ?, ?)")
-
-    insertEvent.setLong(1, userId.uid)
-    insertEvent.setTimestamp(2, new Timestamp(new Date().getTime))
-    insertEvent.setString(3, trigger)
-    insertEvent.setString(4, event.getClass.getName)
-    insertEvent.setString(5, jsonSerializer.toJson(event))
-
-    insertEvent.execute
+    jdbcTemplate.update("INSERT INTO trigger_events (id, user_uid, creation_time, execution_time, trigger, event_type, event) " +
+      "VALUES (NEXTVAL('trigger_events_seq'), ?, ?, NULL, ?, ?, ?)",
+      Array(Long.box(userId.uid),
+        new Timestamp(new Date().getTime),
+        trigger, event.getClass.getName, jsonSerializer.toJson(event)): _*)
 
     trigger
   }
 
 
-
-
-  def getEventForTrigger(trigger: String):Option[Event] = {
+  def getEventForTrigger(trigger: String): Option[Event] = {
     val resultOption = getUserIdAndEventForTrigger(trigger)
     if (resultOption.isDefined) {
       val (userId, event) = resultOption.get
@@ -48,14 +45,12 @@ class TriggeredEventsDatabaseImpl(val connectionPool:DatabaseConnectionPool) ext
     }
   }
 
-  def getUserIdAndEventForTrigger(trigger: String):(Option[(UID, Event)]) = {
-    val selectTrigger = connectionPool.getConnection.prepareStatement("SELECT user_uid, creation_time, event_type, event FROM trigger_events WHERE execution_time IS NULL AND trigger = ?")
+  def getUserIdAndEventForTrigger(trigger: String): (Option[(UID, Event)]) = {
+    val result = jdbcTemplate.queryForRowSet("SELECT user_uid, creation_time, event_type, event " +
+      "FROM trigger_events WHERE execution_time IS NULL AND trigger = ?",
+      Array(trigger): _*)
 
-    selectTrigger.setString(1, trigger)
-
-    val result = selectTrigger.executeQuery()
-
-    if(result.next()) {
+    if (result.next()) {
 
       val userId = new UID(result.getLong(1))
       val creationTime = result.getTimestamp(2)
@@ -64,7 +59,7 @@ class TriggeredEventsDatabaseImpl(val connectionPool:DatabaseConnectionPool) ext
 
       val currentTime = (new Date).getTime
 
-      if(currentTime - creationTime.getTime < MILLS_IN_24H) {
+      if (currentTime - creationTime.getTime < MILLS_IN_24H) {
         val eventObject = jsonSerializer.fromJson(event, Class.forName(eventType)).asInstanceOf[Event]
         Option[(UID, Event)]((userId, eventObject))
       } else {
@@ -78,16 +73,12 @@ class TriggeredEventsDatabaseImpl(val connectionPool:DatabaseConnectionPool) ext
 
 
   def markEventAsExecuted(trigger: String) = {
-    val updateEvent = connectionPool.getConnection.prepareStatement("UPDATE trigger_events SET execution_time=? WHERE execution_time IS NULL AND trigger = ?")
-
-    updateEvent.setTimestamp(1, new Timestamp((new Date).getTime))
-    updateEvent.setString(2, trigger)
-    
-
-    updateEvent.executeUpdate()
+    val updateEvent = jdbcTemplate.update("UPDATE trigger_events SET execution_time=? " +
+      "WHERE execution_time IS NULL AND trigger = ?",
+      Array(new Timestamp((new Date).getTime), trigger): _*)
   }
 
-  private def generateRandomTrigger():String = {
+  private def generateRandomTrigger(): String = {
     return RandomStringUtils.randomAlphanumeric(TRIGGER_LENGTH);
   }
 }

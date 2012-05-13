@@ -1,8 +1,7 @@
-package pl.marpiec.database
+package pl.marpiec.socnet.readdatabase
 
 import org.testng.annotations.Test
 import org.testng.Assert._
-import pl.marpiec.socnet.database.{UserDatabaseMockImpl, UserDatabase}
 import pl.marpiec.socnet.model.User
 import pl.marpiec.cqrs._
 import pl.marpiec.socnet.service.user.event.RegisterUserEvent

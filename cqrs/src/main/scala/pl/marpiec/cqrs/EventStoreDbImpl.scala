@@ -1,76 +1,70 @@
 package pl.marpiec.cqrs
 
-import collection.mutable.ListBuffer
+import scala.collection.JavaConversions._
 import exception.ConcurrentAggregateModificationException
-import java.sql._
 import java.util.Date
 import pl.marpiec.util.{JsonSerializer, UID}
+import org.springframework.stereotype.Repository
+import org.springframework.beans.factory.annotation.Autowired
+import java.sql.{Timestamp, ResultSet}
+import org.springframework.jdbc.core.{RowCallbackHandler, RowMapper, JdbcTemplate}
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
-class EventStoreDbImpl(val connectionPool:DatabaseConnectionPool) extends EventStore {
+@Repository("eventStore")
+class EventStoreDbImpl @Autowired() (val jdbcTemplate:JdbcTemplate) extends EventStore {
 
-  private val listeners = new ListBuffer[EventStoreListener]
+  val DEFAULT_VERSION = 1
+
+  private var listeners = List[EventStoreListener]()
 
   var jsonSerializer = new JsonSerializer
 
-  def getEventsForEntity(entityClass: Class[_], id: UID): ListBuffer[EventRow] = {
+  val SELECT_EVENTS_QUERY = "SELECT user_uid, aggregate_uid, version, event, event_type " +
+    "FROM events " +
+    "WHERE aggregate_uid = ? " +
+    "ORDER BY event_time"
 
-    val selectEvents = connectionPool.getConnection.prepareStatement("SELECT user_uid, aggregate_uid, version, event, event_type FROM events WHERE aggregate_uid = ? ORDER BY event_time")
-    selectEvents.setLong(1, id.uid)
-    val results = selectEvents.executeQuery
-
-    val events = new ListBuffer[EventRow]
-
-    while (results.next()) {
-
-      var userId = results.getLong(1)
-      var aggregateId = results.getLong(2)
-      var version = results.getInt(3)
-      var event = results.getString(4)
-      var eventType = results.getString(5)
-
-      events += new EventRow(new UID(userId), new UID(aggregateId), version, jsonSerializer.fromJson(event, Class.forName(eventType)).asInstanceOf[Event])
-
+  val eventRowRowMapper = new RowMapper[EventRow] {
+    def mapRow(resultSet: ResultSet, rowNum: Int) = {
+      val userId = resultSet.getLong(1)
+      val aggregateId = resultSet.getLong(2)
+      val version = resultSet.getInt(3)
+      val event = resultSet.getString(4)
+      val eventType = resultSet.getString(5)
+      new EventRow(new UID(userId), new UID(aggregateId), version,
+        jsonSerializer.fromJson(event, Class.forName(eventType)).asInstanceOf[Event])
     }
+  }
 
-    events
+  def getEventsForEntity(entityClass: Class[_], id: UID): List[EventRow] = {
+    jdbcTemplate.query(SELECT_EVENTS_QUERY, eventRowRowMapper, Array(Long.box(id.uid))).toList
   }
 
   def addEvent(event: EventRow) {
 
-    val connection = connectionPool.getConnection
 
-    val selectAggregateVersion = connection.prepareStatement("SELECT version FROM aggregates WHERE uid = ? AND class = ?")
-    selectAggregateVersion.setLong(1, event.aggregateId.uid)
-    selectAggregateVersion.setString(2, event.event.entityClass.getName)
+    val currentVersion = jdbcTemplate.queryForInt("SELECT version FROM aggregates WHERE uid = ? AND class = ?",
+                                Array(Long.box(event.aggregateId.uid), event.event.entityClass.getName):_*)
 
-    val versionResults: ResultSet = selectAggregateVersion.executeQuery()
-
-    if (versionResults.next) {
-      val currentVersion: Int = versionResults.getInt(1)
-      if (currentVersion > event.expectedVersion) {
-        throw new ConcurrentAggregateModificationException
-      }
-    } else {
+    if (currentVersion == 0) {
       throw new IllegalStateException("No aggregate found! ")
     }
 
-    val insert = connection.prepareStatement("INSERT INTO events (id, user_uid, aggregate_uid, event_time, version, event_type, event) VALUES (NEXTVAL('events_seq'), ?, ?, ?, ?, ?, ?)")
-    insert.setLong(1, event.userId.uid)
-    insert.setLong(2, event.aggregateId.uid)
-    insert.setTimestamp(3, new Timestamp(new Date().getTime))
-    insert.setInt(4, event.expectedVersion)
-    insert.setString(5, event.event.getClass.getName)
-    insert.setObject(6, jsonSerializer.toJson(event.event))
-    insert.executeUpdate
+    if (currentVersion > event.expectedVersion) {
+      throw new ConcurrentAggregateModificationException
+    }
 
+    jdbcTemplate.update("INSERT INTO events (id, user_uid, aggregate_uid, event_time, version, event_type, event) " +
+      "VALUES (NEXTVAL('events_seq'), ?, ?, ?, ?, ?, ?)",
+      Array(Long.box(event.userId.uid), Long.box(event.aggregateId.uid),
+        new Timestamp(new Date().getTime), Int.box(event.expectedVersion), event.event.getClass.getName,
+        jsonSerializer.toJson(event.event)):_*)
 
-    val update = connection.prepareStatement("UPDATE aggregates SET version = version + 1 WHERE uid = ?")
-    update.setLong(1, event.aggregateId.uid)
-    update.executeUpdate
+    jdbcTemplate.update("UPDATE aggregates SET version = version + 1 WHERE uid = ?",
+      Array(Long.box(event.aggregateId.uid)):_*)
 
     callAllListenersAboutNewEvent(event.event.entityClass, event.aggregateId)
 
@@ -78,42 +72,39 @@ class EventStoreDbImpl(val connectionPool:DatabaseConnectionPool) extends EventS
 
   def addEventForNewAggregate(newAggregadeId: UID, event: EventRow) {
 
-    val connection = connectionPool.getConnection
-
     event.aggregateId = newAggregadeId
 
-    val insertAggregate = connection.prepareStatement("INSERT INTO aggregates (id, class, uid, version) VALUES (NEXTVAL('aggregates_seq'), ?,?,?)")
-    insertAggregate.setString(1, event.event.entityClass.getName)
-    insertAggregate.setLong(2, newAggregadeId.uid)
-    insertAggregate.setInt(3, 1)
-    insertAggregate.executeUpdate
+    jdbcTemplate.update("INSERT INTO aggregates (id, class, uid, version) VALUES (NEXTVAL('aggregates_seq'), ?,?,?)",
+    Array(event.event.entityClass.getName, Long.box(newAggregadeId.uid), Int.box(DEFAULT_VERSION)):_*)
 
-    val insertEvent = connection.prepareStatement("INSERT INTO events (id, user_uid, aggregate_uid, event_time, version, event_type, event) VALUES (NEXTVAL('events_seq'), ?, ?, ?, ?, ?, ?)")
-    insertEvent.setLong(1, event.userId.uid)
-    insertEvent.setLong(2, event.aggregateId.uid)
-    insertEvent.setTimestamp(3, new Timestamp(new Date().getTime))
-    insertEvent.setInt(4, event.expectedVersion)
-    insertEvent.setString(5, event.event.getClass.getName)
-    insertEvent.setObject(6, jsonSerializer.toJson(event.event))
-    insertEvent.executeUpdate
+    jdbcTemplate.update("INSERT INTO events (id, user_uid, aggregate_uid, event_time, version, event_type, event) " +
+      "VALUES (NEXTVAL('events_seq'), ?, ?, ?, ?, ?, ?)",
+        Array(Long.box(event.userId.uid),
+          Long.box(event.aggregateId.uid),
+          new Timestamp(new Date().getTime),
+          Int.box(event.expectedVersion),
+          event.event.getClass.getName,
+          jsonSerializer.toJson(event.event)):_*)
 
     callAllListenersAboutNewEvent(event.event.entityClass, event.aggregateId)
 
   }
 
   def callListenersForAllAggregates {
-    val selectAggregates = connectionPool.getConnection.prepareStatement("SELECT class, uid FROM aggregates")
-    val results = selectAggregates.executeQuery
-    while (results.next()) {
-      var className = results.getString(1)
-      var uid = results.getLong(2)
-      callAllListenersAboutNewEvent(Class.forName(className).asInstanceOf[Class[_ <: Aggregate]], new UID(uid))
-    }
+
+    jdbcTemplate.query("SELECT class, uid FROM aggregates", new RowCallbackHandler {
+      def processRow(rs: ResultSet) {
+        var className = rs.getString(1)
+        var uid = rs.getLong(2)
+        callAllListenersAboutNewEvent(Class.forName(className).asInstanceOf[Class[_ <: Aggregate]], new UID(uid))
+      }
+    })
+
   }
 
 
   def addListener(listener: EventStoreListener) {
-    listeners += listener
+    listeners ::= listener
   }
 
   private def callAllListenersAboutNewEvent(entityClass: Class[_ <: Aggregate], entityId: UID) {

@@ -1,8 +1,9 @@
 package pl.marpiec.socnet.web.application
 
-import pl.marpiec.socnet.di.Factory
 import org.joda.time.LocalDateTime
-import pl.marpiec.cqrs.DatabaseInitializer
+import org.springframework.stereotype.Service
+import pl.marpiec.cqrs.{EventStore, DatabaseInitializer}
+import org.springframework.beans.factory.annotation.Autowired
 
 /**
  * @author Marcin Pieciukiewicz
@@ -10,12 +11,9 @@ import pl.marpiec.cqrs.DatabaseInitializer
 
 object SocnetInitializator {
 
+  def apply(eventStore:EventStore, databaseInitializer:DatabaseInitializer) {
 
-  val eventStore = Factory.eventStore
-
-  def apply() {
-
-    new DatabaseInitializer(Factory.connectionPool).initDatabase()
+    databaseInitializer.initDatabase()
 
     // for faster jodatime initialization (first new LocalDateTime call took about 1 sec, now its about 50 mills)
     System.setProperty("org.joda.time.DateTimeZone.Provider", "org.joda.time.tz.UTCProvider");
@@ -32,3 +30,5 @@ object SocnetInitializator {
 
   }
 }
+
+

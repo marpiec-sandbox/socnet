@@ -1,4 +1,4 @@
-package pl.marpiec.socnet.database.exception
+package pl.marpiec.socnet.readdatabase.exception
 
 /**
  * @author Marcin Pieciukiewicz

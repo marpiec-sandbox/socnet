@@ -4,22 +4,26 @@ import elementPanel.FormPanel
 import org.apache.wicket.ajax.AjaxRequestTarget
 import pl.marpiec.util.UID
 import org.apache.wicket.Component
-import pl.marpiec.socnet.di.Factory
 import pl.marpiec.socnet.model.{UserProfile, User}
 import org.apache.wicket.markup.html.panel.{EmptyPanel, Panel}
 import pl.marpiec.socnet.web.wicket.SecureFormModel
 import socnet.model.userprofile.Identifiable
+import pl.marpiec.socnet.service.userprofile.UserProfileCommand
+import pl.marpiec.cqrs.UidGenerator
+import org.apache.wicket.spring.injection.annot.SpringBean
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
 class ElementAdditionPanel[T <: Identifiable, TM <: SecureFormModel](id: String, mainListPanel: ElementListPanel[T, TM],
-                                  val user: User, val userProfile: UserProfile) extends Panel(id) {
+                                                                     val user: User, val userProfile: UserProfile) extends Panel(id) {
 
   //dependencies
-  val userProfileCommand = Factory.userProfileCommand
-  val uidGenerator = Factory.uidGenerator
+  @SpringBean
+  var userProfileCommand: UserProfileCommand = _
+  @SpringBean
+  var uidGenerator: UidGenerator = _
 
   setOutputMarkupId(true)
   setOutputMarkupPlaceholderTag(true)
@@ -65,7 +69,7 @@ class ElementAdditionPanel[T <: Identifiable, TM <: SecureFormModel](id: String,
 
   def changeCurrentElementAdditionPanel {
     mainListPanel.changeCurrentElementAdditionPanel(addAndReturn(
-        new ElementAdditionPanel[T, TM]("elementAdditionPanel", mainListPanel, user, userProfile)))
+      new ElementAdditionPanel[T, TM]("elementAdditionPanel", mainListPanel, user, userProfile)))
   }
 
   def showAddedElement(element: T) {

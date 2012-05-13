@@ -6,9 +6,10 @@ import org.apache.wicket.markup.html.panel.Panel
 import pl.marpiec.socnet.model.{User, UserProfile}
 import org.apache.wicket.Component
 import org.apache.wicket.ajax.AjaxRequestTarget
-import pl.marpiec.socnet.di.Factory
 import pl.marpiec.socnet.web.wicket.SecureFormModel
 import socnet.model.userprofile.Identifiable
+import pl.marpiec.socnet.service.userprofile.UserProfileCommand
+import org.apache.wicket.spring.injection.annot.SpringBean
 
 /**
  * ...
@@ -16,12 +17,13 @@ import socnet.model.userprofile.Identifiable
  */
 
 
-class ElementPanel[T <: Identifiable, TM <: SecureFormModel](id: String, mainListPanel:ElementListPanel[T, TM],
-                                          val user: User, val userProfile: UserProfile, val element: T)
+class ElementPanel[T <: Identifiable, TM <: SecureFormModel](id: String, mainListPanel: ElementListPanel[T, TM],
+                                                             val user: User, val userProfile: UserProfile, val element: T)
   extends Panel(id) {
 
   //dependencies
-  val userProfileCommand = Factory.userProfileCommand
+  @SpringBean
+  var userProfileCommand: UserProfileCommand = _
 
   //configure
   setOutputMarkupId(true)
@@ -33,11 +35,11 @@ class ElementPanel[T <: Identifiable, TM <: SecureFormModel](id: String, mainLis
 
   //methods
 
-  def addPreviewPanel():Panel = {
+  def addPreviewPanel(): Panel = {
     addAndReturn(new PreviewPanel("elementPreview", mainListPanel, this, element, userProfile))
   }
 
-  def addEditForm:FormPanel[T, TM] = {
+  def addEditForm: FormPanel[T, TM] = {
     addAndReturn(new FormPanel[T, TM]("elementForm", mainListPanel, false, element) {
       def onFormSubmit(target: AjaxRequestTarget, formModel: SecureFormModel) = {
 

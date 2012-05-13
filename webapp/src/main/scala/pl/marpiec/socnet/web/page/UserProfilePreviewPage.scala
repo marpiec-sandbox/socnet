@@ -1,11 +1,7 @@
 package pl.marpiec.socnet.web.page
 
-import editUserProfilePage.elementListPanel.ElementPanel
-import editUserProfilePage.{AdditionalInfoListPanel, EducationListPanel, JobExperienceListPanel, PersonalSummaryPanel}
 import pl.marpiec.socnet.web.authorization.SecureWebPage
 import pl.marpiec.socnet.web.application.SocnetRoles
-import pl.marpiec.socnet.database.UserProfileDatabase
-import pl.marpiec.socnet.di.Factory
 import pl.marpiec.util.UID
 import org.apache.wicket.request.mapper.parameter.PageParameters
 import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException
@@ -16,6 +12,8 @@ import pl.marpiec.socnet.model.userprofile.{Education, JobExperience}
 import socnet.model.userprofile.AdditionalInfo
 import userProfilePreviewPage._
 import pl.marpiec.socnet.model.UserProfile
+import pl.marpiec.socnet.readdatabase.{UserDatabase, UserProfileDatabase}
+import org.apache.wicket.spring.injection.annot.SpringBean
 
 /**
  * @author Marcin Pieciukiewicz
@@ -24,19 +22,18 @@ import pl.marpiec.socnet.model.UserProfile
 class UserProfilePreviewPage(parameters: PageParameters) extends SecureWebPage(SocnetRoles.NO_ROLES_REQUIRED) {
 
   //dependencies
-  val userProfileDatabase: UserProfileDatabase = Factory.userProfileDatabase
-  val userDatabase = Factory.userDatabase
+  @SpringBean
+  private var userProfileDatabase: UserProfileDatabase = _
+  @SpringBean
+  private var userDatabase: UserDatabase = _
 
-  //configure
-  setVersioned(false)
 
-  
   //get data
   val userId = UID.parseOrZero(parameters.get(UserProfilePreviewPage.USER_ID_PARAM).toString)
-  
+
   val userOption = userDatabase.getUserById(userId)
-  
-  if(userOption.isEmpty) {
+
+  if (userOption.isEmpty) {
     throw new AbortWithHttpErrorCodeException(404);
   }
 
@@ -51,7 +48,6 @@ class UserProfilePreviewPage(parameters: PageParameters) extends SecureWebPage(S
   addJobExperienceList(userProfile.jobExperience)
   addEducationList(userProfile.education)
   addAdditionalInfoList(userProfile.additionalInfo)
-
 
 
   //methods
@@ -88,7 +84,6 @@ class UserProfilePreviewPage(parameters: PageParameters) extends SecureWebPage(S
   }
 
 }
-
 
 
 object UserProfilePreviewPage {

@@ -4,20 +4,20 @@ import scala.collection.JavaConversions._
 import pl.marpiec.socnet.model.{User, UserProfile}
 import pl.marpiec.socnet.web.page.editUserProfilePage.PersonalSummaryPanel
 import pl.marpiec.socnet.service.userprofile.UserProfileCommand
-import pl.marpiec.socnet.di.Factory
 import pl.marpiec.socnet.web.wicket.{SecureAjaxButton, SecureForm}
 import org.apache.wicket.ajax.AjaxRequestTarget
-import org.apache.wicket.model.{Model, CompoundPropertyModel}
+import org.apache.wicket.model.CompoundPropertyModel
 import socnet.constant.Province
 import org.apache.wicket.markup.html.form._
-import pl.marpiec.socnet.web.page.editUserProfilePage.model.{PersonalSummaryFormModelValidator, JobExperienceFormModelValidator, PersonalSummaryFormModel}
+import pl.marpiec.socnet.web.page.editUserProfilePage.model.{PersonalSummaryFormModelValidator, PersonalSummaryFormModel}
 import org.apache.wicket.markup.html.basic.Label
-import org.apache.wicket.ajax.markup.html.AjaxFallbackLink
+import org.apache.wicket.spring.injection.annot.SpringBean
 
 
 class PersonalSummaryEditForm(id: String, userProfile: UserProfile, user: User, parent: PersonalSummaryPanel) extends SecureForm[PersonalSummaryFormModel](id) {
 
-  val userProfileCommand: UserProfileCommand = Factory.userProfileCommand
+  @SpringBean
+  var userProfileCommand: UserProfileCommand = _
 
   def initialize {
     val model = PersonalSummaryFormModel(userProfile)

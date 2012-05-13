@@ -21,8 +21,8 @@ class TemplateUtilTest {
     params += "elem2" -> "element2"
     params += "elem3" -> "element3"
 
-    val mail1 = TemplateUtil.fillTemplate("simpleTemplate", template, params)
-    val mail2 = TemplateUtil.fillTemplate("simpleTemplate", template, params)
+    val mail1 = TemplateUtil.fillTemplate(template, params)
+    val mail2 = TemplateUtil.fillTemplate(template, params)
 
 
     assertEquals(mail1, "<html><p>Hello Marcin.</p><p>Odwiedz nasza nowa strone: www.socnet.pl</p>" +

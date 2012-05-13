@@ -1,4 +1,4 @@
-package pl.marpiec.socnet.database
+package pl.marpiec.socnet.readdatabase
 
 import org.testng.annotations.Test
 import org.testng.Assert._

@@ -1,13 +1,6 @@
 package pl.marpiec.socnet.web.application
 
 import org.testng.annotations.Test
-import org.testng.Assert._
-import org.apache.wicket.mock.MockWebRequest
-import org.apache.wicket.request.Url
-import pl.marpiec.socnet.di.Factory
-import pl.marpiec.socnet.service.user.UserCommandImpl
-import pl.marpiec.cqrs.{AggregateCacheSimpleImpl, DataStoreImpl, DataStore, EventStoreMockImpl}
-import pl.marpiec.socnet.database.UserDatabaseMockImpl
 
 @Test
 class SocnetSessionTest {

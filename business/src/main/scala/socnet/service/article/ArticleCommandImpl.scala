@@ -4,13 +4,16 @@ import event.{CreateCommentEvent, CreateArticleEvent}
 import pl.marpiec.util.UID
 import org.joda.time.LocalDateTime
 import pl.marpiec.cqrs.{EventRow, UidGenerator, DataStore, EventStore}
+import org.springframework.stereotype.Service
+import org.springframework.beans.factory.annotation.Autowired
 
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
-class ArticleCommandImpl(val eventStore: EventStore, val dataStore: DataStore, val uidGenerator: UidGenerator) extends ArticleCommand {
+@Service("articleCommand")
+class ArticleCommandImpl @Autowired() (val eventStore: EventStore, val dataStore: DataStore, val uidGenerator: UidGenerator) extends ArticleCommand {
 
   def createArticle(userId: UID, content: String, authorUserId: UID): UID = {
     val createArticle = new CreateArticleEvent(content, new LocalDateTime, authorUserId)

@@ -1,7 +1,5 @@
 package pl.marpiec.util
 
-import scala.Predef._
-import scala.Int
 import java.lang.reflect.{Type, Field, Method}
 
 

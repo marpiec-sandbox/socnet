@@ -1,8 +1,10 @@
-package pl.marpiec.socnet.database
+package pl.marpiec.socnet.readdatabase
 
 import pl.marpiec.cqrs.{Aggregate, DataStore}
 import pl.marpiec.socnet.model.UserProfile
 import pl.marpiec.util.UID
+import org.springframework.stereotype.Repository
+import org.springframework.beans.factory.annotation.Autowired
 
 
 /**
@@ -10,7 +12,8 @@ import pl.marpiec.util.UID
  * @author Marcin Pieciukiewicz
  */
 
-class UserProfileDatabaseMockImpl(dataStore: DataStore) extends AbstractDatabase[UserProfile](dataStore) with UserProfileDatabase {
+@Repository("userProfileDatabase")
+class UserProfileDatabaseMockImpl @Autowired() (dataStore: DataStore) extends AbstractDatabase[UserProfile](dataStore) with UserProfileDatabase {
 
   val USER_ID_INDEX = "userId"
 

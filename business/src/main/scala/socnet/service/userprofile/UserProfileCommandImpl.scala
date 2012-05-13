@@ -7,12 +7,15 @@ import pl.marpiec.cqrs.{EventRow, UidGenerator, DataStore, EventStore}
 import pl.marpiec.socnet.model.userprofile.{Education, JobExperience}
 import socnet.model.userprofile.AdditionalInfo
 import socnet.service.userprofile.event._
+import org.springframework.stereotype.Service
+import org.springframework.beans.factory.annotation.Autowired
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
-class UserProfileCommandImpl(val eventStore: EventStore, val dataStore: DataStore, val uidGenerator:UidGenerator) extends UserProfileCommand {
+@Service("userProfileCommand")
+class UserProfileCommandImpl @Autowired() (val eventStore: EventStore, val dataStore: DataStore, val uidGenerator:UidGenerator) extends UserProfileCommand {
   def createUserProfile(userId:UID, userAggregateId: UID): UID = {
     val createUserProfile = new CreateUserProfileEvent(userAggregateId)
     val id = uidGenerator.nextUid

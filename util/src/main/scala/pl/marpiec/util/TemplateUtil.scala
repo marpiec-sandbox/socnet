@@ -28,9 +28,9 @@ object TemplateUtil {
   val tagRegexp = "#[A-Za-z0-9]+#".r
   var cache: Map[String, List[TemplatePart]] = Map[String, List[TemplatePart]]()
 
-  def fillTemplate(templateName: String, template: String, properties: Map[String, String]): String = {
+  def fillTemplate(template: String, properties: Map[String, String]): String = {
 
-    val templateSequence = getTemplateSequenceFromCache(templateName, template)
+    val templateSequence = getTemplateSequenceFromCache(template)
 
     val sb = new StringBuilder();
 
@@ -40,13 +40,13 @@ object TemplateUtil {
 
   }
 
-  private def getTemplateSequenceFromCache(templateName: String, template: String):List[TemplatePart] = {
-    var templateSequenceOption = cache.get(templateName);
+  private def getTemplateSequenceFromCache(template: String):List[TemplatePart] = {
+    var templateSequenceOption = cache.get(template);
     if (templateSequenceOption.isDefined) {
       templateSequenceOption.get
     } else {
       var templateSequence = createTemplateSequence(template);
-      cache += templateName -> templateSequence
+      cache += template -> templateSequence
       templateSequence
     }
   }

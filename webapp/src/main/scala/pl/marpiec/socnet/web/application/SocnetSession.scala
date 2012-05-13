@@ -4,21 +4,19 @@ import org.apache.wicket.authroles.authentication.AuthenticatedWebSession
 import org.apache.wicket.request.Request
 import org.apache.wicket.authroles.authorization.strategies.role.Roles
 import pl.marpiec.socnet.model.User
-import pl.marpiec.socnet.di.Factory
 import org.apache.wicket.authroles.authorization.strategies.role.metadata.MetaDataRoleAuthorizationStrategy
 import org.apache.commons.lang.RandomStringUtils
 import pl.marpiec.util.UID
+import pl.marpiec.socnet.service.user.UserQuery
 
 /**
  * Session class.
  * @author Marcin Pieciukiewicz
  */
 
-class SocnetSession(request: Request) extends AuthenticatedWebSession(request) {
+class SocnetSession(request: Request, val userQuery: UserQuery) extends AuthenticatedWebSession(request) {
 
   val SESSION_TOKEN_LENGTH = 32
-  
-  private val userQuery = Factory.userQuery
   
   private var roles: Roles = initDefaultRoles
   var sessionToken:String = _

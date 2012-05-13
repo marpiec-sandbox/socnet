@@ -9,10 +9,11 @@ import socnet.constant.Month
 import org.apache.wicket.markup.html.form._
 import org.apache.wicket.model.PropertyModel
 import org.apache.wicket.markup.html.panel.Panel
-import pl.marpiec.socnet.di.Factory
 import pl.marpiec.util.UID
 import pl.marpiec.socnet.model.userprofile.JobExperience
 import org.apache.wicket.markup.html.basic.{MultiLineLabel, Label}
+import pl.marpiec.socnet.service.userprofile.UserProfileCommand
+import org.apache.wicket.spring.injection.annot.SpringBean
 
 /**
  * @author Marcin Pieciukiewicz
@@ -21,7 +22,8 @@ import org.apache.wicket.markup.html.basic.{MultiLineLabel, Label}
 class JobExperienceListPanel(id: String, user: User, userProfile: UserProfile, jobExperienceList: ListBuffer[JobExperience])
   extends ElementListPanel[JobExperience, JobExperienceFormModel](id, user, userProfile, jobExperienceList) {
 
-  val userProfileCommand = Factory.userProfileCommand
+  @SpringBean
+  var userProfileCommand: UserProfileCommand = _
 
   def createNewElement = new JobExperience
 

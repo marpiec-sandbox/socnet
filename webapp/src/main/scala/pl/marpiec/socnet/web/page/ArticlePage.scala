@@ -4,10 +4,11 @@ import org.apache.wicket.request.mapper.parameter.PageParameters
 import org.apache.wicket.markup.html.basic.Label
 
 
-import pl.marpiec.socnet.di.Factory
 import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException
 import pl.marpiec.util.UID
 import pl.marpiec.socnet.web.page.template.SimpleTemplatePage
+import pl.marpiec.socnet.readdatabase.{ArticleDatabase, UserDatabase}
+import org.apache.wicket.spring.injection.annot.SpringBean
 
 /**
  * @author Marcin Pieciukiewicz
@@ -15,8 +16,10 @@ import pl.marpiec.socnet.web.page.template.SimpleTemplatePage
 
 class ArticlePage(parameters: PageParameters) extends SimpleTemplatePage {
 
-  private val articleDatabase = Factory.articleDatabase
-  private val userDatabase = Factory.userDatabase
+  @SpringBean
+  private var articleDatabase: ArticleDatabase = _
+  @SpringBean
+  private var userDatabase: UserDatabase = _
 
 
   val articleId = UID.parseOrZero(parameters.get(ArticlePage.ARTICLE_ID_PARAM).toString)

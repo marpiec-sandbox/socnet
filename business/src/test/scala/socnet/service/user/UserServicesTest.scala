@@ -1,6 +1,6 @@
 package pl.marpiec.socnet.service.user
 
-import pl.marpiec.socnet.database.{UserDatabaseMockImpl, UserDatabase}
+import pl.marpiec.socnet.readdatabase.{UserDatabaseMockImpl, UserDatabase}
 import pl.marpiec.cqrs._
 import exception.ConcurrentAggregateModificationException
 import org.testng.Assert._
@@ -8,7 +8,7 @@ import org.testng.annotations.Test
 import pl.marpiec.socnet.model.User
 import pl.marpiec.util.UID
 import pl.marpiec.mailsender.{MailSender, MailSenderMockImpl}
-import socnet.template.{TemplateRepositoryMockImpl, TemplateRepository}
+import socnet.mailtemplate.{TemplateRepositoryMockImpl, TemplateRepository}
 
 /**
  * ...

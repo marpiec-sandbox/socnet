@@ -2,15 +2,14 @@ package pl.marpiec.socnet.web.page
 
 import homePage.ArticleList
 import org.apache.wicket.markup.html.link.BookmarkablePageLink
-import org.apache.wicket.authroles.authentication.panel.SignInPanel
-import pl.marpiec.socnet.database.ArticleDatabase
-import pl.marpiec.socnet.di.Factory
+import pl.marpiec.socnet.readdatabase.ArticleDatabase
 import pl.marpiec.socnet.web.authorization.{UnauthorizeAll, AuthorizeUser}
 import pl.marpiec.socnet.web.page.template.SimpleTemplatePage
 import pl.marpiec.socnet.web.application.SocnetSession
 import org.apache.wicket.markup.html.WebMarkupContainer
 import registration.RegisterPage
 import signin.SignInFormPanel
+import org.apache.wicket.spring.injection.annot.SpringBean
 
 class HomePage extends SimpleTemplatePage {
 
@@ -18,7 +17,8 @@ class HomePage extends SimpleTemplatePage {
 
   setStatelessHint(true)
 
-  private val articleDatabase: ArticleDatabase = Factory.articleDatabase
+  @SpringBean
+  private var articleDatabase: ArticleDatabase = _
 
 
   add(AuthorizeUser(new BookmarkablePageLink("newArticleLink", classOf[NewArticlePage])))

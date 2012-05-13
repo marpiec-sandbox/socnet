@@ -5,10 +5,22 @@ import javax.mail.internet.{InternetAddress, MimeMessage}
 import javax.mail._
 import pl.marpiec.util.TemplateUtil
 import java.lang.Runnable
+import org.springframework.stereotype.Service
 
 /**
  * @author Marcin Pieciukiewicz
  */
+
+@Service("mailSender")
+class MailSenderImpl extends MailSender {
+
+
+  def sendMail(subject:String, template:String, address:String, params:Map[String, String]) {
+    val task = new SendMailTask(subject, template, address, params)
+    new Thread(task).start()
+  }
+}
+
 
 class SendMailTask(val subject:String, val template:String, val address:String, val params:Map[String, String]) extends Runnable {
 
@@ -57,11 +69,3 @@ class SendMailTask(val subject:String, val template:String, val address:String, 
   }
 }
 
-class MailSenderImpl extends MailSender {
-
-
-  def sendMail(subject:String, template:String, address:String, params:Map[String, String]) {
-    val task = new SendMailTask(subject, template, address, params)
-    new Thread(task).start()
-  }
-}

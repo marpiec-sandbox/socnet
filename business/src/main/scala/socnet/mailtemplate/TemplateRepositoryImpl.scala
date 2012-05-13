@@ -1,11 +1,13 @@
-package socnet.template
+package socnet.mailtemplate
 
 import pl.marpiec.util.FileReadUtil
+import org.springframework.stereotype.Service
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
+@Service("templateRepository")
 class TemplateRepositoryImpl extends TemplateRepository {
 
   val CONFIRM_REGISTRATION = "confirmRegistration"

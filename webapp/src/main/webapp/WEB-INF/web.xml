@@ -6,6 +6,13 @@
 	<display-name>micro Social Network</display-name>
 
     <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>
+            WEB-INF/application-context.xml
+        </param-value>
+    </context-param>
+
+    <context-param>
         <param-name>db.url</param-name>
         <param-value>jdbc:h2:~/test</param-value>
     </context-param>
@@ -21,6 +28,11 @@
         <param-name>db.tcpServer</param-name>
         <param-value>-tcpAllowOthers</param-value>
     </context-param>
+
+    <!-- Inicjalizacja kontekstu Springa -->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
 
     <!-- starter of h2 database -->
     <listener>
