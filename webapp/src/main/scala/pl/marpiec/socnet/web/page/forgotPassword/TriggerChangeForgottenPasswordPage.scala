@@ -79,5 +79,5 @@ class TriggerChangeForgottenPasswordPage(parameters: PageParameters) extends Sim
 }
 
 object TriggerChangeForgottenPasswordPage {
-  val TRIGGER_PARAM = "t"
+  val TRIGGER_PARAM = "trigger"
 }

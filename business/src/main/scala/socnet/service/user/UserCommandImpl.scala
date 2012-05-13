@@ -69,7 +69,7 @@ class UserCommandImpl @Autowired()(val eventStore: EventStore, val dataStore: Da
 
     val template = templateRepository.getConfirmRegistrationMail
 
-    val properties = Map[String, String](("link", "http://localhost:8080/socnet/cr?t=" + trigger))
+    val properties = Map[String, String](("link", "http://localhost:8080/socnet/cr/" + trigger))
 
     mailSender.sendMail("Rejestracja w sieci Socnet", template, email, properties)
 
@@ -109,7 +109,7 @@ class UserCommandImpl @Autowired()(val eventStore: EventStore, val dataStore: Da
   def sendChangeForgottenPasswordEmail(email: String, trigger: String) {
     val template = templateRepository.getChangeForgottenPasswordMail
 
-    val properties = Map[String, String](("link", "http://localhost:8080/socnet/cfp?t=" + trigger))
+    val properties = Map[String, String](("link", "http://localhost:8080/socnet/cfp/" + trigger))
 
     mailSender.sendMail("Zmiana hasla w sieci Socnet", template, email, properties)
   }

@@ -89,10 +89,11 @@ class UserProfilePreviewPage(parameters: PageParameters) extends SecureWebPage(S
 
 
 object UserProfilePreviewPage {
-  val USER_ID_PARAM = "k"
+  val USER_ID_PARAM = "userId"
+  val USER_NAME_PARAM = "userName"
 
   def getLink(user:User):BookmarkablePageLink[_] = {
     new BookmarkablePageLink("profileLink", classOf[UserProfilePreviewPage],
-      new PageParameters().add(UserProfilePreviewPage.USER_ID_PARAM, user.id).add("n", user.fullName))
+      new PageParameters().add(USER_ID_PARAM, user.id).add(USER_NAME_PARAM, user.fullName))
   }
 }

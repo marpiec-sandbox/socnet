@@ -41,5 +41,5 @@ class TriggerUserRegistrationPage(parameters: PageParameters) extends SimpleTemp
 }
 
 object TriggerUserRegistrationPage {
-  val TRIGGER_PARAM = "t"
+  val TRIGGER_PARAM = "trigger"
 }

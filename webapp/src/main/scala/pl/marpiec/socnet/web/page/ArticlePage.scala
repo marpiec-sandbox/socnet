@@ -51,5 +51,5 @@ class ArticlePage(parameters: PageParameters) extends SimpleTemplatePage {
 
 
 object ArticlePage {
-  val ARTICLE_ID_PARAM = "k"
+  val ARTICLE_ID_PARAM = "articleId"
 }
