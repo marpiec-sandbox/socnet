@@ -1,4 +1,4 @@
-package socnet.model.userContact
+package socnet.model.usercontacts
 
 import pl.marpiec.util.UID
 

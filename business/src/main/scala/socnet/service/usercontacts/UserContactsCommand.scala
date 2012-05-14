@@ -1,4 +1,4 @@
-package socnet.service.userContact
+package socnet.service.usercontacts
 
 import pl.marpiec.util.UID
 
@@ -6,7 +6,7 @@ import pl.marpiec.util.UID
  * @author Marcin Pieciukiewicz
  */
 
-trait UserContactCommand {
-  def createUserContacts(userId:UID, userAggregateId: UID, newUserContactsId:UID)
+trait UserContactsCommand {
+  def createUserContacts(userId:UID, userAggregateId: UID, newUserContactId:UID)
   def addContact(userId: UID, id:UID, version:Int, contactUserId: UID, contactId: UID)
 }

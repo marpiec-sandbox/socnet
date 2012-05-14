@@ -1,9 +1,9 @@
-package socnet.service.userContact.event
+package socnet.service.usercontacts.event
 
 import pl.marpiec.util.UID
 import pl.marpiec.cqrs.{Aggregate, Event}
 import socnet.model.UserContacts
-import socnet.model.userContact.Contact
+import socnet.model.usercontacts.Contact
 
 /**
  * @author Marcin Pieciukiewicz

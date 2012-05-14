@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired
 
 
 @Repository("dataStore")
-class DataStoreImpl @Autowired() (val eventStore:EventStore, val entityCache:AggregateCache)
+class DataStoreImpl @Autowired() (val eventStore:EventStore, val aggregateCache:AggregateCache)
   extends EventStoreListener with DataStore {
 
   private val listeners = new HashMap[Class[_ <: Aggregate], ListBuffer[DataStoreListener]]
@@ -32,7 +32,7 @@ class DataStoreImpl @Autowired() (val eventStore:EventStore, val entityCache:Agg
   }
 
   private def getNewOrCachedEntity(entityClass: Class[_ <: Aggregate], id: UID):Aggregate = {
-    entityCache.get(entityClass, id) match {
+    aggregateCache.get(entityClass, id) match {
       case Some(entity) => entity
       case None => {
         val entity: Aggregate = entityClass.newInstance

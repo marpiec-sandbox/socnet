@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository
 import org.springframework.beans.factory.annotation.Autowired
 import java.sql.{Timestamp, ResultSet}
 import org.springframework.jdbc.core.{RowCallbackHandler, RowMapper, JdbcTemplate}
+import collection.mutable.ListBuffer
 
 /**
  * @author Marcin Pieciukiewicz
@@ -39,8 +40,10 @@ class EventStoreDbImpl @Autowired() (val jdbcTemplate:JdbcTemplate) extends Even
     }
   }
 
-  def getEventsForEntity(entityClass: Class[_], id: UID): List[EventRow] = {
-    jdbcTemplate.query(SELECT_EVENTS_QUERY, eventRowRowMapper, Array(Long.box(id.uid))).toList
+  def getEventsForEntity(entityClass: Class[_], id: UID): ListBuffer[EventRow] = {
+    val list = ListBuffer[EventRow]()
+    list.addAll(jdbcTemplate.query(SELECT_EVENTS_QUERY, eventRowRowMapper, Array(Long.box(id.uid))).toList)
+    list
   }
 
   def addEvent(event: EventRow) {

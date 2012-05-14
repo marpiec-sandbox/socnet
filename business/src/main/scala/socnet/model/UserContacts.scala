@@ -1,7 +1,7 @@
 package socnet.model
 
 import pl.marpiec.cqrs.Aggregate
-import userContact.Contact
+import usercontacts.Contact
 
 /**
  * @author Marcin Pieciukiewicz
