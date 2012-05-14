@@ -31,13 +31,13 @@ class UserContactCommandTest {
 
     var userContacts = dataStore.getEntity(classOf[UserContacts], userContactsId).asInstanceOf[UserContacts]
 
-    val firstContactId = uidGenerator.nextUid
+    val firstInvitationId = uidGenerator.nextUid
 
-    userContactsCommand.addContact(userId, userContacts.id, userContacts.version, firstContactUserId, firstContactId)
+    userContactsCommand.sendInvitation(userId, userContacts.id, userContacts.version, firstContactUserId, "Hello", firstInvitationId)
 
     userContacts = dataStore.getEntity(classOf[UserContacts], userContactsId).asInstanceOf[UserContacts]
 
-    assertEquals(userContacts.contacts.size, 1)
+    assertEquals(userContacts.invitations.size, 1)
 
   }
 }

@@ -8,6 +8,8 @@ trait EventStore {
 
   def getEventsForEntity(entityClass: Class[_], id: UID): ListBuffer[EventRow]
 
+  def addEventIgnoreVersion(event: EventRow)
+
   def addEvent(event: EventRow)
 
   def addEventForNewAggregate(newAggregadeId: UID, event: EventRow)

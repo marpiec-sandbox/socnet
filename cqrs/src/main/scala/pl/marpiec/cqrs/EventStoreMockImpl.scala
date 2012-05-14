@@ -25,10 +25,18 @@ class EventStoreMockImpl extends EventStore {
       get(id).getOrElse(throw new NoEventsForEntityException)
   }
 
+  def addEventIgnoreVersion(event: EventRow) {
+    addEventWithVersionCheck(event, false)
+  }
+
   def addEvent(event: EventRow) {
+    addEventWithVersionCheck(event, true)
+  }
+
+  private def addEventWithVersionCheck(event: EventRow, checkVersion:Boolean) {
     var eventsForType = eventsByType.getOrElse(event.event.entityClass, null)
     var eventsForEntity = eventsForType.getOrElseUpdate(event.aggregateId, new ListBuffer[EventRow])
-    if (eventsForEntity.size > event.expectedVersion) {
+    if (checkVersion && eventsForEntity.size > event.expectedVersion) {
       throw new ConcurrentAggregateModificationException
     }
     eventsForEntity += event
@@ -47,4 +55,6 @@ class EventStoreMockImpl extends EventStore {
   private def callAllListenersAboutNewEvent(entityClass:Class[_ <: Aggregate], entityId:UID) {
     listeners.foreach(listener => listener.onEntityChanged(entityClass, entityId))
   }
+
+
 }

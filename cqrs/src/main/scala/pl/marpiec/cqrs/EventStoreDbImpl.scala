@@ -46,7 +46,15 @@ class EventStoreDbImpl @Autowired() (val jdbcTemplate:JdbcTemplate) extends Even
     list
   }
 
+  def addEventIgnoreVersion(event: EventRow) {
+    addEventWithVersionCheck(event, false)
+  }
+
   def addEvent(event: EventRow) {
+    addEventWithVersionCheck(event, true)
+  }
+
+  private def addEventWithVersionCheck(event: EventRow, checkVersion:Boolean) {
 
 
     val currentVersion = jdbcTemplate.queryForInt("SELECT version FROM aggregates WHERE uid = ? AND class = ?",
@@ -56,7 +64,7 @@ class EventStoreDbImpl @Autowired() (val jdbcTemplate:JdbcTemplate) extends Even
       throw new IllegalStateException("No aggregate found! ")
     }
 
-    if (currentVersion > event.expectedVersion) {
+    if (checkVersion && currentVersion > event.expectedVersion) {
       throw new ConcurrentAggregateModificationException
     }
 
