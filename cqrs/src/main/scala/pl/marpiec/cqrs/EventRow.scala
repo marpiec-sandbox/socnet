@@ -7,4 +7,4 @@ import pl.marpiec.util.UID
  * @author Marcin Pieciukiewicz
  */
 
-class EventRow(var userId:UID, var aggregateId:UID, val expectedVersion:Int, val event:Event)
+class EventRow(var userId:UID, var aggregateId:UID, var expectedVersion:Int, val event:Event)

@@ -64,7 +64,11 @@ class EventStoreDbImpl @Autowired() (val jdbcTemplate:JdbcTemplate) extends Even
       throw new IllegalStateException("No aggregate found! ")
     }
 
-    if (checkVersion && currentVersion > event.expectedVersion) {
+    if(!checkVersion) {
+      event.expectedVersion = currentVersion
+    }
+
+    if (currentVersion > event.expectedVersion) {
       throw new ConcurrentAggregateModificationException
     }
 

@@ -36,9 +36,13 @@ class EventStoreMockImpl extends EventStore {
   private def addEventWithVersionCheck(event: EventRow, checkVersion:Boolean) {
     var eventsForType = eventsByType.getOrElse(event.event.entityClass, null)
     var eventsForEntity = eventsForType.getOrElseUpdate(event.aggregateId, new ListBuffer[EventRow])
-    if (checkVersion && eventsForEntity.size > event.expectedVersion) {
+    if(!checkVersion) {
+      event.expectedVersion = eventsForEntity.size
+    }
+    if (eventsForEntity.size > event.expectedVersion) {
       throw new ConcurrentAggregateModificationException
     }
+
     eventsForEntity += event
     callAllListenersAboutNewEvent(event.event.entityClass, event.aggregateId)
   }
