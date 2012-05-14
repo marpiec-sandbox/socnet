@@ -14,8 +14,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean
 
 class HomePage extends SimpleTemplatePage {
 
-  val session = getSession.asInstanceOf[SocnetSession]
-
   setStatelessHint(true)
 
   @SpringBean

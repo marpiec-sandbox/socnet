@@ -25,8 +25,6 @@ class EditUserProfilePage extends SecureWebPage(SocnetRoles.USER) {
   @SpringBean
   var uidGenerator:UidGenerator = _
 
-  val session: SocnetSession = getSession.asInstanceOf[SocnetSession]
-
   //configure
   setVersioned(false)
 

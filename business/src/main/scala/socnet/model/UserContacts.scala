@@ -18,6 +18,8 @@ class UserContacts extends Aggregate(null, 0) {
   def invitationsSentById(uid:UID):Option[Invitation] = invitationsSent.find(inv => inv.id == uid)
   def invitationsReceivedById(uid:UID):Option[Invitation] = invitationsReceived.find(inv => inv.id == uid)
 
+  def isContact(uid: UID): Boolean = contacts.find(contact => contact.id == uid).isDefined
+
   def removeInvitationSentById(uid:UID) {
     invitationsSent = invitationsSent.filterNot(inv => inv.id == uid)
   }

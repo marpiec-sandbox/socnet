@@ -20,7 +20,7 @@ import pl.marpiec.socnet.web.page.signin.SignInFormPanel
 class SimpleTemplatePage extends WebPage {
 
   val titleLabelModel = new Model[String]("Socnet")
-  private val session: SocnetSession = getSession.asInstanceOf[SocnetSession]
+  val session: SocnetSession = getSession.asInstanceOf[SocnetSession]
 
   setStatelessHint(true)
 

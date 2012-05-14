@@ -39,7 +39,7 @@ class NewArticlePage extends SecureWebPage(SocnetRoles.ARTICLE_AUTHOR) {
 
 
     override def onSubmit() {
-      val user: User = getSession.asInstanceOf[SocnetSession].user
+      val user: User = session.user
 
       articleCommand.createArticle(user.id, content, user.id)
       setResponsePage(classOf[HomePage])
