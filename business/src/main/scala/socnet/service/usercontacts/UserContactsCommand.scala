@@ -1,6 +1,6 @@
 package socnet.service.usercontacts
 
-import event.{InvitationDeclinedEvent, InvitationAcceptedEvent, SendInvitationEvent}
+import event.{SentInvitationDeclinedEvent, SentInvitationAcceptedEvent, SendInvitationEvent}
 import pl.marpiec.util.UID
 import pl.marpiec.cqrs.EventRow
 
