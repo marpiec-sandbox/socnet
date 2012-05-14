@@ -10,7 +10,7 @@ import socnet.model.UserContacts
 
 class InvitationDeclinedEvent(val invitationId:UID) extends Event {
   def applyEvent(aggregate: Aggregate) {
-
+    val contacts = aggregate.asInstanceOf[UserContacts]
   }
 
   def entityClass = classOf[UserContacts]

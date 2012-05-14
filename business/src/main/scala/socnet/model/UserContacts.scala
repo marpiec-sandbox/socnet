@@ -15,6 +15,31 @@ class UserContacts extends Aggregate(null, 0) {
   var invitationsSent = List[Invitation]()
   var invitationsReceived = List[Invitation]()
 
+  def invitationsSentById(uid:UID):Option[Invitation] = invitationsSent.find(inv => inv.id == uid)
+  def invitationsReceivedById(uid:UID):Option[Invitation] = invitationsReceived.find(inv => inv.id == uid)
+
+  def removeInvitationSentById(uid:UID) {
+    invitationsSent = invitationsSent.filterNot(inv => inv.id == uid)
+  }
+
+  def removeInvitationReceivedById(uid:UID) {
+    invitationsReceived = invitationsReceived.filterNot(inv => inv.id == uid)
+  }
+
+  def invitationById(uid:UID):Option[Invitation] = {
+    val invitationSentOption = invitationsSentById(uid)
+    if(invitationSentOption.isDefined) {
+      invitationSentOption
+    } else {
+      val invitationReceivedOption = invitationsReceivedById(uid)
+      if(invitationReceivedOption.isDefined) {
+        invitationReceivedOption
+      } else {
+        None
+      }
+    }
+  }
+
   def copy = {
     val userContacts = new UserContacts
     userContacts.id = this.id
