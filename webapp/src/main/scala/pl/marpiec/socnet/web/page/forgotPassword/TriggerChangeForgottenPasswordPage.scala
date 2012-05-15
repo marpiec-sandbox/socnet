@@ -14,6 +14,7 @@ import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException
 import org.apache.wicket.markup.html.basic.Label
 import pl.marpiec.socnet.service.user.{UserCommand, UserQuery}
 import org.apache.wicket.spring.injection.annot.SpringBean
+import pl.marpiec.socnet.web.wicket.SimpleStatelessForm
 
 /**
  * ...
@@ -51,11 +52,9 @@ class TriggerChangeForgottenPasswordPage(parameters: PageParameters) extends Sim
 
   add(new FeedbackPanel("feedback"))
 
-  add(new StatelessForm[StatelessForm[_]]("changePasswordForm") {
+  add(new SimpleStatelessForm("changePasswordForm") {
     var password: String = _
     var repeatPassword: String = _
-
-    setModel(new CompoundPropertyModel[StatelessForm[_]](this.asInstanceOf[StatelessForm[_]]))
 
     add(new PasswordTextField("password"))
     add(new PasswordTextField("repeatPassword"))

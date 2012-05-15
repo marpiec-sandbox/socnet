@@ -6,6 +6,7 @@ import org.apache.wicket.markup.html.panel.{FeedbackPanel, Panel}
 import org.apache.wicket.markup.html.form._
 import org.apache.wicket.markup.html.link.BookmarkablePageLink
 import pl.marpiec.socnet.web.page.forgotPassword.ForgotPasswordPage
+import pl.marpiec.socnet.web.wicket.SimpleStatelessForm
 
 /**
  * ...
@@ -16,13 +17,12 @@ class SignInFormPanel(id: String) extends Panel(id) {
 
   add(new FeedbackPanel("feedback"))
 
-  add(new StatelessForm[StatelessForm[_]]("signInForm") {
+  add(new SimpleStatelessForm("signInForm") {
 
     var username: String = _
     var password: String = _
     var rememberMe: Boolean = _
 
-    setModel(new CompoundPropertyModel[StatelessForm[_]](this.asInstanceOf[StatelessForm[_]]))
 
     add(new TextField[String]("username"))
     add(new PasswordTextField("password"))

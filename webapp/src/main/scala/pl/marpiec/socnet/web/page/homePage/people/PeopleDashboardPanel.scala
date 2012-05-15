@@ -10,6 +10,7 @@ import org.apache.wicket.markup.html.form.{TextField, PasswordTextField, Statele
 import org.apache.commons.lang.StringUtils
 import pl.marpiec.socnet.web.page.{FindPeoplePage, HomePage}
 import org.apache.wicket.request.mapper.parameter.PageParameters
+import pl.marpiec.socnet.web.wicket.SimpleStatelessForm
 
 /**
  * @author Marcin Pieciukiewicz
@@ -17,10 +18,9 @@ import org.apache.wicket.request.mapper.parameter.PageParameters
 
 class PeopleDashboardPanel(id:String) extends Panel(id){
 
-  add(new StatelessForm[StatelessForm[_]]("findPeopleForm") {
+  add(new SimpleStatelessForm("findPeopleForm") {
     var query: String = _
 
-    setModel(new CompoundPropertyModel[StatelessForm[_]](this.asInstanceOf[StatelessForm[_]]))
 
     add(new TextField[String]("query"))
 

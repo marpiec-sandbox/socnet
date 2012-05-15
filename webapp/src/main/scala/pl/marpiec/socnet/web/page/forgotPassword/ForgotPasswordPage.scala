@@ -11,6 +11,7 @@ import org.apache.wicket.markup.html.basic.Label
 import pl.marpiec.util.ValidationResult
 import pl.marpiec.socnet.service.user.UserCommand
 import org.apache.wicket.spring.injection.annot.SpringBean
+import pl.marpiec.socnet.web.wicket.SimpleStatelessForm
 
 /**
  * ...
@@ -22,9 +23,7 @@ class ForgotPasswordPage extends SimpleTemplatePage {
   @SpringBean
   private var userCommand: UserCommand = _
 
-  add(new StatelessForm[StatelessForm[_]]("form") {
-
-    setModel(new CompoundPropertyModel[StatelessForm[_]](this.asInstanceOf[StatelessForm[_]]))
+  add(new SimpleStatelessForm("form") {
 
     var email: String = _
     var warningMessage: String = ""

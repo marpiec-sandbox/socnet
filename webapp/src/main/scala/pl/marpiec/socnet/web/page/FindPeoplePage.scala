@@ -15,6 +15,7 @@ import socnet.model.UserContacts
 import org.apache.wicket.markup.html.panel.Fragment
 import org.apache.wicket.ajax.markup.html.AjaxLink
 import org.apache.wicket.ajax.AjaxRequestTarget
+import pl.marpiec.socnet.web.component.contacts.PersonContactInfo
 
 /**
  * @author Marcin Pieciukiewicz
@@ -56,19 +57,8 @@ class FindPeoplePage(parameters: PageParameters) extends SecureWebPage(SocnetRol
           add(new WebMarkupContainer("profile").setVisible(false))
         }
 
-        if(currentUserContacts.isContact(user.id)) {
-          add(new Fragment("inviteActionPanel", "userIsContact", FindPeoplePage.this))
-        } else {
-          add(new Fragment("inviteActionPanel", "inviteContact", FindPeoplePage.this) {
-            add(new AjaxLink[String]("inviteLink") {
-              def onClick(target: AjaxRequestTarget) {
 
-              }
-            })
-          })
-        }
-
-        add(new WebMarkupContainer("inviteFormPanel").setVisible(false))
+        add(new PersonContactInfo("personContactInfo", currentUserContacts.contactByUserId(user.id)))
 
 
       })

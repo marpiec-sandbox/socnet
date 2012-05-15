@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:wicket="http://wicket.apache.org">
+<wicket:panel>
+
+    <div wicket:id="contactStatus">contactStatus</div>
+
+
+
+    <wicket:fragment wicket:id="userIsContact">
+        <div>Ta osoba jest twoim kontaktem</div>
+    </wicket:fragment>
+
+    <wicket:fragment wicket:id="inviteContact">
+        <a wicket:id="inviteLink">Zaproś do kontaktu</a>
+
+        <form wicket:id="inviteForm">
+       <!--     <input type="hidden" wicket:id="sessionToken" />-->
+     <!--       <span wicket:id="warningMessage"></span>-->
+            <div>
+                Podaj treść zaproszenia:
+            </div>
+            <div>
+                <textarea wicket:id="invitationMessage">invitationMessage</textarea>
+            </div>
+            <div>
+                <input type="submit" wicket:id="submitButton" class="submitButton" value="wyslij zaproszenie"/>
+                <a href="#" wicket:id="cancelButton">anuluj</a>
+            </div>
+        </form>
+
+    </wicket:fragment>
+
+
+</wicket:panel>
+</html>

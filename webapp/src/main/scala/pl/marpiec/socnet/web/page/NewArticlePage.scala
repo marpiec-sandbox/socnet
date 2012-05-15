@@ -8,6 +8,7 @@ import pl.marpiec.socnet.web.application.{SocnetRoles, SocnetSession}
 import pl.marpiec.socnet.service.article.ArticleCommand
 import org.apache.wicket.spring.injection.annot.SpringBean
 import org.apache.wicket.markup.html.form.{StatelessForm, TextArea, Button, Form}
+import pl.marpiec.socnet.web.wicket.SimpleStatelessForm
 
 /**
  * @author Marcin Pieciukiewicz
@@ -18,11 +19,10 @@ class NewArticlePage extends SecureWebPage(SocnetRoles.ARTICLE_AUTHOR) {
   @SpringBean
   private var articleCommand: ArticleCommand = _
 
-  add(new StatelessForm[StatelessForm[_]]("newArticleForm") {
+  add(new SimpleStatelessForm("newArticleForm") {
     var content:String = _
     private val warningMessage: Model[String] = new Model[String]("");
 
-    setModel(new CompoundPropertyModel[StatelessForm[_]](this.asInstanceOf[StatelessForm[_]]))
 
     add(new Label("warningMessage", warningMessage))
     add(new TextArea[String]("content").setRequired(true))

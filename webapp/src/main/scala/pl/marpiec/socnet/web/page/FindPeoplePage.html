@@ -18,33 +18,13 @@
                 <span wicket:id="professionalTitle" class="professionalTitle">professionalTitle</span><span class="separator">, </span>
                 <span wicket:id="city" class="city">city</span>
             </div>
-            <div wicket:id="inviteActionPanel">inviteActionPanel</div>
-            <div wicket:id="inviteFormPanel">
-                <form wicket:id="inviteForm">
-                    <div>
-                        Podaj treść zaproszenia:
-                    </div>
-                    <div>
-                        <textarea wicket:id="invitationMessage">invitationMessage</textarea>
-                    </div>
-                    <div>
-                        <a wicket:id="cancelLink">Anuluj</a>
-                        <input type="submit" value="wyślij" />
-                    </div>
-                </form>
-            </div>
+
+            <div wicket:id="personContactInfo">personContactInfo</div>
+
         </div>
 
     </div>
 
-
-    <wicket:fragment wicket:id="userIsContact">
-        <div>Ta osoba jest twoim kontaktem</div>
-    </wicket:fragment>
-
-    <wicket:fragment wicket:id="inviteContact">
-        <a wicket:id="inviteLink">Zaproś do kontaktu</a>
-    </wicket:fragment>
 
 </wicket:extend>
 </body>
