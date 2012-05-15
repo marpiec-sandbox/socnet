@@ -1,14 +1,16 @@
 package pl.marpiec.socnet.web.component.contacts
 
+import model.InviteUserFormModel
 import socnet.model.usercontacts.Contact
 import org.apache.wicket.markup.html.panel.{Fragment, Panel}
 import org.apache.wicket.ajax.markup.html.AjaxLink
 import org.apache.wicket.ajax.AjaxRequestTarget
-import org.apache.commons.lang.StringUtils
 import org.apache.wicket.Component
-import pl.marpiec.socnet.web.wicket.{SecureFormModel, SecureAjaxButton, SimpleStatelessForm}
-import org.apache.wicket.ajax.markup.html.form.AjaxButton
-import org.apache.wicket.markup.html.form.{Form, TextArea}
+import org.apache.wicket.model.CompoundPropertyModel
+import org.apache.wicket.markup.html.form.TextArea
+import pl.marpiec.socnet.web.wicket.{SecureForm, SecureAjaxButton}
+import org.apache.wicket.markup.html.basic.Label
+import org.apache.commons.lang.StringUtils
 
 /**
  * @author Marcin Pieciukiewicz
@@ -40,60 +42,60 @@ class PersonContactInfo(id: String, contactOption: Option[Contact]) extends Pane
 
       add(inviteLink)
 
-      val inviteForm: SimpleStatelessForm = new SimpleStatelessForm("inviteForm") {
-        setOutputMarkupPlaceholderTag(true)
+      val inviteForm: SecureForm[InviteUserFormModel] = new SecureForm[InviteUserFormModel]("inviteForm") {
 
-        setVisible(false)
+        def initialize {
+          setModel(new CompoundPropertyModel[InviteUserFormModel](new InviteUserFormModel))
 
-        // var warningMessage: String = ""
-        var invitationMessage: String = _
+          setOutputMarkupPlaceholderTag(true)
+          setVisible(false)
 
-        //add(new Label("warningMessage"))
-        add(new TextArea[String]("invitationMessage"))
+        }
 
-        add(new AjaxButton("cancelButton") {
+        def buildSchema {
 
-          def onSubmit(target: AjaxRequestTarget, form: Form[_]) {
-            // invitationMessage = ""
-            inviteLink.setVisible(true)
-            inviteForm.setVisible(false)
-            target.add(inviteLink)
-            target.add(inviteForm)
-          }
+          add(new Label("warningMessage"))
+          add(new TextArea[String]("inviteMessage"))
 
-          def onError(target: AjaxRequestTarget, form: Form[_]) {}
+          add(new SecureAjaxButton[InviteUserFormModel]("cancelButton") {
 
-        })
-
-        add(new AjaxButton("submitButton") {
-
-          // TODO add security token support
-
-
-          def onSubmit(target: AjaxRequestTarget, form: Form[_]) {
-
-          }
-
-          def onError(target: AjaxRequestTarget, form: Form[_]) {}
-
-          def onSecureSubmit(target: AjaxRequestTarget, formModel: SimpleStatelessForm) = {
-
-         /*   if (StringUtils.isNotBlank(invitationMessage)) {
-
-              //TODO send invitation
-
-              invitationMessage = ""
+            def onSecureSubmit(target: AjaxRequestTarget, formModel: InviteUserFormModel) {
+              formModel.inviteMessage = ""
+              formModel.warningMessage = ""
               inviteLink.setVisible(true)
               inviteForm.setVisible(false)
               target.add(inviteLink)
               target.add(inviteForm)
+            }
+          })
 
-            } else {
-              // warningMessage = "Wiadomosc nie moze byc pusta"
-            }   */
+          add(new SecureAjaxButton[InviteUserFormModel]("submitButton") {
 
-          }
-        })
+            def onSecureSubmit(target: AjaxRequestTarget, formModel: InviteUserFormModel) {
+
+              if (StringUtils.isNotBlank(formModel.inviteMessage)) {
+
+                //TODO send invitation
+
+                formModel.inviteMessage = ""
+                formModel.warningMessage = ""
+                inviteLink.setVisible(true)
+                inviteForm.setVisible(false)
+                target.add(inviteLink)
+                target.add(inviteForm)
+
+              } else {
+                formModel.warningMessage = "Wiadomosc nie moze byc pusta"
+                target.add(inviteForm)
+              }
+
+            }
+
+          })
+
+        }
+
+
       }
 
       add(inviteForm)
