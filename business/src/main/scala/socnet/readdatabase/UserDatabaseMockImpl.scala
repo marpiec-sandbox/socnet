@@ -52,4 +52,6 @@ class UserDatabaseMockImpl @Autowired() (dataStore: DataStore) extends AbstractD
 
     filtered
   }
+
+  def getAllUsers = getAll
 }

@@ -58,7 +58,7 @@ class FindPeoplePage(parameters: PageParameters) extends SecureWebPage(SocnetRol
         }
 
 
-        add(new PersonContactInfo("personContactInfo", currentUserContacts.contactByUserId(user.id)))
+        add(new PersonContactInfo("personContactInfo", user.id, currentUserContacts))
 
 
       })

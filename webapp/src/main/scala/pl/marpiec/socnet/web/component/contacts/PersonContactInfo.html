@@ -5,9 +5,20 @@
     <div wicket:id="contactStatus">contactStatus</div>
 
 
+    <wicket:fragment wicket:id="yourself">
+        <div>To ty</div>
+    </wicket:fragment>
 
     <wicket:fragment wicket:id="userIsContact">
         <div>Ta osoba jest twoim kontaktem</div>
+    </wicket:fragment>
+
+    <wicket:fragment wicket:id="invitationReceived">
+        <div>Ta osoba wysłała Ci zaproszenie do kontaktu</div>
+    </wicket:fragment>
+
+    <wicket:fragment wicket:id="invitationSent">
+        <div>Wysłano zaproszenie do kontaktu</div>
     </wicket:fragment>
 
     <wicket:fragment wicket:id="inviteContact">
@@ -15,18 +26,20 @@
 
         <form wicket:id="inviteForm">
             <input type="hidden" wicket:id="sessionToken" />
-            <span wicket:id="warningMessage"></span>
-            <div>
+            <div><span wicket:id="warningMessage"></span></div>
+
+                <div>
                 Podaj treść zaproszenia:
-            </div>
-            <div>
+                </div>
+                <div>
                 <textarea wicket:id="inviteMessage">inviteMessage</textarea>
-            </div>
+                </div>
             <div>
                 <input type="submit" wicket:id="submitButton" class="submitButton" value="wyslij zaproszenie"/>
                 <a href="#" wicket:id="cancelButton">anuluj</a>
             </div>
         </form>
+
 
     </wicket:fragment>
 

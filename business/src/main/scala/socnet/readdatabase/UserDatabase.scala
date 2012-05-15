@@ -18,4 +18,6 @@ trait UserDatabase {
   def getUserByEmail(email:String):Option[User]
 
   def getUserById(id: UID):Option[User]
+
+  def getAllUsers:List[User]
 }

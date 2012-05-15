@@ -3,11 +3,11 @@ package pl.marpiec.socnet.web.application
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession
 import org.apache.wicket.request.Request
 import org.apache.wicket.authroles.authorization.strategies.role.Roles
-import pl.marpiec.socnet.model.User
 import org.apache.wicket.authroles.authorization.strategies.role.metadata.MetaDataRoleAuthorizationStrategy
 import org.apache.commons.lang.RandomStringUtils
 import pl.marpiec.util.UID
 import pl.marpiec.socnet.service.user.UserQuery
+import pl.marpiec.socnet.model.{UserProfile, User}
 
 /**
  * Session class.

@@ -8,6 +8,7 @@ import org.apache.wicket.markup.html.panel.Fragment
 import pl.marpiec.socnet.web.page.template.SimpleTemplatePage
 import pl.marpiec.socnet.service.user.UserCommand
 import org.apache.wicket.spring.injection.annot.SpringBean
+import socnet.service.user.UserRegistrationCommand
 
 /**
  * @author Marcin Pieciukiewicz
@@ -16,7 +17,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean
 class TriggerUserRegistrationPage(parameters: PageParameters) extends SimpleTemplatePage {
 
   @SpringBean
-  private var userCommand: UserCommand = _
+  private var userRegistrationCommand: UserRegistrationCommand = _
 
   val triggerValue = parameters.get(TriggerUserRegistrationPage.TRIGGER_PARAM)
   if (triggerValue.isEmpty) {
@@ -24,7 +25,7 @@ class TriggerUserRegistrationPage(parameters: PageParameters) extends SimpleTemp
   }
 
   try {
-    userCommand.triggerUserRegistration(triggerValue.toString)
+    userRegistrationCommand.triggerUserRegistrationProcess(triggerValue.toString)
 
     add(new Fragment("triggerResult", "registrationSuccessfull", this))
 
