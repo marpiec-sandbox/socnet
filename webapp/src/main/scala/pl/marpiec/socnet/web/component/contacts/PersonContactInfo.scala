@@ -11,14 +11,28 @@ import org.apache.wicket.markup.html.form.TextArea
 import pl.marpiec.socnet.web.wicket.{SecureForm, SecureAjaxButton}
 import org.apache.wicket.markup.html.basic.Label
 import org.apache.commons.lang.StringUtils
+import org.apache.wicket.spring.injection.annot.SpringBean
+import pl.marpiec.socnet.readdatabase.ArticleDatabase
+import socnet.service.usercontacts.UserContactsCommand
+import pl.marpiec.socnet.web.application.SocnetSession
+import pl.marpiec.util.UID
+import pl.marpiec.cqrs.UidGenerator
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
-class PersonContactInfo(id: String, contactOption: Option[Contact]) extends Panel(id) {
+class PersonContactInfo(id: String, possibleContactUserId:UID, contactOption: Option[Contact], userContactsId:UID) extends Panel(id) {
+
+  @SpringBean
+  private var userContactsCommand: UserContactsCommand = _
+
+  @SpringBean
+  private var uidGenerator: UidGenerator = _
 
   val isContact = contactOption.isDefined
+  
+  val currentUser = getSession.asInstanceOf[SocnetSession].user
 
 
   if (isContact) {
@@ -39,7 +53,6 @@ class PersonContactInfo(id: String, contactOption: Option[Contact]) extends Pane
           target.add(inviteForm)
         }
       }
-
       add(inviteLink)
 
       val inviteForm: SecureForm[InviteUserFormModel] = new SecureForm[InviteUserFormModel]("inviteForm") {
@@ -75,7 +88,9 @@ class PersonContactInfo(id: String, contactOption: Option[Contact]) extends Pane
 
               if (StringUtils.isNotBlank(formModel.inviteMessage)) {
 
-                //TODO send invitation
+                userContactsCommand.sendInvitation(currentUser.id, userContactsId, 0,
+                          possibleContactUserId, formModel.inviteMessage, uidGenerator.nextUid)
+                //TODO handle send invitation exceptions
 
                 formModel.inviteMessage = ""
                 formModel.warningMessage = ""
@@ -92,12 +107,8 @@ class PersonContactInfo(id: String, contactOption: Option[Contact]) extends Pane
             }
 
           })
-
         }
-
-
       }
-
       add(inviteForm)
 
 
