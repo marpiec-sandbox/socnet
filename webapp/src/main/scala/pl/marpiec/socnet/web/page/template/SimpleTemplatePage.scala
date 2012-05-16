@@ -8,9 +8,10 @@ import pl.marpiec.socnet.web.application.SocnetSession
 import org.apache.wicket.markup.html.panel.Fragment
 import org.apache.wicket.authroles.authentication.panel.SignInPanel
 import pl.marpiec.socnet.web.authorization.AuthorizeUser
-import pl.marpiec.socnet.web.page.{UserProfilePreviewPage, EditUserProfilePage, HomePage, SignOutPage}
 import org.apache.wicket.request.mapper.parameter.PageParameters
 import pl.marpiec.socnet.web.page.signin.SignInFormPanel
+import pl.marpiec.socnet.web.page._
+import messages.MessagesPage
 
 /**
  * ...
@@ -23,6 +24,7 @@ class SimpleTemplatePage extends WebPage {
   val session: SocnetSession = getSession.asInstanceOf[SocnetSession]
 
   setStatelessHint(true)
+  setVersioned(false)
 
   add(new BookmarkablePageLink("homeLink", classOf[HomePage]))
 
@@ -33,6 +35,7 @@ class SimpleTemplatePage extends WebPage {
     add(new Fragment("userInfo", "loggedUser", this) {
       add(new Label("userName", session.user.fullName))
       add(AuthorizeUser(new BookmarkablePageLink("signoutLink", classOf[SignOutPage])))
+      add(AuthorizeUser(new BookmarkablePageLink("messagesLink", classOf[MessagesPage])))
       add(AuthorizeUser(new BookmarkablePageLink("editProfileLink", classOf[EditUserProfilePage])))
       add(AuthorizeUser(new BookmarkablePageLink("previewProfileLink", classOf[UserProfilePreviewPage], createParametersForProfilePreview)))
     })

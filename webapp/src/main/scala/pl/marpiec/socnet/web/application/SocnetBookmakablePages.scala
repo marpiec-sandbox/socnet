@@ -2,6 +2,7 @@ package pl.marpiec.socnet.web.application
 
 import pl.marpiec.socnet.web.page._
 import forgotPassword.{PasswordHaveBeenChangedPage, ConfirmForgotPasswordPage, TriggerChangeForgottenPasswordPage, ForgotPasswordPage}
+import messages.{MessagePreviewPage, MessagesPage}
 import registration.{ConfirmRegistrationPage, TriggerUserRegistrationPage, RegisterPage}
 
 /**
@@ -29,5 +30,9 @@ object SocnetBookmakablePages {
     application.mountPage("forgotted-password-changed", classOf[PasswordHaveBeenChangedPage])
 
     application.mountPage("find-people", classOf[FindPeoplePage])
+
+
+    application.mountPage("messages", classOf[MessagesPage])
+    application.mountPage("message/${"+MessagePreviewPage.MESSAGE_ID_PARAM+"}", classOf[MessagePreviewPage])
   }
 }
