@@ -56,4 +56,11 @@ class UserContactsCommandImpl @Autowired() (val eventStore: EventStore, val user
     eventStore.addEventIgnoreVersion(new EventRow(userId, senderContactsIdOption.get, 0, new SentInvitationDeclinedEvent(invitationId)))
   }
 
+  def removeSentInvitation(userId: UID, id: UID, invitationId: UID) {
+    eventStore.addEventIgnoreVersion(new EventRow(userId, id, 0, new SentInvitationDeletedEvent(invitationId)))
+  }
+
+  def removeReceivedInvitation(userId: UID, id: UID, invitationId: UID) {
+    eventStore.addEventIgnoreVersion(new EventRow(userId, id, 0, new ReceivedInvitationDeletedEvent(invitationId)))
+  }
 }

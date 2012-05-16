@@ -16,4 +16,9 @@ trait UserContactsCommand {
   def acceptInvitation(userId:UID, id:UID, invitationSenderUserId: UID, invitationId:UID)
 
   def declineInvitation(userId:UID, id:UID, invitationSenderUserId: UID, invitationId:UID)
+
+  def removeSentInvitation(userId:UID, id:UID, invitationId:UID)
+
+  def removeReceivedInvitation(userId:UID, id:UID, invitationId:UID)
+
 }

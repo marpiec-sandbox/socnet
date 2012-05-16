@@ -9,7 +9,7 @@ import socnet.model.usercontacts.Invitation
  * @author Marcin Pieciukiewicz
  */
 
-class RecivedInvitationEvent(invitationSenderUserId:UID, message:String, val invitationId:UID) extends Event {
+class RecivedInvitationEvent(invitationSenderUserId: UID, message: String, val invitationId: UID) extends Event {
   def applyEvent(aggregate: Aggregate) {
     val contacts = aggregate.asInstanceOf[UserContacts]
     val invitation = new Invitation(invitationId, invitationSenderUserId, message)

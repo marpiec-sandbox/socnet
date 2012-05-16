@@ -11,11 +11,11 @@ import socnet.model.usercontacts.{Invitation, Contact}
  * @author Marcin Pieciukiewicz
  */
 
-class SentInvitationAcceptedEvent(val invitationId:UID) extends Event {
+class SentInvitationAcceptedEvent(val invitationId: UID) extends Event {
 
   def applyEvent(aggregate: Aggregate) {
     val contacts = aggregate.asInstanceOf[UserContacts]
-    val invitationOption:Option[Invitation] = contacts.invitationsSentById(invitationId)
+    val invitationOption: Option[Invitation] = contacts.invitationsSentById(invitationId)
     if (invitationOption.isDefined) {
       val invitation = invitationOption.get
 
