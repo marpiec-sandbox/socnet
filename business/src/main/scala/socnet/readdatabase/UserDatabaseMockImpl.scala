@@ -37,7 +37,7 @@ class UserDatabaseMockImpl @Autowired() (dataStore: DataStore) extends AbstractD
   def findUser(query: String):List[User] = {
     val all = getAll
 
-    val queryWords = query.split("\\s+")
+    val queryWords = StringUtils.defaultString(query).split("\\s+")
 
     val filtered = (all.filter(user => {
 
