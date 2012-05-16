@@ -15,6 +15,14 @@
 
     <wicket:fragment wicket:id="invitationReceived">
         <div>Ta osoba wysłała Ci zaproszenie do kontaktu</div>
+        <form wicket:id="replyForInvitationForm">
+            <input type="hidden" wicket:id="sessionToken" />
+            <div><span wicket:id="warningMessage"></span></div>
+            <div>
+                <input type="submit" wicket:id="submitButton" class="submitButton" value="zaakceptuj"/>
+                <a href="#" wicket:id="cancelButton">zignoruj</a>
+            </div>
+        </form>
     </wicket:fragment>
 
     <wicket:fragment wicket:id="invitationSent">

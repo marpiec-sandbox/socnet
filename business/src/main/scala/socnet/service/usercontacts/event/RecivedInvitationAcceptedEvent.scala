@@ -22,7 +22,7 @@ class RecivedInvitationAcceptedEvent(val invitationId: UID) extends Event {
       val contact = new Contact(invitation.id, invitation.possibleContactUserId)
       contacts.contacts ::= contact
 
-      contacts.removeInvitationReceivedById(invitationId)
+      invitation.accepted = true
 
     } else {
       throw new InvitationNotExistsException

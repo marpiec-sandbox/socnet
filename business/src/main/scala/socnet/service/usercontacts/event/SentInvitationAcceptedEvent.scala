@@ -4,7 +4,7 @@ import pl.marpiec.util.UID
 import pl.marpiec.cqrs.{Aggregate, Event}
 import socnet.model.UserContacts
 import socnet.service.exception.InvitationNotExistsException
-import socnet.model.usercontacts.Contact
+import socnet.model.usercontacts.{Invitation, Contact}
 
 
 /**
@@ -15,14 +15,14 @@ class SentInvitationAcceptedEvent(val invitationId:UID) extends Event {
 
   def applyEvent(aggregate: Aggregate) {
     val contacts = aggregate.asInstanceOf[UserContacts]
-    val invitationOption = contacts.invitationsSentById(invitationId)
+    val invitationOption:Option[Invitation] = contacts.invitationsSentById(invitationId)
     if (invitationOption.isDefined) {
       val invitation = invitationOption.get
 
       val contact = new Contact(invitation.id, invitation.possibleContactUserId)
       contacts.contacts ::= contact
 
-      contacts.removeInvitationSentById(invitationId)
+      invitation.accepted = true
 
     } else {
       throw new InvitationNotExistsException

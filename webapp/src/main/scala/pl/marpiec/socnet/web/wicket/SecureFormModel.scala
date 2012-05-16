@@ -6,7 +6,7 @@ import pl.marpiec.util.BeanUtil
  * @author Marcin Pieciukiewicz
  */
 
-trait SecureFormModel {
+class SecureFormModel {
   var sessionToken:String = _
   var warningMessage:String = _
 

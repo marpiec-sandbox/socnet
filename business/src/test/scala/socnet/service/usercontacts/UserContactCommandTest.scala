@@ -43,7 +43,7 @@ class UserContactCommandTest {
 
     //send invitation
 
-    userContactsCommand.sendInvitation(userId, userContacts.id, 0, firstContactUserId, "Hello", firstInvitationId)
+    userContactsCommand.sendInvitation(userId, userContacts.id, firstContactUserId, "Hello", firstInvitationId)
 
     userContacts = dataStore.getEntity(classOf[UserContacts], userContactsId).asInstanceOf[UserContacts]
     firstContactContacts = dataStore.getEntity(classOf[UserContacts], firstContactContactsId).asInstanceOf[UserContacts]
@@ -60,7 +60,7 @@ class UserContactCommandTest {
     assertEquals(firstContactContacts.invitationsReceived.head.possibleContactUserId, userId)
 
     // accept invitation
-    userContactsCommand.acceptInvitation(firstContactUserId, firstContactContacts.id, 0, userId, firstInvitationId)
+    userContactsCommand.acceptInvitation(firstContactUserId, firstContactContacts.id, userId, firstInvitationId)
 
     userContacts = dataStore.getEntity(classOf[UserContacts], userContactsId).asInstanceOf[UserContacts]
     firstContactContacts = dataStore.getEntity(classOf[UserContacts], firstContactContactsId).asInstanceOf[UserContacts]

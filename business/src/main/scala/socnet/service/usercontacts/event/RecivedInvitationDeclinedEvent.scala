@@ -15,7 +15,7 @@ class RecivedInvitationDeclinedEvent(val invitationId: UID) extends Event {
     val contacts = aggregate.asInstanceOf[UserContacts]
     val invitationOption = contacts.invitationsReceivedById(invitationId)
     if (invitationOption.isDefined) {
-      contacts.removeInvitationReceivedById(invitationId)
+      invitationOption.get.accepted = true
     } else {
       throw new InvitationNotExistsException
     }

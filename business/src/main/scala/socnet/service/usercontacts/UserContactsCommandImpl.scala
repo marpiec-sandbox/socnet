@@ -20,8 +20,8 @@ class UserContactsCommandImpl @Autowired() (val eventStore: EventStore, val user
     eventStore.addEventForNewAggregate(newUserContactId, new EventRow(userId, newUserContactId, 0, createUserContacts))
   }
   
-  def sendInvitation(userId:UID, id:UID, version:Int, invitedUserId: UID, message:String, invitationId:UID) {
-    eventStore.addEventIgnoreVersion(new EventRow(userId, id, version, new SendInvitationEvent(invitedUserId, message, invitationId)))
+  def sendInvitation(userId:UID, id:UID, invitedUserId: UID, message:String, invitationId:UID) {
+    eventStore.addEventIgnoreVersion(new EventRow(userId, id, 0, new SendInvitationEvent(invitedUserId, message, invitationId)))
 
     //TODO mocno zastanowic sie czy brac id z potencjalnie nieaktualnej bazy danych
 
@@ -34,8 +34,8 @@ class UserContactsCommandImpl @Autowired() (val eventStore: EventStore, val user
     eventStore.addEventIgnoreVersion(new EventRow(userId, contactContactsIdOption.get, 0, new RecivedInvitationEvent(userId, message, invitationId)))
   }
 
-  def acceptInvitation(userId:UID, id:UID, version:Int, invitationSenderUserId: UID, invitationId:UID) {
-    eventStore.addEventIgnoreVersion(new EventRow(userId, id, version, new RecivedInvitationAcceptedEvent(invitationId)))
+  def acceptInvitation(userId:UID, id:UID, invitationSenderUserId: UID, invitationId:UID) {
+    eventStore.addEventIgnoreVersion(new EventRow(userId, id, 0, new RecivedInvitationAcceptedEvent(invitationId)))
 
     val senderContactsIdOption = userContactsDatabase.getUserContactsIdByUserId(invitationSenderUserId)
     if(senderContactsIdOption.isEmpty) {
@@ -45,8 +45,8 @@ class UserContactsCommandImpl @Autowired() (val eventStore: EventStore, val user
     eventStore.addEventIgnoreVersion(new EventRow(userId, senderContactsIdOption.get, 0, new SentInvitationAcceptedEvent(invitationId)))
   }
 
-  def declineInvitation(userId:UID, id:UID, version:Int, invitationSenderUserId: UID, invitationId:UID) {
-    eventStore.addEventIgnoreVersion(new EventRow(userId, id, version, new RecivedInvitationAcceptedEvent(invitationId)))
+  def declineInvitation(userId:UID, id:UID, invitationSenderUserId: UID, invitationId:UID) {
+    eventStore.addEventIgnoreVersion(new EventRow(userId, id, 0, new RecivedInvitationAcceptedEvent(invitationId)))
 
     val senderContactsIdOption = userContactsDatabase.getUserContactsIdByUserId(invitationSenderUserId)
     if(senderContactsIdOption.isEmpty) {

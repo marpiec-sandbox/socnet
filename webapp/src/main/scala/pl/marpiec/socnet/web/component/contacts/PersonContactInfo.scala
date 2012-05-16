@@ -15,6 +15,7 @@ import pl.marpiec.util.UID
 import pl.marpiec.cqrs.UidGenerator
 import pl.marpiec.socnet.web.component.wicket.form.StandardAjaxSecureForm
 import socnet.model.UserContacts
+import pl.marpiec.socnet.web.wicket.SecureFormModel
 
 /**
  * @author Marcin Pieciukiewicz
@@ -37,24 +38,20 @@ class PersonContactInfo(id: String, userId:UID, userContacts: UserContacts) exte
   setOutputMarkupId(true)
 
   if (userContacts.userId == userId) {
-
-    add(new Fragment("contactStatus", "yourself", PersonContactInfo.this))
-
+    addOrReplaceYourself
   } else if (contactOption.isDefined) {
-
-    add(new Fragment("contactStatus", "userIsContact", PersonContactInfo.this))
-
-  } else if (invitationSentOption.isDefined) {
-
-    add(new Fragment("contactStatus", "invitationSent", PersonContactInfo.this))
-
+    addOrReplaceUserIsContact
   } else if (invitationReceivedOption.isDefined) {
-
-    add(new Fragment("contactStatus", "invitationReceived", PersonContactInfo.this))
-
+    addOrReplaceInvitationReceived
+  } else if (invitationSentOption.isDefined) {
+    addOrReplaceInvitationSent
   } else {
+    addOrReplaceInviteContact
+  }
 
-    add(new Fragment("contactStatus", "inviteContact", PersonContactInfo.this) {
+
+  def addOrReplaceInviteContact {
+    addOrReplace(new Fragment("contactStatus", "inviteContact", PersonContactInfo.this) {
 
       val inviteLink: Component = new AjaxLink("inviteLink") {
         setOutputMarkupPlaceholderTag(true)
@@ -70,50 +67,94 @@ class PersonContactInfo(id: String, userId:UID, userContacts: UserContacts) exte
 
       val inviteForm: StandardAjaxSecureForm[InviteUserFormModel] = new StandardAjaxSecureForm[InviteUserFormModel]("inviteForm") {
 
-          def initialize {
-            setModel(new CompoundPropertyModel[InviteUserFormModel](new InviteUserFormModel))
-            setOutputMarkupPlaceholderTag(true)
-            setVisible(false)
-          }
+        def initialize {
+          setModel(new CompoundPropertyModel[InviteUserFormModel](new InviteUserFormModel))
+          setVisible(false)
+        }
 
-          def buildSchema {
-            add(new TextArea[String]("inviteMessage"))
-          }
+        def buildSchema {
+          add(new TextArea[String]("inviteMessage"))
+        }
 
-          def onSecureSubmit(target: AjaxRequestTarget, formModel: InviteUserFormModel) {
-            if (StringUtils.isNotBlank(formModel.inviteMessage)) {
+        def onSecureSubmit(target: AjaxRequestTarget, formModel: InviteUserFormModel) {
+          if (StringUtils.isNotBlank(formModel.inviteMessage)) {
 
-              userContactsCommand.sendInvitation(currentUser.id, userContacts.id, 0,
-                userId, formModel.inviteMessage, uidGenerator.nextUid)
-              //TODO handle send invitation exceptions
+            userContactsCommand.sendInvitation(currentUser.id, userContacts.id,
+              userId, formModel.inviteMessage, uidGenerator.nextUid)
+            //TODO handle send invitation exceptions
 
-              formModel.inviteMessage = ""
-              formModel.warningMessage = ""
-              inviteLink.setVisible(true)
-              inviteForm.setVisible(false)
-              target.add(inviteLink)
-              target.add(inviteForm)
-
-              PersonContactInfo.this.addOrReplace(new Fragment("contactStatus", "invitationSent", PersonContactInfo.this))
-
-
-            } else {
-              formModel.warningMessage = "Wiadomosc nie moze byc pusta"
-            }
-            target.add(PersonContactInfo.this)
-          }
-
-          def onSecureCancel(target: AjaxRequestTarget, formModel: InviteUserFormModel) {
             formModel.inviteMessage = ""
             formModel.warningMessage = ""
             inviteLink.setVisible(true)
             inviteForm.setVisible(false)
-            target.add(PersonContactInfo.this)
-          }
+            target.add(inviteLink)
+            target.add(inviteForm)
 
+            addOrReplaceInvitationSent
+
+
+          } else {
+            formModel.warningMessage = "Wiadomosc nie moze byc pusta"
+          }
+          target.add(PersonContactInfo.this)
         }
+
+        def onSecureCancel(target: AjaxRequestTarget, formModel: InviteUserFormModel) {
+          formModel.inviteMessage = ""
+          formModel.warningMessage = ""
+          inviteLink.setVisible(true)
+          inviteForm.setVisible(false)
+          target.add(PersonContactInfo.this)
+        }
+
+      }
 
       add(inviteForm)
     })
+  }
+
+  def addOrReplaceInvitationReceived {
+    val invitationReceived = invitationReceivedOption.get
+
+    addOrReplace(new Fragment("contactStatus", "invitationReceived", PersonContactInfo.this) {
+
+      add(new StandardAjaxSecureForm[SecureFormModel]("replyForInvitationForm") {
+        def initialize {
+          setModel(new CompoundPropertyModel[SecureFormModel](new SecureFormModel))
+        }
+
+        def buildSchema {} //do nothing
+
+        def onSecureSubmit(target: AjaxRequestTarget, formModel: SecureFormModel) {
+          userContactsCommand.acceptInvitation(currentUser.id, userContacts.id, userId, invitationReceived.id)
+
+          addOrReplaceUserIsContact
+
+          target.add(PersonContactInfo.this)
+        }
+
+        def onSecureCancel(target: AjaxRequestTarget, formModel: SecureFormModel) {
+          userContactsCommand.declineInvitation(currentUser.id, userContacts.id, userId, invitationReceived.id)
+
+          addOrReplaceInviteContact
+
+          target.add(PersonContactInfo.this)
+        }
+      })
+
+
+    })
+  }
+
+  def addOrReplaceInvitationSent {
+    addOrReplace(new Fragment("contactStatus", "invitationSent", PersonContactInfo.this))
+  }
+
+  def addOrReplaceUserIsContact {
+    addOrReplace(new Fragment("contactStatus", "userIsContact", PersonContactInfo.this))
+  }
+
+  def addOrReplaceYourself {
+    addOrReplace(new Fragment("contactStatus", "yourself", PersonContactInfo.this))
   }
 }

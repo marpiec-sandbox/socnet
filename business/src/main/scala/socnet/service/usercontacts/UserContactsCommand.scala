@@ -11,9 +11,9 @@ import pl.marpiec.cqrs.EventRow
 trait UserContactsCommand {
   def createUserContacts(userId:UID, userAggregateId: UID, newUserContactId:UID)
 
-  def sendInvitation(userId:UID, id:UID, version:Int, invitedUserId: UID, message:String, invitationId:UID)
+  def sendInvitation(userId:UID, id:UID, invitedUserId: UID, message:String, invitationId:UID)
 
-  def acceptInvitation(userId:UID, id:UID, version:Int, invitationSenderUserId: UID, invitationId:UID)
+  def acceptInvitation(userId:UID, id:UID, invitationSenderUserId: UID, invitationId:UID)
 
-  def declineInvitation(userId:UID, id:UID, version:Int, invitationSenderUserId: UID, invitationId:UID)
+  def declineInvitation(userId:UID, id:UID, invitationSenderUserId: UID, invitationId:UID)
 }

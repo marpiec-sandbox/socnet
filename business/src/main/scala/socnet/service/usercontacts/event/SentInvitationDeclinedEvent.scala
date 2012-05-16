@@ -13,10 +13,9 @@ import socnet.service.exception.InvitationNotExistsException
 class SentInvitationDeclinedEvent(val invitationId:UID) extends Event {
   def applyEvent(aggregate: Aggregate) {
     val contacts = aggregate.asInstanceOf[UserContacts]
-    val invitationOption = contacts.invitationsReceivedById(invitationId)
+    val invitationOption = contacts.invitationsSentById(invitationId)
     if (invitationOption.isDefined) {
-      val invitation = invitationOption.get
-      invitation.declined = true
+      invitationOption.get.declined = true
     } else {
       throw new InvitationNotExistsException
     }
