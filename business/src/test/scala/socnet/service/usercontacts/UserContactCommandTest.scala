@@ -65,15 +65,18 @@ class UserContactCommandTest {
     userContacts = dataStore.getEntity(classOf[UserContacts], userContactsId).asInstanceOf[UserContacts]
     firstContactContacts = dataStore.getEntity(classOf[UserContacts], firstContactContactsId).asInstanceOf[UserContacts]
 
-    assertEquals(userContacts.invitationsSent.size, 0)
+    assertEquals(userContacts.invitationsSent.size, 1)
     assertEquals(userContacts.invitationsReceived.size, 0)
     assertEquals(userContacts.contacts.size, 1)
 
     assertEquals(firstContactContacts.invitationsSent.size, 0)
-    assertEquals(firstContactContacts.invitationsReceived.size, 0)
+    assertEquals(firstContactContacts.invitationsReceived.size, 1)
     assertEquals(firstContactContacts.contacts.size, 1)
 
+    assertEquals(userContacts.invitationsSent.head.accepted, true)
     assertEquals(userContacts.contacts.head.contactUserId, firstContactUserId)
+
+    assertEquals(firstContactContacts.invitationsReceived.head.accepted, true)
     assertEquals(firstContactContacts.contacts.head.contactUserId, userId)
 
   }
