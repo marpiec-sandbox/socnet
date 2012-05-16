@@ -6,6 +6,7 @@ import collection.Seq
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Component
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.dao.EmptyResultDataAccessException
 
 /**
  * ...
@@ -38,13 +39,14 @@ class UidGeneratorDbImpl @Autowired() (val jdbcTemplate:JdbcTemplate) extends Ui
 
   def loadNewUids() {
 
-    val uidFromDb = jdbcTemplate.queryForLong(SELECT_UID)
-    var uid: Long = 1
-    if (uidFromDb==0) {
-      jdbcTemplate.update(INSERT_UID)
-    } else {
-      uid = uidFromDb
+    var uid:Long = 1
+    try {
+      uid = jdbcTemplate.queryForLong(SELECT_UID)
       jdbcTemplate.update(UPDATE_UID)
+    } catch {
+      case ex:EmptyResultDataAccessException => {
+        jdbcTemplate.update(INSERT_UID)
+      }
     }
 
     availableUids = Seq.iterate[UID](new UID(uid), UID_POOL_SIZE)((u => new UID(u.uid + 1))).toList
