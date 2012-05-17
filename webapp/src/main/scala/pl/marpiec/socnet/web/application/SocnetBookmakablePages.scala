@@ -30,7 +30,7 @@ object SocnetBookmakablePages {
     application.mountPage("cfp/${"+TriggerChangeForgottenPasswordPage.TRIGGER_PARAM+"}", classOf[TriggerChangeForgottenPasswordPage])
     application.mountPage("forgotted-password-changed", classOf[PasswordHaveBeenChangedPage])
 
-    application.mountPage("find/people", classOf[FindPeoplePage])
+    application.mountPage("find/people/${"+FindPeoplePage.QUERY_PARAM+"}", classOf[FindPeoplePage])
 
     application.mountPage("contacts", classOf[ContactsPage])
     application.mountPage("invitations/sent", classOf[InvitationsSentPage])

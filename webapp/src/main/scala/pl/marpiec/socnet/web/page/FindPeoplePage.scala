@@ -9,17 +9,17 @@ import org.apache.wicket.markup.repeater.RepeatingView
 import org.apache.wicket.markup.html.list.AbstractItem
 import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.markup.html.WebMarkupContainer
-import org.apache.wicket.markup.html.link.BookmarkablePageLink
 import socnet.readdatabase.UserContactsDatabase
 import socnet.model.UserContacts
-import org.apache.wicket.markup.html.panel.Fragment
-import org.apache.wicket.ajax.markup.html.AjaxLink
-import org.apache.wicket.ajax.AjaxRequestTarget
 import pl.marpiec.socnet.web.component.contacts.PersonContactInfo
 
 /**
  * @author Marcin Pieciukiewicz
  */
+
+object FindPeoplePage {
+  val QUERY_PARAM = "query"
+}
 
 class FindPeoplePage(parameters: PageParameters) extends SecureWebPage(SocnetRoles.USER) {
 
@@ -69,8 +69,4 @@ class FindPeoplePage(parameters: PageParameters) extends SecureWebPage(SocnetRol
   })
 
 
-}
-
-object FindPeoplePage {
-  val QUERY_PARAM = "q"
 }
