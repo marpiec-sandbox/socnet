@@ -34,10 +34,18 @@
         </div>
 
     </div>
-    <a href="#" wicket:id="contactsLink">Kontakty</a>
-    <a href="#" wicket:id="invitationsSentLink">Wysłane</a>
-    <a href="#" wicket:id="invitationsReceivedLink">Otrzymane</a>
-    <a href="#" wicket:id="messagesLink" class="messagesLink">Wiadomości</a>
+    <div class="menuLinkContainer contactsLink">
+        <a href="#" class="link">Kontakty</a>
+        <div class="popup">
+            <div class="title">Kontakty</div>
+            <a href="#" wicket:id="contactsLink">Lista kontaków</a>
+            <a href="#" wicket:id="invitationsSentLink">Wysłane</a>
+            <a href="#" wicket:id="invitationsReceivedLink">Otrzymane</a>
+        </div>
+    </div>
+    <div class="menuLinkContainer">
+        <a href="#" wicket:id="messagesLink" class="messagesLink">Wiadomości</a>
+    </div>
     <span class="userName" wicket:id="userName">userName</span>
     <a wicket:id="signoutLink" class="signoutLink">Wyloguj</a>
 
@@ -52,6 +60,14 @@
             jQuery(".profileLink .popup").css({display:"none"});
         }
 
+        function showContactsPopup() {
+            jQuery(".contactsLink .popup").css({display:"block"});
+        }
+
+        function hideContactsPopup() {
+            jQuery(".contactsLink .popup").css({display:"none"});
+        }
+
         jQuery(function() {
             var jqProfileLink = jQuery(".profileLink .link");
             jqProfileLink.focus(showProfilePopup)
@@ -60,6 +76,14 @@
 
             jQuery(".menuLinkContainer .title").click(hideProfilePopup)
             jQuery(".menuLinkContainer .popup").mouseleave(hideProfilePopup)
+
+            var jqContactsLink = jQuery(".contactsLink .link");
+            jqContactsLink.focus(showContactsPopup)
+            jqContactsLink.mouseenter(showContactsPopup)
+            jqContactsLink.click(showContactsPopup)
+
+            jQuery(".menuLinkContainer .title").click(hideContactsPopup)
+            jQuery(".menuLinkContainer .popup").mouseleave(hideContactsPopup)
         })
 
     </script>
