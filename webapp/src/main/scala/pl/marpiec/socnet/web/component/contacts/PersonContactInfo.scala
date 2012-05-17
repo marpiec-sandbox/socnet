@@ -16,6 +16,7 @@ import pl.marpiec.cqrs.UidGenerator
 import pl.marpiec.socnet.web.component.wicket.form.StandardAjaxSecureForm
 import socnet.model.UserContacts
 import pl.marpiec.socnet.web.wicket.SecureFormModel
+import socnet.model.usercontacts.Invitation
 
 /**
  * @author Marcin Pieciukiewicz
@@ -41,7 +42,7 @@ class PersonContactInfo(id: String, userId:UID, userContacts: UserContacts) exte
     addOrReplaceYourself
   } else if (contactOption.isDefined) {
     addOrReplaceUserIsContact
-  } else if (invitationReceivedOption.isDefined) {
+  } else if (isInvitationReceivedAndWaitingForAcceptance(invitationReceivedOption)) {
     addOrReplaceInvitationReceived
   } else if (invitationSentOption.isDefined) {
     addOrReplaceInvitationSent
@@ -156,5 +157,14 @@ class PersonContactInfo(id: String, userId:UID, userContacts: UserContacts) exte
 
   def addOrReplaceYourself {
     addOrReplace(new Fragment("contactStatus", "yourself", PersonContactInfo.this))
+  }
+  
+  private def isInvitationReceivedAndWaitingForAcceptance(invitationReceivedOption:Option[Invitation]):Boolean = {
+    if(invitationReceivedOption.isDefined) {
+      val invitation = invitationReceivedOption.get
+      !invitation.declined
+    } else {
+      false
+    }
   }
 }

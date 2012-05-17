@@ -31,11 +31,11 @@ class UserContactsCommandImpl @Autowired() (val eventStore: EventStore, val user
        throw new UserContactsNotExistsException
     }
 
-    eventStore.addEventIgnoreVersion(new EventRow(userId, contactContactsIdOption.get, 0, new RecivedInvitationEvent(userId, message, invitationId)))
+    eventStore.addEventIgnoreVersion(new EventRow(userId, contactContactsIdOption.get, 0, new ReceivedInvitationEvent(userId, message, invitationId)))
   }
 
   def acceptInvitation(userId:UID, id:UID, invitationSenderUserId: UID, invitationId:UID) {
-    eventStore.addEventIgnoreVersion(new EventRow(userId, id, 0, new RecivedInvitationAcceptedEvent(invitationId)))
+    eventStore.addEventIgnoreVersion(new EventRow(userId, id, 0, new ReceivedInvitationAcceptedEvent(invitationId)))
 
     val senderContactsIdOption = userContactsDatabase.getUserContactsIdByUserId(invitationSenderUserId)
     if(senderContactsIdOption.isEmpty) {
@@ -46,7 +46,7 @@ class UserContactsCommandImpl @Autowired() (val eventStore: EventStore, val user
   }
 
   def declineInvitation(userId:UID, id:UID, invitationSenderUserId: UID, invitationId:UID) {
-    eventStore.addEventIgnoreVersion(new EventRow(userId, id, 0, new RecivedInvitationAcceptedEvent(invitationId)))
+    eventStore.addEventIgnoreVersion(new EventRow(userId, id, 0, new ReceivedInvitationDeclinedEvent(invitationId)))
 
     val senderContactsIdOption = userContactsDatabase.getUserContactsIdByUserId(invitationSenderUserId)
     if(senderContactsIdOption.isEmpty) {

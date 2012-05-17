@@ -9,6 +9,7 @@ import org.apache.wicket.markup.repeater.RepeatingView
 import org.apache.wicket.markup.html.list.AbstractItem
 import pl.marpiec.socnet.web.page.UserProfilePreviewPage
 import org.apache.wicket.markup.html.basic.Label
+import org.apache.wicket.markup.html.panel.Fragment
 
 /**
  * @author Marcin Pieciukiewicz
@@ -37,6 +38,13 @@ class InvitationsSentPage extends SecureWebPage(SocnetRoles.USER) {
 
       add(new AbstractItem(newChildId()) {
         add(UserProfilePreviewPage.getLink(user).add(new Label("userName", user.fullName)))
+        
+        if(invitation.accepted) {
+          add(new Fragment("invitationStatus", "accepted", InvitationsSentPage.this))
+        } else {
+          add(new Fragment("invitationStatus", "waitingForAcceptance", InvitationsSentPage.this))
+        }
+        
       })
     })
   })

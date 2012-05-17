@@ -4,17 +4,27 @@
 <wicket:extend>
 
     <div class="invitationsSentList">
-        <div>Wyslane zaproszenia</div>
+        <div>Wysłane zaproszenia</div>
 
         <div wicket:id="invitation">
 
             <div>
                 <a wicket:id="profileLink"><span wicket:id="userName">userName</span></a>
             </div>
+            <div wicket:id="invitationStatus">invitationStatus</div>
 
         </div>
 
     </div>
+
+    <wicket:fragment wicket:id="waitingForAcceptance">
+        <div>Zaproszenie oczekuje na akceptację</div>
+    </wicket:fragment>
+
+    <wicket:fragment wicket:id="accepted">
+        <div>Zaproszenie zaakceptowane</div>
+    </wicket:fragment>
+
 
 </wicket:extend>
 </body>
