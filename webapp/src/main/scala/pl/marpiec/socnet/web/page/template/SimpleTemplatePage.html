@@ -29,8 +29,10 @@
         <a href="#" class="link">Profil</a>
         <div class="popup">
             <div class="title">Profil</div>
-            <a wicket:id="previewProfileLink">Podgląd profilu</a>
-            <a wicket:id="editProfileLink">Edytuj profil</a>
+            <div class="links">
+                <a wicket:id="previewProfileLink">Podgląd profilu</a>
+                <a wicket:id="editProfileLink">Edytuj profil</a>
+            </div>
         </div>
 
     </div>
@@ -38,9 +40,11 @@
         <a href="#" class="link">Kontakty</a>
         <div class="popup">
             <div class="title">Kontakty</div>
-            <a href="#" wicket:id="contactsLink">Lista kontaków</a>
-            <a href="#" wicket:id="invitationsSentLink">Wysłane</a>
-            <a href="#" wicket:id="invitationsReceivedLink">Otrzymane</a>
+            <div class="links">
+                <a href="#" wicket:id="contactsLink">Lista kontaków</a>
+                <a href="#" wicket:id="invitationsSentLink">Wysłane zaproszenia</a>
+                <a href="#" wicket:id="invitationsReceivedLink">Otrzymane zaproszenia</a>
+            </div>
         </div>
     </div>
     <div class="menuLinkContainer">
@@ -54,6 +58,7 @@
 
         function showProfilePopup() {
             jQuery(".profileLink .popup").css({display:"block"});
+            hideContactsPopup();
         }
 
         function hideProfilePopup() {
@@ -62,6 +67,7 @@
 
         function showContactsPopup() {
             jQuery(".contactsLink .popup").css({display:"block"});
+            hideProfilePopup();
         }
 
         function hideContactsPopup() {
