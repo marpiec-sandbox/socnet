@@ -19,8 +19,10 @@ class SentInvitationAcceptedEvent(val invitationId: UID) extends Event {
     if (invitationOption.isDefined) {
       val invitation = invitationOption.get
 
-      val contact = new Contact(invitation.id, invitation.possibleContactUserId)
-      contacts.contacts ::= contact
+      if(contacts.contactByUserId(invitation.possibleContactUserId).isEmpty) {
+        val contact = new Contact(invitation.id, invitation.possibleContactUserId)
+        contacts.contacts ::= contact
+      }
 
       invitation.accepted = true
 
