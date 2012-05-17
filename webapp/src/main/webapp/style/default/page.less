@@ -5,8 +5,6 @@
     position: relative;
 
     .mainLogo {
-        /*font-size: 36px;
-        font-weight: bold;    */
         text-decoration: none;
         color: #2E6BAC;
         text-shadow: #AAA 2px 2px 2px;
@@ -25,38 +23,65 @@
         a {
             margin-left: 20px;
         }
-    }
 
-    .signInPopup, .profilePopup {
-        display: none;
-        position: absolute;
-        top: -4px;
-        background-color: @defaultBackgroundColor;
-        border: 1px solid #CCCCCC;
-        border-radius: 5px 5px 5px 5px;
-        padding: 4px;
 
-        .title {
-            text-align: right;
-            position: relative;
-            top:-1px;
-            left:-3px;
+        .signInPopup {
+            display: none;
+            position: absolute;
+            top: -4px;
+            right: -8px;
+            background-color: @defaultBackgroundColor;
+            border: 1px solid #CCCCCC;
+            border-radius: 5px 5px 5px 5px;
+            padding: 4px;
+
+            .title {
+                text-align: right;
+                position: relative;
+                top:-1px;
+                left:-3px;
+            }
         }
-    }
 
-    .signInPopup {
-       right: -8px;
-    }
 
-    .profilePopup {
-       right: 433px;
-       text-align: right;
-       width: 120px;
-       a {
-           display: block;
-           padding: 3px;
-           margin-left: 0px;
-       }
+        .menuLinkContainer {
+            display: inline-block;
+            height: 21px;
+            position: relative;
+
+            .link {
+
+            }
+
+            .popup {
+                white-space: nowrap;
+
+                display: none;
+                position: absolute;
+                top: -4px;
+                right: -8px;
+
+                background-color: @defaultBackgroundColor;
+                border: 1px solid #CCCCCC;
+                border-radius: 5px 5px 5px 5px;
+                padding: 4px;
+
+                .title {
+                    cursor: default;
+                    text-align: right;
+                    position: relative;
+                    top:-1px;
+                    left:-3px;
+                }
+
+                a {
+                    display: block;
+                    margin: 5px 3px 4px 20px;
+                    text-align: right;
+                }
+            }
+        }
+
     }
 
 }

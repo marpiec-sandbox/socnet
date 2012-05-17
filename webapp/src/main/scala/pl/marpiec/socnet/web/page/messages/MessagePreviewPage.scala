@@ -13,7 +13,4 @@ object MessagePreviewPage {
 
 }
 
-class MessagePreviewPage extends SecureWebPage(SocnetRoles.USER) {
-
-}
-
+class MessagePreviewPage extends SecureWebPage(SocnetRoles.USER)

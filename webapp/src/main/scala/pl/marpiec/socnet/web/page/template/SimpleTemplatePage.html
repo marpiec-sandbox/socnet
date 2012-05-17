@@ -24,36 +24,42 @@
 </body>
 
 <wicket:fragment wicket:id="loggedUser">
-    <a href="#" class="profileLink">Profil</a>
-    <a href="#" wicket:id="contactsLink" class="messagesLink">Kontakty</a>
+    <div class="menuLinkContainer profileLink">
+
+        <a href="#" class="link">Profil</a>
+        <div class="popup">
+            <div class="title">Profil</div>
+            <a wicket:id="previewProfileLink">Podgląd profilu</a>
+            <a wicket:id="editProfileLink">Edytuj profil</a>
+        </div>
+
+    </div>
+    <a href="#" wicket:id="contactsLink">Kontakty</a>
+    <a href="#" wicket:id="invitationsSentLink">Wysłane</a>
+    <a href="#" wicket:id="invitationsReceivedLink">Otrzymane</a>
     <a href="#" wicket:id="messagesLink" class="messagesLink">Wiadomości</a>
-    <span class="userName" wicket:id="userName">nieznany</span>
+    <span class="userName" wicket:id="userName">userName</span>
     <a wicket:id="signoutLink" class="signoutLink">Wyloguj</a>
 
-    <div class="profilePopup">
-        <div class="title">Profil</div>
-        <a wicket:id="previewProfileLink">Podgląd profilu</a>
-        <a wicket:id="editProfileLink">Edytuj profil</a>
-    </div>
 
     <script type="text/javascript">
 
         function showProfilePopup() {
-            jQuery(".profilePopup").css({display:"block"});
+            jQuery(".profileLink .popup").css({display:"block"});
+        }
+
+        function hideProfilePopup() {
+            jQuery(".profileLink .popup").css({display:"none"});
         }
 
         jQuery(function() {
-            var jqProfileLink = jQuery(".profileLink");
+            var jqProfileLink = jQuery(".profileLink .link");
             jqProfileLink.focus(showProfilePopup)
             jqProfileLink.mouseenter(showProfilePopup)
             jqProfileLink.click(showProfilePopup)
 
-            jQuery(".profilePopup .title").click(function() {
-                jQuery(".profilePopup").css({display:"none"})
-            })
-            jQuery(".profilePopup").mouseleave(function() {
-                jQuery(".profilePopup").css({display:"none"})
-            })
+            jQuery(".menuLinkContainer .title").click(hideProfilePopup)
+            jQuery(".menuLinkContainer .popup").mouseleave(hideProfilePopup)
         })
 
     </script>

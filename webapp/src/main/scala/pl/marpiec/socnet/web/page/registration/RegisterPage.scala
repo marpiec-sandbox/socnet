@@ -6,8 +6,5 @@ import registerPage.RegisterForm
 
 class RegisterPage(parameters: PageParameters) extends SimpleTemplatePage {
 
-  setStatelessHint(true)
-
   add(new RegisterForm("registerForm"))
-
 }
