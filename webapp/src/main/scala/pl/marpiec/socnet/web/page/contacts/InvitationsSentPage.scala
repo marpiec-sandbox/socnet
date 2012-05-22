@@ -10,6 +10,9 @@ import org.apache.wicket.markup.html.list.AbstractItem
 import pl.marpiec.socnet.web.page.UserProfilePreviewPage
 import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.markup.html.panel.Fragment
+import org.apache.wicket.ajax.markup.html.AjaxLink
+import org.apache.wicket.ajax.AjaxRequestTarget
+import socnet.service.usercontacts.UserContactsCommand
 
 /**
  * @author Marcin Pieciukiewicz
@@ -17,12 +20,16 @@ import org.apache.wicket.markup.html.panel.Fragment
 
 class InvitationsSentPage extends SecureWebPage(SocnetRoles.USER) {
   @SpringBean
+  var userContactsCommand: UserContactsCommand = _
+  @SpringBean
   var userContactsDatabase: UserContactsDatabase = _
   @SpringBean
   var userDatabase: UserDatabase = _
 
   val userContacts = userContactsDatabase.getUserContactsByUserId(session.userId).get
-  val invitations = userContacts.invitationsSent
+  val invitations = userContacts.notRemovedInvitationsSent
+
+  val currentUserId = session.userId
 
   add(new RepeatingView("invitation") {
 
@@ -37,14 +44,27 @@ class InvitationsSentPage extends SecureWebPage(SocnetRoles.USER) {
       val user = userOption.get
 
       add(new AbstractItem(newChildId()) {
+        setOutputMarkupId(true)
         add(UserProfilePreviewPage.getLink(user).add(new Label("userName", user.fullName)))
-        
-        if(invitation.accepted) {
+
+        if (invitation.accepted) {
           add(new Fragment("invitationStatus", "accepted", InvitationsSentPage.this))
         } else {
           add(new Fragment("invitationStatus", "waitingForAcceptance", InvitationsSentPage.this))
         }
-        
+
+        add(new AjaxLink("removeLink") {
+          def onClick(target: AjaxRequestTarget) {
+
+            userContactsCommand.removeSentInvitation(currentUserId, userContacts.id, invitation.id)
+
+            val parent = getParent
+            parent.setVisible(false)
+            target.add(parent)
+
+          }
+        })
+
       })
     })
   })

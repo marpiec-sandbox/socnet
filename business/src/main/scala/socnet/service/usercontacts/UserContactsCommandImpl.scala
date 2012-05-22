@@ -21,10 +21,11 @@ class UserContactsCommandImpl @Autowired() (val eventStore: EventStore, val user
   }
   
   def sendInvitation(userId:UID, id:UID, invitedUserId: UID, message:String, invitationId:UID) {
+
+    //sender
     eventStore.addEventIgnoreVersion(new EventRow(userId, id, 0, new SendInvitationEvent(invitedUserId, message, invitationId)))
 
-    //TODO mocno zastanowic sie czy brac id z potencjalnie nieaktualnej bazy danych
-
+    //receiver
     val contactContactsIdOption = userContactsDatabase.getUserContactsIdByUserId(invitedUserId)
 
     if(contactContactsIdOption.isEmpty) {

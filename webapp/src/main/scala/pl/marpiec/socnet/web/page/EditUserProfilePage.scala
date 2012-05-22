@@ -25,8 +25,6 @@ class EditUserProfilePage extends SecureWebPage(SocnetRoles.USER) {
   @SpringBean
   var uidGenerator:UidGenerator = _
 
-  //configure
-  setVersioned(false)
 
   val userProfileOption = userProfileDatabase.getUserProfileByUserId(session.user.id)
   val userProfile = userProfileOption.getOrElse(createUserProfile)
@@ -37,6 +35,7 @@ class EditUserProfilePage extends SecureWebPage(SocnetRoles.USER) {
   add(new JobExperienceListPanel("jobExperienceListPanel", session.user, userProfile, userProfile.jobExperience))
   add(new EducationListPanel("educationListPanel", session.user, userProfile, userProfile.education))
   add(new AdditionalInfoListPanel("additionalInfoListPanel", session.user, userProfile, userProfile.additionalInfo))
+
 
 
   //methods

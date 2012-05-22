@@ -11,10 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import pl.marpiec.cqrs._
 import pl.marpiec.socnet.service.user.UserQuery
 import org.springframework.web.context.support.WebApplicationContextUtils
-import pl.marpiec.socnet.readdatabase.{UserProfileDatabase, UserDatabase}
-import pl.marpiec.socnet.service.userprofile.UserProfileCommand
-import socnet.readdatabase.UserContactsDatabase
-import socnet.service.usercontacts.UserContactsCommand
 
 class SocnetApplication extends WebApplication {
 

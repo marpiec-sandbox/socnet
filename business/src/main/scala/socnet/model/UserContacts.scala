@@ -2,7 +2,7 @@ package socnet.model
 
 import pl.marpiec.cqrs.Aggregate
 import usercontacts.{Invitation, Contact}
-import pl.marpiec.util.UID
+import pl.marpiec.util.{BeanUtil, UID}
 
 /**
  * @author Marcin Pieciukiewicz
@@ -15,44 +15,19 @@ class UserContacts extends Aggregate(null, 0) {
   var invitationsSent = List[Invitation]()
   var invitationsReceived = List[Invitation]()
 
-  def invitationsSentById(uid:UID):Option[Invitation] = invitationsSent.find(inv => inv.id == uid)
-  def invitationsReceivedById(uid:UID):Option[Invitation] = invitationsReceived.find(inv => inv.id == uid)
+  def invitationSentById(uid:UID):Option[Invitation] = invitationsSent.find(inv => inv.id == uid)
+  def invitationReceivedById(uid:UID):Option[Invitation] = invitationsReceived.find(inv => inv.id == uid)
 
-  def invitationsSentByUserId(uid:UID):Option[Invitation] = invitationsSent.find(inv => inv.possibleContactUserId == uid)
-  def invitationsReceivedByUserId(uid:UID):Option[Invitation] = invitationsReceived.find(inv => inv.possibleContactUserId == uid)
+  def invitationSentByUserId(uid:UID):Option[Invitation] = invitationsSent.find(inv => inv.possibleContactUserId == uid)
+  def invitationReceivedByUserId(uid:UID):Option[Invitation] = invitationsReceived.find(inv => inv.possibleContactUserId == uid)
 
   def contactByUserId(uid: UID):Option[Contact] = contacts.find(contact => contact.contactUserId == uid)
 
-  def removeInvitationSentById(uid:UID) {
-    invitationsSent = invitationsSent.filterNot(inv => inv.id == uid)
-  }
+  def notRemovedInvitationsSent:List[Invitation] = invitationsSent.filterNot(inv => inv.removed)
+  def notRemovedInvitationsReceived:List[Invitation] = invitationsReceived.filterNot(inv => inv.removed)
 
-  def removeInvitationReceivedById(uid:UID) {
-    invitationsReceived = invitationsReceived.filterNot(inv => inv.id == uid)
-  }
-
-  def invitationById(uid:UID):Option[Invitation] = {
-    val invitationSentOption = invitationsSentById(uid)
-    if(invitationSentOption.isDefined) {
-      invitationSentOption
-    } else {
-      val invitationReceivedOption = invitationsReceivedById(uid)
-      if(invitationReceivedOption.isDefined) {
-        invitationReceivedOption
-      } else {
-        None
-      }
-    }
-  }
 
   def copy = {
-    val userContacts = new UserContacts
-    userContacts.id = this.id
-    userContacts.version = this.version
-    userContacts.userId = userId
-    userContacts.contacts = contacts
-    userContacts.invitationsSent = invitationsSent
-    userContacts.invitationsReceived = invitationsReceived
-    userContacts
+    BeanUtil.copyProperties(new UserContacts, this)
   }
 }

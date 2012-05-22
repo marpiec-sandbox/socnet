@@ -13,7 +13,7 @@ class SentInvitationDeletedEvent(val invitationId: UID) extends Event {
 
   def applyEvent(aggregate: Aggregate) {
     val contacts = aggregate.asInstanceOf[UserContacts]
-    val invitationOption = contacts.invitationsSentById(invitationId)
+    val invitationOption = contacts.invitationSentById(invitationId)
     if (invitationOption.isDefined) {
       invitationOption.get.removed = true
     } else {

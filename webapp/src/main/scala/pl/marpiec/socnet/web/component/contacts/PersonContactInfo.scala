@@ -31,8 +31,8 @@ class PersonContactInfo(id: String, userId:UID, userContacts: UserContacts) exte
   private var uidGenerator: UidGenerator = _
 
   val contactOption = userContacts.contactByUserId(userId)
-  val invitationSentOption = userContacts.invitationsSentByUserId(userId)
-  val invitationReceivedOption = userContacts.invitationsReceivedByUserId(userId)
+  val invitationSentOption = userContacts.invitationSentByUserId(userId)
+  val invitationReceivedOption = userContacts.invitationReceivedByUserId(userId)
 
   val currentUser = getSession.asInstanceOf[SocnetSession].user
 

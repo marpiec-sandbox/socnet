@@ -18,6 +18,7 @@ import socnet.model.usercontacts.Invitation
 import org.apache.wicket.markup.html.WebMarkupContainer
 import pl.marpiec.socnet.web.wicket.SecureFormModel
 import org.apache.wicket.model.CompoundPropertyModel
+import org.apache.wicket.ajax.markup.html.AjaxLink
 
 /**
  * @author Marcin Pieciukiewicz
@@ -32,10 +33,13 @@ class InvitationsReceivedPage extends SecureWebPage(SocnetRoles.USER) {
   var userDatabase: UserDatabase = _
 
   val userContacts = userContactsDatabase.getUserContactsByUserId(session.userId).get
-  val invitations = userContacts.invitationsReceived
+  val invitations = userContacts.notRemovedInvitationsReceived
 
+  val currentUserId = session.userId
 
   add(new RepeatingView("invitation") {
+
+    setOutputMarkupId(true)
 
     invitations.foreach(invitation => {
 
@@ -59,6 +63,19 @@ class InvitationsReceivedPage extends SecureWebPage(SocnetRoles.USER) {
         } else {
           addOrReplaceWaitingForAcceptance(invitation, this)
         }
+
+        add(new AjaxLink("removeLink") {
+          def onClick(target: AjaxRequestTarget) {
+
+            userContactsCommand.removeReceivedInvitation(currentUserId, userContacts.id, invitation.id)
+
+            val parent = getParent
+            parent.setVisible(false)
+            target.add(parent)
+
+          }
+        })
+
 
         def addOrReplaceAccepted {
           addOrReplace(new Fragment("invitationStatus", "accepted", InvitationsReceivedPage.this))

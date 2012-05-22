@@ -15,7 +15,7 @@ class ReceivedInvitationAcceptedEvent(val invitationId: UID) extends Event {
 
   def applyEvent(aggregate: Aggregate) {
     val contacts = aggregate.asInstanceOf[UserContacts]
-    val invitationOption = contacts.invitationsReceivedById(invitationId)
+    val invitationOption = contacts.invitationReceivedById(invitationId)
     if (invitationOption.isDefined) {
       val invitation = invitationOption.get
 

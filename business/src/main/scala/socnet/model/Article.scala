@@ -4,7 +4,7 @@ import article.ArticleComment
 import org.joda.time.LocalDateTime
 import pl.marpiec.cqrs.Aggregate
 import collection.mutable.ListBuffer
-import pl.marpiec.util.UID
+import pl.marpiec.util.{BeanUtil, UID}
 
 /**
  * @author Marcin Pieciukiewicz
@@ -18,14 +18,6 @@ class Article extends Aggregate(null, 0) {
   var creationTime:LocalDateTime = _
 
   def copy:Aggregate = {
-    val article = new Article
-    article.id = this.id
-    article.version = this.version
-    article.content = this.content
-    article.creationTime = this.creationTime
-    article.authorUserId = this.authorUserId
-    article.comments = this.comments.clone
-    //TODO zrobic lepsze kopiowanie komentarzy
-    article
+    BeanUtil.copyProperties(new Article, this)
   }
 }

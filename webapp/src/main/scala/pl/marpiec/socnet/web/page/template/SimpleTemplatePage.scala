@@ -12,6 +12,10 @@ import pl.marpiec.socnet.web.page.signin.SignInFormPanel
 import pl.marpiec.socnet.web.page._
 import contacts.{InvitationsReceivedPage, InvitationsSentPage, ContactsPage}
 import messages.MessagesPage
+import org.apache.wicket.devutils.inspector.{InspectorBug, SessionView, ApplicationView}
+import org.apache.wicket.devutils.debugbar.{SessionSizeDebugPanel, InspectorDebugPanel, StandardDebugPanel, DebugBar}
+import org.slf4j.LoggerFactory
+import org.apache.wicket.Page
 
 /**
  * ...
@@ -46,6 +50,19 @@ class SimpleTemplatePage extends WebPage {
     add(new Fragment("userInfo", "userNotLoggedIn", this) {
       add(new SignInFormPanel("signInPanel"))
     })
+  }
+
+  /*add(new DebugBar("debug"))  */
+  /*add(new ApplicationView("applicationView", getApplication))
+  add(new SessionView("sessionView",session))
+  add(new InspectorDebugPanel("inspectorDebugPanel"))
+  add(new SessionSizeDebugPanel("sessionSizeDebugPanel"))
+  add(new InspectorBug("inspectorBug",this))*/
+
+
+  override def onBeforeRender() {
+    super.onBeforeRender()
+    println(this.getClass+" stateless:"+isPageStateless)
   }
 
   protected def setSubTitle(title: String) {
