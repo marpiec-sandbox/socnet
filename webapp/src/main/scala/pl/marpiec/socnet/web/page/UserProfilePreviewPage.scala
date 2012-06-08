@@ -1,7 +1,6 @@
 package pl.marpiec.socnet.web.page
 
 import pl.marpiec.socnet.web.authorization.SecureWebPage
-import pl.marpiec.socnet.web.application.SocnetRoles
 import pl.marpiec.util.UID
 import org.apache.wicket.request.mapper.parameter.PageParameters
 import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException
@@ -16,6 +15,10 @@ import org.apache.wicket.spring.injection.annot.SpringBean
 import org.apache.wicket.markup.html.link.BookmarkablePageLink
 import pl.marpiec.socnet.model.{User, UserProfile}
 import org.apache.wicket.markup.html.basic.Label
+import pl.marpiec.socnet.web.component.contacts.PersonContactInfo
+import pl.marpiec.socnet.web.application.{SocnetSession, SocnetRoles}
+import socnet.model.UserContacts
+import socnet.readdatabase.UserContactsDatabase
 
 /**
  * @author Marcin Pieciukiewicz
@@ -28,6 +31,8 @@ class UserProfilePreviewPage(parameters: PageParameters) extends SecureWebPage(S
   private var userProfileDatabase: UserProfileDatabase = _
   @SpringBean
   private var userDatabase: UserDatabase = _
+  @SpringBean
+  private var userContactsDatabase: UserContactsDatabase = _
 
 
   //get data
@@ -43,6 +48,9 @@ class UserProfilePreviewPage(parameters: PageParameters) extends SecureWebPage(S
 
   val userProfile = userProfileDatabase.getUserProfileByUserId(userId).getOrElse(new UserProfile)
 
+
+  val currentUserContacts = userContactsDatabase.getUserContactsByUserId(session.userId).getOrElse(new UserContacts)
+
   //schema
   add(new UserPreviewPanel("userPreviewPanel", user));
   add(new PersonalSummaryPreviewPanel("personalSummaryPreview", userProfile));
@@ -50,6 +58,8 @@ class UserProfilePreviewPage(parameters: PageParameters) extends SecureWebPage(S
   addJobExperienceList(userProfile.jobExperience)
   addEducationList(userProfile.education)
   addAdditionalInfoList(userProfile.additionalInfo)
+
+  add(new PersonContactInfo("personContactInfo", user.id, currentUserContacts))
 
 
   //methods
