@@ -19,6 +19,7 @@ import pl.marpiec.socnet.web.component.contacts.PersonContactInfo
 import pl.marpiec.socnet.web.application.{SocnetSession, SocnetRoles}
 import socnet.model.UserContacts
 import socnet.readdatabase.UserContactsDatabase
+import pl.marpiec.socnet.web.component.conversation.StartConversationPanel
 
 /**
  * @author Marcin Pieciukiewicz
@@ -60,7 +61,7 @@ class UserProfilePreviewPage(parameters: PageParameters) extends SecureWebPage(S
   addAdditionalInfoList(userProfile.additionalInfo)
 
   add(new PersonContactInfo("personContactInfo", user.id, currentUserContacts))
-
+  add(new StartConversationPanel("startConversationPanel", user.id))
 
   //methods
   def addJobExperienceList(jobExperienceList: ListBuffer[JobExperience]) {

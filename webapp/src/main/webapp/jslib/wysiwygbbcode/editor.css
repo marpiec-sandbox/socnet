@@ -1,0 +1,72 @@
+﻿div.richeditor div.editbar {
+    margin-top: 5px;
+    background-image: url('images/editbar_bg.gif');
+    border-left: 1px solid silver;
+    border-right: 1px solid silver;
+    border-top: 1px solid silver;
+    border-bottom: none;
+}
+
+div.richeditor div button {
+    vertical-align: middle;
+    width: 25px;
+    height: 25px;
+    border: 1px solid transparent;
+    background-color: Transparent;
+    cursor: pointer;
+    color: Black;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: none;
+}
+
+div.richeditor div button:hover {
+    border: 1px solid silver;
+}
+
+div.richeditor div.container {
+    border-top: none;
+    border-bottom: 1px solid silver;
+    border-left: 1px solid silver;
+    border-right: 1px solid silver;
+}
+
+div.richeditor textarea {
+    padding: 0px 0px 0px 0px;
+    border: none;
+}
+
+div.richeditor iframe {
+    background-color: #ffffff;
+    border: none;
+}
+
+
+.editorWYSIWYG {
+    font-family: Arial, Helvetica, sans-serif; font-size: 15px;
+    border: none;
+}
+
+.editorBBCODE {
+    font: 13px "Courier New";
+}
+
+div.richeditor div button[title=hyperlink] {
+    background-image: url('images/url.gif');
+}
+
+div.richeditor div button[title=image] {
+    background-image: url('images/img.gif');
+}
+
+div.richeditor div button[title=list] {
+    background-image: url('images/icon_list.gif');
+}
+
+div.richeditor div button[title=color] {
+    background-image: url('images/colors.gif');
+}
+
+div.richeditor div button[title='switch to source'] {
+    background-image: url('images/icon_html.gif');
+}
