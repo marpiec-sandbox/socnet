@@ -8,6 +8,11 @@ import collection.immutable.List
  */
 
 trait ConversationCommand {
-  def createConversation(userId:UID, title: String, participantsUserIds: List[UID], newConversationId: UID)
+
+  def createConversation(userId:UID, title: String, participantsUserIds: List[UID], newConversationId: UID,
+                         firstMessageText: String, firstMessageId: UID)
+
   def createMessage(userId: UID, id: UID, version: Int, messageText: String, messageId: UID)
+
+  def addParticipant(userId: UID, id: UID, version: Int, message: String, addedParticipantUserId: UID)
 }

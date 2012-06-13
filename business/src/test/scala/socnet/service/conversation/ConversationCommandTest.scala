@@ -29,40 +29,58 @@ class ConversationCommandTest {
 
 
     val participantsIds = participantCUserId::participantBUserId::participantAUserId::Nil
+    val firstMessageId = uidGenerator.nextUid
 
-    conversationCommand.createConversation(participantAUserId, "Test conversation", participantsIds, conversationId)
+    // Conversation created
+
+    conversationCommand.createConversation(participantAUserId, "Test conversation", participantsIds, conversationId,
+      "Hello everybody", firstMessageId)
 
     var conversation = dataStore.getEntity(classOf[Conversation], conversationId).asInstanceOf[Conversation]
 
     assertNotNull(conversation)
     assertEquals(conversation.title, "Test conversation")
     assertEquals(conversation.creatorUserId, participantAUserId)
-
-    val firstMessageId = uidGenerator.nextUid
-
-    conversationCommand.createMessage(participantAUserId, conversationId, conversation.version, "Hello everybody", firstMessageId)
-
-    conversation = dataStore.getEntity(classOf[Conversation], conversationId).asInstanceOf[Conversation]
-
+    assertEquals(conversation.participantsUserIds.length, 3)
     assertEquals(conversation.messages.size, 1)
-    val firstMessage = conversation.messages.head
-    assertEquals(firstMessage.messageText, "Hello everybody")
-    assertEquals(firstMessage.authorUserId, participantAUserId)
-    assertNotNull(firstMessage.sentTime)
-    assertEquals(firstMessage.id, firstMessageId)
 
     val secondMessageId = uidGenerator.nextUid
 
-    conversationCommand.createMessage(participantBUserId, conversationId, conversation.version, "Hello first user", secondMessageId)
+    // Sending second message by creator
+
+    conversationCommand.createMessage(participantAUserId, conversationId, conversation.version, "Hello everybody", secondMessageId)
 
     conversation = dataStore.getEntity(classOf[Conversation], conversationId).asInstanceOf[Conversation]
 
     assertEquals(conversation.messages.size, 2)
+    val firstMessage = conversation.messages.head
+    assertEquals(firstMessage.messageText, "Hello everybody")
+    assertEquals(firstMessage.authorUserId, participantAUserId)
+    assertNotNull(firstMessage.sentTime)
+    assertEquals(firstMessage.id, secondMessageId)
+
+    val thirdMessageId = uidGenerator.nextUid
+
+    // sending message by other participant
+
+    conversationCommand.createMessage(participantBUserId, conversationId, conversation.version, "Hello first user", thirdMessageId)
+
+    conversation = dataStore.getEntity(classOf[Conversation], conversationId).asInstanceOf[Conversation]
+
+    assertEquals(conversation.messages.size, 3)
     val secondMessage = conversation.messages.head
     assertEquals(secondMessage.messageText, "Hello first user")
     assertEquals(secondMessage.authorUserId, participantBUserId)
     assertNotNull(secondMessage.sentTime)
-    assertEquals(secondMessage.id, secondMessageId)
+    assertEquals(secondMessage.id, thirdMessageId)
+
+    // Adding fourth participant
+
+    val participantDUserId = uidGenerator.nextUid
+    conversationCommand.addParticipant(participantBUserId, conversationId, conversation.version, "Hi Marcin, join our discussion", participantDUserId)
+
+    conversation = dataStore.getEntity(classOf[Conversation], conversationId).asInstanceOf[Conversation]
+    assertEquals(conversation.participantsUserIds.length, 4)
 
   }
 }

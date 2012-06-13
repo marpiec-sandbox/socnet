@@ -1,6 +1,6 @@
 package socnet.service.conversation
 
-import event.{CreateMessageEvent, CreateConversationEvent}
+import event.{AddParticipantEvent, CreateMessageEvent, CreateConversationEvent}
 import org.springframework.beans.factory.annotation.Autowired
 import pl.marpiec.util.UID
 import collection.immutable.List
@@ -14,8 +14,9 @@ import org.springframework.stereotype.Service
 @Service("conversationCommand")
 class ConversationCommandImpl @Autowired()(val eventStore: EventStore) extends ConversationCommand {
 
-  def createConversation(userId: UID, title: String, participantsUserIds: List[UID], newConversationId: UID) {
-    val createConversation = new CreateConversationEvent(userId, title, participantsUserIds)
+  def createConversation(userId: UID, title: String, participantsUserIds: List[UID], newConversationId: UID,
+                         firstMessageText: String, firstMessageId: UID) {
+    val createConversation = new CreateConversationEvent(userId, title, participantsUserIds, firstMessageText, firstMessageId)
     eventStore.addEventForNewAggregate(newConversationId, new EventRow(userId, newConversationId, 0, createConversation))
   }
 
@@ -24,4 +25,7 @@ class ConversationCommandImpl @Autowired()(val eventStore: EventStore) extends C
 
   }
 
+  def addParticipant(userId: UID, id: UID, version: Int, message: String, addedParticipantUserId: UID) {
+    eventStore.addEvent(new EventRow(userId, id, version, new AddParticipantEvent(userId, message, addedParticipantUserId)))
+  }
 }
