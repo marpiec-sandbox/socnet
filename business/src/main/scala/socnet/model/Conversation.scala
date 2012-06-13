@@ -10,9 +10,10 @@ import pl.marpiec.util.{BeanUtil, UID}
 
 class Conversation extends Aggregate(null, 0) {
 
-  var creatorUserId:UID = _
-  var title:String = ""
-  var participantsUserIds:List[UID] = List()
+  var creatorUserId: UID = _
+  var title: String = ""
+  var participantsUserIds: List[UID] = List()
+  var conversationHiddenForUsers: Set[UID] = Set()
   var messages = List[Message]()
 
   def copy = {

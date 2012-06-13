@@ -2,12 +2,9 @@ package socnet.service.conversation
 
 
 import org.testng.annotations.Test
-import org.testng.Assert._
-import pl.marpiec.socnet.service.userprofile.{UserProfileCommandImpl, UserProfileCommand}
-import pl.marpiec.util.UID
-import pl.marpiec.socnet.model.UserProfile
 import pl.marpiec.cqrs._
 import socnet.model.Conversation
+import org.testng.Assert._
 
 /**
  * @author Marcin Pieciukiewicz
@@ -28,7 +25,7 @@ class ConversationCommandTest {
     val participantCUserId = uidGenerator.nextUid
 
 
-    val participantsIds = participantCUserId::participantBUserId::participantAUserId::Nil
+    val participantsIds = participantCUserId :: participantBUserId :: participantAUserId :: Nil
     val firstMessageId = uidGenerator.nextUid
 
     // Conversation created
@@ -81,6 +78,15 @@ class ConversationCommandTest {
 
     conversation = dataStore.getEntity(classOf[Conversation], conversationId).asInstanceOf[Conversation]
     assertEquals(conversation.participantsUserIds.length, 4)
+
+    // Second participant removes conversation from his conversations
+
+    conversationCommand.hideConversation(participantBUserId, conversationId, conversation.version)
+    conversation = dataStore.getEntity(classOf[Conversation], conversationId).asInstanceOf[Conversation]
+    assertEquals(conversation.participantsUserIds.length, 4)
+    assertEquals(conversation.conversationHiddenForUsers.size, 1)
+    assertTrue(conversation.conversationHiddenForUsers.contains(participantBUserId))
+
 
   }
 }

@@ -1,6 +1,6 @@
 package socnet.service.conversation
 
-import event.{AddParticipantEvent, CreateMessageEvent, CreateConversationEvent}
+import event.{HideConversationForUser, AddParticipantEvent, CreateMessageEvent, CreateConversationEvent}
 import org.springframework.beans.factory.annotation.Autowired
 import pl.marpiec.util.UID
 import collection.immutable.List
@@ -27,5 +27,9 @@ class ConversationCommandImpl @Autowired()(val eventStore: EventStore) extends C
 
   def addParticipant(userId: UID, id: UID, version: Int, message: String, addedParticipantUserId: UID) {
     eventStore.addEvent(new EventRow(userId, id, version, new AddParticipantEvent(userId, message, addedParticipantUserId)))
+  }
+
+  def hideConversation(userId: UID, id: UID, version: Int) {
+    eventStore.addEvent(new EventRow(userId, id, version, new HideConversationForUser(userId)))
   }
 }

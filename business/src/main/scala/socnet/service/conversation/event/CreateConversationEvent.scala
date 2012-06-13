@@ -9,9 +9,9 @@ import socnet.model.conversation.Message
  * @author Marcin Pieciukiewicz
  */
 
-class CreateConversationEvent(val creatorUserId:UID, val title: String, val participantsUserIds: List[UID],
+class CreateConversationEvent(val creatorUserId: UID, val title: String, val participantsUserIds: List[UID],
                               val firstMessageText: String, val firstMessageId: UID) extends Event {
-  def applyEvent(aggregate: Aggregate) = {
+  def applyEvent(aggregate: Aggregate) {
     val conversation = aggregate.asInstanceOf[Conversation]
     conversation.creatorUserId = creatorUserId;
     conversation.title = title
