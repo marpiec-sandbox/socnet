@@ -18,12 +18,16 @@ abstract class StandardAjaxSecureForm[M <: SecureFormModel](id:String) extends F
    * {@inheritDoc}
    */
 
-  initialize
+  val warningMessageLabel = new Label("warningMessage")
+  this.warningMessageLabel.setOutputMarkupId(true)
+  this.warningMessageLabel.setOutputMarkupPlaceholderTag(true)
 
-  add(new Label("warningMessage"))
+  initialize
+  buildSchema
+
+  add(warningMessageLabel)
   add(new HiddenField[String]("sessionToken"))
 
-  buildSchema
 
   add(new SecureAjaxButton[M]("cancelButton") {
     def onSecureSubmit(target: AjaxRequestTarget, formModel: M) {
