@@ -104,7 +104,10 @@ object UserProfilePreviewPage {
   val USER_NAME_PARAM = "userName"
 
   def getLink(user:User):BookmarkablePageLink[_] = {
-    new BookmarkablePageLink("profileLink", classOf[UserProfilePreviewPage],
-      new PageParameters().add(USER_ID_PARAM, user.id).add(USER_NAME_PARAM, user.fullName))
+    new BookmarkablePageLink("profileLink", classOf[UserProfilePreviewPage], getParametersForLink(user))
+  }
+  
+  def getParametersForLink(user:User):PageParameters = {
+    new PageParameters().add(USER_ID_PARAM, user.id).add(USER_NAME_PARAM, user.fullName)
   }
 }
