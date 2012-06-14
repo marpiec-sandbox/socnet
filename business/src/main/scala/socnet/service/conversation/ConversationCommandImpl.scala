@@ -16,7 +16,7 @@ class ConversationCommandImpl @Autowired()(val eventStore: EventStore) extends C
 
   def createConversation(userId: UID, title: String, participantsUserIds: List[UID], newConversationId: UID,
                          firstMessageText: String, firstMessageId: UID) {
-    val createConversation = new CreateConversationEvent(userId, title, participantsUserIds, firstMessageText, firstMessageId)
+    val createConversation = new CreateConversationEvent(userId, title, participantsUserIds.toArray, firstMessageText, firstMessageId)
     eventStore.addEventForNewAggregate(newConversationId, new EventRow(userId, newConversationId, 0, createConversation))
   }
 
