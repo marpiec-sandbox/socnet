@@ -7,5 +7,6 @@ import pl.marpiec.socnet.web.wicket.SecureFormModel
  */
 
 class StartConversationFormModel extends SecureFormModel {
-  var messageText:String = ""
+  var conversationTitle: String = ""
+  var messageText: String = ""
 }
