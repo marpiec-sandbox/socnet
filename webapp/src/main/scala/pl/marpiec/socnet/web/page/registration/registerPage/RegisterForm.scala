@@ -52,7 +52,7 @@ class RegisterForm(id: String) extends Panel(id) {
             }
           }
         } else {
-          warningMessage.setObject("Formularz nie zosta? wype?niony poprawnie")
+          warningMessage.setObject("Formularz nie zostal wypelniony poprawnie")
         }
 
       } catch {
