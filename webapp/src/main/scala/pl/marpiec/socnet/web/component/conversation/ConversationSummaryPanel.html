@@ -2,13 +2,14 @@
 <html xmlns:wicket="http://wicket.apache.org">
 <wicket:panel>
 
-    <div>
+    <div class="conversationSummary">
+        <div class="icon"></div>
 
-        <div>
+        <div class="conversatinoTitle">
             <a wicket:id="conversationLink"><span wicket:id="conversationTitle">conversationTitle</span></a>
         </div>
 
-        <div wicket:id="participant">
+        <div wicket:id="participant" class="conversationParticipant">
             <span wicket:id="userName">userName</span>
         </div>
     </div>
