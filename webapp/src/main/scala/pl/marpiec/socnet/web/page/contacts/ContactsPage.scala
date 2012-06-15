@@ -7,9 +7,6 @@ import socnet.readdatabase.UserContactsDatabase
 import org.apache.wicket.markup.repeater.RepeatingView
 import org.apache.wicket.markup.html.list.AbstractItem
 import org.apache.wicket.markup.html.basic.Label
-import org.apache.wicket.markup.html.link.BookmarkablePageLink
-import pl.marpiec.socnet.web.page.messages.MessagePreviewPage
-import org.apache.wicket.request.mapper.parameter.PageParameters
 import pl.marpiec.socnet.web.page.UserProfilePreviewPage
 import pl.marpiec.socnet.readdatabase.UserDatabase
 
@@ -34,7 +31,7 @@ class ContactsPage extends SecureWebPage(SocnetRoles.USER) {
 
       val userOption = userDatabase.getUserById(contact.contactUserId)
 
-      if(userOption.isEmpty) {
+      if (userOption.isEmpty) {
         throw new IllegalStateException("User contact with incorrect userId")
       }
 

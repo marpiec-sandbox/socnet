@@ -52,6 +52,13 @@ class UserDatabaseMockImpl @Autowired() (dataStore: DataStore) extends AbstractD
 
     filtered
   }
+  
+  def getUsersByIds(ids:List[UID]):List[User] = {
+    val filtered = (getAll.filter(user => {
+        ids.contains(user.id)
+    }))
+    filtered
+  }
 
   def getAllUsers = getAll
 }

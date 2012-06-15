@@ -10,6 +10,12 @@ import pl.marpiec.socnet.model.User
 import pl.marpiec.util.UID
 import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException
 import socnet.model.Conversation
+import pl.marpiec.socnet.readdatabase.UserDatabase
+import org.apache.wicket.markup.repeater.RepeatingView
+import org.apache.wicket.markup.html.list.AbstractItem
+import org.apache.wicket.markup.repeater.RepeatingView._
+import org.apache.wicket.markup.html.basic.Label
+import pl.marpiec.socnet.web.component.conversation.MessagePreviewPanel
 
 /**
  * @author Marcin Pieciukiewicz
@@ -29,8 +35,35 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
   @SpringBean
   private var conversationDatabase: ConversationDatabase = _
 
+  @SpringBean
+  private var userDatabase: UserDatabase = _
 
   val conversation = getConversationOrThrow404
+
+  val participants = userDatabase.getUsersByIds(conversation.participantsUserIds)
+
+
+  add(new RepeatingView("participant") {
+
+    participants.foreach(user => {
+
+      add(new AbstractItem(newChildId()) {
+
+        add(new Label("userName", user.fullName))
+
+      })
+    })
+  })
+
+  add(new RepeatingView("message") {
+    conversation.messages.foreach(message => {
+      add(new AbstractItem(newChildId()) {
+        add(new MessagePreviewPanel("messagePreview", message))
+      })
+    })
+  })
+
+
 
 
 

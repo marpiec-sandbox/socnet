@@ -11,11 +11,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters
 import pl.marpiec.socnet.web.page.signin.SignInFormPanel
 import pl.marpiec.socnet.web.page._
 import contacts.{InvitationsReceivedPage, InvitationsSentPage, ContactsPage}
-import messages.MessagesPage
-import org.apache.wicket.devutils.inspector.{InspectorBug, SessionView, ApplicationView}
-import org.apache.wicket.devutils.debugbar.{SessionSizeDebugPanel, InspectorDebugPanel, StandardDebugPanel, DebugBar}
-import org.slf4j.LoggerFactory
-import org.apache.wicket.Page
+import conversation.UserConversationsPage
 
 /**
  * ...
@@ -39,7 +35,7 @@ class SimpleTemplatePage extends WebPage {
     add(new Fragment("userInfo", "loggedUser", this) {
       add(new Label("userName", session.user.fullName))
       add(AuthorizeUser(new BookmarkablePageLink("signoutLink", classOf[SignOutPage])))
-      add(AuthorizeUser(new BookmarkablePageLink("messagesLink", classOf[MessagesPage])))
+      add(AuthorizeUser(new BookmarkablePageLink("conversationsLink", classOf[UserConversationsPage])))
       add(AuthorizeUser(new BookmarkablePageLink("contactsLink", classOf[ContactsPage])))
       add(AuthorizeUser(new BookmarkablePageLink("invitationsSentLink", classOf[InvitationsSentPage])))
       add(AuthorizeUser(new BookmarkablePageLink("invitationsReceivedLink", classOf[InvitationsReceivedPage])))
@@ -62,7 +58,7 @@ class SimpleTemplatePage extends WebPage {
 
   override def onBeforeRender() {
     super.onBeforeRender()
-    println(this.getClass+" stateless:"+isPageStateless)
+    println(this.getClass + " stateless:" + isPageStateless)
   }
 
   protected def setSubTitle(title: String) {

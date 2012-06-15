@@ -9,6 +9,7 @@ import pl.marpiec.util.UID
  */
 
 trait UserDatabase {
+
   def findUser(query: String):List[User]
 
   def addUser(user:User)
@@ -19,5 +20,8 @@ trait UserDatabase {
 
   def getUserById(id: UID):Option[User]
 
+  def getUsersByIds(ids:List[UID]):List[User]
+
   def getAllUsers:List[User]
+
 }

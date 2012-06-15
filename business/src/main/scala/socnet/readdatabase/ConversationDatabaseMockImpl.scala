@@ -21,14 +21,8 @@ class ConversationDatabaseMockImpl @Autowired() (dataStore: DataStore) extends A
   def getConversationById(id: UID) = getById(id)
 
   def getConversationsByParticipantUserId(id: UID):List[Conversation] = {
-    var conversationsForUser:List[Conversation] = Nil
-    for (conversation <- getAll) {
-      for (userId <- conversation.participantsUserIds) {
-        if (userId == id) {
-          conversationsForUser ::= conversation
-        }
-      }
-    }
-    conversationsForUser
+    getAll.filter(conversation => {
+      conversation.participantsUserIds.contains(id)
+    })
   }
 }

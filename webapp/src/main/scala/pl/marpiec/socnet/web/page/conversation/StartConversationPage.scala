@@ -16,8 +16,6 @@ import org.apache.wicket.model.{PropertyModel, CompoundPropertyModel}
 import org.apache.wicket.markup.html.form.TextField
 import socnet.service.conversation.ConversationCommand
 import pl.marpiec.cqrs.UidGenerator
-import pl.marpiec.socnet.web.component.conversation.MessagePreviewPanel
-import org.apache.wicket.markup.html.panel.Fragment
 import pl.marpiec.socnet.web.page.UserProfilePreviewPage
 import org.apache.commons.lang.StringUtils
 import pl.marpiec.socnet.model.User
@@ -47,62 +45,52 @@ class StartConversationPage(parameters: PageParameters) extends SecureWebPage(So
   val user = getUserOrThrow404
 
 
+  add(new Label("contactFullName", user.fullName))
 
+  add(new StandardAjaxSecureForm[StartConversationFormModel]("startConversationForm") {
 
-  add(new Fragment("startConversationPanel", "sendMessageForm", StartConversationPage.this) {
-    setOutputMarkupId(true)
+    var model: StartConversationFormModel = _
 
-    add(new Label("contactFullName", user.fullName))
+    def initialize = {
+      model = new StartConversationFormModel
+      setModel(new CompoundPropertyModel[StartConversationFormModel](model))
+    }
 
-    add(new StandardAjaxSecureForm[StartConversationFormModel]("startConversationForm") {
+    def buildSchema = {
+      add(new BBCodeEditor("bbCodeEditor", new PropertyModel[String](model, "messageText")))
+      add(new TextField[String]("conversationTitle"))
+    }
 
-      var model: StartConversationFormModel = _
+    def onSecureSubmit(target: AjaxRequestTarget, formModel: StartConversationFormModel) {
 
-      def initialize = {
-        model = new StartConversationFormModel
-        setModel(new CompoundPropertyModel[StartConversationFormModel](model))
-      }
+      if (StringUtils.isNotBlank(formModel.conversationTitle) &&
+        StringUtils.isNotBlank(formModel.messageText)) {
 
-      def buildSchema = {
-        add(new BBCodeEditor("bbCodeEditor", new PropertyModel[String](model, "messageText")))
-        add(new TextField[String]("conversationTitle"))
-      }
+        val conversationId = uidGenerator.nextUid
+        val messageId = uidGenerator.nextUid
 
-      def onSecureSubmit(target: AjaxRequestTarget, formModel: StartConversationFormModel) {
+        conversationCommand.createConversation(session.userId(), formModel.conversationTitle, createParticipantsList, conversationId,
+          formModel.messageText, messageId)
 
-        if (StringUtils.isNotBlank(formModel.conversationTitle) &&
-          StringUtils.isNotBlank(formModel.messageText)) {
+        setResponsePage(classOf[ConversationPage], new PageParameters().add(ConversationPage.CONVERSATION_ID_PARAM, conversationId))
 
-          val conversationId = uidGenerator.nextUid
-          val messageId = uidGenerator.nextUid
-
-          conversationCommand.createConversation(session.userId(), formModel.conversationTitle, createParticipantsList, conversationId,
-            formModel.messageText, messageId)
-
-          val messagePreview = replaceMessagePreview(formModel.conversationTitle, formModel.messageText)
-
-          target.add(messagePreview)
-
+      } else {
+        if (StringUtils.isBlank(formModel.messageText)) {
+          formModel.warningMessage = "Wiadomosc nie moze byc pusta"
         } else {
-          if (StringUtils.isBlank(formModel.messageText)) {
-            formModel.warningMessage = "Wiadomosc nie moze byc pusta"
-          } else {
-            formModel.conversationTitle = "Tytu? wiadomo?ci nie mo?e by? pusty"
-          }
-          target.add(warningMessageLabel)
+          formModel.conversationTitle = "Tytu? wiadomo?ci nie mo?e by? pusty"
         }
+        target.add(warningMessageLabel)
       }
+    }
 
-      def onSecureCancel(target: AjaxRequestTarget, formModel: StartConversationFormModel) {
-        setResponsePage(classOf[UserProfilePreviewPage], UserProfilePreviewPage.getParametersForLink(user))
-      }
-    })
+    def onSecureCancel(target: AjaxRequestTarget, formModel: StartConversationFormModel) {
+      setResponsePage(classOf[UserProfilePreviewPage], UserProfilePreviewPage.getParametersForLink(user))
+    }
   })
 
-  
-  
-  
-  private def getUserOrThrow404:User = {
+
+  private def getUserOrThrow404: User = {
     val userId = UID.parseOrZero(parameters.get(StartConversationPage.USER_ID_PARAM).toString)
 
     val userOption = userDatabase.getUserById(userId)
@@ -113,19 +101,10 @@ class StartConversationPage(parameters: PageParameters) extends SecureWebPage(So
     userOption.get
   }
 
-  private def replaceMessagePreview(conversationTitle: String, messageText: String): Fragment = {
-    val fragment = new Fragment("startConversationPanel", "sentMessagePreview", StartConversationPage.this) {
-
-      setOutputMarkupId(true)
-      add(new Label("contactFullName", user.fullName))
-      add(new MessagePreviewPanel("messagePreview", messageText))
-    }
-    addOrReplace(fragment)
-    fragment
-  }
 
   private def createParticipantsList: List[UID] = {
     session.userId() :: user.id :: Nil
   }
+
 
 }

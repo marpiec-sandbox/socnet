@@ -3,32 +3,21 @@
 <body>
 <wicket:extend>
 
-    <div wicket:id="startConversationPanel">startConversationPanel</div>
 
-    <wicket:fragment wicket:id="sendMessageForm">
+    <div>Nowa wiadomość do użytkownika: <span wicket:id="contactFullName">contactFullName</span></div>
 
-        <div>Nowa wiadomość do użytkownika: <span wicket:id="contactFullName">contactFullName</span></div>
+    <form wicket:id="startConversationForm" onsubmit="doCheck()">
+        <input type="hidden" wicket:id="sessionToken" />
+        <div><span wicket:id="warningMessage"></span></div>
 
-        <form wicket:id="startConversationForm" onsubmit="doCheck()">
-            <input type="hidden" wicket:id="sessionToken" />
-            <div><span wicket:id="warningMessage"></span></div>
+        <input type="text" wicket:id="conversationTitle" />
+        <div wicket:id="bbCodeEditor"></div>
 
-            <input type="text" wicket:id="conversationTitle" />
-            <div wicket:id="bbCodeEditor"></div>
+        <a wicket:id="cancelButton">Anuluj</a>
+        <input type="submit" wicket:id="submitButton" onclick="doCheck()" value="Wyślij"/>
 
-            <a wicket:id="cancelButton">Anuluj</a>
-            <input type="submit" wicket:id="submitButton" onclick="doCheck()" value="Wyślij"/>
+    </form>
 
-        </form>
-    </wicket:fragment>
-
-    <wicket:fragment wicket:id="sentMessagePreview">
-
-        <div>Wysłano wiadomość do użytkownika: <span wicket:id="contactFullName">contactFullName</span></div>
-
-        <div wicket:id="messagePreview"></div>
-
-    </wicket:fragment>
 
 </wicket:extend>
 </body>
