@@ -1,9 +1,8 @@
 package pl.marpiec.socnet.web.application
 
 import org.joda.time.LocalDateTime
-import org.springframework.stereotype.Service
-import pl.marpiec.cqrs.{EventStore, DatabaseInitializer}
-import org.springframework.beans.factory.annotation.Autowired
+import pl.marpiec.cqrs.{EventRow, DataStore, EventStore, DatabaseInitializer}
+import socnet.service.conversation.event.{CreateConversationEvent, CreateMessageEvent}
 
 /**
  * @author Marcin Pieciukiewicz
@@ -11,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired
 
 object SocnetInitializator {
 
-  def apply(eventStore:EventStore, databaseInitializer:DatabaseInitializer) {
+  def apply(eventStore: EventStore, databaseInitializer: DatabaseInitializer) {
+
+    migrateEvents(eventStore)
 
     databaseInitializer.initDatabase()
 
@@ -26,9 +27,33 @@ object SocnetInitializator {
     eventStore.callListenersForAllAggregates
 
     val end = System.currentTimeMillis
-    println("Done in "+(end-start)+" mills.")
+    println("Done in " + (end - start) + " mills.")
 
   }
+
+
+  def migrateEvents(eventStore: EventStore) {
+   // example
+   /* eventStore.getAllEventsByType(classOf[CreateMessageEvent]).foreach((eventRow:EventRow) => {
+      var event = eventRow.event.asInstanceOf[CreateMessageEvent]
+      if(event.sentTime==null) {
+        event = new CreateMessageEvent(event.userId, event.messageText, new LocalDateTime(), event.messageId)
+        val fixedEventRow = new EventRow(eventRow.userId, eventRow.aggregateId, eventRow.expectedVersion, event)
+        eventStore.updateEvent(fixedEventRow)
+      }
+    })         */
+   /*
+    eventStore.getAllEventsByType(classOf[CreateConversationEvent]).foreach((eventRow:EventRow) => {
+      var event = eventRow.event.asInstanceOf[CreateConversationEvent]
+      if(event.creationTime==null) {
+        event = new CreateConversationEvent(event.creatorUserId, event.title, event.participantsUserIds, new LocalDateTime(),
+          event.firstMessageText, event.firstMessageId)
+        val fixedEventRow = new EventRow(eventRow.userId, eventRow.aggregateId, eventRow.expectedVersion, event)
+        eventStore.updateEvent(fixedEventRow)
+      }
+    })    */
+  }
+
 }
 
 

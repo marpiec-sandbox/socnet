@@ -3,14 +3,32 @@
 <body>
 <wicket:extend>
 
-    <div>Uczestnicy: </div>
-    <div wicket:id="participant">
-        <span wicket:id="userName">userName</span>
+    <div wicket:id="conversationPreview" class="conversationPreview">
+        <div class="participants">
+            <div>Uczestnicy: </div>
+            <div wicket:id="participant">
+                <span wicket:id="userName">userName</span>
+            </div>
+        </div>
+
+        <div class="messages">
+            <div wicket:id="message">
+                <div wicket:id="messagePreview">messagePreview</div>
+            </div>
+        </div>
+
     </div>
 
-    <div wicket:id="message">
-        <div wicket:id="messagePreview">messagePreview</div>
-    </div>
+    <form wicket:id="replyForm" onsubmit="doCheck()">
+
+        <input type="hidden" wicket:id="sessionToken" />
+        <div><span wicket:id="warningMessage"></span></div>
+
+        <div wicket:id="bbCodeEditor"></div>
+
+        <a wicket:id="cancelButton">Anuluj</a>
+        <input type="submit" wicket:id="submitButton" onclick="doCheck()" value="Wyślij"/>
+    </form>
 
 </wicket:extend>
 </body>

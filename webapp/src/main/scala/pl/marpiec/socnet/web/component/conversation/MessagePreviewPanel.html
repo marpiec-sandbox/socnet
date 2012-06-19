@@ -2,12 +2,14 @@
 <html xmlns:wicket="http://wicket.apache.org">
 <wicket:panel>
 
-
-
-    <div>
-
-        <span wicket:id="messageText">messageText</span>
-
+    <div class="messageContainer">
+        <div class="messageTitle">
+            <a wicket:id="profileLink" class="profileLink"><span wicket:id="userName">fullName</span></a>
+            <span wicket:id="sentTime" class="sentTime">sentTime</span>
+        </div>
+        <div class="messageContent">
+            <span wicket:id="messageText">messageText</span>
+        </div>
     </div>
 
 </wicket:panel>

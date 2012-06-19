@@ -8,7 +8,7 @@ import socnet.model.Conversation
  * @author Marcin Pieciukiewicz
  */
 
-class AddParticipantEvent(val invitatingUserId: UID, message: String, addedParticipantUserId: UID) extends Event {
+class AddParticipantEvent(val invitatingUserId: UID, val message: String, val addedParticipantUserId: UID) extends Event {
   def applyEvent(aggregate: Aggregate) {
     val conversation = aggregate.asInstanceOf[Conversation]
     conversation.participantsUserIds ::= addedParticipantUserId

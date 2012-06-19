@@ -25,6 +25,22 @@ class EventStoreMockImpl extends EventStore {
       get(id).getOrElse(throw new NoEventsForEntityException)
   }
 
+
+  def getAllEventsByType(entityClass: Class[_]): ListBuffer[EventRow] = {
+
+    var events = new ListBuffer[EventRow]()
+
+    var eventsForAggregates = eventsByType.get(entityClass).getOrElse(throw new NoEventsForTypeException).values
+
+    eventsForAggregates.foreach((eventsForAggregate:ListBuffer[EventRow]) => {
+      eventsForAggregate.foreach((eventForAggregate:EventRow) => {
+        events.append(eventForAggregate)
+      })
+
+    })
+    events
+  }
+
   def addEventIgnoreVersion(event: EventRow) {
     addEventWithVersionCheck(event, false)
   }
@@ -60,5 +76,8 @@ class EventStoreMockImpl extends EventStore {
     listeners.foreach(listener => listener.onEntityChanged(entityClass, entityId))
   }
 
-
+  @deprecated
+  def updateEvent(eventRow: EventRow) {
+    //not necessary for mock event store
+  }
 }

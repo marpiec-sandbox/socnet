@@ -33,7 +33,6 @@ class SocnetApplication extends WebApplication {
 
     autowireCapableBeanFactory.autowireBean(this);
 
-
     getComponentInstantiationListeners.add(new SpringComponentInjector(this, webApplicationContext, false))
 
     SocnetBookmakablePages(this)
@@ -41,6 +40,8 @@ class SocnetApplication extends WebApplication {
     getSecuritySettings.setAuthenticationStrategy(new NoOpAuthenticationStrategy)
 
     getSecuritySettings.setAuthorizationStrategy(new RoleAuthorizationStrategy(new UserRolesAuthorizer()));
+
+
 
     SocnetInitializator(eventStore, databaseInitializer)
 

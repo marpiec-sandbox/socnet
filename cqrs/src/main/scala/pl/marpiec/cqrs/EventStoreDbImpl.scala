@@ -28,6 +28,11 @@ class EventStoreDbImpl @Autowired() (val jdbcTemplate:JdbcTemplate) extends Even
     "WHERE aggregate_uid = ? " +
     "ORDER BY event_time"
 
+  val SELECT_EVENTS_BY_TYPE = "SELECT user_uid, aggregate_uid, version, event, event_type " +
+    "FROM events " +
+    "WHERE event_type = ? " +
+    "ORDER BY event_time"
+
   val eventRowRowMapper = new RowMapper[EventRow] {
     def mapRow(resultSet: ResultSet, rowNum: Int) = {
       val userId = resultSet.getLong(1)
@@ -46,6 +51,12 @@ class EventStoreDbImpl @Autowired() (val jdbcTemplate:JdbcTemplate) extends Even
     list
   }
 
+  def getAllEventsByType(entityClass: Class[_]): ListBuffer[EventRow] = {
+    val list = ListBuffer[EventRow]()
+    list.addAll(jdbcTemplate.query(SELECT_EVENTS_BY_TYPE.replace("?", "'"+entityClass.getName+"'"), eventRowRowMapper))
+    list
+  }
+
   def addEventIgnoreVersion(event: EventRow) {
     addEventWithVersionCheck(event, false)
   }
@@ -54,35 +65,42 @@ class EventStoreDbImpl @Autowired() (val jdbcTemplate:JdbcTemplate) extends Even
     addEventWithVersionCheck(event, true)
   }
 
-  private def addEventWithVersionCheck(event: EventRow, checkVersion:Boolean) {
+  private def addEventWithVersionCheck(eventRow: EventRow, checkVersion:Boolean) {
 
 
     val currentVersion = jdbcTemplate.queryForInt("SELECT version FROM aggregates WHERE uid = ? AND class = ?",
-                                Array(Long.box(event.aggregateId.uid), event.event.entityClass.getName):_*)
+                                Array(Long.box(eventRow.aggregateId.uid), eventRow.event.entityClass.getName):_*)
 
     if (currentVersion == 0) {
       throw new IllegalStateException("No aggregate found! ")
     }
 
     if(!checkVersion) {
-      event.expectedVersion = currentVersion
+      eventRow.expectedVersion = currentVersion
     }
 
-    if (currentVersion > event.expectedVersion) {
+    if (currentVersion > eventRow.expectedVersion) {
       throw new ConcurrentAggregateModificationException
     }
 
     jdbcTemplate.update("INSERT INTO events (id, user_uid, aggregate_uid, event_time, version, event_type, event) " +
       "VALUES (NEXTVAL('events_seq'), ?, ?, ?, ?, ?, ?)",
-      Array(Long.box(event.userId.uid), Long.box(event.aggregateId.uid),
-        new Timestamp(new Date().getTime), Int.box(event.expectedVersion), event.event.getClass.getName,
-        jsonSerializer.toJson(event.event)):_*)
+      Array(Long.box(eventRow.userId.uid), Long.box(eventRow.aggregateId.uid),
+        new Timestamp(new Date().getTime), Int.box(eventRow.expectedVersion), eventRow.event.getClass.getName,
+        jsonSerializer.toJson(eventRow.event)):_*)
 
     jdbcTemplate.update("UPDATE aggregates SET version = version + 1 WHERE uid = ?",
-      Array(Long.box(event.aggregateId.uid)):_*)
+      Array(Long.box(eventRow.aggregateId.uid)):_*)
 
-    callAllListenersAboutNewEvent(event.event.entityClass, event.aggregateId)
+    callAllListenersAboutNewEvent(eventRow.event.entityClass, eventRow.aggregateId)
 
+  }
+
+  /** Use only for migrating events, not for normal business!!! */
+  @deprecated
+  def updateEvent(eventRow: EventRow) {
+    jdbcTemplate.update("UPDATE events SET event = ? WHERE aggregate_uid = ? AND version = ?",
+      Array(jsonSerializer.toJson(eventRow.event), Long.box(eventRow.aggregateId.uid), Int.box(eventRow.expectedVersion)):_*)
   }
 
   def addEventForNewAggregate(newAggregadeId: UID, event: EventRow) {
