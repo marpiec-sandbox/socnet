@@ -2,7 +2,10 @@
 
    .conversationSummary {
 
+      margin-top: 20px;
+      width: 700px;
       clear: both;
+
 
       .icon {
           border: 1px solid #DDDDDD;
@@ -15,6 +18,12 @@
       .conversationTitle {
          padding-top: 10px;
          font-weight: bold;
+
+         .creationTime {
+             float: right;
+             font-size: 13px;
+             font-weight: normal
+         }
       }
 
       .conversationParticipant {
@@ -28,6 +37,11 @@
 
       .conversationParticipant:last-child span::after {
         content: "";
+      }
+
+      .additionalInfo {
+        font-size: @smallFontSize;
+        color: @lightFontColor;
       }
 
    }
