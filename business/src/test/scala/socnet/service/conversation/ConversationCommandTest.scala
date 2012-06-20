@@ -5,6 +5,7 @@ import org.testng.annotations.Test
 import pl.marpiec.cqrs._
 import socnet.model.Conversation
 import org.testng.Assert._
+import socnet.readdatabase.{ConversationInfoDatabaseMockImpl, ConversationInfoDatabase}
 
 /**
  * @author Marcin Pieciukiewicz
@@ -16,8 +17,9 @@ class ConversationCommandTest {
     val eventStore: EventStore = new EventStoreMockImpl
     val entityCache: AggregateCache = new AggregateCacheSimpleImpl
     val dataStore: DataStore = new DataStoreImpl(eventStore, entityCache)
-    val conversationCommand: ConversationCommand = new ConversationCommandImpl(eventStore)
     val uidGenerator: UidGenerator = new UidGeneratorMockImpl
+    val conversationCommand: ConversationCommand = new ConversationCommandImpl(eventStore, uidGenerator)
+    val conversationInfoDatabase: ConversationInfoDatabase = new ConversationInfoDatabaseMockImpl(dataStore);
 
     val conversationId = uidGenerator.nextUid
     val participantAUserId = uidGenerator.nextUid
@@ -40,6 +42,17 @@ class ConversationCommandTest {
     assertEquals(conversation.creatorUserId, participantAUserId)
     assertEquals(conversation.participantsUserIds.length, 3)
     assertEquals(conversation.messages.size, 1)
+
+    var conversationInfoForParticipantAOption = conversationInfoDatabase.getConversationInfo(participantAUserId, conversationId)
+    assertTrue(conversationInfoForParticipantAOption.isEmpty)
+
+    // First User reads conversation
+
+    conversationCommand.userHasReadConversation(participantAUserId, None, conversationId)
+
+    conversationInfoForParticipantAOption = conversationInfoDatabase.getConversationInfo(participantAUserId, conversationId)
+    assertTrue(conversationInfoForParticipantAOption.isDefined)
+
 
     val secondMessageId = uidGenerator.nextUid
 

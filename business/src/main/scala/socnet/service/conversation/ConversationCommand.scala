@@ -18,4 +18,6 @@ trait ConversationCommand {
 
   def hideConversation(userId: UID, id: UID, version: Int)
 
+  def userHasReadConversation(userId: UID, conversationInfoIdAndVersionOption: Option[(UID, Int)], conversationId:UID)
+  
 }

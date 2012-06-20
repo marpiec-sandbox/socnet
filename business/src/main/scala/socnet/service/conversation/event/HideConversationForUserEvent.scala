@@ -8,7 +8,7 @@ import socnet.model.Conversation
  * @author Marcin Pieciukiewicz
  */
 
-class HideConversationForUser(val userId: UID) extends Event {
+class HideConversationForUserEvent(val userId: UID) extends Event {
 
   def applyEvent(aggregate: Aggregate) {
     val conversation = aggregate.asInstanceOf[Conversation]
