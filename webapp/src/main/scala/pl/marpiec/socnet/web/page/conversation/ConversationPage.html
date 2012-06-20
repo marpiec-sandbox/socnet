@@ -3,32 +3,49 @@
 <body>
 <wicket:extend>
 
-    <div wicket:id="conversationPreview" class="conversationPreview">
-        <div class="participants">
-            <div>Uczestnicy: </div>
-            <div wicket:id="participant">
-                <span wicket:id="userName">userName</span>
+    <div class="conversationPage">
+
+
+        <div wicket:id="conversationPreview" class="conversationPreview">
+
+            <div class="messages">
+                <div wicket:id="message">
+                    <div wicket:id="messagePreview">messagePreview</div>
+                </div>
             </div>
+
+            <div class="participants">
+                <div class="title">Uczestnicy: </div>
+                <div wicket:id="participant" class="participant">
+                    <a wicket:id="profileLink" class="profileLink"><span wicket:id="userName">fullName</span></a>
+                </div>
+            </div>
+
+
+
         </div>
 
-        <div class="messages">
-            <div wicket:id="message">
-                <div wicket:id="messagePreview">messagePreview</div>
-            </div>
-        </div>
+        <div class="replyFormPanel">
+            <form wicket:id="replyForm" onsubmit="doCheck()">
 
+                <input type="hidden" wicket:id="sessionToken" />
+                <div><span wicket:id="warningMessage"></span></div>
+
+                <div wicket:id="bbCodeEditor"></div>
+
+                <div class="buttons">
+                    <div class="button">
+                        <a wicket:id="cancelButton">Anuluj</a>
+                    </div>
+                    <div class="button">
+                        <input type="submit" wicket:id="submitButton" onclick="doCheck()" value="Wyślij"/>
+                    </div>
+                </div>
+
+            </form>
+        </div>
     </div>
 
-    <form wicket:id="replyForm" onsubmit="doCheck()">
-
-        <input type="hidden" wicket:id="sessionToken" />
-        <div><span wicket:id="warningMessage"></span></div>
-
-        <div wicket:id="bbCodeEditor"></div>
-
-        <a wicket:id="cancelButton">Anuluj</a>
-        <input type="submit" wicket:id="submitButton" onclick="doCheck()" value="Wyślij"/>
-    </form>
 
 </wicket:extend>
 </body>

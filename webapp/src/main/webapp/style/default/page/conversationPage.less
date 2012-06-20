@@ -1,32 +1,75 @@
-.conversationPreview {
+.conversationPage {
 
-    .participants {
+    .conversationPreview {
+
+        .participants {
+            float: left;
+            border: 1px solid @formInputBorderColor;
+            border-radius: 5px;
+            width: 200px;
+            margin: 20px;
+            padding-bottom: 8x;
+
+            .title {
+                 padding: 4px 8px;
+                 background-color: #F5F8F8;
+                 border-bottom: 1px solid #EEEEEE;
+                 margin-bottom: 4px;
+            }
+
+            .participant {
+                 padding: 4px 8px;
+            }
+        }
+
+        .messages {
+            float: left;
+
+             .messageContainer {
+
+                 width: 700px;
+                 border: 1px solid @formInputBorderColor;
+                 border-radius: 5px;
+                 margin: 20px 0px;
+
+
+                .messageTitle {
+                    padding: 4px 8px;
+                    background-color: #F5F8F8;
+                    border-bottom: 1px solid #EEEEEE;
+
+                    .profileLink {
+                        font-size: @smallFontSize;
+                    }
+                    .sentTime {
+                        font-size: @smallFontSize;
+                        float: right;
+                        color: @lightFontColor;
+                    }
+                }
+
+                .messageContent {
+                   padding: 8px;
+                   min-height: 40px;
+                }
+             }
+        }
 
     }
 
-    .messages {
-         .messageContainer {
 
+    .replyFormPanel {
+        clear: both;
+        .richeditor {
+           width: 700px;
+        }
 
-            .messageTitle {
-                padding: 4px;
-                background-color: #eee;
-
-                .profileLink {
-
-                }
-                .sentTime {
-                    float: right;
-                }
-            }
-
-            .messageContent {
-               background-color: #F5F8F8;
-               padding: 4px;
-               min-height: 40px;
-            }
-         }
+        .button {
+            margin: 10px 0;
+            width: 49%;
+            display: inline-block;
+            text-align: center;
+        }
     }
-
 
 }

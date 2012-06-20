@@ -1,6 +1,36 @@
 .userConversations {
 
+   .conversationSummary {
 
+      clear: both;
+
+      .icon {
+          border: 1px solid #DDDDDD;
+          float: left;
+          height: 40px;
+          margin: 10px;
+          width: 40px;
+      }
+
+      .conversationTitle {
+         padding-top: 10px;
+         font-weight: bold;
+      }
+
+      .conversationParticipant {
+         display: inline-block;
+      }
+
+      .conversationParticipant span::after {
+        content: ",";
+        margin-right: 6px;
+      }
+
+      .conversationParticipant:last-child span::after {
+        content: "";
+      }
+
+   }
 
 
 }

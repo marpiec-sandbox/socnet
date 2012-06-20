@@ -24,6 +24,7 @@ import pl.marpiec.cqrs.UidGenerator
 import pl.marpiec.cqrs.exception.ConcurrentAggregateModificationException
 import org.apache.wicket.markup.html.WebMarkupContainer
 import pl.marpiec.socnet.model.User
+import pl.marpiec.socnet.web.page.UserProfilePreviewPage
 
 /**
  * @author Marcin Pieciukiewicz
@@ -130,7 +131,7 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
       add(new RepeatingView("participant") {
         participants.foreach(user => {
           add(new AbstractItem(newChildId()) {
-            add(new Label("userName", user.fullName))
+            add(UserProfilePreviewPage.getLink(user).add(new Label("userName", user.fullName)))
           })
         })
       })
