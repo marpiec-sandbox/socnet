@@ -6,10 +6,8 @@ import pl.marpiec.socnet.web.authorization.SecureWebPage
 import pl.marpiec.socnet.web.application.SocnetRoles
 import org.apache.wicket.spring.injection.annot.SpringBean
 import socnet.service.conversation.ConversationCommand
-import socnet.readdatabase.ConversationDatabase
 import pl.marpiec.util.UID
 import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException
-import socnet.model.Conversation
 import pl.marpiec.socnet.readdatabase.UserDatabase
 import org.apache.wicket.markup.repeater.RepeatingView
 import org.apache.wicket.markup.html.list.AbstractItem
@@ -25,6 +23,8 @@ import pl.marpiec.cqrs.exception.ConcurrentAggregateModificationException
 import org.apache.wicket.markup.html.WebMarkupContainer
 import pl.marpiec.socnet.model.User
 import pl.marpiec.socnet.web.page.UserProfilePreviewPage
+import socnet.readdatabase.{ConversationInfoDatabase, ConversationDatabase}
+import socnet.model.{ConversationInfo, Conversation}
 
 /**
  * @author Marcin Pieciukiewicz
@@ -45,6 +45,10 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
   private var conversationDatabase: ConversationDatabase = _
 
   @SpringBean
+  private var conversationInfoDatabase: ConversationInfoDatabase = _
+  
+
+  @SpringBean
   private var userDatabase: UserDatabase = _
 
   @SpringBean
@@ -54,6 +58,10 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
   var conversation = getConversationOrThrow404
 
   var participants = userDatabase.getUsersByIds(conversation.participantsUserIds)
+
+  val conversationInfoOption = conversationInfoDatabase.getConversationInfo(session.userId, conversation.id)
+
+  conversationCommand.userHasReadConversation(session.userId, getConversationInfoKeyIfPossible(conversationInfoOption), conversation.id)
 
 
   var conversationPreviewPanel = createConversationPreview
@@ -114,6 +122,15 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
 
     }
   })
+
+  private def getConversationInfoKeyIfPossible(conversationInfoOption: Option[ConversationInfo]): Option[(UID, Int)] = {
+    if(conversationInfoOption.isDefined) {
+      val info = conversationInfoOption.get
+      Option((info.id, info.version))
+    } else {
+      None
+    }
+  }
 
   private def reloadConversationFromDB {
     conversation = conversationDatabase.getConversationById(conversation.id).get

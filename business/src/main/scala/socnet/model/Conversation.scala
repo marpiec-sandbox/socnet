@@ -3,6 +3,7 @@ package socnet.model
 import conversation.Message
 import pl.marpiec.cqrs.Aggregate
 import pl.marpiec.util.{BeanUtil, UID}
+import org.joda.time.LocalDateTime
 
 /**
  * @author Marcin Pieciukiewicz
@@ -15,6 +16,10 @@ class Conversation extends Aggregate(null, 0) {
   var participantsUserIds: List[UID] = List()
   var conversationHiddenForUsers: Set[UID] = Set()
   var messages = List[Message]()
+
+  def calculateUnreadMessagesCount(lastReadTime:LocalDateTime):Int = {
+    messages.count(message => message.sentTime.isAfter(lastReadTime))
+  }
 
   def copy = {
     BeanUtil.copyProperties(new Conversation, this)
