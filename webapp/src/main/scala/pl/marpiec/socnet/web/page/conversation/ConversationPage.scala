@@ -65,11 +65,8 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
 
 
   var conversationPreviewPanel = createConversationPreview
-
   add(conversationPreviewPanel)
-
-
-
+  
 
   add(new StandardAjaxSecureForm[ReplyConversationFormModel]("replyForm") {
 
@@ -144,6 +141,8 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
     new WebMarkupContainer("conversationPreview") {
 
       setOutputMarkupId(true)
+
+      add(new Label("conversationTitle", conversation.title))
 
       add(new RepeatingView("participant") {
         participants.foreach(user => {

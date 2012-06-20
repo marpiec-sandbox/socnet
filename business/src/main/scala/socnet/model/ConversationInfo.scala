@@ -13,7 +13,7 @@ class ConversationInfo extends Aggregate(null, 0) {
   var userId: UID = _
   var conversationId: UID = _
 
-  var lastReadTime: LocalDateTime = _
+  var lastReadTime: LocalDateTime = null
   var ignored: Boolean = false;
   var deleted: Boolean = false;
 
