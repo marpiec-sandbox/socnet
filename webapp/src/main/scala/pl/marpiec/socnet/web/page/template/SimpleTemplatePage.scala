@@ -12,6 +12,7 @@ import pl.marpiec.socnet.web.page.signin.SignInFormPanel
 import pl.marpiec.socnet.web.page._
 import contacts.{InvitationsReceivedPage, InvitationsSentPage, ContactsPage}
 import conversation.UserConversationsPage
+import profile.{UserProfilePreviewPage, EditUserProfilePage}
 
 /**
  * ...

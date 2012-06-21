@@ -12,6 +12,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer
 import pl.marpiec.socnet.readdatabase.UserContactsDatabase
 import pl.marpiec.socnet.model.UserContacts
 import pl.marpiec.socnet.web.component.contacts.PersonContactInfo
+import profile.UserProfilePreviewPage
 
 /**
  * @author Marcin Pieciukiewicz

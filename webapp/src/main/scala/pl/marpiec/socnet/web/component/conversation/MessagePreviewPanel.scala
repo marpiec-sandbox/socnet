@@ -4,7 +4,7 @@ import org.apache.wicket.markup.html.panel.Panel
 import org.apache.wicket.markup.html.basic.Label
 import pl.marpiec.socnet.model.conversation.Message
 import pl.marpiec.socnet.model.User
-import pl.marpiec.socnet.web.page.UserProfilePreviewPage
+import pl.marpiec.socnet.web.page.profile.UserProfilePreviewPage
 import pl.marpiec.util.{DateUtil, BBCodeConverter}
 
 /**

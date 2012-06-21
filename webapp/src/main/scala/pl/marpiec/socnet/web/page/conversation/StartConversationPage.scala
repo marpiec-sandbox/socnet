@@ -16,7 +16,7 @@ import org.apache.wicket.model.{PropertyModel, CompoundPropertyModel}
 import org.apache.wicket.markup.html.form.TextField
 import pl.marpiec.socnet.service.conversation.ConversationCommand
 import pl.marpiec.cqrs.UidGenerator
-import pl.marpiec.socnet.web.page.UserProfilePreviewPage
+import pl.marpiec.socnet.web.page.profile.UserProfilePreviewPage
 import org.apache.commons.lang.StringUtils
 import pl.marpiec.socnet.model.User
 

@@ -22,7 +22,7 @@ import pl.marpiec.cqrs.UidGenerator
 import pl.marpiec.cqrs.exception.ConcurrentAggregateModificationException
 import org.apache.wicket.markup.html.WebMarkupContainer
 import pl.marpiec.socnet.model.User
-import pl.marpiec.socnet.web.page.UserProfilePreviewPage
+import pl.marpiec.socnet.web.page.profile.UserProfilePreviewPage
 import pl.marpiec.socnet.readdatabase.{ConversationInfoDatabase, ConversationDatabase}
 import pl.marpiec.socnet.model.{ConversationInfo, Conversation}
 

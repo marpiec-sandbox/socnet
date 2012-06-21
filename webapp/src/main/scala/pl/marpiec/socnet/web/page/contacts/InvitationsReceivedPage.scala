@@ -7,7 +7,7 @@ import pl.marpiec.socnet.readdatabase.UserContactsDatabase
 import pl.marpiec.socnet.readdatabase.UserDatabase
 import org.apache.wicket.markup.repeater.RepeatingView
 import org.apache.wicket.markup.html.list.AbstractItem
-import pl.marpiec.socnet.web.page.UserProfilePreviewPage
+import pl.marpiec.socnet.web.page.profile.UserProfilePreviewPage
 import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.markup.html.panel.Fragment
 import org.apache.wicket.ajax.AjaxRequestTarget

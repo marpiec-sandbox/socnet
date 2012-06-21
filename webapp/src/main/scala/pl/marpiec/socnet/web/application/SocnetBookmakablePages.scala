@@ -4,6 +4,7 @@ import pl.marpiec.socnet.web.page._
 import contacts.{InvitationsReceivedPage, InvitationsSentPage, ContactsPage}
 import conversation.{ConversationPage, UserConversationsPage, StartConversationPage}
 import forgotPassword.{PasswordHaveBeenChangedPage, ConfirmForgotPasswordPage, TriggerChangeForgottenPasswordPage, ForgotPasswordPage}
+import profile.{UserProfilePreviewPage, EditUserProfilePage}
 import registration.{ConfirmRegistrationPage, TriggerUserRegistrationPage, RegisterPage}
 
 /**
