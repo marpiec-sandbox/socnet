@@ -15,7 +15,6 @@ class UpdatePersonalSummaryEvent(val personalSummary: PersonalSummary) extends E
   def applyEvent(aggregate: Aggregate) {
     val userProfile = aggregate.asInstanceOf[UserProfile]
 
-    userProfile.professionalTitle = personalSummary.professionalTitle
     userProfile.city = personalSummary.city
     userProfile.province = personalSummary.province
     userProfile.blogPage = personalSummary.blogPage

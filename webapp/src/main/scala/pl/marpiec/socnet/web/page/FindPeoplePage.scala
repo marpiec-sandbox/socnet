@@ -52,7 +52,6 @@ class FindPeoplePage(parameters: PageParameters) extends SecureWebPage(SocnetRol
           val profile = profileOption.get
           add(new WebMarkupContainer("profile") {
             add(new Label("city", profile.city))
-            add(new Label("professionalTitle", profile.professionalTitle))
           })
         } else {
           add(new WebMarkupContainer("profile").setVisible(false))

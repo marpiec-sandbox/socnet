@@ -34,7 +34,6 @@ class UserProfileServicesTest {
 
     val personalSummary = new PersonalSummary
 
-    personalSummary.professionalTitle = "Mr. "
     personalSummary.city = "Warszawa"
     personalSummary.province = Province.MAZOWIECKIE
     personalSummary.blogPage = ""
@@ -45,7 +44,6 @@ class UserProfileServicesTest {
     userProfile = dataStore.getEntity(classOf[UserProfile], userProfileId).asInstanceOf[UserProfile]
 
     assertEquals(userProfile.userId, userId)
-    assertEquals(userProfile.professionalTitle, personalSummary.professionalTitle)
     assertEquals(userProfile.city, personalSummary.city)
     assertEquals(userProfile.province, personalSummary.province)
     assertEquals(userProfile.blogPage, personalSummary.blogPage)

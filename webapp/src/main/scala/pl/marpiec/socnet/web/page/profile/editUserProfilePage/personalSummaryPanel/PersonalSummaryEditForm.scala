@@ -28,7 +28,6 @@ class PersonalSummaryEditForm(id: String, userProfile: UserProfile, user: User, 
   def buildSchema {
 
     add(new Label("warningMessage"))
-    add(new TextField[String]("professionalTitle"))
     add(new TextField[String]("city"))
     add(new DropDownChoice[Province]("province", Province.values, new ChoiceRenderer[Province]("translation")))
 
