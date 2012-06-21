@@ -75,6 +75,7 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
     def initialize = {
       model = new ReplyConversationFormModel
       setModel(new CompoundPropertyModel[ReplyConversationFormModel](model))
+      standardCancelButton = false
     }
 
     def buildSchema = {
@@ -96,7 +97,7 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
 
           target.add(conversationPreviewPanel)
           target.add(this.warningMessageLabel)
-          target.add(this)
+          target.appendJavaScript("clearBBEditor()")
 
         } else {
 

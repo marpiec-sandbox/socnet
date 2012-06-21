@@ -39,6 +39,11 @@ var enter = 0;
 var editorVisible = false;
 var enableWysiwyg = false;
 
+function clearBBEditor() {
+    myeditor.body.innerHTML = "";
+    document.getElementById(body_id).value = "";
+}
+
 function rep(re, str) {
 	content = content.replace(re, str);
 }

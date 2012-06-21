@@ -13,6 +13,7 @@ import pl.marpiec.socnet.web.wicket.{SecureAjaxButton, SecureFormModel}
 
 abstract class StandardAjaxSecureForm[M <: SecureFormModel](id: String) extends Form[M](id) {
 
+  var standardCancelButton = true
   val warningMessageLabel = new Label("warningMessage")
   this.warningMessageLabel.setOutputMarkupId(true)
   this.warningMessageLabel.setOutputMarkupPlaceholderTag(true)
@@ -24,11 +25,13 @@ abstract class StandardAjaxSecureForm[M <: SecureFormModel](id: String) extends 
   add(new HiddenField[String]("sessionToken"))
 
 
-  add(new SecureAjaxButton[M]("cancelButton") {
-    def onSecureSubmit(target: AjaxRequestTarget, formModel: M) {
-      StandardAjaxSecureForm.this.onSecureCancel(target, formModel)
-    }
-  })
+  if(standardCancelButton) {
+    add(new SecureAjaxButton[M]("cancelButton") {
+      def onSecureSubmit(target: AjaxRequestTarget, formModel: M) {
+        StandardAjaxSecureForm.this.onSecureCancel(target, formModel)
+      }
+    })
+  }
 
   add(new SecureAjaxButton[M]("submitButton") {
     def onSecureSubmit(target: AjaxRequestTarget, formModel: M) {

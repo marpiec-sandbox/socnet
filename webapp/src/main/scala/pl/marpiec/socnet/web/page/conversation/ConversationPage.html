@@ -3,6 +3,19 @@
 <body>
 <wicket:extend>
 
+    <script type="text/javascript">
+        function showReplyFormPanel() {
+            jQuery(".replyFormPanel").show();
+            jQuery(".conversationActionButtons").hide();
+        }
+
+        function hideReplyFormPanel() {
+            clearBBEditor();
+            jQuery(".replyFormPanel").hide();
+            jQuery(".conversationActionButtons").show();
+        }
+    </script>
+
     <div class="conversationPage">
 
 
@@ -27,7 +40,11 @@
 
         </div>
 
-        <div class="replyFormPanel">
+        <div class="conversationActionButtons">
+            <a href="#" onclick="showReplyFormPanel()">Odpowiedz</a>
+        </div>
+
+        <div class="replyFormPanel hiddenByDefault">
             <form wicket:id="replyForm" onsubmit="doCheck()">
 
                 <input type="hidden" wicket:id="sessionToken"/>
@@ -38,7 +55,7 @@
 
                 <div class="buttons">
                     <div class="button">
-                        <a wicket:id="cancelButton">Anuluj</a>
+                        <a onclick="hideReplyFormPanel();return false;">Anuluj</a>
                     </div>
                     <div class="button">
                         <input type="submit" wicket:id="submitButton" onclick="doCheck()" value="Wyślij"/>
