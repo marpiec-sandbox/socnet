@@ -7,8 +7,8 @@ import pl.marpiec.util.BeanUtil
  */
 
 class SecureFormModel {
-  var sessionToken:String = _
-  var warningMessage:String = _
+  var sessionToken: String = _
+  var warningMessage: String = _
 
   def clear() {
     val sessTok = sessionToken

@@ -3,7 +3,7 @@ package pl.marpiec.socnet.web.page.editUserProfilePage.model
 import pl.marpiec.socnet.service.userprofile.input.PersonalSummary
 import pl.marpiec.socnet.web.wicket.SecureFormModel
 import pl.marpiec.socnet.model.UserProfile
-import socnet.constant.Province
+import pl.marpiec.socnet.constant.Province
 import pl.marpiec.util.BeanUtil
 
 /**
@@ -18,14 +18,14 @@ class PersonalSummaryFormModel extends SecureFormModel {
   var blogPage: String = _
   var summary: String = _
 
-  def createPersonalSummary():PersonalSummary = {
+  def createPersonalSummary(): PersonalSummary = {
     BeanUtil.copyProperties(new PersonalSummary, this)
   }
 }
 
 object PersonalSummaryFormModel {
 
-  def apply(from: UserProfile):PersonalSummaryFormModel = {
+  def apply(from: UserProfile): PersonalSummaryFormModel = {
     val model = new PersonalSummaryFormModel
     copy(model, from)
     model

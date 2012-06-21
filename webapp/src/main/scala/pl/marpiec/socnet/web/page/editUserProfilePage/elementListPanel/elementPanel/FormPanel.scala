@@ -7,14 +7,13 @@ import org.apache.wicket.markup.html.panel.Panel
 import org.apache.wicket.Component
 import pl.marpiec.socnet.web.page.editUserProfilePage.elementListPanel.ElementListPanel
 import pl.marpiec.socnet.web.wicket.{SecureFormModel, SecureAjaxButton, SecureForm}
-import socnet.model.userprofile.Identifiable
+import pl.marpiec.socnet.model.userprofile.Identifiable
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
 abstract class FormPanel[T <: Identifiable, TM <: SecureFormModel](id: String, mainListPanel: ElementListPanel[T, TM], newElement: Boolean, val element: T) extends Panel(id) {
-
 
 
   setOutputMarkupId(true)
@@ -27,6 +26,7 @@ abstract class FormPanel[T <: Identifiable, TM <: SecureFormModel](id: String, m
 
 
   def onFormSubmit(target: AjaxRequestTarget, formModel: SecureFormModel)
+
   def onFormCanceled(target: AjaxRequestTarget, formModel: SecureFormModel)
 
   val form = addAndReturn(new SecureForm[TM]("form") {

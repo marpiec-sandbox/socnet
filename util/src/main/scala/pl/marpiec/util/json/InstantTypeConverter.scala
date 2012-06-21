@@ -10,10 +10,10 @@ import com.google.gson._
 
 class InstantTypeConverter extends JsonSerializer[Instant] with JsonDeserializer[Instant] {
   def serialize(src: Instant, typeOfSrc: Type, context: JsonSerializationContext) = {
-    new JsonPrimitive(src.getMillis())
+    new JsonPrimitive(src.getMillis)
   }
 
   def deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext) = {
-    new Instant(json.getAsLong())
+    new Instant(json.getAsLong)
   }
 }

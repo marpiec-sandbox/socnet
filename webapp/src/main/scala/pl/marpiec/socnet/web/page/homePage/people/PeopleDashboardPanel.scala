@@ -1,14 +1,9 @@
 package pl.marpiec.socnet.web.page.homePage.people
 
 import org.apache.wicket.markup.html.panel.Panel
-import org.apache.wicket.model.CompoundPropertyModel
-import org.apache.wicket.markup.html.link.BookmarkablePageLink
-import pl.marpiec.util.ValidationResult
-import pl.marpiec.util.validation.PasswordValidator
-import pl.marpiec.socnet.web.page.forgotPassword.PasswordHaveBeenChangedPage
-import org.apache.wicket.markup.html.form.{TextField, PasswordTextField, StatelessForm}
+import org.apache.wicket.markup.html.form.TextField
 import org.apache.commons.lang.StringUtils
-import pl.marpiec.socnet.web.page.{FindPeoplePage, HomePage}
+import pl.marpiec.socnet.web.page.FindPeoplePage
 import org.apache.wicket.request.mapper.parameter.PageParameters
 import pl.marpiec.socnet.web.wicket.SimpleStatelessForm
 
@@ -16,7 +11,7 @@ import pl.marpiec.socnet.web.wicket.SimpleStatelessForm
  * @author Marcin Pieciukiewicz
  */
 
-class PeopleDashboardPanel(id:String) extends Panel(id){
+class PeopleDashboardPanel(id: String) extends Panel(id) {
 
   add(new SimpleStatelessForm("findPeopleForm") {
     var query: String = _

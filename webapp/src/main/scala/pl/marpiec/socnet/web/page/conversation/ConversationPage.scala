@@ -5,7 +5,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters
 import pl.marpiec.socnet.web.authorization.SecureWebPage
 import pl.marpiec.socnet.web.application.SocnetRoles
 import org.apache.wicket.spring.injection.annot.SpringBean
-import socnet.service.conversation.ConversationCommand
+import pl.marpiec.socnet.service.conversation.ConversationCommand
 import pl.marpiec.util.UID
 import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException
 import pl.marpiec.socnet.readdatabase.UserDatabase
@@ -23,8 +23,8 @@ import pl.marpiec.cqrs.exception.ConcurrentAggregateModificationException
 import org.apache.wicket.markup.html.WebMarkupContainer
 import pl.marpiec.socnet.model.User
 import pl.marpiec.socnet.web.page.UserProfilePreviewPage
-import socnet.readdatabase.{ConversationInfoDatabase, ConversationDatabase}
-import socnet.model.{ConversationInfo, Conversation}
+import pl.marpiec.socnet.readdatabase.{ConversationInfoDatabase, ConversationDatabase}
+import pl.marpiec.socnet.model.{ConversationInfo, Conversation}
 
 /**
  * @author Marcin Pieciukiewicz
@@ -46,7 +46,7 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
 
   @SpringBean
   private var conversationInfoDatabase: ConversationInfoDatabase = _
-  
+
 
   @SpringBean
   private var userDatabase: UserDatabase = _
@@ -66,7 +66,7 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
 
   var conversationPreviewPanel = createConversationPreview
   add(conversationPreviewPanel)
-  
+
 
   add(new StandardAjaxSecureForm[ReplyConversationFormModel]("replyForm") {
 
@@ -121,7 +121,7 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
   })
 
   private def getConversationInfoKeyIfPossible(conversationInfoOption: Option[ConversationInfo]): Option[(UID, Int)] = {
-    if(conversationInfoOption.isDefined) {
+    if (conversationInfoOption.isDefined) {
       val info = conversationInfoOption.get
       Option((info.id, info.version))
     } else {
@@ -172,8 +172,10 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
     }
     conversationOption.get
   }
-  
-  private def findUserInParticipants(userId:UID):User = {
-    participants.find(user => {user.id == userId}).get
+
+  private def findUserInParticipants(userId: UID): User = {
+    participants.find(user => {
+      user.id == userId
+    }).get
   }
 }

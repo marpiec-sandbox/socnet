@@ -5,12 +5,13 @@
 
         <span class="warningMessage" wicket:id="warningMessage"></span>
 
-        <input type="hidden" wicket:id="sessionToken" />
+        <input type="hidden" wicket:id="sessionToken"/>
 
         <div class="formRow">
             <span class="label">Nazwa uczelni/szkoły</span>
             <span class="validatorMessage"></span>
-            <input type="text" wicket:id="schoolName" class="requiredValidator stringValidator" alt="{min:3, max:100, msg:'Nazwa szkoły jest wymagana (minimum 3 litery)'}"/>
+            <input type="text" wicket:id="schoolName" class="requiredValidator stringValidator"
+                   alt="{min:3, max:100, msg:'Nazwa szkoły jest wymagana (minimum 3 litery)'}"/>
         </div>
         <div class="formRow">
             <span class="label">Wydział</span>
@@ -37,13 +38,15 @@
             <div class="validatorRow">
                 Od:
                 <select wicket:id="fromMonth"></select>
-                <input type="text" wicket:id="fromYear" class="year numberValidator" maxlength="4" alt="{min:1900, max:2040, msg:'Wymagany poprawny rok np. 2012'}"/>
+                <input type="text" wicket:id="fromYear" class="year numberValidator" maxlength="4"
+                       alt="{min:1900, max:2040, msg:'Wymagany poprawny rok np. 2012'}"/>
                 <span class="validatorMessage"></span>
             </div>
             <div class="validatorRow toDate">
                 Do:
                 <select wicket:id="toMonth"></select>
-                <input type="text" wicket:id="toYear" class="year numberValidator" maxlength="4" alt="{min:1900, max:2040, msg:'Wymagany poprawny rok np. 2012'}"/>
+                <input type="text" wicket:id="toYear" class="year numberValidator" maxlength="4"
+                       alt="{min:1900, max:2040, msg:'Wymagany poprawny rok np. 2012'}"/>
                 <span class="validatorMessage"></span>
             </div>
         </div>
@@ -62,7 +65,7 @@
             function disableToDateIfStillStudying(jqThis) {
                 var jqForm = jqThis.parents("form");
                 var checked = jqForm.find(".stillStudying").attr("checked");
-                var newVisibility = checked?'hidden':'visible';
+                var newVisibility = checked ? 'hidden' : 'visible';
                 jqForm.find(".toDate").css({visibility:newVisibility});
             }
 
@@ -70,13 +73,13 @@
             initValidation(".educationForm", ".submitButton");
 
 
-            jQuery(function() {
+            jQuery(function () {
 
-                jQuery(".educationForm .stillStudying").each(function() {
+                jQuery(".educationForm .stillStudying").each(function () {
                     disableToDateIfStillStudying(jQuery(this));
-                })
+                });
 
-                jQuery(".educationForm .stillStudying").change(function() {
+                jQuery(".educationForm .stillStudying").change(function () {
                     disableToDateIfStillStudying(jQuery(this))
                 });
             })

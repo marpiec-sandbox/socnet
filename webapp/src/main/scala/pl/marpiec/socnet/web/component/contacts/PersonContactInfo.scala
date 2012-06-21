@@ -9,20 +9,20 @@ import org.apache.wicket.model.CompoundPropertyModel
 import org.apache.wicket.markup.html.form.TextArea
 import org.apache.commons.lang.StringUtils
 import org.apache.wicket.spring.injection.annot.SpringBean
-import socnet.service.usercontacts.UserContactsCommand
+import pl.marpiec.socnet.service.usercontacts.UserContactsCommand
 import pl.marpiec.socnet.web.application.SocnetSession
 import pl.marpiec.util.UID
 import pl.marpiec.cqrs.UidGenerator
 import pl.marpiec.socnet.web.component.wicket.form.StandardAjaxSecureForm
-import socnet.model.UserContacts
+import pl.marpiec.socnet.model.UserContacts
 import pl.marpiec.socnet.web.wicket.SecureFormModel
-import socnet.model.usercontacts.Invitation
+import pl.marpiec.socnet.model.usercontacts.Invitation
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
-class PersonContactInfo(id: String, userId:UID, userContacts: UserContacts) extends Panel(id) {
+class PersonContactInfo(id: String, userId: UID, userContacts: UserContacts) extends Panel(id) {
 
   @SpringBean
   private var userContactsCommand: UserContactsCommand = _
@@ -158,9 +158,9 @@ class PersonContactInfo(id: String, userId:UID, userContacts: UserContacts) exte
   def addOrReplaceYourself {
     addOrReplace(new Fragment("contactStatus", "yourself", PersonContactInfo.this))
   }
-  
-  private def isInvitationReceivedAndWaitingForAcceptance(invitationReceivedOption:Option[Invitation]):Boolean = {
-    if(invitationReceivedOption.isDefined) {
+
+  private def isInvitationReceivedAndWaitingForAcceptance(invitationReceivedOption: Option[Invitation]): Boolean = {
+    if (invitationReceivedOption.isDefined) {
       val invitation = invitationReceivedOption.get
       !invitation.declined
     } else {

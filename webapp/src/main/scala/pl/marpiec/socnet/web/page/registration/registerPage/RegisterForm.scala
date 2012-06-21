@@ -47,7 +47,7 @@ class RegisterForm(id: String) extends Panel(id) {
             userCommand.createRegisterUserTrigger(model.firstName, model.lastName, model.email, model.password)
             setResponsePage(classOf[ConfirmRegistrationPage])
           } catch {
-            case ex:EntryAlreadyExistsException => {
+            case ex: EntryAlreadyExistsException => {
               warningMessage.setObject("Uzytkownik o podasnym adresie email zostal juz zarejestrowany")
             }
           }

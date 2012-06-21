@@ -7,7 +7,7 @@ import pl.marpiec.socnet.model.{User, UserProfile}
 import org.apache.wicket.Component
 import org.apache.wicket.ajax.AjaxRequestTarget
 import pl.marpiec.socnet.web.wicket.SecureFormModel
-import socnet.model.userprofile.Identifiable
+import pl.marpiec.socnet.model.userprofile.Identifiable
 import pl.marpiec.socnet.service.userprofile.UserProfileCommand
 import org.apache.wicket.spring.injection.annot.SpringBean
 

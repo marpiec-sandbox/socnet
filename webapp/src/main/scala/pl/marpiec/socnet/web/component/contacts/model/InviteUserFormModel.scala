@@ -7,5 +7,5 @@ import pl.marpiec.socnet.web.wicket.SecureFormModel
  */
 
 class InviteUserFormModel extends SecureFormModel {
-  var inviteMessage:String = _
+  var inviteMessage: String = _
 }

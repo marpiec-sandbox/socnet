@@ -23,7 +23,7 @@ class TriggeredEventsDatabaseImpl @Autowired()(val jdbcTemplate: JdbcTemplate) e
 
   def addNewTriggeredEvent(userId: UID, event: Event): String = {
 
-    val trigger = generateRandomTrigger
+    val trigger = generateRandomTrigger()
 
     jdbcTemplate.update("INSERT INTO trigger_events (id, user_uid, creation_time, execution_time, trigger, event_type, event) " +
       "VALUES (NEXTVAL('trigger_events_seq'), ?, ?, NULL, ?, ?, ?)",
@@ -72,14 +72,14 @@ class TriggeredEventsDatabaseImpl @Autowired()(val jdbcTemplate: JdbcTemplate) e
   }
 
 
-  def markEventAsExecuted(trigger: String) = {
+  def markEventAsExecuted(trigger: String) {
     val updateEvent = jdbcTemplate.update("UPDATE trigger_events SET execution_time=? " +
       "WHERE execution_time IS NULL AND trigger = ?",
       Array(new Timestamp((new Date).getTime), trigger): _*)
   }
 
   private def generateRandomTrigger(): String = {
-    return RandomStringUtils.randomAlphanumeric(TRIGGER_LENGTH);
+    RandomStringUtils.randomAlphanumeric(TRIGGER_LENGTH)
   }
 }
 

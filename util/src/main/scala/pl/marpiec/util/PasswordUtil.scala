@@ -1,7 +1,5 @@
 package pl.marpiec.util
 
-import util.Random
-import java.security.MessageDigest
 import org.apache.commons.codec.digest.DigestUtils
 import org.apache.commons.lang.{StringUtils, RandomStringUtils}
 
@@ -11,14 +9,15 @@ import org.apache.commons.lang.{StringUtils, RandomStringUtils}
  */
 
 object PasswordUtil {
-  
-  val saltLength = 24; //As recommended by OWASP
+
+  val saltLength = 24;
+  //As recommended by OWASP
   val hashComputationTimes = 4000;
   val systemSalt = System.getenv("SOCNET_SYSTEM_SALT")
-  
-  def generateRandomSalt:String = RandomStringUtils.randomAlphanumeric(saltLength);
 
-  def hashPassword(password:String, salt:String):String = {
+  def generateRandomSalt: String = RandomStringUtils.randomAlphanumeric(saltLength);
+
+  def hashPassword(password: String, salt: String): String = {
 
     if (StringUtils.isBlank(systemSalt)) {
       throw new IllegalStateException("SOCNET_SYSTEM_SALT is not defined!")

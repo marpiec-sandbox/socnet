@@ -6,9 +6,8 @@ import pl.marpiec.socnet.readdatabase.exception.EntryAlreadyExistsException
 import pl.marpiec.cqrs.exception.IncorrectTriggerException
 import org.apache.wicket.markup.html.panel.Fragment
 import pl.marpiec.socnet.web.page.template.SimpleTemplatePage
-import pl.marpiec.socnet.service.user.UserCommand
 import org.apache.wicket.spring.injection.annot.SpringBean
-import socnet.service.user.UserRegistrationCommand
+import pl.marpiec.socnet.service.user.UserRegistrationCommand
 
 /**
  * @author Marcin Pieciukiewicz

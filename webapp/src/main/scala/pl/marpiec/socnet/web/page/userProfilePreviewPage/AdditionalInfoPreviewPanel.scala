@@ -1,7 +1,7 @@
 package pl.marpiec.socnet.web.page.userProfilePreviewPage
 
 import org.apache.wicket.markup.html.panel.Panel
-import socnet.model.userprofile.AdditionalInfo
+import pl.marpiec.socnet.model.userprofile.AdditionalInfo
 import org.apache.wicket.model.PropertyModel
 import pl.marpiec.socnet.web.page.editUserProfilePage.model.AdditionalInfoDateIModel
 import org.apache.wicket.markup.html.basic.{MultiLineLabel, Label}

@@ -7,10 +7,12 @@
     <div>Nowa wiadomość do użytkownika: <span wicket:id="contactFullName">contactFullName</span></div>
 
     <form wicket:id="startConversationForm" onsubmit="doCheck()">
-        <input type="hidden" wicket:id="sessionToken" />
+        <input type="hidden" wicket:id="sessionToken"/>
+
         <div><span wicket:id="warningMessage"></span></div>
 
-        <input type="text" wicket:id="conversationTitle" />
+        <input type="text" wicket:id="conversationTitle"/>
+
         <div wicket:id="bbCodeEditor"></div>
 
         <a wicket:id="cancelButton">Anuluj</a>

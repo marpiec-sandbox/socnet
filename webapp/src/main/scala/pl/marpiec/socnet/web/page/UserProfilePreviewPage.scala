@@ -8,17 +8,16 @@ import collection.mutable.ListBuffer
 import org.apache.wicket.markup.repeater.RepeatingView
 import org.apache.wicket.markup.html.list.AbstractItem
 import pl.marpiec.socnet.model.userprofile.{Education, JobExperience}
-import socnet.model.userprofile.AdditionalInfo
+import pl.marpiec.socnet.model.userprofile.AdditionalInfo
 import userProfilePreviewPage._
 import pl.marpiec.socnet.readdatabase.{UserDatabase, UserProfileDatabase}
 import org.apache.wicket.spring.injection.annot.SpringBean
 import org.apache.wicket.markup.html.link.BookmarkablePageLink
 import pl.marpiec.socnet.model.{User, UserProfile}
-import org.apache.wicket.markup.html.basic.Label
 import pl.marpiec.socnet.web.component.contacts.PersonContactInfo
-import pl.marpiec.socnet.web.application.{SocnetSession, SocnetRoles}
-import socnet.model.UserContacts
-import socnet.readdatabase.UserContactsDatabase
+import pl.marpiec.socnet.web.application.SocnetRoles
+import pl.marpiec.socnet.model.UserContacts
+import pl.marpiec.socnet.readdatabase.UserContactsDatabase
 import pl.marpiec.socnet.web.component.conversation.StartConversationPanel
 
 /**
@@ -103,11 +102,11 @@ object UserProfilePreviewPage {
   val USER_ID_PARAM = "userId"
   val USER_NAME_PARAM = "userName"
 
-  def getLink(user:User):BookmarkablePageLink[_] = {
+  def getLink(user: User): BookmarkablePageLink[_] = {
     new BookmarkablePageLink("profileLink", classOf[UserProfilePreviewPage], getParametersForLink(user))
   }
-  
-  def getParametersForLink(user:User):PageParameters = {
+
+  def getParametersForLink(user: User): PageParameters = {
     new PageParameters().add(USER_ID_PARAM, user.id).add(USER_NAME_PARAM, user.fullName)
   }
 }

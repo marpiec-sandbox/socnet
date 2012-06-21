@@ -7,7 +7,7 @@ import org.apache.wicket.model.CompoundPropertyModel
  * @author Marcin Pieciukiewicz
  */
 
-class SimpleStatelessForm(id:String) extends StatelessForm[StatelessForm[_]](id) {
+class SimpleStatelessForm(id: String) extends StatelessForm[StatelessForm[_]](id) {
 
   setModel(new CompoundPropertyModel[StatelessForm[_]](this.asInstanceOf[StatelessForm[_]]))
 

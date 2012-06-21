@@ -5,7 +5,7 @@ import scala.collection.JavaConversions._
 import elementListPanel.ElementListPanel
 import pl.marpiec.socnet.model.{UserProfile, User}
 import collection.mutable.ListBuffer
-import socnet.constant.Month
+import pl.marpiec.socnet.constant.Month
 import org.apache.wicket.markup.html.panel.Panel
 import pl.marpiec.util.UID
 import org.apache.wicket.markup.html.form._

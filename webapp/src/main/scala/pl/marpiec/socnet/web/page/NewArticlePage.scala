@@ -1,13 +1,13 @@
 package pl.marpiec.socnet.web.page
 
-import org.apache.wicket.model.{CompoundPropertyModel, Model}
+import org.apache.wicket.model.Model
 import org.apache.wicket.markup.html.basic.Label
 import pl.marpiec.socnet.model.User
 import pl.marpiec.socnet.web.authorization.SecureWebPage
-import pl.marpiec.socnet.web.application.{SocnetRoles, SocnetSession}
+import pl.marpiec.socnet.web.application.SocnetRoles
 import pl.marpiec.socnet.service.article.ArticleCommand
 import org.apache.wicket.spring.injection.annot.SpringBean
-import org.apache.wicket.markup.html.form.{StatelessForm, TextArea, Button, Form}
+import org.apache.wicket.markup.html.form.{TextArea, Button}
 import pl.marpiec.socnet.web.wicket.SimpleStatelessForm
 
 /**
@@ -20,7 +20,7 @@ class NewArticlePage extends SecureWebPage(SocnetRoles.ARTICLE_AUTHOR) {
   private var articleCommand: ArticleCommand = _
 
   add(new SimpleStatelessForm("newArticleForm") {
-    var content:String = _
+    var content: String = _
     private val warningMessage: Model[String] = new Model[String]("");
 
 

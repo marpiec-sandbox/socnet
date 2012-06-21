@@ -11,10 +11,10 @@ import java.lang.reflect.{Type, Field, Method}
 object BeanUtil {
 
   private val CACHE_LOCK = new Object
-  private val ZERO_INT:java.lang.Integer = 0
-  private val ZERO_LONG:java.lang.Long = 0L
-  private val ZERO_FLOAT:java.lang.Float = 0.0f
-  private val ZERO_DOUBLE:java.lang.Double = 0.0
+  private val ZERO_INT: java.lang.Integer = 0
+  private val ZERO_LONG: java.lang.Long = 0L
+  private val ZERO_FLOAT: java.lang.Float = 0.0f
+  private val ZERO_DOUBLE: java.lang.Double = 0.0
 
   private var fieldsCache = Map[Class[_], List[String]]()
   private var fieldCache = Map[(Class[_], String), Field]()
@@ -26,7 +26,7 @@ object BeanUtil {
 
     val beanClass = bean.getClass
 
-    getDeclaredFields(beanClass).foreach((fieldName:String) => {
+    getDeclaredFields(beanClass).foreach((fieldName: String) => {
       val field = getDeclaredField(beanClass, fieldName)
       val setter = settersCache.get(field).get
       val fieldType = field.getGenericType
@@ -36,7 +36,7 @@ object BeanUtil {
   }
 
 
-  private def setDefaultValueIntoField(bean: AnyRef, setter:Method, fieldType: Type): AnyRef = {
+  private def setDefaultValueIntoField(bean: AnyRef, setter: Method, fieldType: Type): AnyRef = {
     if (fieldType == classOf[Int]) {
       setter.invoke(bean, ZERO_INT)
     } else if (fieldType == classOf[Boolean]) {
@@ -57,24 +57,23 @@ object BeanUtil {
   }
 
 
+  def copyProperties[T <: AnyRef](toBean: T, fromBean: AnyRef): T = {
 
-  def copyProperties[T <: AnyRef](toBean:T, fromBean:AnyRef):T = {
-
-    getDeclaredFields(toBean.getClass).foreach((fieldName:String) => {
+    getDeclaredFields(toBean.getClass).foreach((fieldName: String) => {
       try {
         val fromField = getDeclaredField(fromBean.getClass, fieldName)
         val toField = getDeclaredField(toBean.getClass, fieldName)
 
         copyValuesIfTypeMatches(toBean, toField, fromBean, fromField)
       } catch {
-        case ex:NoSuchFieldException => {}
+        case ex: NoSuchFieldException => {}
       }
     })
 
     toBean
   }
 
-  private def copyValuesIfTypeMatches[T <: AnyRef](toBean: T, toField:Field, fromBean: AnyRef, fromField:Field): Any = {
+  private def copyValuesIfTypeMatches[T <: AnyRef](toBean: T, toField: Field, fromBean: AnyRef, fromField: Field): Any = {
     if (fromField.getGenericType == toField.getGenericType) {
       val getter = gettersCache.get(fromField).get
       val setter = settersCache.get(toField).get
@@ -83,7 +82,7 @@ object BeanUtil {
   }
 
 
-  private def getDeclaredFields(fromClazz:Class[_]):List[String] = {
+  private def getDeclaredFields(fromClazz: Class[_]): List[String] = {
     val fieldsOption = fieldsCache.get(fromClazz)
     if (fieldsOption.isEmpty) {
       CACHE_LOCK.synchronized {
@@ -106,7 +105,7 @@ object BeanUtil {
     getFieldNamesAfterPuttingIntoCache(fromClazz, fields)
   }
 
-  private def getFieldNamesAfterPuttingIntoCache(clazz: Class[_], fields:List[Field]): List[String] = {
+  private def getFieldNamesAfterPuttingIntoCache(clazz: Class[_], fields: List[Field]): List[String] = {
     var fieldsNames = List[String]()
     fields.foreach((f: Field) => {
       fieldsNames = f.getName :: fieldsNames
@@ -115,7 +114,7 @@ object BeanUtil {
     fieldsNames
   }
 
-  private def getDeclaredField(fromClazz:Class[_], name:String):Field = {
+  private def getDeclaredField(fromClazz: Class[_], name: String): Field = {
     val fieldOption = fieldCache.get((fromClazz, name))
     if (fieldOption.isEmpty) {
       CACHE_LOCK.synchronized {
@@ -147,7 +146,9 @@ object BeanUtil {
         val field = clazz.getDeclaredField(name)
         return (field, clazz)
       } catch {
-        case ex: NoSuchFieldException => {/*ignore*/}
+        case ex: NoSuchFieldException => {
+          /*ignore*/
+        }
       }
       clazz = clazz.getSuperclass
     } while (clazz != null)

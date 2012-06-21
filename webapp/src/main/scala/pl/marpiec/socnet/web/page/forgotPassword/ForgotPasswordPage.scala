@@ -1,8 +1,7 @@
 package pl.marpiec.socnet.web.page.forgotPassword
 
 import pl.marpiec.socnet.web.page.template.SimpleTemplatePage
-import org.apache.wicket.model.CompoundPropertyModel
-import org.apache.wicket.markup.html.form.{TextField, StatelessForm}
+import org.apache.wicket.markup.html.form.TextField
 import scala.Predef._
 import pl.marpiec.util.validation.EmailValidator
 import org.apache.wicket.markup.html.link.BookmarkablePageLink

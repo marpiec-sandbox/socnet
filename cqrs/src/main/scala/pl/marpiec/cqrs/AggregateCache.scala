@@ -8,6 +8,7 @@ import pl.marpiec.util.UID
 
 trait AggregateCache {
 
-  def get(entityClass: Class[_ <: Aggregate], id:UID):Option[Aggregate]
-  def put(entity:Aggregate)
+  def get(entityClass: Class[_ <: Aggregate], id: UID): Option[Aggregate]
+
+  def put(entity: Aggregate)
 }

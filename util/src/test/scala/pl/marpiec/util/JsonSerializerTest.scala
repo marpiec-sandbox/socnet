@@ -25,7 +25,7 @@ class OptionalDataObject {
 @Test
 class JsonSerializerTest {
   
-  def testSimpleObjectSerializationAndDeserialization {
+  def testSimpleObjectSerializationAndDeserialization() {
     val jsonSerializer = new JsonSerializer
     
     val sdo = new SimpleDataObject
@@ -41,7 +41,7 @@ class JsonSerializerTest {
     assertEquals(sdoFromJson.asInstanceOf[SimpleDataObject].stringValue, sdo.stringValue)
   }
   
-  def testEmptyOptionSerializationAndDeserialization {
+  def testEmptyOptionSerializationAndDeserialization() {
 
     val jsonSerializer = new JsonSerializer
 
@@ -68,7 +68,7 @@ class JsonSerializerTest {
   }
 
 
-  def testFilledOptionSerializationAndDeserialization {
+  def testFilledOptionSerializationAndDeserialization() {
 
     val jsonSerializer = new JsonSerializer
 

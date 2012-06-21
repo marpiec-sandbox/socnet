@@ -14,7 +14,7 @@ import pl.marpiec.socnet.web.component.wicket.form.StandardAjaxSecureForm
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.model.{PropertyModel, CompoundPropertyModel}
 import org.apache.wicket.markup.html.form.TextField
-import socnet.service.conversation.ConversationCommand
+import pl.marpiec.socnet.service.conversation.ConversationCommand
 import pl.marpiec.cqrs.UidGenerator
 import pl.marpiec.socnet.web.page.UserProfilePreviewPage
 import org.apache.commons.lang.StringUtils

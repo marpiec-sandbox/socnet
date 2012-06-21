@@ -17,13 +17,13 @@ class SocnetApplication extends WebApplication {
   override def getHomePage = classOf[HomePage];
 
   @Autowired
-  var eventStore:EventStore = _
+  var eventStore: EventStore = _
 
   @Autowired
-  var databaseInitializer:DatabaseInitializer = _
+  var databaseInitializer: DatabaseInitializer = _
 
   @Autowired
-  var userQuery:UserQuery = _
+  var userQuery: UserQuery = _
 
   override def init {
 

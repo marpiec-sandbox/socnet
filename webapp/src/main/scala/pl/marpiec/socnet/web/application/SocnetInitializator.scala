@@ -1,8 +1,7 @@
 package pl.marpiec.socnet.web.application
 
 import org.joda.time.LocalDateTime
-import pl.marpiec.cqrs.{EventRow, DataStore, EventStore, DatabaseInitializer}
-import socnet.service.conversation.event.{CreateConversationEvent, CreateMessageEvent}
+import pl.marpiec.cqrs.{EventStore, DatabaseInitializer}
 
 /**
  * @author Marcin Pieciukiewicz
@@ -33,25 +32,25 @@ object SocnetInitializator {
 
 
   def migrateEvents(eventStore: EventStore) {
-   // example
-   /* eventStore.getAllEventsByType(classOf[CreateMessageEvent]).foreach((eventRow:EventRow) => {
-      var event = eventRow.event.asInstanceOf[CreateMessageEvent]
-      if(event.sentTime==null) {
-        event = new CreateMessageEvent(event.userId, event.messageText, new LocalDateTime(), event.messageId)
-        val fixedEventRow = new EventRow(eventRow.userId, eventRow.aggregateId, eventRow.expectedVersion, event)
-        eventStore.updateEvent(fixedEventRow)
-      }
-    })         */
-   /*
-    eventStore.getAllEventsByType(classOf[CreateConversationEvent]).foreach((eventRow:EventRow) => {
-      var event = eventRow.event.asInstanceOf[CreateConversationEvent]
-      if(event.creationTime==null) {
-        event = new CreateConversationEvent(event.creatorUserId, event.title, event.participantsUserIds, new LocalDateTime(),
-          event.firstMessageText, event.firstMessageId)
-        val fixedEventRow = new EventRow(eventRow.userId, eventRow.aggregateId, eventRow.expectedVersion, event)
-        eventStore.updateEvent(fixedEventRow)
-      }
-    })    */
+    // example
+    /* eventStore.getAllEventsByType(classOf[CreateMessageEvent]).foreach((eventRow:EventRow) => {
+var event = eventRow.event.asInstanceOf[CreateMessageEvent]
+if(event.sentTime==null) {
+event = new CreateMessageEvent(event.userId, event.messageText, new LocalDateTime(), event.messageId)
+val fixedEventRow = new EventRow(eventRow.userId, eventRow.aggregateId, eventRow.expectedVersion, event)
+eventStore.updateEvent(fixedEventRow)
+}
+})         */
+    /*
+eventStore.getAllEventsByType(classOf[CreateConversationEvent]).foreach((eventRow:EventRow) => {
+  var event = eventRow.event.asInstanceOf[CreateConversationEvent]
+  if(event.creationTime==null) {
+    event = new CreateConversationEvent(event.creatorUserId, event.title, event.participantsUserIds, new LocalDateTime(),
+      event.firstMessageText, event.firstMessageId)
+    val fixedEventRow = new EventRow(eventRow.userId, eventRow.aggregateId, eventRow.expectedVersion, event)
+    eventStore.updateEvent(fixedEventRow)
+  }
+})    */
   }
 
 }

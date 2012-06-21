@@ -7,7 +7,7 @@ import xml.Utility
  */
 
 object BBCodeConverter {
-  def convert(input:String):String = {
+  def convert(input: String): String = {
 
     var output = Utility.escape(input)
 

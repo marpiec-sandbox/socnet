@@ -5,5 +5,5 @@ package pl.marpiec.util.senum
  */
 
 abstract class SEnum[T] {
-  def getName(): String
+  def getName: String
 }

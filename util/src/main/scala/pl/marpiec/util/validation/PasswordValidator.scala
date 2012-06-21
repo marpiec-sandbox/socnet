@@ -17,23 +17,23 @@ object PasswordValidator {
   val passwordNotTheSameMessage = "Given passwords are not the same"
 
 
-  def validate(result:ValidationResult, password: String, repeatPassword: String) {
-    if (password==null || password.isEmpty) {
+  def validate(result: ValidationResult, password: String, repeatPassword: String) {
+    if (password == null || password.isEmpty) {
       result.addError(requiredMessage)
       return
     }
 
-    if(password.size < 5) {
+    if (password.size < 5) {
       result.addError(passwordToShortMessage)
       return
     }
 
-    if(password.size > 64) {
+    if (password.size > 64) {
       result.addError(passwordToLongMessage)
       return
     }
 
-    if (repeatPassword==null || repeatPassword.isEmpty) {
+    if (repeatPassword == null || repeatPassword.isEmpty) {
       result.addError(repeatIsRequiredMessage)
       return
     }
@@ -42,7 +42,7 @@ object PasswordValidator {
       result.addError(passwordNotTheSameMessage)
       return
     }
-      
+
 
   }
 

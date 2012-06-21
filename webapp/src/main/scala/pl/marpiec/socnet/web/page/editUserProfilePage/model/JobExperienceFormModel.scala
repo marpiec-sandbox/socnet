@@ -2,7 +2,7 @@ package pl.marpiec.socnet.web.page.editUserProfilePage.model
 
 import pl.marpiec.socnet.web.wicket.SecureFormModel
 import pl.marpiec.socnet.model.userprofile.JobExperience
-import socnet.constant.Month
+import pl.marpiec.socnet.constant.Month
 import pl.marpiec.util.{Conversion, BeanUtil, UID}
 
 /**
@@ -16,12 +16,12 @@ class JobExperienceFormModel extends SecureFormModel {
   var companyName: String = ""
   var position: String = ""
   var description: String = ""
-  
+
   var currentJob: Boolean = false
 
   var fromMonth: Month = null
   var fromYear: String = _
-  
+
   var toMonth: Month = null
   var toYear: String = _
 
@@ -29,19 +29,19 @@ class JobExperienceFormModel extends SecureFormModel {
 
 object JobExperienceFormModel {
 
-  def apply(param:JobExperience) = {
+  def apply(param: JobExperience) = {
     val model = new JobExperienceFormModel
     copy(model, param)
     model
   }
 
-  def copy(to:JobExperienceFormModel, from:JobExperience):JobExperienceFormModel = {
+  def copy(to: JobExperienceFormModel, from: JobExperience): JobExperienceFormModel = {
     BeanUtil.copyProperties(to, from)
-    
+
     to.fromYear = Conversion.emptyIfZero(from.fromYear)
     to.fromMonth = from.fromMonthOption.getOrElse(null)
-    
-    if(from.currentJob) {
+
+    if (from.currentJob) {
       to.toYear = ""
       to.toMonth = null
     } else {
@@ -51,12 +51,12 @@ object JobExperienceFormModel {
     to
   }
 
-  def copy(to:JobExperience, from:JobExperienceFormModel):JobExperience = {
+  def copy(to: JobExperience, from: JobExperienceFormModel): JobExperience = {
     BeanUtil.copyProperties(to, from)
 
     to.fromYear = from.fromYear.toInt
     to.fromMonthOption = Option(from.fromMonth)
-    if(to.currentJob) {
+    if (to.currentJob) {
       to.toYear = 0
       to.toMonthOption = None
     } else {

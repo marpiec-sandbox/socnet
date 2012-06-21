@@ -5,7 +5,7 @@ import pl.marpiec.socnet.readdatabase.UserProfileDatabase
 import pl.marpiec.socnet.model.UserProfile
 import pl.marpiec.socnet.service.userprofile.UserProfileCommand
 import pl.marpiec.socnet.web.authorization.SecureWebPage
-import pl.marpiec.socnet.web.application.{SocnetRoles, SocnetSession}
+import pl.marpiec.socnet.web.application.SocnetRoles
 import org.apache.wicket.spring.injection.annot.SpringBean
 import pl.marpiec.cqrs.UidGenerator
 
@@ -23,7 +23,7 @@ class EditUserProfilePage extends SecureWebPage(SocnetRoles.USER) {
   @SpringBean
   var userProfileDatabase: UserProfileDatabase = _
   @SpringBean
-  var uidGenerator:UidGenerator = _
+  var uidGenerator: UidGenerator = _
 
 
   val userProfileOption = userProfileDatabase.getUserProfileByUserId(session.user.id)
@@ -35,7 +35,6 @@ class EditUserProfilePage extends SecureWebPage(SocnetRoles.USER) {
   add(new JobExperienceListPanel("jobExperienceListPanel", session.user, userProfile, userProfile.jobExperience))
   add(new EducationListPanel("educationListPanel", session.user, userProfile, userProfile.education))
   add(new AdditionalInfoListPanel("additionalInfoListPanel", session.user, userProfile, userProfile.additionalInfo))
-
 
 
   //methods

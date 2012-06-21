@@ -11,14 +11,14 @@ import org.apache.commons.lang.StringUtils
  */
 
 @Service("databaseInitializer")
-class DatabaseInitializerImpl @Autowired() (val jdbcTemplate:JdbcTemplate) extends DatabaseInitializer {
+class DatabaseInitializerImpl @Autowired()(val jdbcTemplate: JdbcTemplate) extends DatabaseInitializer {
 
   val FILE_NAME = "eventStore.sql"
 
   def initDatabase() {
 
     val source = Source.fromURL(getClass.getClassLoader.getResource(FILE_NAME))
-    val lines = source.getLines
+    val lines = source.getLines()
 
     lines.foreach((line: String) => {
       executeSqlCommand(line)

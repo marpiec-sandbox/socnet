@@ -1,8 +1,7 @@
 package pl.marpiec.socnet.web.authorization
 
 import org.apache.wicket.Component
-import org.apache.wicket.authroles.authorization.strategies.role.metadata.{ActionPermissions, MetaDataRoleAuthorizationStrategy}
-import org.apache.wicket.authroles.authorization.strategies.role.Roles
+import org.apache.wicket.authroles.authorization.strategies.role.metadata.MetaDataRoleAuthorizationStrategy
 
 /**
  * @author Marcin Pieciukiewicz

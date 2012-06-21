@@ -20,7 +20,7 @@ class LocalDateTypeConverter extends JsonSerializer[LocalDate] with JsonDeserial
 
   def deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext) = {
     try {
-      DateTimeFormat.forPattern(PATTERN).parseDateTime(json.getAsString()).toLocalDate
+      DateTimeFormat.forPattern(PATTERN).parseDateTime(json.getAsString).toLocalDate
     } catch {
       case e: Exception => {
         // May be it came in formatted as a java.util.Date, so try that

@@ -14,7 +14,7 @@ trait EventStore {
 
   def addEvent(event: EventRow)
 
-  /** Use only for migrating events, not for normal business!!! */
+  /**Use only for migrating events, not for normal business!!! */
   @deprecated
   def updateEvent(eventRow: EventRow)
 
@@ -22,6 +22,6 @@ trait EventStore {
 
   def addListener(listener: EventStoreListener)
 
-  def callListenersForAllAggregates
+  def callListenersForAllAggregates()
 
 }

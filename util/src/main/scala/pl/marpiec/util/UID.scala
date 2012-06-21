@@ -14,7 +14,7 @@ class UID(val uid: Long) extends Serializable with Comparable[UID] {
   override def hashCode() = uid.hashCode()
 
   override def equals(obj: Any) = {
-    if(obj.isInstanceOf[UID]) {
+    if (obj.isInstanceOf[UID]) {
       val objUid: UID = obj.asInstanceOf[UID]
       objUid.uid.equals(uid)
     } else {
@@ -24,12 +24,12 @@ class UID(val uid: Long) extends Serializable with Comparable[UID] {
 }
 
 object UID {
-  def parseOrZero(str:String):UID = {
+  def parseOrZero(str: String): UID = {
     try {
       new UID(str.toLong)
     } catch {
-      case e:NumberFormatException => new UID(0)
-      case e:Exception => throw new IllegalStateException("It shouldn't happen , ever.")
+      case e: NumberFormatException => new UID(0)
+      case e: Exception => throw new IllegalStateException("It shouldn't happen , ever.")
     }
   }
 }

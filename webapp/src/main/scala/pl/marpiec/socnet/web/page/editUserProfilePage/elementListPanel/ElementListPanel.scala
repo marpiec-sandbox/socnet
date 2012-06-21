@@ -10,7 +10,7 @@ import pl.marpiec.socnet.model.{UserProfile, User}
 import org.apache.wicket.{Component, MarkupContainer}
 import org.apache.wicket.markup.html.form.Form
 import pl.marpiec.util.{UID, ValidationResult}
-import socnet.model.userprofile.Identifiable
+import pl.marpiec.socnet.model.userprofile.Identifiable
 import pl.marpiec.socnet.web.wicket.SecureFormModel
 
 
@@ -19,8 +19,7 @@ import pl.marpiec.socnet.web.wicket.SecureFormModel
  */
 
 abstract class ElementListPanel[T <: Identifiable, TM <: SecureFormModel](id: String, val user: User, val userProfile: UserProfile,
-                                       val elements: ListBuffer[T]) extends Panel(id) {
-
+                                                                          val elements: ListBuffer[T]) extends Panel(id) {
 
 
   //schema
@@ -30,15 +29,25 @@ abstract class ElementListPanel[T <: Identifiable, TM <: SecureFormModel](id: St
 
   //abstract methods
   def removeElement(element: T)
+
   def createNewElement: T
+
   def buildFormSchema(form: Form[TM])
+
   def buildPreviewSchema(panel: Panel, element: T)
+
   def validate(form: TM): ValidationResult
+
   def createModelFromElement(element: T): TM
+
   def copyElementToModel(model: TM, element: T)
+
   def copyModelToElement(element: T, model: TM)
+
   def saveNewElement(element: TM, newId: UID)
+
   def saveChangesToElement(model: TM)
+
   def getPageVariation: String
 
   //methods

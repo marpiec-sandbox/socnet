@@ -7,9 +7,9 @@ import pl.marpiec.util.UID
  */
 
 trait EventStoreListener {
-  def startListeningToEventStore(eventStore:EventStore) {
+  def startListeningToEventStore(eventStore: EventStore) {
     eventStore.addListener(this)
   }
 
-  def onEntityChanged(entityClass:Class[_ <: Aggregate], entityId:UID)
+  def onEntityChanged(entityClass: Class[_ <: Aggregate], entityId: UID)
 }

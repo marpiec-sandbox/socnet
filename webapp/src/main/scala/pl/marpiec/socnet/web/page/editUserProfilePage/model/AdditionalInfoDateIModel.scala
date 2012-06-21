@@ -1,9 +1,8 @@
 package pl.marpiec.socnet.web.page.editUserProfilePage.model
 
-import pl.marpiec.socnet.model.userprofile.Education
 import org.apache.wicket.model.AbstractReadOnlyModel
-import socnet.constant.Month
-import socnet.model.userprofile.AdditionalInfo
+import pl.marpiec.socnet.constant.Month
+import pl.marpiec.socnet.model.userprofile.AdditionalInfo
 
 /**
  * @author Marcin Pieciukiewicz

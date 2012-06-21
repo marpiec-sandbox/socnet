@@ -3,7 +3,7 @@ package pl.marpiec.socnet.web.page.contacts
 import pl.marpiec.socnet.web.authorization.SecureWebPage
 import pl.marpiec.socnet.web.application.SocnetRoles
 import org.apache.wicket.spring.injection.annot.SpringBean
-import socnet.readdatabase.UserContactsDatabase
+import pl.marpiec.socnet.readdatabase.UserContactsDatabase
 import pl.marpiec.socnet.readdatabase.UserDatabase
 import org.apache.wicket.markup.repeater.RepeatingView
 import org.apache.wicket.markup.html.list.AbstractItem
@@ -13,8 +13,8 @@ import org.apache.wicket.markup.html.panel.Fragment
 import org.apache.wicket.ajax.AjaxRequestTarget
 import pl.marpiec.socnet.web.component.wicket.form.StandardAjaxSecureForm
 import pl.marpiec.socnet.web.component.contacts.model.InviteUserFormModel
-import socnet.service.usercontacts.UserContactsCommand
-import socnet.model.usercontacts.Invitation
+import pl.marpiec.socnet.service.usercontacts.UserContactsCommand
+import pl.marpiec.socnet.model.usercontacts.Invitation
 import org.apache.wicket.markup.html.WebMarkupContainer
 import pl.marpiec.socnet.web.wicket.SecureFormModel
 import org.apache.wicket.model.CompoundPropertyModel
@@ -85,7 +85,7 @@ class InvitationsReceivedPage extends SecureWebPage(SocnetRoles.USER) {
           addOrReplace(new Fragment("invitationStatus", "declined", InvitationsReceivedPage.this))
         }
 
-        def addOrReplaceWaitingForAcceptance(invitation:Invitation, parent: WebMarkupContainer) {
+        def addOrReplaceWaitingForAcceptance(invitation: Invitation, parent: WebMarkupContainer) {
           addOrReplace(new Fragment("invitationStatus", "waitingForAcceptance", InvitationsReceivedPage.this) {
 
             add(new StandardAjaxSecureForm[SecureFormModel]("inviteForm") {
@@ -112,8 +112,6 @@ class InvitationsReceivedPage extends SecureWebPage(SocnetRoles.USER) {
       })
     })
   })
-
-
 
 
 }

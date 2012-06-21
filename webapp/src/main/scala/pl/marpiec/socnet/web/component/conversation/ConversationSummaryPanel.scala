@@ -9,8 +9,7 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink
 import pl.marpiec.socnet.web.page.conversation.ConversationPage
 import org.apache.wicket.request.mapper.parameter.PageParameters
 import pl.marpiec.util.{UID, DateUtil}
-import socnet.model.{ConversationInfo, Conversation}
-import org.joda.time.LocalDateTime
+import pl.marpiec.socnet.model.{ConversationInfo, Conversation}
 
 /**
  * @author Marcin Pieciukiewicz
@@ -18,7 +17,6 @@ import org.joda.time.LocalDateTime
 
 class ConversationSummaryPanel(id: String, val conversation: Conversation, users: List[User],
                                conversationInfoOption: Option[ConversationInfo]) extends Panel(id) {
-
 
 
   add(createLinkToConversation.add(new Label("conversationTitle", conversation.title)))

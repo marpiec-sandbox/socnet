@@ -9,7 +9,7 @@ import org.apache.wicket.model.CompoundPropertyModel
  * @author Marcin Pieciukiewicz
  */
 
-abstract class SecureForm[M <: SecureFormModel](id:String) extends Form[M](id) {
+abstract class SecureForm[M <: SecureFormModel](id: String) extends Form[M](id) {
 
   initialize
   buildSchema
@@ -17,8 +17,8 @@ abstract class SecureForm[M <: SecureFormModel](id:String) extends Form[M](id) {
   add(new HiddenField[String]("sessionToken"))
 
 
-
   def initialize
+
   def buildSchema
 
   override def onInitialize() {

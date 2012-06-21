@@ -11,7 +11,7 @@ import org.apache.commons.lang.StringUtils
  * @author Marcin Pieciukiewicz
  */
 
-abstract class SecureAjaxButton[F](id:String) extends AjaxButton(id) {
+abstract class SecureAjaxButton[F](id: String) extends AjaxButton(id) {
 
 
   final override def onSubmit(target: AjaxRequestTarget, form: Form[_]) {

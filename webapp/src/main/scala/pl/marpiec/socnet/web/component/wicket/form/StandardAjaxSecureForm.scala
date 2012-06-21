@@ -1,22 +1,17 @@
 package pl.marpiec.socnet.web.component.wicket.form
 
-import pl.marpiec.socnet.web.component.contacts.model.InviteUserFormModel
 import org.apache.wicket.model.CompoundPropertyModel
 import pl.marpiec.socnet.web.application.SocnetSession
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.markup.html.basic.Label
-import org.apache.wicket.markup.html.form.{TextArea, HiddenField, Form}
-import pl.marpiec.socnet.web.wicket.{SecureAjaxButton, SecureFormModel, SecureForm}
-import org.apache.wicket.markup.html.panel.{PanelMarkupSourcingStrategy, IMarkupSourcingStrategy}
+import org.apache.wicket.markup.html.form.{HiddenField, Form}
+import pl.marpiec.socnet.web.wicket.{SecureAjaxButton, SecureFormModel}
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
-abstract class StandardAjaxSecureForm[M <: SecureFormModel](id:String) extends Form[M](id) {
-  /**
-   * {@inheritDoc}
-   */
+abstract class StandardAjaxSecureForm[M <: SecureFormModel](id: String) extends Form[M](id) {
 
   val warningMessageLabel = new Label("warningMessage")
   this.warningMessageLabel.setOutputMarkupId(true)
@@ -49,8 +44,10 @@ abstract class StandardAjaxSecureForm[M <: SecureFormModel](id:String) extends F
   }
 
   def initialize
+
   def buildSchema
 
   def onSecureSubmit(target: AjaxRequestTarget, formModel: M)
+
   def onSecureCancel(target: AjaxRequestTarget, formModel: M)
 }

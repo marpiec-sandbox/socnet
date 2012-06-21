@@ -5,10 +5,10 @@ package pl.marpiec.util
  */
 
 class ValidationResult {
-  var errors:List[String] = List()
+  var errors: List[String] = List()
 
-  def addError(error:String) {
-    errors =  error :: errors
+  def addError(error: String) {
+    errors = error :: errors
   }
 
   def isValid = errors.isEmpty

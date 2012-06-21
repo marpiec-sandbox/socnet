@@ -5,7 +5,7 @@
 
         <span class="warningMessage" wicket:id="warningMessage"></span>
 
-        <input type="hidden" wicket:id="sessionToken" />
+        <input type="hidden" wicket:id="sessionToken"/>
 
         <div class="formRow">
             <span class="label">Nazwa firmy</span>
@@ -15,7 +15,8 @@
         <div class="formRow">
             <span class="label">Stanowisko</span>
             <span class="validatorMessage"></span>
-            <input type="text" wicket:id="position" class="requiredValidator stringValidator" alt="{min:3, max:100, msg:'Stanowisko jest wymagane (minimum 3 litery)'}"/>
+            <input type="text" wicket:id="position" class="requiredValidator stringValidator"
+                   alt="{min:3, max:100, msg:'Stanowisko jest wymagane (minimum 3 litery)'}"/>
         </div>
         <div class="formRow">
             <div>
@@ -25,13 +26,15 @@
             <div class="validatorRow">
                 Od:
                 <select wicket:id="fromMonth"></select>
-                <input type="text" wicket:id="fromYear" class="year numberValidator" maxlength="4" alt="{min:1900, max:2040, msg:'Wymagany poprawny rok np. 2012'}"/>
+                <input type="text" wicket:id="fromYear" class="year numberValidator" maxlength="4"
+                       alt="{min:1900, max:2040, msg:'Wymagany poprawny rok np. 2012'}"/>
                 <span class="validatorMessage"></span>
             </div>
             <div class="validatorRow toDate">
                 Do:
                 <select wicket:id="toMonth"></select>
-                <input type="text" wicket:id="toYear" class="year numberValidator" maxlength="4" alt="{min:1900, max:2040, msg:'Wymagany poprawny rok np. 2012'}"/>
+                <input type="text" wicket:id="toYear" class="year numberValidator" maxlength="4"
+                       alt="{min:1900, max:2040, msg:'Wymagany poprawny rok np. 2012'}"/>
                 <span class="validatorMessage"></span>
             </div>
         </div>
@@ -50,7 +53,7 @@
             function disableToDateIfCurrentJob(jqThis) {
                 var jqForm = jqThis.parents("form");
                 var checked = jqForm.find(".currentJob").attr("checked");
-                var newVisibility = checked?'hidden':'visible';
+                var newVisibility = checked ? 'hidden' : 'visible';
                 jqForm.find(".toDate").css({visibility:newVisibility});
             }
 
@@ -58,13 +61,13 @@
             initValidation(".experienceForm", ".submitButton");
 
 
-            jQuery(function() {
+            jQuery(function () {
 
-                jQuery(".experienceForm .currentJob").each(function() {
+                jQuery(".experienceForm .currentJob").each(function () {
                     disableToDateIfCurrentJob(jQuery(this));
-                })
+                });
 
-                jQuery(".experienceForm .currentJob").change(function() {
+                jQuery(".experienceForm .currentJob").change(function () {
                     disableToDateIfCurrentJob(jQuery(this))
                 });
             })

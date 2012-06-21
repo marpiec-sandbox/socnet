@@ -7,8 +7,8 @@ import org.apache.wicket.markup.repeater.RepeatingView
 import pl.marpiec.socnet.readdatabase.UserDatabase
 import org.apache.wicket.markup.html.list.AbstractItem
 import pl.marpiec.socnet.web.component.conversation.ConversationSummaryPanel
-import socnet.readdatabase.{ConversationInfoDatabase, ConversationDatabase}
-import socnet.model.{ConversationInfo, Conversation}
+import pl.marpiec.socnet.readdatabase.{ConversationInfoDatabase, ConversationDatabase}
+import pl.marpiec.socnet.model.{ConversationInfo, Conversation}
 import pl.marpiec.util.UID
 
 /**
@@ -25,11 +25,11 @@ class UserConversationsPage extends SecureWebPage(SocnetRoles.USER) {
 
   @SpringBean
   private var conversationInfoDatabase: ConversationInfoDatabase = _
-  
-  
+
+
   val userConversations: List[Conversation] = conversationDatabase.getConversationsByParticipantUserId(session.userId())
   val conversationInfoMap: Map[UID, ConversationInfo] = loadConversationInfo(userConversations)
-  
+
 
   add(new RepeatingView("conversation") {
 
@@ -45,15 +45,14 @@ class UserConversationsPage extends SecureWebPage(SocnetRoles.USER) {
   })
 
 
-
   private def loadConversationInfo(conversations: List[Conversation]): Map[UID, ConversationInfo] = {
 
     val userId = session.userId
-    
+
     var userIdConversationIdList: scala.List[(UID, UID)] = prepareKeyList(conversations, userId)
-    val conversationInfoList:List[ConversationInfo] = conversationInfoDatabase.getConversationInfoList(userIdConversationIdList)
+    val conversationInfoList: List[ConversationInfo] = conversationInfoDatabase.getConversationInfoList(userIdConversationIdList)
     createConversationInfoMapFromList(conversationInfoList)
-    
+
   }
 
   private def prepareKeyList(conversations: List[Conversation], userId: UID): List[(UID, UID)] = {
@@ -65,7 +64,7 @@ class UserConversationsPage extends SecureWebPage(SocnetRoles.USER) {
     userIdConversationIdList
   }
 
-  private def createConversationInfoMapFromList(conversationInfoList:List[ConversationInfo]): Map[UID, ConversationInfo] = {
+  private def createConversationInfoMapFromList(conversationInfoList: List[ConversationInfo]): Map[UID, ConversationInfo] = {
     var conversationsMap: Map[UID, ConversationInfo] = Map()
 
     conversationInfoList.foreach(conversationInfo => {
@@ -75,5 +74,5 @@ class UserConversationsPage extends SecureWebPage(SocnetRoles.USER) {
     conversationsMap
   }
 
-  
+
 }

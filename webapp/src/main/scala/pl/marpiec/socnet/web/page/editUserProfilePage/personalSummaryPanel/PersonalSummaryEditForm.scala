@@ -7,7 +7,7 @@ import pl.marpiec.socnet.service.userprofile.UserProfileCommand
 import pl.marpiec.socnet.web.wicket.{SecureAjaxButton, SecureForm}
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.model.CompoundPropertyModel
-import socnet.constant.Province
+import pl.marpiec.socnet.constant.Province
 import org.apache.wicket.markup.html.form._
 import pl.marpiec.socnet.web.page.editUserProfilePage.model.{PersonalSummaryFormModelValidator, PersonalSummaryFormModel}
 import org.apache.wicket.markup.html.basic.Label

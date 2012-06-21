@@ -15,7 +15,7 @@ import collection.mutable.ListBuffer
  */
 
 @Repository("eventStore")
-class EventStoreDbImpl @Autowired() (val jdbcTemplate:JdbcTemplate) extends EventStore {
+class EventStoreDbImpl @Autowired()(val jdbcTemplate: JdbcTemplate) extends EventStore {
 
   val DEFAULT_VERSION = 1
 
@@ -53,7 +53,7 @@ class EventStoreDbImpl @Autowired() (val jdbcTemplate:JdbcTemplate) extends Even
 
   def getAllEventsByType(entityClass: Class[_]): ListBuffer[EventRow] = {
     val list = ListBuffer[EventRow]()
-    list.addAll(jdbcTemplate.query(SELECT_EVENTS_BY_TYPE.replace("?", "'"+entityClass.getName+"'"), eventRowRowMapper))
+    list.addAll(jdbcTemplate.query(SELECT_EVENTS_BY_TYPE.replace("?", "'" + entityClass.getName + "'"), eventRowRowMapper))
     list
   }
 
@@ -65,17 +65,17 @@ class EventStoreDbImpl @Autowired() (val jdbcTemplate:JdbcTemplate) extends Even
     addEventWithVersionCheck(event, true)
   }
 
-  private def addEventWithVersionCheck(eventRow: EventRow, checkVersion:Boolean) {
+  private def addEventWithVersionCheck(eventRow: EventRow, checkVersion: Boolean) {
 
 
     val currentVersion = jdbcTemplate.queryForInt("SELECT version FROM aggregates WHERE uid = ? AND class = ?",
-                                Array(Long.box(eventRow.aggregateId.uid), eventRow.event.entityClass.getName):_*)
+      Array(Long.box(eventRow.aggregateId.uid), eventRow.event.entityClass.getName): _*)
 
     if (currentVersion == 0) {
       throw new IllegalStateException("No aggregate found! ")
     }
 
-    if(!checkVersion) {
+    if (!checkVersion) {
       eventRow.expectedVersion = currentVersion
     }
 
@@ -87,20 +87,20 @@ class EventStoreDbImpl @Autowired() (val jdbcTemplate:JdbcTemplate) extends Even
       "VALUES (NEXTVAL('events_seq'), ?, ?, ?, ?, ?, ?)",
       Array(Long.box(eventRow.userId.uid), Long.box(eventRow.aggregateId.uid),
         new Timestamp(new Date().getTime), Int.box(eventRow.expectedVersion), eventRow.event.getClass.getName,
-        jsonSerializer.toJson(eventRow.event)):_*)
+        jsonSerializer.toJson(eventRow.event)): _*)
 
     jdbcTemplate.update("UPDATE aggregates SET version = version + 1 WHERE uid = ?",
-      Array(Long.box(eventRow.aggregateId.uid)):_*)
+      Array(Long.box(eventRow.aggregateId.uid)): _*)
 
     callAllListenersAboutNewEvent(eventRow.event.entityClass, eventRow.aggregateId)
 
   }
 
-  /** Use only for migrating events, not for normal business!!! */
+  /**Use only for migrating events, not for normal business!!! */
   @deprecated
   def updateEvent(eventRow: EventRow) {
     jdbcTemplate.update("UPDATE events SET event = ? WHERE aggregate_uid = ? AND version = ?",
-      Array(jsonSerializer.toJson(eventRow.event), Long.box(eventRow.aggregateId.uid), Int.box(eventRow.expectedVersion)):_*)
+      Array(jsonSerializer.toJson(eventRow.event), Long.box(eventRow.aggregateId.uid), Int.box(eventRow.expectedVersion)): _*)
   }
 
   def addEventForNewAggregate(newAggregadeId: UID, event: EventRow) {
@@ -108,22 +108,22 @@ class EventStoreDbImpl @Autowired() (val jdbcTemplate:JdbcTemplate) extends Even
     event.aggregateId = newAggregadeId
 
     jdbcTemplate.update("INSERT INTO aggregates (id, class, uid, version) VALUES (NEXTVAL('aggregates_seq'), ?,?,?)",
-    Array(event.event.entityClass.getName, Long.box(newAggregadeId.uid), Int.box(DEFAULT_VERSION)):_*)
+      Array(event.event.entityClass.getName, Long.box(newAggregadeId.uid), Int.box(DEFAULT_VERSION)): _*)
 
     jdbcTemplate.update("INSERT INTO events (id, user_uid, aggregate_uid, event_time, version, event_type, event) " +
       "VALUES (NEXTVAL('events_seq'), ?, ?, ?, ?, ?, ?)",
-        Array(Long.box(event.userId.uid),
-          Long.box(event.aggregateId.uid),
-          new Timestamp(new Date().getTime),
-          Int.box(event.expectedVersion),
-          event.event.getClass.getName,
-          jsonSerializer.toJson(event.event)):_*)
+      Array(Long.box(event.userId.uid),
+        Long.box(event.aggregateId.uid),
+        new Timestamp(new Date().getTime),
+        Int.box(event.expectedVersion),
+        event.event.getClass.getName,
+        jsonSerializer.toJson(event.event)): _*)
 
     callAllListenersAboutNewEvent(event.event.entityClass, event.aggregateId)
 
   }
 
-  def callListenersForAllAggregates {
+  def callListenersForAllAggregates() {
 
     jdbcTemplate.query("SELECT class, uid FROM aggregates", new RowCallbackHandler {
       def processRow(rs: ResultSet) {

@@ -16,17 +16,17 @@
             <div>
                 <a href="#" wicket:id="removeLink">Usuń</a>
             </div>
-            
+
         </div>
 
-        
-        
+
     </div>
 
     <wicket:fragment wicket:id="waitingForAcceptance">
         <div>Zaproszenie oczekuje na akceptację</div>
         <form wicket:id="inviteForm">
-            <input type="hidden" wicket:id="sessionToken" />
+            <input type="hidden" wicket:id="sessionToken"/>
+
             <div><span wicket:id="warningMessage"></span></div>
             <a wicket:id="submitButton">Zaakceptuj</a>
             <a wicket:id="cancelButton">Zignoruj</a>
@@ -40,7 +40,7 @@
     <wicket:fragment wicket:id="declined">
         <div>Zaproszenie zostało zignorowane</div>
     </wicket:fragment>
-    
+
 
 </wicket:extend>
 </body>

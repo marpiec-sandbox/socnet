@@ -1,7 +1,7 @@
 package pl.marpiec.socnet.web.page.editUserProfilePage.model
 
 import org.apache.wicket.model.AbstractReadOnlyModel
-import socnet.constant.Month
+import pl.marpiec.socnet.constant.Month
 import pl.marpiec.socnet.model.userprofile.Education
 
 /**

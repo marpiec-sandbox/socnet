@@ -54,7 +54,7 @@ class BeanUtilTest {
 
   }
 
-  def testCopyBetweenDifferentTypes {
+  def testCopyBetweenDifferentTypes() {
     val bean: SimpleBean = createSimpleBean
 
     val anotherBean = BeanUtil.copyProperties(new AnotherBean, bean)

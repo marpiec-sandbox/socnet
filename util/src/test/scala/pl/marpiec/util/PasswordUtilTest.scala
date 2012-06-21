@@ -20,7 +20,7 @@ class PasswordUtilTest {
   def testPasswordHashing() {
 
     val randomSalt = "SOMERONDOMSALT"
-    initCryptEngine
+    initCryptEngine()
     val start = System.currentTimeMillis
     val passwordHash = PasswordUtil.hashPassword("haslo", randomSalt)
     val duration = System.currentTimeMillis - start
@@ -30,7 +30,7 @@ class PasswordUtilTest {
   }
 
 
-  def initCryptEngine {
+  def initCryptEngine() {
     PasswordUtil.hashPassword("1", "1") //for crypt engine initialization
   }
 

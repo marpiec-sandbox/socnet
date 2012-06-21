@@ -10,7 +10,7 @@ import java.lang.reflect.Type
 
 class SEnumTypeConverter extends JsonSerializer[SEnum[_]] with JsonDeserializer[SEnum[_]] {
   def serialize(src: SEnum[_], typeOfSrc: Type, context: JsonSerializationContext): JsonElement = {
-    new JsonPrimitive(src.getName());
+    new JsonPrimitive(src.getName);
   }
 
   def companion(clazz: Class[_])(implicit man: Manifest[SEnum[_]]): AnyRef =

@@ -1,10 +1,9 @@
 package pl.marpiec.socnet.web.page.forgotPassword
 
 import pl.marpiec.socnet.web.page.template.SimpleTemplatePage
-import org.apache.wicket.markup.html.form.{PasswordTextField, StatelessForm}
+import org.apache.wicket.markup.html.form.PasswordTextField
 import org.apache.wicket.markup.html.link.BookmarkablePageLink
 import pl.marpiec.socnet.web.page.HomePage
-import org.apache.wicket.model.CompoundPropertyModel
 import pl.marpiec.util.validation.PasswordValidator
 import pl.marpiec.util.ValidationResult
 import org.apache.wicket.markup.html.panel.FeedbackPanel

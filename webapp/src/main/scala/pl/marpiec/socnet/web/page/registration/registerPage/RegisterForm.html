@@ -7,17 +7,20 @@
         <div class="formRow">
             <span class="label">First name</span>
             <span class="validatorMessage"></span>
-            <input wicket:id="firstName" type="text" class="requiredValidator stringValidator" alt="{min:2, max:50, msg:'Imię jest wymagane (minimum 2 litery)'}"/>
+            <input wicket:id="firstName" type="text" class="requiredValidator stringValidator"
+                   alt="{min:2, max:50, msg:'Imię jest wymagane (minimum 2 litery)'}"/>
         </div>
         <div class="formRow">
             <span class="label">Last name</span>
             <span class="validatorMessage"></span>
-            <input wicket:id="lastName" type="text" class="requiredValidator stringValidator" alt="{min:2, max:50, msg:'Nazwisko jest wymagane (minimum 2 litery)'}"/>
+            <input wicket:id="lastName" type="text" class="requiredValidator stringValidator"
+                   alt="{min:2, max:50, msg:'Nazwisko jest wymagane (minimum 2 litery)'}"/>
         </div>
         <div class="formRow">
             <span class="label">Email</span>
             <span class="validatorMessage"></span>
-            <input wicket:id="email" type="text" class="requiredValidator emailValidator" alt="{msg:'Wymagany jest poprawny adres email'}"/>
+            <input wicket:id="email" type="text" class="requiredValidator emailValidator"
+                   alt="{msg:'Wymagany jest poprawny adres email'}"/>
         </div>
         <div class="formRow">
             <span class="label">Password</span>
@@ -39,8 +42,8 @@
         <span wicket:id="feedback"></span>
     </div>
     <script type="text/javascript">
-        initForm(".registerForm")
-        initValidation(".registerForm")
+        initForm(".registerForm");
+        initValidation(".registerForm");
     </script>
 </wicket:panel>
 </html>

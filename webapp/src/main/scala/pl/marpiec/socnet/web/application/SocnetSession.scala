@@ -7,7 +7,7 @@ import org.apache.wicket.authroles.authorization.strategies.role.metadata.MetaDa
 import org.apache.commons.lang.RandomStringUtils
 import pl.marpiec.util.UID
 import pl.marpiec.socnet.service.user.UserQuery
-import pl.marpiec.socnet.model.{UserProfile, User}
+import pl.marpiec.socnet.model.User
 
 /**
  * Session class.
@@ -17,12 +17,12 @@ import pl.marpiec.socnet.model.{UserProfile, User}
 class SocnetSession(request: Request, val userQuery: UserQuery) extends AuthenticatedWebSession(request) {
 
   val SESSION_TOKEN_LENGTH = 32
-  
+
   private var roles: Roles = initDefaultRoles
-  var sessionToken:String = _
+  var sessionToken: String = _
   var user: User = null
-  
-  private def initDefaultRoles:Roles = {
+
+  private def initDefaultRoles: Roles = {
     val r = new Roles
     r.add(MetaDataRoleAuthorizationStrategy.NO_ROLE)
     r
@@ -43,9 +43,9 @@ class SocnetSession(request: Request, val userQuery: UserQuery) extends Authenti
   }
 
   private def initSessionData(registeredUser: User) {
-    
+
     this.user = registeredUser
-    
+
     this.sessionToken = RandomStringUtils.randomAlphabetic(SESSION_TOKEN_LENGTH)
 
     roles.clear
@@ -64,11 +64,11 @@ class SocnetSession(request: Request, val userQuery: UserQuery) extends Authenti
     clearSessionData
   }
 
-  def isAuthenticated():Boolean = {
+  def isAuthenticated(): Boolean = {
     user != null
   }
-  
-  def userId():UID = {
+
+  def userId(): UID = {
     if (isAuthenticated()) {
       user.id
     } else {

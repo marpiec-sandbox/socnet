@@ -9,8 +9,8 @@ import org.apache.wicket.markup.repeater.RepeatingView
 import org.apache.wicket.markup.html.list.AbstractItem
 import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.markup.html.WebMarkupContainer
-import socnet.readdatabase.UserContactsDatabase
-import socnet.model.UserContacts
+import pl.marpiec.socnet.readdatabase.UserContactsDatabase
+import pl.marpiec.socnet.model.UserContacts
 import pl.marpiec.socnet.web.component.contacts.PersonContactInfo
 
 /**

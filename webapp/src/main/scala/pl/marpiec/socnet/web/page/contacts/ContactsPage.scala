@@ -3,7 +3,7 @@ package pl.marpiec.socnet.web.page.contacts
 import pl.marpiec.socnet.web.authorization.SecureWebPage
 import pl.marpiec.socnet.web.application.SocnetRoles
 import org.apache.wicket.spring.injection.annot.SpringBean
-import socnet.readdatabase.UserContactsDatabase
+import pl.marpiec.socnet.readdatabase.UserContactsDatabase
 import org.apache.wicket.markup.repeater.RepeatingView
 import org.apache.wicket.markup.html.list.AbstractItem
 import org.apache.wicket.markup.html.basic.Label

@@ -1,7 +1,6 @@
 package pl.marpiec.cqrs
 
 import pl.marpiec.util.UID
-import java.sql.{DriverManager, Connection}
 import collection.Seq
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Component
@@ -14,7 +13,7 @@ import org.springframework.dao.EmptyResultDataAccessException
  */
 
 @Component("uidGenerator")
-class UidGeneratorDbImpl @Autowired() (val jdbcTemplate:JdbcTemplate) extends UidGenerator {
+class UidGeneratorDbImpl @Autowired()(val jdbcTemplate: JdbcTemplate) extends UidGenerator {
 
   val UID_POOL_SIZE = 100
   val SELECT_UID = "SELECT uid FROM uids WHERE uidName = 'DEFAULT'"
@@ -39,12 +38,12 @@ class UidGeneratorDbImpl @Autowired() (val jdbcTemplate:JdbcTemplate) extends Ui
 
   def loadNewUids() {
 
-    var uid:Long = 1
+    var uid: Long = 1
     try {
       uid = jdbcTemplate.queryForLong(SELECT_UID)
       jdbcTemplate.update(UPDATE_UID)
     } catch {
-      case ex:EmptyResultDataAccessException => {
+      case ex: EmptyResultDataAccessException => {
         jdbcTemplate.update(INSERT_UID)
       }
     }

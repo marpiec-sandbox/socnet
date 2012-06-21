@@ -9,8 +9,8 @@ import org.apache.wicket.markup.html.panel.Panel
 import pl.marpiec.util.UID
 import org.apache.wicket.markup.html.form._
 import org.apache.wicket.model.PropertyModel
-import socnet.model.userprofile.AdditionalInfo
-import socnet.constant.Month
+import pl.marpiec.socnet.model.userprofile.AdditionalInfo
+import pl.marpiec.socnet.constant.Month
 import org.apache.wicket.markup.html.basic.{MultiLineLabel, Label}
 import pl.marpiec.socnet.service.userprofile.UserProfileCommand
 import org.apache.wicket.spring.injection.annot.SpringBean

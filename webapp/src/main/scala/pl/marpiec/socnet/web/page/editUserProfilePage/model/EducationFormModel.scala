@@ -1,7 +1,7 @@
 package pl.marpiec.socnet.web.page.editUserProfilePage.model
 
 import pl.marpiec.socnet.web.wicket.SecureFormModel
-import socnet.constant.Month
+import pl.marpiec.socnet.constant.Month
 import pl.marpiec.socnet.model.userprofile.Education
 import pl.marpiec.util.{Conversion, BeanUtil, UID}
 
@@ -36,7 +36,7 @@ object EducationFormModel {
     model
   }
 
-  def copy(to: EducationFormModel, from: Education):EducationFormModel = {
+  def copy(to: EducationFormModel, from: Education): EducationFormModel = {
     BeanUtil.copyProperties(to, from)
 
     to.fromYear = Conversion.emptyIfZero(from.fromYear)
@@ -52,7 +52,7 @@ object EducationFormModel {
     to
   }
 
-  def copy(to: Education, from: EducationFormModel):Education =  {
+  def copy(to: Education, from: EducationFormModel): Education = {
 
     BeanUtil.copyProperties(to, from)
 

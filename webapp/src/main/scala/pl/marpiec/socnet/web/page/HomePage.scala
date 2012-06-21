@@ -6,7 +6,6 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink
 import pl.marpiec.socnet.readdatabase.ArticleDatabase
 import pl.marpiec.socnet.web.authorization.{UnauthorizeAll, AuthorizeUser}
 import pl.marpiec.socnet.web.page.template.SimpleTemplatePage
-import pl.marpiec.socnet.web.application.SocnetSession
 import org.apache.wicket.markup.html.WebMarkupContainer
 import registration.RegisterPage
 import signin.SignInFormPanel

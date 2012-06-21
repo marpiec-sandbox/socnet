@@ -1,7 +1,7 @@
 package pl.marpiec.util.validation
 
 import java.util.regex.Pattern
-import pl.marpiec.util.{ValidationResult}
+import pl.marpiec.util.ValidationResult
 import org.apache.commons.lang.StringUtils
 
 /**
@@ -16,20 +16,20 @@ object EmailValidator {
 
   val emailPattern = Pattern.compile("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
 
-  def validate(result:ValidationResult, email:String) {
+  def validate(result: ValidationResult, email: String) {
     if (StringUtils.isBlank(email)) {
       result.addError(requiredMessage)
-    } else if(isNotValid(email)) {
+    } else if (isNotValid(email)) {
       result.addError(errorMessage)
     }
   }
 
-  def isNotValid(email:String):Boolean = {
+  def isNotValid(email: String): Boolean = {
     !isValid(email)
   }
 
   def isValid(email: String): Boolean = {
-    if (email==null) {
+    if (email == null) {
       return false
     }
     val matcher = emailPattern.matcher(email)

@@ -2,7 +2,7 @@ package pl.marpiec.socnet.web.page.editUserProfilePage.model
 
 import pl.marpiec.socnet.model.userprofile.JobExperience
 import org.apache.wicket.model.AbstractReadOnlyModel
-import socnet.constant.Month
+import pl.marpiec.socnet.constant.Month
 
 /**
  * @author Marcin Pieciukiewicz
