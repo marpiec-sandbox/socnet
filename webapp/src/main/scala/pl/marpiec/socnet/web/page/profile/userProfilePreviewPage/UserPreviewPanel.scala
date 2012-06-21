@@ -12,5 +12,6 @@ class UserPreviewPanel(id: String, val user: User) extends Panel(id) {
 
   //schema
   add(new Label("userName", user.fullName))
+  add(new Label("userSummary", user.summary))
 
 }

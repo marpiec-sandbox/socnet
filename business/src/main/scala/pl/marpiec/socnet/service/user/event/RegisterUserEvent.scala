@@ -10,7 +10,6 @@ class RegisterUserEvent(val firstName: String, val lastName: String, val email: 
     val user = aggregate.asInstanceOf[User]
     user.firstName = firstName
     user.lastName = lastName
-    user.displayName = user.fullName
     user.email = email
     user.passwordHash = passwordHash
     user.passwordSalt = passwordSalt

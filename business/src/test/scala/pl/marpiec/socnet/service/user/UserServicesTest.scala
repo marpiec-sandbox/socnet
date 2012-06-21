@@ -31,30 +31,30 @@ class UserServicesTest {
 
     val userCommand: UserCommand = new UserCommandImpl(eventStore, dataStore, triggeredEvents, userDatabase, uidGenerator, mailSender, templateRepository)
 
-    val trigger = userCommand.createRegisterUserTrigger("Marcin", "Pieciukiewicz", "m.pieciukiewicz@socnet", "Haslo");
+    val trigger = userCommand.createRegisterUserTrigger("MMMM", "Pieciukiewicz", "m.pieciukiewicz@socnet", "Haslo");
     val userId = userCommand.triggerUserRegistration(trigger)
 
     var user = dataStore.getEntity(classOf[User], userId).asInstanceOf[User]
 
-    assertEquals(user.firstName, "Marcin")
+    assertEquals(user.firstName, "MMMM")
     assertEquals(user.lastName, "Pieciukiewicz")
-    assertEquals(user.displayName, "Marcin Pieciukiewicz")
+    assertEquals(user.fullName, "MMMM Pieciukiewicz")
     assertEquals(user.email, "m.pieciukiewicz@socnet")
 
     userCommand.changeUserEmail(new UID(0), userId, user.version, "m.pieciukiewicz@socnet.org")
 
     user = dataStore.getEntity(classOf[User], userId).asInstanceOf[User]
 
-    userCommand.changeUserSummary(new UID(0), userId, user.version, "Programista Java")
+    userCommand.changeUserSummary(new UID(0), userId, user.version, "Marcin", "Pieciukiewicz", "Programista Scala")
 
     user = dataStore.getEntity(classOf[User], userId).asInstanceOf[User]
 
     assertEquals(user.firstName, "Marcin")
     assertEquals(user.lastName, "Pieciukiewicz")
-    assertEquals(user.displayName, "Marcin Pieciukiewicz")
+    assertEquals(user.fullName, "Marcin Pieciukiewicz")
     assertEquals(user.email, "m.pieciukiewicz@socnet.org")
 
-    assertEquals(user.summary, "Programista Java")
+    assertEquals(user.summary, "Programista Scala")
 
     try {
       userCommand.changeUserEmail(new UID(0), userId, user.version - 1, "irek@socnet")

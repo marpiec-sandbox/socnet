@@ -14,8 +14,9 @@ class RegisterUserEventTest {
 
     assertEquals(user.firstName, "Marcin")
     assertEquals(user.lastName, "Pieciukiewicz")
-    assertEquals(user.displayName, "Marcin Pieciukiewicz")
+    assertEquals(user.fullName, "Marcin Pieciukiewicz")
     assertEquals(user.email, "m.pieciukiewicz@socnet")
     assertEquals(user.passwordHash, "Haslo")
+    assertEquals(user.summary, "")
   }
 }

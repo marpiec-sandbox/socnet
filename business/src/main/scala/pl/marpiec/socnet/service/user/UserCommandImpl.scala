@@ -79,8 +79,8 @@ class UserCommandImpl @Autowired()(val eventStore: EventStore, val dataStore: Da
     eventStore.addEvent(new EventRow(userId, aggregateUserId, version, changeEmail))
   }
 
-  def changeUserSummary(userId: UID, aggregateUserId: UID, version: Int, summary: String) {
-    val changeSummary = new ChangeSummaryEvent(summary)
+  def changeUserSummary(userId: UID, aggregateUserId: UID, version: Int, firstName:String, lastName:String, summary: String) {
+    val changeSummary = new ChangeSummaryEvent(firstName, lastName, summary)
     eventStore.addEvent(new EventRow(userId, aggregateUserId, version, changeSummary))
   }
 

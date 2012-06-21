@@ -20,7 +20,6 @@ class UserTest {
     user.version = 1
     user.firstName = "Marcin"
     user.lastName = "Pieciukiewicz"
-    user.displayName = "Marcin Pieciukiewicz"
     user.passwordHash = "Haslo"
     user.email = "m.pieciukiewicz@socnet"
     
@@ -32,7 +31,6 @@ class UserTest {
     assertEquals(userCopy.version, user.version)
     assertEquals(userCopy.firstName, user.firstName)
     assertEquals(userCopy.lastName, user.lastName)
-    assertEquals(userCopy.displayName, user.displayName)
     assertEquals(userCopy.passwordHash, user.passwordHash)
     assertEquals(userCopy.email, user.email)
 

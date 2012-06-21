@@ -31,7 +31,7 @@ class ArticlePage(parameters: PageParameters) extends SimpleTemplatePage {
 
       var authorName = "autor nieznany"
       if (authorOption.isDefined) {
-        authorName = authorOption.get.displayName
+        authorName = authorOption.get.fullName
       }
 
       add(new Label("articleId", articleId.toString))

@@ -9,7 +9,7 @@ import org.apache.wicket.ajax.markup.html.AjaxFallbackLink
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.markup.html.link.ExternalLink
 
-class PersonalSummaryPreview(id: String, userProfile: UserProfile, parent: PersonalSummaryPanel) extends WebMarkupContainer("personalSummaryPreview") {
+class PersonalSummaryPreview(id: String, userProfile: UserProfile, parent: PersonalSummaryPanel) extends WebMarkupContainer(id) {
 
   add(new Label("professionalTitle", new PropertyModel(userProfile, "professionalTitle")))
   add(new Label("city", new PropertyModel(userProfile, "city")))

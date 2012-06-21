@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:wicket="http://wicket.apache.org">
+<wicket:panel>
+
+    <div wicket:id="userSummaryPreview">
+
+        <div class="userPreview">
+
+            <div class="userName">
+                <span wicket:id="userName">userName</span>
+            </div>
+            <div class="summary">
+                <span wicket:id="userSummary">userSummary</span>
+            </div>
+
+            <div class="editButtons">
+                <a wicket:id="editButton">edytuj</a>
+            </div>
+        </div>
+    </div>
+
+
+    <form wicket:id="userSummaryForm" class="horizontalForm userSummaryForm">
+
+        <span class="warningMessage" wicket:id="warningMessage"></span>
+
+        <input type="hidden" wicket:id="sessionToken"/>
+
+        <div class="formRow">
+            <span class="label">Imię</span>
+            <span class="validatorMessage"></span>
+            <input type="text" wicket:id="firstName" class="requiredValidator stringValidator"
+                   alt="{min:2, max:50, msg:'Imię jest wymagane (minimum 2 litery)'}"/>
+        </div>
+
+        <div class="formRow">
+            <span class="label">Nazwisko</span>
+            <span class="validatorMessage"></span>
+            <input type="text" wicket:id="lastName" class="requiredValidator stringValidator"
+                   alt="{min:2, max:50, msg:'Nazwisko jest wymagane (minimum 2 litery)'}"/>
+        </div>
+
+        <div class="formRow">
+            <span class="label">Podsumowanie</span>
+            <span class="validatorMessage"></span>
+            <input type="text" wicket:id="summary"/>
+        </div>
+
+
+        <div class="profileEditActionButtons">
+            <input type="submit" wicket:id="submitButton" class="submitButton" value="zapisz"/>
+            <a href="#" wicket:id="cancelButton">anuluj</a>
+        </div>
+
+        <script type="text/javascript">
+            initForm(".userSummaryForm");
+            initValidation(".userSummaryForm", ".submitButton");
+        </script>
+    </form>
+</wicket:panel>
+</html>
