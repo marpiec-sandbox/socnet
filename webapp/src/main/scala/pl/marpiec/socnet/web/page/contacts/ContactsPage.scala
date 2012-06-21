@@ -9,6 +9,7 @@ import org.apache.wicket.markup.html.list.AbstractItem
 import org.apache.wicket.markup.html.basic.Label
 import pl.marpiec.socnet.web.page.profile.UserProfilePreviewPage
 import pl.marpiec.socnet.readdatabase.UserDatabase
+import pl.marpiec.socnet.web.component.user.UserSummaryPreviewPanel
 
 /**
  * @author Marcin Pieciukiewicz
@@ -39,7 +40,7 @@ class ContactsPage extends SecureWebPage(SocnetRoles.USER) {
 
       add(new AbstractItem(newChildId()) {
 
-        add(UserProfilePreviewPage.getLink(user).add(new Label("userName", user.fullName)))
+        add(new UserSummaryPreviewPanel("userSummaryPreview", user))
 
       })
 
