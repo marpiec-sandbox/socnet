@@ -7,7 +7,7 @@
 
     <context-param>
         <param-name>db.url</param-name>
-        <param-value>jdbc:h2:~/test</param-value>
+        <param-value>jdbc:h2:c:/mar/scala/projects/socnet/h2database/socnet</param-value>
     </context-param>
     <context-param>
         <param-name>db.user</param-name>

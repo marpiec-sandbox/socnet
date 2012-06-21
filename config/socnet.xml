@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context antiJARLocking="true" docBase="C:\Marcin\Coding\Projekty\socnet\webapp\target\webapp-1.0\" path="/socnet">
+<Context antiJARLocking="true" docBase="C:\mar\scala\projects\socnet\webapp\target\webapp-1.0\" path="/socnet">
 	<Resource name="jdbc/socnetDB" auth="Container" type="javax.sql.DataSource"
                maxActive="100" maxIdle="30" maxWait="10000"
                username="sa" password="sa" driverClassName="org.h2.Driver"
-               url="jdbc:h2:~/test"/>
+               url="jdbc:h2:c:/mar/scala/projects/socnet/h2database/socnet"/>
 </Context>
