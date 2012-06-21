@@ -16,6 +16,8 @@ trait UserCommand {
 
   def changeUserEmail(userId: UID, aggregateUserId: UID, version: Int, email: String)
 
+  def changeUserSummary(userId: UID, aggregateUserId: UID, version: Int, summary: String)
+
   def createChangeForgottenPasswordTrigger(email: String)
 
   def triggerChangePassword(userId: UID, aggregateUserId: UID, version: Int, newPassword: String, trigger: String)

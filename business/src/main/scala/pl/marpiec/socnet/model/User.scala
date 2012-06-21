@@ -10,7 +10,8 @@ class User extends Aggregate(null, 0) {
   var passwordHash: String = _
   var passwordSalt: String = _
   var email: String = _
-
+  var summary: String = _
+  
   def fullName = firstName + " " + lastName
 
   def copy: Aggregate = {

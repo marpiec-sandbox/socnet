@@ -45,10 +45,16 @@ class UserServicesTest {
 
     user = dataStore.getEntity(classOf[User], userId).asInstanceOf[User]
 
+    userCommand.changeUserSummary(new UID(0), userId, user.version, "Programista Java")
+
+    user = dataStore.getEntity(classOf[User], userId).asInstanceOf[User]
+
     assertEquals(user.firstName, "Marcin")
     assertEquals(user.lastName, "Pieciukiewicz")
     assertEquals(user.displayName, "Marcin Pieciukiewicz")
     assertEquals(user.email, "m.pieciukiewicz@socnet.org")
+
+    assertEquals(user.summary, "Programista Java")
 
     try {
       userCommand.changeUserEmail(new UID(0), userId, user.version - 1, "irek@socnet")

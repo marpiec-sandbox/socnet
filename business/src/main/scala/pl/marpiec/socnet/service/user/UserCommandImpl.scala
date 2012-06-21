@@ -1,6 +1,6 @@
 package pl.marpiec.socnet.service.user
 
-import event.{ChangeEmailEvent, RegisterUserEvent}
+import event.{ChangeSummaryEvent, ChangeEmailEvent, RegisterUserEvent, ChangeForgottenPasswordEvent}
 import pl.marpiec.cqrs._
 import exception.IncorrectTriggerException
 import pl.marpiec.mailsender.MailSender
@@ -8,7 +8,6 @@ import pl.marpiec.socnet.mailtemplate.TemplateRepository
 import pl.marpiec.util.{PasswordUtil, UID}
 import pl.marpiec.socnet.model.User
 import pl.marpiec.socnet.service.exception.EmailDoesNotExistsException
-import pl.marpiec.socnet.service.user.event.ChangeForgottenPasswordEvent
 import scala.Predef._
 import org.springframework.stereotype.Service
 import org.springframework.beans.factory.annotation.Autowired
@@ -78,6 +77,11 @@ class UserCommandImpl @Autowired()(val eventStore: EventStore, val dataStore: Da
   def changeUserEmail(userId: UID, aggregateUserId: UID, version: Int, email: String) {
     val changeEmail = new ChangeEmailEvent(email)
     eventStore.addEvent(new EventRow(userId, aggregateUserId, version, changeEmail))
+  }
+
+  def changeUserSummary(userId: UID, aggregateUserId: UID, version: Int, summary: String) {
+    val changeSummary = new ChangeSummaryEvent(summary)
+    eventStore.addEvent(new EventRow(userId, aggregateUserId, version, changeSummary))
   }
 
 
