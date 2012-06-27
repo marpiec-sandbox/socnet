@@ -173,14 +173,50 @@
 
 
     .editButtons, .profileEditActionButtons {
-            a {
-                color: @mainThemeFontColor;
-                font-weight: bold;
-                text-decoration: none;
-                margin-left: 30px;
-                &:hover {
-                    text-decoration: underline;
-                }
+        a {
+            color: @mainThemeFontColor;
+            font-weight: bold;
+            text-decoration: none;
+            margin-left: 30px;
+            &:hover {
+                text-decoration: underline;
             }
         }
+    }
+
+    .deleteButtonPanel {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+
+        .backgroundPanel {
+            position: absolute;
+            top: -1px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: @defaultBackgroundColor;
+        }
+
+        .content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            font-weight: bold;
+            text-align: center;
+
+            a {
+                margin-left: 50px;
+            }
+            a:first-child {
+                margin-left: 0px;
+            }
+        }
+
+    }
+
 }

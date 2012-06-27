@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <html xmlns:wicket="http://wicket.apache.org">
 <wicket:panel>
-    <div class="additionalInfoPreview">
+    <div class="additionalInfoPreview profileElementPreviewPanel">
         <div class="profileDateInfo">
             <span wicket:id="additionalInfoDate">additionalInfoDate</span>
         </div>
@@ -11,9 +11,22 @@
         <div class="description">
             <span wicket:id="description">description</span>
         </div>
+        <!-- Copy paste in all Preview Panels -->
         <div class="editButtons">
-            <a wicket:id="deleteButton">usuń</a>
+            <a href="#" class="showDeletePanelButton" onclick="showProfileEntryDeletePanel(this)">usuń</a>
             <a wicket:id="editButton">edytuj</a>
+        </div>
+        <div class="deleteButtonPanel hiddenByDefault">
+            <div class="backgroundPanel"></div>
+            <div class="content">
+                <div class="description">
+                    Czy na pewno chcesz usunąć ten wpis?
+                </div>
+                <div class="buttons">
+                    <a href="#" class="cancelRemoveButton" onclick="cancelProfileEntryDelete(this)">anuluj</a>
+                    <a wicket:id="deleteButton">OK</a>
+                </div>
+            </div>
         </div>
     </div>
 </wicket:panel>
