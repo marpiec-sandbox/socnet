@@ -22,7 +22,7 @@ import pl.marpiec.socnet.model.usercontacts.Invitation
  * @author Marcin Pieciukiewicz
  */
 
-class PersonContactInfo(id: String, userId: UID, userContacts: UserContacts) extends Panel(id) {
+class PersonContactInvitationPanel(id: String, userId: UID, userContacts: UserContacts) extends Panel(id) {
 
   @SpringBean
   private var userContactsCommand: UserContactsCommand = _
@@ -52,7 +52,7 @@ class PersonContactInfo(id: String, userId: UID, userContacts: UserContacts) ext
 
 
   def addOrReplaceInviteContact {
-    addOrReplace(new Fragment("contactStatus", "inviteContact", PersonContactInfo.this) {
+    addOrReplace(new Fragment("contactStatus", "inviteContact", PersonContactInvitationPanel.this) {
 
       val inviteLink: Component = new AjaxLink("inviteLink") {
         setOutputMarkupPlaceholderTag(true)
@@ -60,7 +60,7 @@ class PersonContactInfo(id: String, userId: UID, userContacts: UserContacts) ext
         def onClick(target: AjaxRequestTarget) {
           inviteLink.setVisible(false)
           inviteForm.setVisible(true)
-          target.add(PersonContactInfo.this)
+          target.add(PersonContactInvitationPanel.this)
         }
       }
       add(inviteLink)
@@ -97,7 +97,7 @@ class PersonContactInfo(id: String, userId: UID, userContacts: UserContacts) ext
           } else {
             formModel.warningMessage = "Wiadomosc nie moze byc pusta"
           }
-          target.add(PersonContactInfo.this)
+          target.add(PersonContactInvitationPanel.this)
         }
 
         def onSecureCancel(target: AjaxRequestTarget, formModel: InviteUserFormModel) {
@@ -105,7 +105,7 @@ class PersonContactInfo(id: String, userId: UID, userContacts: UserContacts) ext
           formModel.warningMessage = ""
           inviteLink.setVisible(true)
           inviteForm.setVisible(false)
-          target.add(PersonContactInfo.this)
+          target.add(PersonContactInvitationPanel.this)
         }
 
       }
@@ -117,7 +117,7 @@ class PersonContactInfo(id: String, userId: UID, userContacts: UserContacts) ext
   def addOrReplaceInvitationReceived {
     val invitationReceived = invitationReceivedOption.get
 
-    addOrReplace(new Fragment("contactStatus", "invitationReceived", PersonContactInfo.this) {
+    addOrReplace(new Fragment("contactStatus", "invitationReceived", PersonContactInvitationPanel.this) {
 
       add(new StandardAjaxSecureForm[SecureFormModel]("replyForInvitationForm") {
         def initialize {
@@ -131,7 +131,7 @@ class PersonContactInfo(id: String, userId: UID, userContacts: UserContacts) ext
 
           addOrReplaceUserIsContact
 
-          target.add(PersonContactInfo.this)
+          target.add(PersonContactInvitationPanel.this)
         }
 
         def onSecureCancel(target: AjaxRequestTarget, formModel: SecureFormModel) {
@@ -139,7 +139,7 @@ class PersonContactInfo(id: String, userId: UID, userContacts: UserContacts) ext
 
           addOrReplaceInviteContact
 
-          target.add(PersonContactInfo.this)
+          target.add(PersonContactInvitationPanel.this)
         }
       })
 
@@ -148,15 +148,15 @@ class PersonContactInfo(id: String, userId: UID, userContacts: UserContacts) ext
   }
 
   def addOrReplaceInvitationSent {
-    addOrReplace(new Fragment("contactStatus", "invitationSent", PersonContactInfo.this))
+    addOrReplace(new Fragment("contactStatus", "invitationSent", PersonContactInvitationPanel.this))
   }
 
   def addOrReplaceUserIsContact {
-    addOrReplace(new Fragment("contactStatus", "userIsContact", PersonContactInfo.this))
+    addOrReplace(new Fragment("contactStatus", "userIsContact", PersonContactInvitationPanel.this))
   }
 
   def addOrReplaceYourself {
-    addOrReplace(new Fragment("contactStatus", "yourself", PersonContactInfo.this))
+    addOrReplace(new Fragment("contactStatus", "yourself", PersonContactInvitationPanel.this))
   }
 
   private def isInvitationReceivedAndWaitingForAcceptance(invitationReceivedOption: Option[Invitation]): Boolean = {

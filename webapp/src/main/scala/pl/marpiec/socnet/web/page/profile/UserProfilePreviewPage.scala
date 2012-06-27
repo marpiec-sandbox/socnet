@@ -12,13 +12,13 @@ import pl.marpiec.socnet.readdatabase.{UserDatabase, UserProfileDatabase}
 import org.apache.wicket.spring.injection.annot.SpringBean
 import org.apache.wicket.markup.html.link.BookmarkablePageLink
 import pl.marpiec.socnet.model.{User, UserProfile}
-import pl.marpiec.socnet.web.component.contacts.PersonContactInfo
 import pl.marpiec.socnet.web.application.SocnetRoles
 import pl.marpiec.socnet.model.UserContacts
 import pl.marpiec.socnet.readdatabase.UserContactsDatabase
 import pl.marpiec.socnet.web.component.conversation.StartConversationPanel
 import pl.marpiec.socnet.web.page.profile.userProfilePreviewPage._
 import pl.marpiec.socnet.web.authorization.{AuthorizeUser, SecureWebPage}
+import pl.marpiec.socnet.web.component.contacts.{PersonContactLevelPanel, PersonContactInvitationPanel}
 
 /**
  * @author Marcin Pieciukiewicz
@@ -60,9 +60,11 @@ class UserProfilePreviewPage(parameters: PageParameters) extends SecureWebPage(S
   addEducationList(userProfile.education)
   addAdditionalInfoList(userProfile.additionalInfo)
 
-  add(new PersonContactInfo("personContactInfo", user.id, loggedInUserContacts))
+  add(AuthorizeUser(new PersonContactInvitationPanel("personContactInfo", user.id, loggedInUserContacts)))
   add(AuthorizeUser(new StartConversationPanel("startConversationPanel", user.id).setVisible(user.id != session.userId)))
-  add(AuthorizeUser(new UserContactsPreviewPanel("userContactsPreviewPanel", userContacts, loggedInUserContacts)))
+  add(AuthorizeUser(new PersonContactLevelPanel("personContactLevelPanel", user.id, userContacts, session.userId, loggedInUserContacts)))
+
+  add(new UserContactsPreviewPanel("userContactsPreviewPanel", userContacts, loggedInUserContacts))
 
   //methods
   def addJobExperienceList(jobExperienceList: ListBuffer[JobExperience]) {
