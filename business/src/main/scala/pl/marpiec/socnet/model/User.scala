@@ -13,6 +13,8 @@ class User extends Aggregate(null, 0) {
   
   def fullName = firstName + " " + lastName
 
+  def fullNameForUrl = fullName.replaceAll("\\s+", "-")
+
   def copy: Aggregate = {
     BeanUtil.copyProperties(new User, this)
   }
