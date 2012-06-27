@@ -65,6 +65,8 @@ class UserProfilePreviewPage(parameters: PageParameters) extends SecureWebPage(S
   //methods
   def addJobExperienceList(jobExperienceList: ListBuffer[JobExperience]) {
     add(new RepeatingView("jobExperiencePreview") {
+      setVisible(jobExperienceList.size > 0)
+
       for (jobExperience <- jobExperienceList) {
         val item: AbstractItem = new AbstractItem(newChildId());
         item.add(new JobExperiencePreviewPanel("content", jobExperience))
@@ -76,6 +78,8 @@ class UserProfilePreviewPage(parameters: PageParameters) extends SecureWebPage(S
   //methods
   def addEducationList(educationList: ListBuffer[Education]) {
     add(new RepeatingView("educationPreview") {
+      setVisible(educationList.size > 0)
+
       for (education <- educationList) {
         val item: AbstractItem = new AbstractItem(newChildId());
         item.add(new EducationPreviewPanel("content", education))
@@ -87,6 +91,8 @@ class UserProfilePreviewPage(parameters: PageParameters) extends SecureWebPage(S
   //methods
   def addAdditionalInfoList(additionalInfoList: ListBuffer[AdditionalInfo]) {
     add(new RepeatingView("additionalInfoPreview") {
+      setVisible(additionalInfoList.size > 0)
+
       for (additionalInfo <- additionalInfoList) {
         val item: AbstractItem = new AbstractItem(newChildId());
         item.add(new AdditionalInfoPreviewPanel("content", additionalInfo))

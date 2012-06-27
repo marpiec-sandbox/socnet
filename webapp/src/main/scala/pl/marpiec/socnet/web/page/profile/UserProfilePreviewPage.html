@@ -7,26 +7,32 @@
         <div wicket:id="userPreviewPanel">userPreviewPanel</div>
         <div wicket:id="personalSummaryPreview">personalSummaryPreview</div>
 
-        <div class="jobExperienceTitle">
-            Doświadczenie zawodowe
-        </div>
-        <div wicket:id="jobExperiencePreview">
-            <div wicket:id="content">content</div>
-        </div>
+        <wicket:enclosure child="jobExperiencePreview">
+            <div class="jobExperienceTitle">
+                Doświadczenie zawodowe
+            </div>
+            <div wicket:id="jobExperiencePreview">
+                <div wicket:id="content">content</div>
+            </div>
+        </wicket:enclosure>
 
-        <div class="educationTitle">
-            Wykształcenie
-        </div>
-        <div wicket:id="educationPreview">
-            <div wicket:id="content">content</div>
-        </div>
+        <wicket:enclosure child="educationPreview">
+            <div class="educationTitle">
+                Wykształcenie
+            </div>
+            <div wicket:id="educationPreview">
+                <div wicket:id="content">content</div>
+            </div>
+        </wicket:enclosure>
 
-        <div class="additionalInfoTitle">
-            Dodatkowe informacje
-        </div>
-        <div wicket:id="additionalInfoPreview">
-            <div wicket:id="content">content</div>
-        </div>
+        <wicket:enclosure child="additionalInfoPreview">
+            <div class="additionalInfoTitle">
+                Dodatkowe informacje
+            </div>
+            <div wicket:id="additionalInfoPreview">
+                <div wicket:id="content">content</div>
+            </div>
+        </wicket:enclosure>
 
         <div wicket:id="personContactInfo">personContactInfo</div>
         <div wicket:id="startConversationPanel">startConversationPanel</div>

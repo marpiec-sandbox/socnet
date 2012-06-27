@@ -4,21 +4,34 @@
 
     <div class="personalSummaryPreview">
 
-        <div class="city">
-            <span wicket:id="city">city</span>
+        <div class="cityAndProvince">
+
+            <wicket:enclosure child="city"><span wicket:id="city" class="city">city</span></wicket:enclosure>
+
+            <wicket:enclosure child="province">
+                <span class="province">
+                    woj. <span wicket:id="province">province</span>
+                </span>
+            </wicket:enclosure>
         </div>
 
-        <div class="wwwPage">
-            Strona www: <a wicket:id="wwwPage">wwwPage</a>
-        </div>
+        <wicket:enclosure child="wwwPage">
+            <div class="wwwPage">
+                Strona www: <a wicket:id="wwwPage">wwwPage</a>
+            </div>
+        </wicket:enclosure>
 
-        <div class="blogPage">
-            Blog: <a wicket:id="blogPage">blogPage</a>
-        </div>
+        <wicket:enclosure child="blogPage">
+            <div class="blogPage">
+                Blog: <a wicket:id="blogPage">blogPage</a>
+            </div>
+        </wicket:enclosure>
 
-        <div class="summary">
-            <span wicket:id="summary">summary</span>
-        </div>
+        <wicket:enclosure child="summary">
+            <div class="summary">
+                <span wicket:id="summary">summary</span>
+            </div>
+        </wicket:enclosure>
     </div>
 
 </wicket:panel>
