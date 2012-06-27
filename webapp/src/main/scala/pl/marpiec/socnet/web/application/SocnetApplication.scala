@@ -42,6 +42,7 @@ class SocnetApplication extends WebApplication {
     getSecuritySettings.setAuthorizationStrategy(new RoleAuthorizationStrategy(new UserRolesAuthorizer()));
 
 
+    getMarkupSettings.setStripComments(true) //will remove <!-- comment --> from output html
 
     SocnetInitializator(eventStore, databaseInitializer)
 
