@@ -14,6 +14,7 @@ class UrlUtilTest {
     assertEquals(UrlUtil.addHttpIfNoProtocol("ftp://www.socnet.pl"), "ftp://www.socnet.pl")
     assertEquals(UrlUtil.addHttpIfNoProtocol("http://www.socnet.pl"), "http://www.socnet.pl")
     assertEquals(UrlUtil.addHttpIfNoProtocol("https://www.socnet.pl"), "https://www.socnet.pl")
+    assertNull(UrlUtil.addHttpIfNoProtocol(null))
   }
 
   def testRemovingProtocol() {
@@ -21,5 +22,6 @@ class UrlUtilTest {
     assertEquals(UrlUtil.removeProtocol("ftp://www.socnet.pl"), "www.socnet.pl")
     assertEquals(UrlUtil.removeProtocol("http://www.socnet.pl"), "www.socnet.pl")
     assertEquals(UrlUtil.removeProtocol("https://www.socnet.pl"), "www.socnet.pl")
+    assertNull(UrlUtil.removeProtocol(null))
   }
 }

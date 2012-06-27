@@ -7,7 +7,7 @@ package pl.marpiec.util
 object UrlUtil {
   
   def addHttpIfNoProtocol(url:String):String = {
-    if (url.matches("[a-zA-Z]+://.*")) {
+    if (url == null || url.matches("[a-zA-Z]+://.*")) {
       url
     } else {
       "http://" + url
@@ -15,7 +15,12 @@ object UrlUtil {
   }
   
   def removeProtocol(url:String):String = {
-    url.replaceFirst("^[a-zA-Z]+://", "")
+    if(url == null) {
+      null
+    } else {
+      url.replaceFirst("^[a-zA-Z]+://", "")
+    }
+    
   }
 
 }
