@@ -8,7 +8,8 @@ import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.markup.html.link.ExternalLink
 import pl.marpiec.socnet.web.component.wicket.LabelInvisibleWhenEmpty
 import org.apache.commons.lang.StringUtils
-import org.apache.wicket.model. PropertyModel
+import org.apache.wicket.model.PropertyModel
+import pl.marpiec.util.UrlUtil
 
 class PersonalSummaryPreview(id: String, userProfile: UserProfile, parent: PersonalSummaryPanel) extends WebMarkupContainer(id) {
 
@@ -27,16 +28,26 @@ class PersonalSummaryPreview(id: String, userProfile: UserProfile, parent: Perso
     }
   })
 
-  private def addWwwLink(id:String, model:AnyRef, property:String) {
-    add(new ExternalLink(id, new PropertyModel[String](model, property) {
-      override def getObject = {
-        if (super.getObject==null) {
-          null
-        } else {
-          "http://"+super.getObject
+  private def addWwwLink(id: String, model: AnyRef, property: String) {
+    add(new ExternalLink(id,
+      new PropertyModel[String](model, property) {
+        override def getObject = {
+          if (super.getObject == null) {
+            null
+          } else {
+            UrlUtil.addHttpIfNoProtocol(super.getObject)
+          }
         }
-      }
-    }, new PropertyModel(model, property)){
+      },
+      new PropertyModel[String](model, property) {
+        override def getObject = {
+          if (super.getObject == null) {
+            null
+          } else {
+            UrlUtil.removeProtocol(super.getObject)
+          }
+        }
+      }) {
       override def isVisible = super.isVisible && StringUtils.isNotBlank(getDefaultModelObjectAsString)
     })
   }

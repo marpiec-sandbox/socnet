@@ -5,6 +5,7 @@ import pl.marpiec.socnet.model.UserProfile
 import org.apache.wicket.markup.html.link.ExternalLink
 import org.apache.wicket.markup.html.basic.{MultiLineLabel, Label}
 import org.apache.commons.lang.StringUtils
+import pl.marpiec.util.UrlUtil
 
 /**
  * @author Marcin Pieciukiewicz
@@ -32,7 +33,7 @@ class PersonalSummaryPreviewPanel(id: String, val userProfile: UserProfile) exte
   }
   
   private def addWwwLink(id:String, link:String) {
-    add(new ExternalLink(id, "http://" + link, link).setVisible(StringUtils.isNotBlank(link)))
+    add(new ExternalLink(id, UrlUtil.addHttpIfNoProtocol(link), UrlUtil.removeProtocol(link)).setVisible(StringUtils.isNotBlank(link)))
   }
 
 }
