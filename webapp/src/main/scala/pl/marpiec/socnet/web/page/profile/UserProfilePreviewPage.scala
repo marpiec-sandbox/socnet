@@ -117,6 +117,6 @@ object UserProfilePreviewPage {
   }
 
   def getParametersForLink(user: User): PageParameters = {
-    new PageParameters().add(USER_ID_PARAM, user.id).add(USER_NAME_PARAM, user.fullName)
+    new PageParameters().add(USER_ID_PARAM, user.id).add(USER_NAME_PARAM, user.fullNameForUrl)
   }
 }

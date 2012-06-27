@@ -41,7 +41,7 @@ class SimpleTemplatePage extends WebPage {
       add(AuthorizeUser(new BookmarkablePageLink("invitationsSentLink", classOf[InvitationsSentPage])))
       add(AuthorizeUser(new BookmarkablePageLink("invitationsReceivedLink", classOf[InvitationsReceivedPage])))
       add(AuthorizeUser(new BookmarkablePageLink("editProfileLink", classOf[EditUserProfilePage])))
-      add(AuthorizeUser(new BookmarkablePageLink("previewProfileLink", classOf[UserProfilePreviewPage], createParametersForProfilePreview)))
+      add(AuthorizeUser(UserProfilePreviewPage.getLink(session.user)))
     })
   } else {
     add(new Fragment("userInfo", "userNotLoggedIn", this) {
@@ -66,13 +66,4 @@ class SimpleTemplatePage extends WebPage {
     titleLabelModel.setObject("Socnet " + title)
   }
 
-  private def createParametersForProfilePreview: PageParameters = {
-    if (session.isAuthenticated()) {
-      new PageParameters()
-        .add(UserProfilePreviewPage.USER_ID_PARAM, session.userId())
-        .add(UserProfilePreviewPage.USER_NAME_PARAM, session.user.fullName)
-    } else {
-      null
-    }
-  }
 }
