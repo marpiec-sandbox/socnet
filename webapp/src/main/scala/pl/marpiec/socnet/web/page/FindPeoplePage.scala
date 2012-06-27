@@ -1,6 +1,5 @@
 package pl.marpiec.socnet.web.page
 
-import pl.marpiec.socnet.web.authorization.SecureWebPage
 import pl.marpiec.socnet.web.application.SocnetRoles
 import org.apache.wicket.request.mapper.parameter.PageParameters
 import org.apache.wicket.spring.injection.annot.SpringBean
@@ -11,8 +10,9 @@ import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.markup.html.WebMarkupContainer
 import pl.marpiec.socnet.readdatabase.UserContactsDatabase
 import pl.marpiec.socnet.model.UserContacts
-import pl.marpiec.socnet.web.component.contacts.PersonContactInfo
 import profile.UserProfilePreviewPage
+import pl.marpiec.socnet.web.component.contacts.{PersonContactLevelPanel, PersonContactInvitationPanel}
+import pl.marpiec.socnet.web.authorization.{AuthorizeUser, SecureWebPage}
 
 /**
  * @author Marcin Pieciukiewicz
@@ -37,13 +37,16 @@ class FindPeoplePage(parameters: PageParameters) extends SecureWebPage(SocnetRol
 
   val foundUsers = userDatabase.findUser(query)
 
-  val currentUserContacts = userContactsDatabase.getUserContactsByUserId(session.userId).getOrElse(new UserContacts)
+  val loggedInUserContacts = userContactsDatabase.getUserContactsByUserId(session.userId).getOrElse(new UserContacts)
 
   val userProfiles = userProfileDatabase.getUserProfiles(foundUsers)
 
 
   add(new RepeatingView("foundUsers") {
     foundUsers.foreach(user => {
+
+      val userContacts = userContactsDatabase.getUserContactsByUserId(user.id).getOrElse(new UserContacts)
+
       add(new AbstractItem(newChildId()) {
         add(UserProfilePreviewPage.getLink(user).add(new Label("userName", user.fullName)))
 
@@ -58,7 +61,9 @@ class FindPeoplePage(parameters: PageParameters) extends SecureWebPage(SocnetRol
         }
 
 
-        add(new PersonContactInfo("personContactInfo", user.id, currentUserContacts))
+        add(AuthorizeUser(new PersonContactLevelPanel("personContactLevelPanel", user.id, userContacts, session.userId, loggedInUserContacts)))
+        add(AuthorizeUser(new PersonContactInvitationPanel("personContactInfo", user.id, loggedInUserContacts)))
+
 
 
       })
