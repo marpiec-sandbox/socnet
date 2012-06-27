@@ -49,7 +49,8 @@ class UserProfilePreviewPage(parameters: PageParameters) extends SecureWebPage(S
   val userProfile = userProfileDatabase.getUserProfileByUserId(userId).getOrElse(new UserProfile)
 
 
-  val currentUserContacts = userContactsDatabase.getUserContactsByUserId(session.userId).getOrElse(new UserContacts)
+  val loggedInUserContacts:UserContacts = userContactsDatabase.getUserContactsByUserId(session.userId).getOrElse(new UserContacts)
+  val userContacts:UserContacts = userContactsDatabase.getUserContactsByUserId(userId).getOrElse(new UserContacts)
 
   //schema
   add(new UserPreviewPanel("userPreviewPanel", user));
@@ -59,8 +60,9 @@ class UserProfilePreviewPage(parameters: PageParameters) extends SecureWebPage(S
   addEducationList(userProfile.education)
   addAdditionalInfoList(userProfile.additionalInfo)
 
-  add(new PersonContactInfo("personContactInfo", user.id, currentUserContacts))
+  add(new PersonContactInfo("personContactInfo", user.id, loggedInUserContacts))
   add(new StartConversationPanel("startConversationPanel", user.id))
+  add(new UserContactsPreviewPanel("userContactsPreviewPanel", userContacts, loggedInUserContacts))
 
   //methods
   def addJobExperienceList(jobExperienceList: ListBuffer[JobExperience]) {
