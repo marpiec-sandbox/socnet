@@ -1,222 +1,244 @@
+.userProfilePreviewPage {
 
+    .userContactsPreviewPanel {
 
-.userProfilePreview {
+        float: right;
+        width: 300px;
 
-    width: 600px;
-
-    .userPreview {
-
-        position: relative;
-        margin-bottom: 10px;
-
-        .userName {
-            font-size:20px;
-            font-weight: bold;
-            color: @mainThemeFontColor;
-
-        }
-
-        .summary {
-            font-weight: bold;
-            font-size: 16px;
+        .userPreviewSummary {
+            width: 300px;
         }
     }
 
-    .personalSummaryPreview {
-        position: relative;
 
-        .cityAndProvince {
-            color: @lightFontColor;
-            font-size: @smallFontSize;
+    .userProfilePreview {
+
+        width: 600px;
+
+        .contactInfo {
+            float: right;
+            width: 200px;
+        }
+
+        .userPreviewPanel {
+            float:left;
+        }
+
+        .userPreview {
+
+            position: relative;
             margin-bottom: 10px;
 
-            *::after {
-              content: ",";
+            .userName {
+                font-size:20px;
+                font-weight: bold;
+                color: @mainThemeFontColor;
+
             }
 
-            *:last-child::after {
-              content: "";
+            .summary {
+                font-weight: bold;
+                font-size: 16px;
+            }
+        }
+
+        .personalSummaryPreview {
+            clear: left;
+            position: relative;
+
+            .cityAndProvince {
+                color: @lightFontColor;
+                font-size: @smallFontSize;
+                margin-bottom: 10px;
+
+                *::after {
+                  content: ",";
+                }
+
+                *:last-child::after {
+                  content: "";
+                }
+
             }
 
-        }
-
-       .summary {
-          color: @lightFontColor;
-          font-size: @defaultFontSize;
-          margin-top: 15px;
-       }
-       .wwwPage, .blogPage {
-
-            a {
-              color: @mainThemeFontColor;
-              text-decoration: none;
-
-              &:hover {
-                 text-decoration:underline;
-              }
-            }
-       }
-
-    }
-
-    .jobExperienceTitle, .educationTitle, .additionalInfoTitle {
-       border-bottom: 2px solid #444444;
-       color: @mainThemeFontColor;
-       font-size: 18px;
-       font-weight: bold;
-       margin-bottom: 10px;
-       margin-top: 30px;
-       padding-bottom: 3px;
-    }
-
-    .jobExperiencePreview, .educationPreview, .additionalInfoPreview {
-       margin-bottom: 30px;
-       position:relative;
-
-       .profileDateInfo {
-         color: @lightFontColor;
-         font-size: @smallFontSize;
-       }
-    }
-
-
-    .defaultTitle {
-        font-weight: bold;
-        font-size: @defaultFontSize;
-        color: @mainThemeFontColor;
-    }
-
-    .default-description {
-        margin-top: 6px;
-        color: @lightFontColor;
-        font-size: @defaultFontSize;
-    }
-
-    .jobExperiencePreview {
-
-        .position{
-            .defaultTitle
-        }
-
-        .companyName {
-            font-weight: bold;
-        }
-
-        .description {
-            .default-description
-        }
-    }
-
-    .educationPreview {
-
-        .major {
-            .defaultTitle;
-        }
-
-        .schoolName {
-             font-weight: bold;
-
-            .faculty {
-              font-size:@smallFontSize;
+           .summary {
               color: @lightFontColor;
-              font-weight: normal;
-            }
+              font-size: @defaultFontSize;
+              margin-top: 15px;
+           }
+           .wwwPage, .blogPage {
+
+                a {
+                  color: @mainThemeFontColor;
+                  text-decoration: none;
+
+                  &:hover {
+                     text-decoration:underline;
+                  }
+                }
+           }
+
+        }
+
+        .jobExperienceTitle, .educationTitle, .additionalInfoTitle {
+           border-bottom: 2px solid #444444;
+           color: @mainThemeFontColor;
+           font-size: 18px;
+           font-weight: bold;
+           margin-bottom: 10px;
+           margin-top: 30px;
+           padding-bottom: 3px;
+        }
+
+        .jobExperiencePreview, .educationPreview, .additionalInfoPreview {
+           margin-bottom: 30px;
+           position:relative;
+
+           .profileDateInfo {
+             color: @lightFontColor;
+             font-size: @smallFontSize;
+           }
         }
 
 
-
-        .description {
-            .default-description
-        }
-    }
-
-    .additionalInfoPreview {
-        .title {
-           .defaultTitle
-        }
-
-        .description {
-            .default-description
-        }
-    }
-
-
-}
-
-
-.userProfileEdit {
-
-
-    form {
-        border: 1px solid @mainThemeFontColor;
-        border-radius: 6px;
-        display: inline-block;
-        margin-bottom: 30px;
-
-         .profileEditActionButtons {
-            margin: 20px 0;
-            text-align: center;
-
-            input, a {
-                margin: 0 70px;
-            }
-        }
-    }
-
-
-    .editButtons {
-        position:absolute;
-        top: 0px;
-        right:0px;
-    }
-
-
-
-    .editButtons, .profileEditActionButtons {
-        a {
-            color: @mainThemeFontColor;
+        .defaultTitle {
             font-weight: bold;
-            text-decoration: none;
-            margin-left: 30px;
-            &:hover {
-                text-decoration: underline;
+            font-size: @defaultFontSize;
+            color: @mainThemeFontColor;
+        }
+
+        .default-description {
+            margin-top: 6px;
+            color: @lightFontColor;
+            font-size: @defaultFontSize;
+        }
+
+        .jobExperiencePreview {
+
+            .position{
+                .defaultTitle
+            }
+
+            .companyName {
+                font-weight: bold;
+            }
+
+            .description {
+                .default-description
             }
         }
-    }
 
-    .deleteButtonPanel {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
+        .educationPreview {
 
-        .backgroundPanel {
-            position: absolute;
-            top: -1px;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: @defaultBackgroundColor;
+            .major {
+                .defaultTitle;
+            }
+
+            .schoolName {
+                 font-weight: bold;
+
+                .faculty {
+                  font-size:@smallFontSize;
+                  color: @lightFontColor;
+                  font-weight: normal;
+                }
+            }
+
+
+
+            .description {
+                .default-description
+            }
         }
 
-        .content {
+        .additionalInfoPreview {
+            .title {
+               .defaultTitle
+            }
+
+            .description {
+                .default-description
+            }
+        }
+
+
+    }
+
+
+    .userProfileEdit {
+
+
+        form {
+            border: 1px solid @mainThemeFontColor;
+            border-radius: 6px;
+            display: inline-block;
+            margin-bottom: 30px;
+
+             .profileEditActionButtons {
+                margin: 20px 0;
+                text-align: center;
+
+                input, a {
+                    margin: 0 70px;
+                }
+            }
+        }
+
+
+        .editButtons {
+            position:absolute;
+            top: 0px;
+            right:0px;
+        }
+
+
+
+        .editButtons, .profileEditActionButtons {
+            a {
+                color: @mainThemeFontColor;
+                font-weight: bold;
+                text-decoration: none;
+                margin-left: 30px;
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+
+        .deleteButtonPanel {
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            font-weight: bold;
-            text-align: center;
 
-            a {
-                margin-left: 50px;
+            .backgroundPanel {
+                position: absolute;
+                top: -1px;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: @defaultBackgroundColor;
             }
-            a:first-child {
-                margin-left: 0px;
+
+            .content {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                font-weight: bold;
+                text-align: center;
+
+                a {
+                    margin-left: 50px;
+                }
+                a:first-child {
+                    margin-left: 0px;
+                }
             }
+
         }
 
     }
-
 }

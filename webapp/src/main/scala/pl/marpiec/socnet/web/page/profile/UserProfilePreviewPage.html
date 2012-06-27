@@ -2,42 +2,51 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
 <body>
 <wicket:extend>
-    <div class="userProfilePreview">
-
-        <div wicket:id="userPreviewPanel">userPreviewPanel</div>
-        <div wicket:id="personalSummaryPreview">personalSummaryPreview</div>
-
-        <wicket:enclosure child="jobExperiencePreview">
-            <div class="jobExperienceTitle">
-                Doświadczenie zawodowe
-            </div>
-            <div wicket:id="jobExperiencePreview">
-                <div wicket:id="content">content</div>
-            </div>
-        </wicket:enclosure>
-
-        <wicket:enclosure child="educationPreview">
-            <div class="educationTitle">
-                Wykształcenie
-            </div>
-            <div wicket:id="educationPreview">
-                <div wicket:id="content">content</div>
-            </div>
-        </wicket:enclosure>
-
-        <wicket:enclosure child="additionalInfoPreview">
-            <div class="additionalInfoTitle">
-                Dodatkowe informacje
-            </div>
-            <div wicket:id="additionalInfoPreview">
-                <div wicket:id="content">content</div>
-            </div>
-        </wicket:enclosure>
-
-        <div wicket:id="personContactInfo">personContactInfo</div>
-        <div wicket:id="startConversationPanel">startConversationPanel</div>
+    <div class="userProfilePreviewPage">
 
         <div wicket:id="userContactsPreviewPanel" class="userContactsPreviewPanel">userContactsPreviewPanel</div>
+
+        <div class="userProfilePreview">
+            <div class="contactInfo">
+                <div wicket:id="personContactInfo">personContactInfo</div>
+                <div wicket:id="startConversationPanel">startConversationPanel</div>
+            </div>
+
+            <div wicket:id="userPreviewPanel" class="userPreviewPanel">userPreviewPanel</div>
+
+            <div wicket:id="personalSummaryPreview" class="personalSummaryPreview">personalSummaryPreview</div>
+
+            <wicket:enclosure child="jobExperiencePreview">
+                <div class="jobExperienceTitle">
+                    Doświadczenie zawodowe
+                </div>
+                <div wicket:id="jobExperiencePreview">
+                    <div wicket:id="content">content</div>
+                </div>
+            </wicket:enclosure>
+
+            <wicket:enclosure child="educationPreview">
+                <div class="educationTitle">
+                    Wykształcenie
+                </div>
+                <div wicket:id="educationPreview">
+                    <div wicket:id="content">content</div>
+                </div>
+            </wicket:enclosure>
+
+            <wicket:enclosure child="additionalInfoPreview">
+                <div class="additionalInfoTitle">
+                    Dodatkowe informacje
+                </div>
+                <div wicket:id="additionalInfoPreview">
+                    <div wicket:id="content">content</div>
+                </div>
+            </wicket:enclosure>
+
+
+
+        </div>
+
 
     </div>
 </wicket:extend>

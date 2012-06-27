@@ -1,6 +1,5 @@
 package pl.marpiec.socnet.web.page.profile
 
-import pl.marpiec.socnet.web.authorization.SecureWebPage
 import pl.marpiec.util.UID
 import org.apache.wicket.request.mapper.parameter.PageParameters
 import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException
@@ -19,6 +18,7 @@ import pl.marpiec.socnet.model.UserContacts
 import pl.marpiec.socnet.readdatabase.UserContactsDatabase
 import pl.marpiec.socnet.web.component.conversation.StartConversationPanel
 import pl.marpiec.socnet.web.page.profile.userProfilePreviewPage._
+import pl.marpiec.socnet.web.authorization.{AuthorizeUser, SecureWebPage}
 
 /**
  * @author Marcin Pieciukiewicz
@@ -61,8 +61,8 @@ class UserProfilePreviewPage(parameters: PageParameters) extends SecureWebPage(S
   addAdditionalInfoList(userProfile.additionalInfo)
 
   add(new PersonContactInfo("personContactInfo", user.id, loggedInUserContacts))
-  add(new StartConversationPanel("startConversationPanel", user.id))
-  add(new UserContactsPreviewPanel("userContactsPreviewPanel", userContacts, loggedInUserContacts))
+  add(AuthorizeUser(new StartConversationPanel("startConversationPanel", user.id).setVisible(user.id != session.userId)))
+  add(AuthorizeUser(new UserContactsPreviewPanel("userContactsPreviewPanel", userContacts, loggedInUserContacts)))
 
   //methods
   def addJobExperienceList(jobExperienceList: ListBuffer[JobExperience]) {
