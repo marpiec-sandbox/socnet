@@ -14,8 +14,9 @@ class PersonalSummaryPreviewPanel(id: String, val userProfile: UserProfile) exte
 
   //schema
 
-  add(new Label("city", userProfile.city))
-  add(new Label("province", getProvinceOrNull))
+  add(new Label("city", userProfile.city).setVisible(StringUtils.isNotBlank(userProfile.city)))
+  val province = getProvinceOrNull
+  add(new Label("province", province).setVisible(StringUtils.isNotBlank(province)))
   
   addWwwLink("wwwPage", userProfile.wwwPage)
   addWwwLink("blogPage", userProfile.blogPage)
