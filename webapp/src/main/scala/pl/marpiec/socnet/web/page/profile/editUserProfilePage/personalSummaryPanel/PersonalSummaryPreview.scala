@@ -3,25 +3,22 @@ package pl.marpiec.socnet.web.page.profile.editUserProfilePage.personalSummaryPa
 import pl.marpiec.socnet.model.UserProfile
 import pl.marpiec.socnet.web.page.profile.editUserProfilePage.PersonalSummaryPanel
 import org.apache.wicket.markup.html.WebMarkupContainer
-import org.apache.wicket.markup.html.basic.Label
-import org.apache.wicket.model.PropertyModel
 import org.apache.wicket.ajax.markup.html.AjaxFallbackLink
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.markup.html.link.ExternalLink
+import pl.marpiec.socnet.web.component.wicket.LabelInvisibleWhenEmpty
 import org.apache.commons.lang.StringUtils
+import org.apache.wicket.model. PropertyModel
 
 class PersonalSummaryPreview(id: String, userProfile: UserProfile, parent: PersonalSummaryPanel) extends WebMarkupContainer(id) {
 
-  add(new Label("city", new PropertyModel(userProfile, "city")) {
-    override def isVisible = StringUtils.isNotBlank(getDefaultModelObjectAsString)
-  })
+  add(new LabelInvisibleWhenEmpty("city", new PropertyModel(userProfile, "city")))
+  add(new LabelInvisibleWhenEmpty("province", new PropertyModel(userProfile, "province.translation")))
 
-  add(new Label("province", new PropertyModel(userProfile, "province.translation")) {
-    override def isVisible = StringUtils.isNotBlank(getDefaultModelObjectAsString)
-  })
-  add(new ExternalLink("wwwPage", new PropertyModel[String](userProfile, "wwwPage"), new PropertyModel(userProfile, "wwwPage")))
-  add(new ExternalLink("blogPage", new PropertyModel[String](userProfile, "blogPage"), new PropertyModel(userProfile, "blogPage")))
-  add(new Label("summary", new PropertyModel(userProfile, "summary")))
+  addWwwLink("wwwPage", userProfile, "wwwPage")
+  addWwwLink("blogPage", userProfile, "blogPage")
+
+  add(new LabelInvisibleWhenEmpty("summary", new PropertyModel(userProfile, "summary")))
 
   add(new AjaxFallbackLink("editButton") {
     def onClick(target: AjaxRequestTarget) {
@@ -29,4 +26,19 @@ class PersonalSummaryPreview(id: String, userProfile: UserProfile, parent: Perso
       target.add(parent)
     }
   })
+
+  private def addWwwLink(id:String, model:AnyRef, property:String) {
+    add(new ExternalLink(id, new PropertyModel[String](model, property) {
+      override def getObject = {
+        if (super.getObject==null) {
+          null
+        } else {
+          "http://"+super.getObject
+        }
+      }
+    }, new PropertyModel(model, property)){
+      override def isVisible = super.isVisible && StringUtils.isNotBlank(getDefaultModelObjectAsString)
+    })
+  }
+
 }
