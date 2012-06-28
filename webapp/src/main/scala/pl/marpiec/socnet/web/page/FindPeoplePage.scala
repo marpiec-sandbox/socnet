@@ -24,14 +24,9 @@ object FindPeoplePage {
 
 class FindPeoplePage(parameters: PageParameters) extends SecureWebPage(SocnetRoles.USER) {
 
-  @SpringBean
-  private var userDatabase: UserDatabase = _
-
-  @SpringBean
-  private var userProfileDatabase: UserProfileDatabase = _
-
-  @SpringBean
-  private var userContactsDatabase: UserContactsDatabase = _
+  @SpringBean private var userDatabase: UserDatabase = _
+  @SpringBean private var userProfileDatabase: UserProfileDatabase = _
+  @SpringBean private var userContactsDatabase: UserContactsDatabase = _
 
   val query = parameters.get(FindPeoplePage.QUERY_PARAM).toString
 

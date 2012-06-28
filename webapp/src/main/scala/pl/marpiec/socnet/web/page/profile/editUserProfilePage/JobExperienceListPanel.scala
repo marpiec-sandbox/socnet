@@ -22,8 +22,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean
 class JobExperienceListPanel(id: String, user: User, userProfile: UserProfile, jobExperienceList: ListBuffer[JobExperience])
   extends ElementListPanel[JobExperience, JobExperienceFormModel](id, user, userProfile, jobExperienceList) {
 
-  @SpringBean
-  var userProfileCommand: UserProfileCommand = _
+  @SpringBean private var userProfileCommand: UserProfileCommand = _
 
   def createNewElement = new JobExperience
 

@@ -22,8 +22,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean
 class EducationListPanel(id: String, user: User, userProfile: UserProfile, educationList: ListBuffer[Education])
   extends ElementListPanel[Education, EducationFormModel](id, user, userProfile, educationList) {
 
-  @SpringBean
-  var userProfileCommand: UserProfileCommand = _
+  @SpringBean private var userProfileCommand: UserProfileCommand = _
 
   def createNewElement = new Education
 

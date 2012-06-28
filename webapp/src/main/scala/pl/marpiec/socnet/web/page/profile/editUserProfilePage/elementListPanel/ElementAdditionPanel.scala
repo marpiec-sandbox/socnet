@@ -20,10 +20,8 @@ class ElementAdditionPanel[T <: Identifiable, TM <: SecureFormModel](id: String,
                                                                      val user: User, val userProfile: UserProfile) extends Panel(id) {
 
   //dependencies
-  @SpringBean
-  var userProfileCommand: UserProfileCommand = _
-  @SpringBean
-  var uidGenerator: UidGenerator = _
+  @SpringBean private var userProfileCommand: UserProfileCommand = _
+  @SpringBean private var uidGenerator: UidGenerator = _
 
   setOutputMarkupId(true)
   setOutputMarkupPlaceholderTag(true)

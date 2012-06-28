@@ -16,8 +16,7 @@ class UserContactsPreviewPanel(id:String, userContacts:UserContacts, loggedInUse
 
   val CONTACTS_COUNT_TO_DISPLAY = 10
 
-  @SpringBean
-  private var userDatabase: UserDatabase = _
+  @SpringBean private var userDatabase: UserDatabase = _
 
   val contacts = userContacts.contacts
 

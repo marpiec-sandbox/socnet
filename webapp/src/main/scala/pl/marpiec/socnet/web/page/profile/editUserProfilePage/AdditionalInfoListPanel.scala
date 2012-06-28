@@ -22,8 +22,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean
 class AdditionalInfoListPanel(id: String, user: User, userProfile: UserProfile, additionalInfoList: ListBuffer[AdditionalInfo])
   extends ElementListPanel[AdditionalInfo, AdditionalInfoFormModel](id, user, userProfile, additionalInfoList) {
 
-  @SpringBean
-  var userProfileCommand: UserProfileCommand = _
+  @SpringBean private var userProfileCommand: UserProfileCommand = _
 
   def createNewElement = new AdditionalInfo
 

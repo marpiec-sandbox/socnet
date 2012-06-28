@@ -15,8 +15,7 @@ import pl.marpiec.socnet.service.user.UserRegistrationCommand
 
 class TriggerUserRegistrationPage(parameters: PageParameters) extends SimpleTemplatePage {
 
-  @SpringBean
-  private var userRegistrationCommand: UserRegistrationCommand = _
+  @SpringBean private var userRegistrationCommand: UserRegistrationCommand = _
 
   val triggerValue = parameters.get(TriggerUserRegistrationPage.TRIGGER_PARAM)
   if (triggerValue.isEmpty) {

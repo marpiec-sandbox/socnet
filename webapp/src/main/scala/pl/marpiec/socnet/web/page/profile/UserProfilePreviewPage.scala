@@ -27,12 +27,9 @@ import pl.marpiec.socnet.web.component.contacts.{PersonContactLevelPanel, Person
 class UserProfilePreviewPage(parameters: PageParameters) extends SecureWebPage(SocnetRoles.NO_ROLES_REQUIRED) {
 
   //dependencies
-  @SpringBean
-  private var userProfileDatabase: UserProfileDatabase = _
-  @SpringBean
-  private var userDatabase: UserDatabase = _
-  @SpringBean
-  private var userContactsDatabase: UserContactsDatabase = _
+  @SpringBean private var userProfileDatabase: UserProfileDatabase = _
+  @SpringBean private var userDatabase: UserDatabase = _
+  @SpringBean private var userContactsDatabase: UserContactsDatabase = _
 
 
   //get data

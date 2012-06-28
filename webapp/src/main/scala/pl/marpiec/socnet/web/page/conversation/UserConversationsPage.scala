@@ -17,14 +17,9 @@ import pl.marpiec.util.UID
 
 class UserConversationsPage extends SecureWebPage(SocnetRoles.USER) {
 
-  @SpringBean
-  private var conversationDatabase: ConversationDatabase = _
-
-  @SpringBean
-  private var userDatabase: UserDatabase = _
-
-  @SpringBean
-  private var conversationInfoDatabase: ConversationInfoDatabase = _
+  @SpringBean private var conversationDatabase: ConversationDatabase = _
+  @SpringBean private var userDatabase: UserDatabase = _
+  @SpringBean private var conversationInfoDatabase: ConversationInfoDatabase = _
 
 
   val userConversations: List[Conversation] = conversationDatabase.getConversationsByParticipantUserId(session.userId())

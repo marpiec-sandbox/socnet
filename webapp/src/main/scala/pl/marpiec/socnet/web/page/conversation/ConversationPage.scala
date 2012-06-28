@@ -38,42 +38,31 @@ object ConversationPage {
 
 class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetRoles.USER) {
 
-  @SpringBean
-  private var conversationCommand: ConversationCommand = _
+  // dependencies
 
-  @SpringBean
-  private var conversationDatabase: ConversationDatabase = _
-
-  @SpringBean
-  private var conversationInfoDatabase: ConversationInfoDatabase = _
-
-
-  @SpringBean
-  private var userDatabase: UserDatabase = _
-
-  @SpringBean
-  private var uidGenerator: UidGenerator = _
+  @SpringBean private var conversationCommand: ConversationCommand = _
+  @SpringBean private var conversationDatabase: ConversationDatabase = _
+  @SpringBean private var conversationInfoDatabase: ConversationInfoDatabase = _
+  @SpringBean private var userDatabase: UserDatabase = _
+  @SpringBean private var uidGenerator: UidGenerator = _
 
 
+  // load data
   var conversation = getConversationOrThrow404
 
   var participants = userDatabase.getUsersByIds(conversation.participantsUserIds)
 
-  val conversationInfoOption = conversationInfoDatabase.getConversationInfo(session.userId, conversation.id)
-  
-  if (conversationInfoOption.isEmpty) {
-    throw new IllegalStateException("User has no defined info for conversation")
-  }
-
-  val conversationInfo = conversationInfoOption.get
+  val conversationInfo = conversationInfoDatabase.getConversationInfo(session.userId, conversation.id).
+                            getOrElse(throw new IllegalStateException("User has no defined info for conversation"))
 
   conversationCommand.userHasReadConversation(session.userId, conversationInfo.id, conversationInfo.version)
 
 
-  var conversationPreviewPanel = createConversationPreview
-  add(conversationPreviewPanel)
+  // build schema
 
+  var conversationPreviewPanel = addAndReturn(createConversationPreview)
 
+  // reply conversation form
   add(new StandardAjaxSecureForm[ReplyConversationFormModel]("replyForm") {
 
     var model: ReplyConversationFormModel = _

@@ -16,8 +16,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean
 
 class PersonalSummaryEditForm(id: String, userProfile: UserProfile, user: User, parent: PersonalSummaryPanel) extends SecureForm[PersonalSummaryFormModel](id) {
 
-  @SpringBean
-  var userProfileCommand: UserProfileCommand = _
+  @SpringBean private var userProfileCommand: UserProfileCommand = _
 
   def initialize {
     val model = PersonalSummaryFormModel(userProfile)

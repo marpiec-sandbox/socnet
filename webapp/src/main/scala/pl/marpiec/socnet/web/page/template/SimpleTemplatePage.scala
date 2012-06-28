@@ -13,6 +13,7 @@ import pl.marpiec.socnet.web.page._
 import contacts.{InvitationsReceivedPage, InvitationsSentPage, ContactsPage}
 import conversation.UserConversationsPage
 import profile.{UserProfilePreviewPage, EditUserProfilePage}
+import org.apache.wicket.Component
 
 /**
  * ...
@@ -64,6 +65,11 @@ class SimpleTemplatePage extends WebPage {
 
   protected def setSubTitle(title: String) {
     titleLabelModel.setObject("Socnet " + title)
+  }
+  
+  protected def addAndReturn(component:Component):Component = {
+    add(component)
+    component
   }
 
 }

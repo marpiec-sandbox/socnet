@@ -19,8 +19,7 @@ import pl.marpiec.socnet.web.wicket.SimpleStatelessForm
 
 class ForgotPasswordPage extends SimpleTemplatePage {
 
-  @SpringBean
-  private var userCommand: UserCommand = _
+  @SpringBean private var userCommand: UserCommand = _
 
   add(new SimpleStatelessForm("form") {
 

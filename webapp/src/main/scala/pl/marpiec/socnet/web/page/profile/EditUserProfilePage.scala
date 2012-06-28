@@ -18,12 +18,9 @@ import pl.marpiec.cqrs.UidGenerator
 class EditUserProfilePage extends SecureWebPage(SocnetRoles.USER) {
 
   //dependencies
-  @SpringBean
-  var userProfileCommand: UserProfileCommand = _
-  @SpringBean
-  var userProfileDatabase: UserProfileDatabase = _
-  @SpringBean
-  var uidGenerator: UidGenerator = _
+  @SpringBean private var userProfileCommand: UserProfileCommand = _
+  @SpringBean private var userProfileDatabase: UserProfileDatabase = _
+  @SpringBean private var uidGenerator: UidGenerator = _
 
 
   val userProfileOption = userProfileDatabase.getUserProfileByUserId(session.user.id)

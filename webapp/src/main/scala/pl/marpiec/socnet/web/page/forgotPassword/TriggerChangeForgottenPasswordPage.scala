@@ -22,12 +22,9 @@ import pl.marpiec.socnet.web.wicket.SimpleStatelessForm
 
 class TriggerChangeForgottenPasswordPage(parameters: PageParameters) extends SimpleTemplatePage {
 
-  @SpringBean
-  private var userCommand: UserCommand = _
-  @SpringBean
-  private var userQuery: UserQuery = _
-  @SpringBean
-  private var triggeredEvents: TriggeredEvents = _
+  @SpringBean private var userCommand: UserCommand = _
+  @SpringBean private var userQuery: UserQuery = _
+  @SpringBean private var triggeredEvents: TriggeredEvents = _
 
   val triggerValue = parameters.get(TriggerChangeForgottenPasswordPage.TRIGGER_PARAM)
   if (triggerValue.isEmpty) {

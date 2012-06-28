@@ -6,8 +6,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean
 import pl.marpiec.socnet.readdatabase.UserContactsDatabase
 import org.apache.wicket.markup.repeater.RepeatingView
 import org.apache.wicket.markup.html.list.AbstractItem
-import org.apache.wicket.markup.html.basic.Label
-import pl.marpiec.socnet.web.page.profile.UserProfilePreviewPage
 import pl.marpiec.socnet.readdatabase.UserDatabase
 import pl.marpiec.socnet.web.component.user.UserSummaryPreviewPanel
 
@@ -17,13 +15,10 @@ import pl.marpiec.socnet.web.component.user.UserSummaryPreviewPanel
 
 class ContactsPage extends SecureWebPage(SocnetRoles.USER) {
 
-  @SpringBean
-  var userContactsDatabase: UserContactsDatabase = _
-  @SpringBean
-  var userDatabase: UserDatabase = _
+  @SpringBean var userContactsDatabase: UserContactsDatabase = _
+  @SpringBean var userDatabase: UserDatabase = _
 
   val userContacts = userContactsDatabase.getUserContactsByUserId(session.userId).get
-
   val contacts = userContacts.contacts
 
   add(new RepeatingView("contact") {
@@ -39,15 +34,9 @@ class ContactsPage extends SecureWebPage(SocnetRoles.USER) {
       val user = userOption.get
 
       add(new AbstractItem(newChildId()) {
-
         add(new UserSummaryPreviewPanel("userSummaryPreview", user))
-
       })
-
     })
-
-
   })
-
 
 }

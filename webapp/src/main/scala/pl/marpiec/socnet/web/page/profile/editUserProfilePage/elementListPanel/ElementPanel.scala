@@ -22,8 +22,7 @@ class ElementPanel[T <: Identifiable, TM <: SecureFormModel](id: String, mainLis
   extends Panel(id) {
 
   //dependencies
-  @SpringBean
-  var userProfileCommand: UserProfileCommand = _
+  @SpringBean private var userProfileCommand: UserProfileCommand = _
 
   //configure
   setOutputMarkupId(true)

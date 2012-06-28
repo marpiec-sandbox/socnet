@@ -24,11 +24,8 @@ import pl.marpiec.socnet.model.usercontacts.Invitation
 
 class PersonContactInvitationPanel(id: String, userId: UID, userContacts: UserContacts) extends Panel(id) {
 
-  @SpringBean
-  private var userContactsCommand: UserContactsCommand = _
-
-  @SpringBean
-  private var uidGenerator: UidGenerator = _
+  @SpringBean private var userContactsCommand: UserContactsCommand = _
+  @SpringBean private var uidGenerator: UidGenerator = _
 
   val contactOption = userContacts.contactByUserId(userId)
   val invitationSentOption = userContacts.invitationSentByUserId(userId)

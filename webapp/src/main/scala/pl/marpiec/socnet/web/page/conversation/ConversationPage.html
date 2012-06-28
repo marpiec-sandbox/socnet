@@ -31,11 +31,18 @@
                 </div>
             </div>
 
-            <div class="participants">
-                <div class="title">Uczestnicy:</div>
-                <div wicket:id="participant" class="participant">
+            <div class="participants rightModule">
+                <div class="title">Uczestnicy</div>
+                <div wicket:id="participant" class="participant element">
                     <a wicket:id="profileLink" class="profileLink"><span wicket:id="userName">fullName</span></a>
                 </div>
+            </div>
+
+            <div class="conversationActions rightModule">
+                <div class="title">Rozmowa</div>
+                <a href="#" wicket:id="exitConversationButton" class="element">Opuść rozmowę</a>
+                <a href="#" class="element">Dołącz do rozmowy</a>
+                <a href="#" class="element">Wróć do rozmowy</a>
             </div>
 
         </div>

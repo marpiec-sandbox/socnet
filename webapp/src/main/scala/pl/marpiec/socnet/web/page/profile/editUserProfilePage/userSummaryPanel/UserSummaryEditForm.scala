@@ -14,8 +14,7 @@ import pl.marpiec.socnet.service.user.UserCommand
 
 class UserSummaryEditForm(id: String, user: User, parent: UserSummaryPanel) extends SecureForm[UserSummaryFormModel](id) {
 
-  @SpringBean
-  var userCommand: UserCommand = _
+  @SpringBean private var userCommand: UserCommand = _
 
   def initialize {
     val model = UserSummaryFormModel(user)

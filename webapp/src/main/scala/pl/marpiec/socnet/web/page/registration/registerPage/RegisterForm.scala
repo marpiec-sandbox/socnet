@@ -13,8 +13,7 @@ import pl.marpiec.socnet.readdatabase.exception.EntryAlreadyExistsException
 
 class RegisterForm(id: String) extends Panel(id) {
 
-  @SpringBean
-  private var userCommand: UserCommand = _
+  @SpringBean private var userCommand: UserCommand = _
 
   add(new FeedbackPanel("feedback"))
   add(new StatelessForm[RegisterFormModel]("form") {

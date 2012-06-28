@@ -31,19 +31,15 @@ object StartConversationPage {
 class StartConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetRoles.USER) {
 
   //dependencies
-  @SpringBean
-  private var userDatabase: UserDatabase = _
-
-  @SpringBean
-  private var conversationCommand: ConversationCommand = _
-
-  @SpringBean
-  private var uidGenerator: UidGenerator = _
+  @SpringBean private var userDatabase: UserDatabase = _
+  @SpringBean private var conversationCommand: ConversationCommand = _
+  @SpringBean private var uidGenerator: UidGenerator = _
 
 
   //get data
   val user = getUserOrThrow404
 
+  //build schema
 
   add(new Label("contactFullName", user.fullName))
 

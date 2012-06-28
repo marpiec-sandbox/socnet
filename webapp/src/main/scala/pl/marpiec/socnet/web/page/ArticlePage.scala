@@ -16,10 +16,8 @@ import org.apache.wicket.spring.injection.annot.SpringBean
 
 class ArticlePage(parameters: PageParameters) extends SimpleTemplatePage {
 
-  @SpringBean
-  private var articleDatabase: ArticleDatabase = _
-  @SpringBean
-  private var userDatabase: UserDatabase = _
+  @SpringBean private var articleDatabase: ArticleDatabase = _
+  @SpringBean private var userDatabase: UserDatabase = _
 
 
   val articleId = UID.parseOrZero(parameters.get(ArticlePage.ARTICLE_ID_PARAM).toString)

@@ -25,12 +25,10 @@ import org.apache.wicket.ajax.markup.html.AjaxLink
  */
 
 class InvitationsReceivedPage extends SecureWebPage(SocnetRoles.USER) {
-  @SpringBean
-  var userContactsDatabase: UserContactsDatabase = _
-  @SpringBean
-  var userContactsCommand: UserContactsCommand = _
-  @SpringBean
-  var userDatabase: UserDatabase = _
+
+  @SpringBean private var userContactsDatabase: UserContactsDatabase = _
+  @SpringBean private var userContactsCommand: UserContactsCommand = _
+  @SpringBean private var userDatabase: UserDatabase = _
 
   val userContacts = userContactsDatabase.getUserContactsByUserId(session.userId).get
   val invitations = userContacts.notRemovedInvitationsReceived

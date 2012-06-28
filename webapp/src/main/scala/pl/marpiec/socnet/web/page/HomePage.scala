@@ -13,11 +13,9 @@ import org.apache.wicket.spring.injection.annot.SpringBean
 
 class HomePage extends SimpleTemplatePage {
 
+  @SpringBean private var articleDatabase: ArticleDatabase = _
+
   setStatelessHint(true)
-
-  @SpringBean
-  private var articleDatabase: ArticleDatabase = _
-
 
   add(AuthorizeUser(new BookmarkablePageLink("newArticleLink", classOf[NewArticlePage])))
 

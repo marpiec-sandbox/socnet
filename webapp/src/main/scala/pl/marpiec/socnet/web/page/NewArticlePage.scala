@@ -16,8 +16,7 @@ import pl.marpiec.socnet.web.wicket.SimpleStatelessForm
 
 class NewArticlePage extends SecureWebPage(SocnetRoles.ARTICLE_AUTHOR) {
 
-  @SpringBean
-  private var articleCommand: ArticleCommand = _
+  @SpringBean private var articleCommand: ArticleCommand = _
 
   add(new SimpleStatelessForm("newArticleForm") {
     var content: String = _
