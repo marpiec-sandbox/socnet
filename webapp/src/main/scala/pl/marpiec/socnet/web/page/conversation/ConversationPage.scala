@@ -13,7 +13,6 @@ import org.apache.wicket.markup.repeater.RepeatingView
 import org.apache.wicket.markup.html.list.AbstractItem
 import org.apache.wicket.markup.html.basic.Label
 import pl.marpiec.socnet.web.component.conversation.MessagePreviewPanel
-import pl.marpiec.socnet.web.component.wicket.form.StandardAjaxSecureForm
 import pl.marpiec.socnet.web.component.editor.BBCodeEditor
 import org.apache.wicket.model.{PropertyModel, CompoundPropertyModel}
 import org.apache.wicket.ajax.AjaxRequestTarget
@@ -24,7 +23,8 @@ import org.apache.wicket.markup.html.WebMarkupContainer
 import pl.marpiec.socnet.model.User
 import pl.marpiec.socnet.web.page.profile.UserProfilePreviewPage
 import pl.marpiec.socnet.readdatabase.{ConversationInfoDatabase, ConversationDatabase}
-import pl.marpiec.socnet.model.{ConversationInfo, Conversation}
+import pl.marpiec.socnet.model.Conversation
+import pl.marpiec.socnet.web.component.wicket.form.{OneButtonAjaxForm, StandardAjaxSecureForm}
 
 /**
  * @author Marcin Pieciukiewicz
@@ -53,14 +53,16 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
   var participants = userDatabase.getUsersByIds(conversation.participantsUserIds)
 
   val conversationInfo = conversationInfoDatabase.getConversationInfo(session.userId, conversation.id).
-                            getOrElse(throw new IllegalStateException("User has no defined info for conversation"))
+    getOrElse(throw new IllegalStateException("User has no defined info for conversation"))
 
   conversationCommand.userHasReadConversation(session.userId, conversationInfo.id, conversationInfo.version)
+  conversationInfo.version = conversationInfo.version + 1
 
 
   // build schema
 
   var conversationPreviewPanel = addAndReturn(createConversationPreview)
+
 
   // reply conversation form
   add(new StandardAjaxSecureForm[ReplyConversationFormModel]("replyForm") {
@@ -112,7 +114,7 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
     }
 
     def onSecureCancel(target: AjaxRequestTarget, formModel: ReplyConversationFormModel) {
-
+       //ignore, javascript will handle this
     }
   })
 
@@ -147,6 +149,22 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
           })
         })
       })
+
+      add(new OneButtonAjaxForm("exitConversationButton", "Opusc rozmowe", (target: AjaxRequestTarget) => {
+        conversationCommand.exitConversation(session.userId, conversationInfo.id, conversationInfo.version)
+        setResponsePage(classOf[ConversationPage], new PageParameters().add(ConversationPage.CONVERSATION_ID_PARAM, conversation.id))
+      }).setVisible(conversationInfo.participating && !conversationInfo.deleted))
+
+      add(new OneButtonAjaxForm("enterConversationButton", "Dolacz do rozmowy", (target: AjaxRequestTarget) => {
+        conversationCommand.enterConversation(session.userId, conversationInfo.id, conversationInfo.version)
+        setResponsePage(classOf[ConversationPage], new PageParameters().add(ConversationPage.CONVERSATION_ID_PARAM, conversation.id))
+      }).setVisible(!conversationInfo.participating && !conversationInfo.deleted))
+
+      add(new OneButtonAjaxForm("deleteConversationButton", "Usun rozmowe", (target: AjaxRequestTarget) => {
+        conversationCommand.removeConversation(session.userId, conversationInfo.id, conversationInfo.version)
+        setResponsePage(classOf[UserConversationsPage])
+      }).setVisible(!conversationInfo.deleted))
+
     }
   }
 
