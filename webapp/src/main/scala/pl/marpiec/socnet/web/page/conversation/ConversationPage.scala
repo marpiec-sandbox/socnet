@@ -60,8 +60,14 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
   var participants = userDatabase.getUsersByIds(conversation.participantsUserIds)
 
   val conversationInfoOption = conversationInfoDatabase.getConversationInfo(session.userId, conversation.id)
+  
+  if (conversationInfoOption.isEmpty) {
+    throw new IllegalStateException("User has no defined info for conversation")
+  }
 
-  conversationCommand.userHasReadConversation(session.userId, getConversationInfoKeyIfPossible(conversationInfoOption), conversation.id)
+  val conversationInfo = conversationInfoOption.get
+
+  conversationCommand.userHasReadConversation(session.userId, conversationInfo.id, conversationInfo.version)
 
 
   var conversationPreviewPanel = createConversationPreview
@@ -121,14 +127,6 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
     }
   })
 
-  private def getConversationInfoKeyIfPossible(conversationInfoOption: Option[ConversationInfo]): Option[(UID, Int)] = {
-    if (conversationInfoOption.isDefined) {
-      val info = conversationInfoOption.get
-      Option((info.id, info.version))
-    } else {
-      None
-    }
-  }
 
   private def reloadConversationFromDB {
     conversation = conversationDatabase.getConversationById(conversation.id).get

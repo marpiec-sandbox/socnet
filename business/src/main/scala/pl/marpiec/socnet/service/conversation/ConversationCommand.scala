@@ -16,8 +16,13 @@ trait ConversationCommand {
 
   def addParticipant(userId: UID, id: UID, version: Int, message: String, addedParticipantUserId: UID)
 
-  def hideConversation(userId: UID, id: UID, version: Int)
+  def userHasReadConversation(userId: UID, conversationInfoId: UID, version: Int)
 
-  def userHasReadConversation(userId: UID, conversationInfoIdAndVersionOption: Option[(UID, Int)], conversationId: UID)
+  def removeConversation(userId: UID, conversationInfoId: UID, version: Int)
+
+  def enterConversation(userId: UID, conversationInfoId: UID, version: Int)
+
+  def exitConversation(userId: UID, conversationInfoId: UID, version: Int)
+
 
 }

@@ -43,15 +43,13 @@ class ConversationCommandTest {
     assertEquals(conversation.messages.size, 1)
 
     var conversationInfoForParticipantAOption = conversationInfoDatabase.getConversationInfo(participantAUserId, conversationId)
-    assertTrue(conversationInfoForParticipantAOption.isEmpty)
+    assertTrue(conversationInfoForParticipantAOption.isDefined)
 
     // First User reads conversation
 
-    conversationCommand.userHasReadConversation(participantAUserId, None, conversationId)
+    var conversationInfoForParticipantA = conversationInfoForParticipantAOption.get
 
-    conversationInfoForParticipantAOption = conversationInfoDatabase.getConversationInfo(participantAUserId, conversationId)
-    assertTrue(conversationInfoForParticipantAOption.isDefined)
-
+    conversationCommand.userHasReadConversation(participantAUserId, conversationInfoForParticipantA.id, conversationInfoForParticipantA.version)
 
     val secondMessageId = uidGenerator.nextUid
 
@@ -93,12 +91,30 @@ class ConversationCommandTest {
 
     // Second participant removes conversation from his conversations
 
-    conversationCommand.hideConversation(participantBUserId, conversationId, conversation.version)
+    var participantBConversationInfo = conversationInfoDatabase.getConversationInfo(participantBUserId, conversationId).get
+    conversationCommand.removeConversation(participantBUserId, participantBConversationInfo.id, participantBConversationInfo.version)
     conversation = dataStore.getEntity(classOf[Conversation], conversationId).asInstanceOf[Conversation]
     assertEquals(conversation.participantsUserIds.length, 4)
-    assertEquals(conversation.conversationHiddenForUsers.size, 1)
-    assertTrue(conversation.conversationHiddenForUsers.contains(participantBUserId))
+
+    participantBConversationInfo = conversationInfoDatabase.getConversationInfo(participantBUserId, conversationId).get
+    assertTrue(participantBConversationInfo.deleted)
+    assertFalse(participantBConversationInfo.participating)
+    
+
+    // Third participant lefts conversation
+    var participantCConversationInfo = conversationInfoDatabase.getConversationInfo(participantCUserId, conversationId).get
+    conversationCommand.exitConversation(participantCUserId, participantCConversationInfo.id, participantCConversationInfo.version)
+
+    participantCConversationInfo = conversationInfoDatabase.getConversationInfo(participantCUserId, conversationId).get
+    assertFalse(participantCConversationInfo.deleted)
+    assertFalse(participantCConversationInfo.participating)
 
 
+    // Third participant comes back to conversation
+    conversationCommand.enterConversation(participantCUserId, participantCConversationInfo.id, participantCConversationInfo.version)
+
+    participantCConversationInfo = conversationInfoDatabase.getConversationInfo(participantCUserId, conversationId).get
+    assertFalse(participantCConversationInfo.deleted)
+    assertTrue(participantCConversationInfo.participating)
   }
 }

@@ -1,21 +1,21 @@
 package pl.marpiec.socnet.service.conversation.event
 
-import pl.marpiec.socnet.model.ConversationInfo
-import org.joda.time.LocalDateTime
 import pl.marpiec.cqrs.{Aggregate, Event}
+import pl.marpiec.socnet.model.ConversationInfo
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
-class UserHasReadConversationEvent(val readTime: LocalDateTime) extends Event {
-
+class EnterConversationForUserEvent() extends Event {
 
   def applyEvent(aggregate: Aggregate) {
     val conversationInfo = aggregate.asInstanceOf[ConversationInfo]
-    conversationInfo.lastReadTime = readTime
+    conversationInfo.participating = true
   }
 
   def entityClass = classOf[ConversationInfo]
 
 }
+
+

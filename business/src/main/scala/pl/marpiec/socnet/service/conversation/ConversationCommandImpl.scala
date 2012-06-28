@@ -20,6 +20,14 @@ class ConversationCommandImpl @Autowired()(val eventStore: EventStore, val uidGe
                          firstMessageText: String, firstMessageId: UID) {
     val createConversation = new CreateConversationEvent(userId, title, participantsUserIds.toArray, new LocalDateTime(), firstMessageText, firstMessageId)
     eventStore.addEventForNewAggregate(newConversationId, new EventRow(userId, newConversationId, 0, createConversation))
+    participantsUserIds.foreach(participantId => addConversationInfoForUser(participantId, newConversationId))
+  }
+
+
+  private def addConversationInfoForUser(userId: UID, conversationId: UID) {
+    val createConversationInfo = new CreateConversationInfoEvent(userId, conversationId)
+    val conversationInfoId = uidGenerator.nextUid
+    eventStore.addEventForNewAggregate(conversationInfoId, new EventRow(userId, conversationInfoId, 0, createConversationInfo))
   }
 
   def createMessage(userId: UID, id: UID, version: Int, messageText: String, messageId: UID) {
@@ -30,25 +38,21 @@ class ConversationCommandImpl @Autowired()(val eventStore: EventStore, val uidGe
     eventStore.addEvent(new EventRow(userId, id, version, new AddParticipantEvent(userId, message, addedParticipantUserId)))
   }
 
-  def hideConversation(userId: UID, id: UID, version: Int) {
-    eventStore.addEvent(new EventRow(userId, id, version, new HideConversationForUserEvent(userId)))
+  def userHasReadConversation(userId: UID, conversationInfoId: UID, version: Int) {
+    eventStore.addEvent(new EventRow(userId, conversationInfoId, version, new UserHasReadConversationEvent(new LocalDateTime())))
   }
 
-  def userHasReadConversation(userId: UID, conversationInfoIdAndVersionOption: Option[(UID, Int)], conversationId: UID) {
-    val (conversationInfoId, version) = addConversationInfoForUserIfRequired(conversationInfoIdAndVersionOption, userId, conversationId);
-    eventStore.addEvent(new EventRow(userId, conversationInfoId, version, new UserHasReadConversationEvent(userId, new LocalDateTime())))
+  def removeConversation(userId: UID, conversationInfoId: UID, version: Int) {
+    eventStore.addEvent(new EventRow(userId, conversationInfoId, version, new RemoveConversationForUserEvent))
   }
 
-  private def addConversationInfoForUserIfRequired(conversationInfoIdAndVersionOption: Option[(UID, Int)],
-                                                   userId: UID, conversationId: UID): (UID, Int) = {
-    if (conversationInfoIdAndVersionOption.isEmpty) {
-      val createConversationInfo = new CreateConversationInfoEvent(userId, conversationId)
-      val conversationInfoId = uidGenerator.nextUid
-
-      eventStore.addEventForNewAggregate(conversationInfoId, new EventRow(userId, conversationInfoId, 0, createConversationInfo))
-      (conversationInfoId, 1)
-    } else {
-      conversationInfoIdAndVersionOption.get
-    }
+  def enterConversation(userId: UID, conversationInfoId: UID, version: Int) {
+    eventStore.addEvent(new EventRow(userId, conversationInfoId, version, new EnterConversationForUserEvent))
   }
+
+  def exitConversation(userId: UID, conversationInfoId: UID, version: Int) {
+    eventStore.addEvent(new EventRow(userId, conversationInfoId, version, new ExitConversationForUserEvent))
+  }
+
+
 }

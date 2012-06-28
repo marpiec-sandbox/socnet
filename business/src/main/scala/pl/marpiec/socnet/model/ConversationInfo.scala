@@ -14,8 +14,9 @@ class ConversationInfo extends Aggregate(null, 0) {
   var conversationId: UID = _
 
   var lastReadTime: LocalDateTime = null
-  var ignored: Boolean = false;
-  var deleted: Boolean = false;
+  
+  var participating:Boolean = true
+  var deleted: Boolean = false
 
   def copy = {
     BeanUtil.copyProperties(new ConversationInfo, this)
