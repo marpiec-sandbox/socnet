@@ -46,7 +46,7 @@ class SocnetSession(request: Request, val userQuery: UserQuery) extends Authenti
 
     this.user = registeredUser
 
-    this.sessionToken = RandomStringUtils.randomAlphabetic(SESSION_TOKEN_LENGTH)
+    this.sessionToken = RandomStringUtils.randomAlphanumeric(SESSION_TOKEN_LENGTH)
 
     roles.clear
     roles.add(SocnetRoles.USER)
