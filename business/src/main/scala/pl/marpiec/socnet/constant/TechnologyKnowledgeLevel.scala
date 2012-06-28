@@ -19,7 +19,7 @@ object TechnologyKnowledgeLevel extends SEnumObject[TechnologyKnowledgeLevel] {
 
   def getValues = values
 
-  def getByValue(value:Int):TechnologyKnowledgeLevel = values.find(level => level.value == value)
+  def getByValue(value:Int):TechnologyKnowledgeLevel = values.find(level => level.value == value).getOrElse(null)
 }
 
 case class TechnologyKnowledgeLevel(name: String, value: Int) extends SEnum[TechnologyKnowledgeLevel] {

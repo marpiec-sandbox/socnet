@@ -5,6 +5,7 @@ import org.testng.Assert._
 import pl.marpiec.cqrs._
 import pl.marpiec.socnet.model.ProgrammerProfile
 import pl.marpiec.socnet.constant.TechnologyKnowledgeLevel
+import pl.marpiec.socnet.readdatabase.ProgrammerProfileDatabaseMockImpl
 
 /**
  * @author Marcin Pieciukiewicz
@@ -12,53 +13,57 @@ import pl.marpiec.socnet.constant.TechnologyKnowledgeLevel
 
 @Test
 class ProgrammerProfileCommandTest {
-  val eventStore: EventStore = new EventStoreMockImpl
-  val aggregateCache: AggregateCache = new AggregateCacheSimpleImpl
 
-  val dataStore: DataStore = new DataStoreImpl(eventStore, aggregateCache)
-  val programmerProfileDatabase = new ProgrammerProfileDatabaseMockImpl(dataStore)
-  val programmerProfileCommand = new ProgrammerProfileCommandImpl(eventStore)
+  def testDefineKnownTechnologies() {
 
-  val uidGenerator: UidGenerator = new UidGeneratorMockImpl
+    val eventStore: EventStore = new EventStoreMockImpl
+    val aggregateCache: AggregateCache = new AggregateCacheSimpleImpl
 
-  val userId = uidGenerator.nextUid
-  val programmerProfileId = uidGenerator.nextUid
+    val dataStore: DataStore = new DataStoreImpl(eventStore, aggregateCache)
+    val programmerProfileDatabase = new ProgrammerProfileDatabaseMockImpl(dataStore)
+    val programmerProfileCommand = new ProgrammerProfileCommandImpl(eventStore)
 
-  programmerProfileCommand.createProgrammerProfile(userId, userId, programmerProfileId)
+    val uidGenerator: UidGenerator = new UidGeneratorMockImpl
 
-  var programmerProfile:ProgrammerProfile = programmerProfileDatabase.getById(programmerProfileId).get
-  
-  var newTechnologies = Map[String, Int]()
-  newTechnologies += "Java" -> TechnologyKnowledgeLevel.EXPERT
-  newTechnologies += "Scala" -> TechnologyKnowledgeLevel.WORKED_WITH
-  newTechnologies += "Wicket" -> TechnologyKnowledgeLevel.WORKED_WITH
-  newTechnologies += "Spring" -> TechnologyKnowledgeLevel.WORKED_FOR_LONG
+    val userId = uidGenerator.nextUid
+    val programmerProfileId = uidGenerator.nextUid
 
-  programmerProfileCommand.changeTechnologies(userId, programmerProfile.id, programmerProfile.version, newTechnologies, Nil)
+    programmerProfileCommand.createProgrammerProfile(userId, userId, programmerProfileId)
 
-  programmerProfile = programmerProfileDatabase.getById(programmerProfileId).get
+    var programmerProfile:ProgrammerProfile = programmerProfileDatabase.getById(programmerProfileId).get
 
-  assertEquals(programmerProfile.technologyKnowledge.size, TechnologyKnowledgeLevel.WORKED_FOR_LONG.value)
-  assertEquals(programmerProfile.technologyKnowledge("Java"), TechnologyKnowledgeLevel.EXPERT.value)
-  assertEquals(programmerProfile.technologyKnowledge("Scala"), TechnologyKnowledgeLevel.WORKED_WITH.value)
-  assertEquals(programmerProfile.technologyKnowledge("Wicket"), TechnologyKnowledgeLevel.WORKED_WITH.value)
-  assertEquals(programmerProfile.technologyKnowledge("Spring"), TechnologyKnowledgeLevel.WORKED_FOR_LONG.value)
+    var newTechnologies = Map[String, Int]()
+    newTechnologies += "Java" -> TechnologyKnowledgeLevel.EXPERT.value
+    newTechnologies += "Scala" -> TechnologyKnowledgeLevel.WORKED_WITH.value
+    newTechnologies += "Wicket" -> TechnologyKnowledgeLevel.WORKED_WITH.value
+    newTechnologies += "Spring" -> TechnologyKnowledgeLevel.WORKED_FOR_LONG.value
 
-  var removeTechnologies = List[String]()
-  removeTechnologies += "Spring"
+    programmerProfileCommand.changeTechnologies(userId, programmerProfile.id, programmerProfile.version, newTechnologies, Nil)
 
-  var changeTechnologies = Map[String, Int]()
-  changeTechnologies += "Java" -> TechnologyKnowledgeLevel.WORKED_FOR_LONG
-  changeTechnologies += "Guice" -> TechnologyKnowledgeLevel.BASIC
+    programmerProfile = programmerProfileDatabase.getById(programmerProfileId).get
 
-  programmerProfileCommand.changeTechnologies(userId, programmerProfile.id, programmerProfile.version, newTechnologies, Nil)
+    assertEquals(programmerProfile.technologyKnowledge.size, TechnologyKnowledgeLevel.WORKED_FOR_LONG.value)
+    assertEquals(programmerProfile.technologyKnowledge("Java"), TechnologyKnowledgeLevel.EXPERT.value)
+    assertEquals(programmerProfile.technologyKnowledge("Scala"), TechnologyKnowledgeLevel.WORKED_WITH.value)
+    assertEquals(programmerProfile.technologyKnowledge("Wicket"), TechnologyKnowledgeLevel.WORKED_WITH.value)
+    assertEquals(programmerProfile.technologyKnowledge("Spring"), TechnologyKnowledgeLevel.WORKED_FOR_LONG.value)
 
-  programmerProfile = programmerProfileDatabase.getById(programmerProfileId).get
+    var removeTechnologies = List[String]()
+    removeTechnologies ::= "Spring"
 
-  assertEquals(programmerProfile.technologyKnowledge.size, TechnologyKnowledgeLevel.WORKED_FOR_LONG.value)
-  assertEquals(programmerProfile.technologyKnowledge("Java"), TechnologyKnowledgeLevel.WORKED_FOR_LONG.value)
-  assertEquals(programmerProfile.technologyKnowledge("Scala"), TechnologyKnowledgeLevel.WORKED_WITH.value)
-  assertEquals(programmerProfile.technologyKnowledge("Wicket"), TechnologyKnowledgeLevel.WORKED_WITH.value)
-  assertEquals(programmerProfile.technologyKnowledge("Guice"), TechnologyKnowledgeLevel.BASIC.value)
-  
+    var changeTechnologies = Map[String, Int]()
+    changeTechnologies += "Java" -> TechnologyKnowledgeLevel.WORKED_FOR_LONG.value
+    changeTechnologies += "Guice" -> TechnologyKnowledgeLevel.BASIC.value
+
+    programmerProfileCommand.changeTechnologies(userId, programmerProfile.id, programmerProfile.version, newTechnologies, removeTechnologies)
+
+    programmerProfile = programmerProfileDatabase.getById(programmerProfileId).get
+
+    assertEquals(programmerProfile.technologyKnowledge.size, TechnologyKnowledgeLevel.WORKED_FOR_LONG.value)
+    assertEquals(programmerProfile.technologyKnowledge("Java"), TechnologyKnowledgeLevel.WORKED_FOR_LONG.value)
+    assertEquals(programmerProfile.technologyKnowledge("Scala"), TechnologyKnowledgeLevel.WORKED_WITH.value)
+    assertEquals(programmerProfile.technologyKnowledge("Wicket"), TechnologyKnowledgeLevel.WORKED_WITH.value)
+    assertEquals(programmerProfile.technologyKnowledge("Guice"), TechnologyKnowledgeLevel.BASIC.value)
+
+  }
 }

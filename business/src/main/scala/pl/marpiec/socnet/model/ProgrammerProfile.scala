@@ -1,7 +1,7 @@
 package pl.marpiec.socnet.model
 
 import pl.marpiec.cqrs.Aggregate
-import pl.marpiec.util.UID
+import pl.marpiec.util.{BeanUtil, UID}
 
 /**
  * @author Marcin Pieciukiewicz
@@ -18,4 +18,7 @@ class ProgrammerProfile extends Aggregate(null, 0) {
   var technologyLearning: Set[String] = Set[String]()
   var technologyWorking: Set[String] = Set[String]()
 
+  def copy: Aggregate = {
+    BeanUtil.copyProperties(new User, this)
+  }
 }
