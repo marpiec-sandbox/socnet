@@ -80,7 +80,7 @@ class EventStoreDbImpl @Autowired()(val jdbcTemplate: JdbcTemplate) extends Even
     }
 
     if (currentVersion > eventRow.expectedVersion) {
-      throw new ConcurrentAggregateModificationException
+      throw new ConcurrentAggregateModificationException("Expected " + eventRow.expectedVersion + " but is " + currentVersion)
     }
 
     jdbcTemplate.update("INSERT INTO events (id, user_uid, aggregate_uid, event_time, version, event_type, event) " +

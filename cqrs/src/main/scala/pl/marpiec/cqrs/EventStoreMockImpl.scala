@@ -56,7 +56,7 @@ class EventStoreMockImpl extends EventStore {
       event.expectedVersion = eventsForEntity.size
     }
     if (eventsForEntity.size > event.expectedVersion) {
-      throw new ConcurrentAggregateModificationException
+      throw new ConcurrentAggregateModificationException("Expected version " + event.expectedVersion + " but is " + eventsForEntity.size)
     }
 
     eventsForEntity += event

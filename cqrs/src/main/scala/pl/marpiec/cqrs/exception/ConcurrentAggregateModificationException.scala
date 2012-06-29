@@ -1,3 +1,3 @@
 package pl.marpiec.cqrs.exception
 
-class ConcurrentAggregateModificationException extends Exception
+class ConcurrentAggregateModificationException(val message:String) extends Exception
