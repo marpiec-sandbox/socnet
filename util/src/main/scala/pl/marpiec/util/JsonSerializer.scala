@@ -20,6 +20,7 @@ class JsonSerializer {
     gsonBuilder.registerTypeAdapter(classOf[Instant], new InstantTypeConverter)
     gsonBuilder.registerTypeAdapter(classOf[Option[Any]], new OptionSerializer)
     gsonBuilder.registerTypeHierarchyAdapter(classOf[SEnum[Any]], new SEnumTypeConverter)
+    gsonBuilder.registerTypeAdapter(classOf[Tuple2[Any,  Any]], new Touple2Converter)
     gsonBuilder.create
   }
 

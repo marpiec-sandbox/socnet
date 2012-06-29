@@ -10,6 +10,7 @@ import org.testng.Assert._
 class SimpleDataObject {
   var longValue:Long = _
   var stringValue:String = _
+  var touple:(String, String) = _
 }
 
 class OptionalDataObject {
@@ -31,6 +32,7 @@ class JsonSerializerTest {
     val sdo = new SimpleDataObject
     sdo.longValue = 4
     sdo.stringValue = "testString"
+    sdo.touple = ("test", "4")
     
     val simpleJson = jsonSerializer.toJson(sdo)
     
@@ -39,6 +41,9 @@ class JsonSerializerTest {
     assertTrue(sdoFromJson.isInstanceOf[SimpleDataObject])
     assertEquals(sdoFromJson.asInstanceOf[SimpleDataObject].longValue, sdo.longValue)
     assertEquals(sdoFromJson.asInstanceOf[SimpleDataObject].stringValue, sdo.stringValue)
+    val (t1:String, t2:String) = sdoFromJson.asInstanceOf[SimpleDataObject].touple
+    assertEquals(t1, "test")
+    assertEquals(t2, "4")
   }
   
   def testEmptyOptionSerializationAndDeserialization() {
