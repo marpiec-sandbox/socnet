@@ -19,6 +19,6 @@ class ProgrammerProfile extends Aggregate(null, 0) {
   var technologyWorking: Set[String] = Set[String]()
 
   def copy: Aggregate = {
-    BeanUtil.copyProperties(new User, this)
+    BeanUtil.copyProperties(new ProgrammerProfile, this)
   }
 }

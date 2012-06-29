@@ -42,7 +42,7 @@ class ProgrammerProfileCommandTest {
 
     programmerProfile = programmerProfileDatabase.getById(programmerProfileId).get
 
-    assertEquals(programmerProfile.technologyKnowledge.size, TechnologyKnowledgeLevel.WORKED_FOR_LONG.value)
+    assertEquals(programmerProfile.technologyKnowledge.size, 4)
     assertEquals(programmerProfile.technologyKnowledge("Java"), TechnologyKnowledgeLevel.EXPERT.value)
     assertEquals(programmerProfile.technologyKnowledge("Scala"), TechnologyKnowledgeLevel.WORKED_WITH.value)
     assertEquals(programmerProfile.technologyKnowledge("Wicket"), TechnologyKnowledgeLevel.WORKED_WITH.value)
@@ -55,11 +55,11 @@ class ProgrammerProfileCommandTest {
     changeTechnologies += "Java" -> TechnologyKnowledgeLevel.WORKED_FOR_LONG.value
     changeTechnologies += "Guice" -> TechnologyKnowledgeLevel.BASIC.value
 
-    programmerProfileCommand.changeTechnologies(userId, programmerProfile.id, programmerProfile.version, newTechnologies, removeTechnologies)
+    programmerProfileCommand.changeTechnologies(userId, programmerProfile.id, programmerProfile.version, changeTechnologies, removeTechnologies)
 
     programmerProfile = programmerProfileDatabase.getById(programmerProfileId).get
 
-    assertEquals(programmerProfile.technologyKnowledge.size, TechnologyKnowledgeLevel.WORKED_FOR_LONG.value)
+    assertEquals(programmerProfile.technologyKnowledge.size, 4)
     assertEquals(programmerProfile.technologyKnowledge("Java"), TechnologyKnowledgeLevel.WORKED_FOR_LONG.value)
     assertEquals(programmerProfile.technologyKnowledge("Scala"), TechnologyKnowledgeLevel.WORKED_WITH.value)
     assertEquals(programmerProfile.technologyKnowledge("Wicket"), TechnologyKnowledgeLevel.WORKED_WITH.value)
