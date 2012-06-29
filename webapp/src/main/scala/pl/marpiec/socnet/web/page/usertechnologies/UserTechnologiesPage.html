@@ -18,13 +18,17 @@
         </div>
     </form>
 
-    <div wicket:id="technologyList">
-        <div>Znane technologie</div>
-        <div wicket:id="technologySummary">
-            <span wicket:id="name">name</span>
-            <span wicket:id="level">level</span>
-            <div wicket:id="removeTechnologyButton">removeTechnology</div>
+    <div wicket:id="technologyList" class="technologyListContainer">
+        <div class="title">Znane technologie</div>
+
+        <div class="technologyList">
+            <div wicket:id="technologySummary" class="replacedByWicket">
+                <span wicket:id="name" class="name">name</span>
+                <span wicket:id="level" class="level">level</span>
+                <div wicket:id="removeTechnologyButton" class="remove">removeTechnology</div>
+            </div>
         </div>
+
     </div>
 
 </div>

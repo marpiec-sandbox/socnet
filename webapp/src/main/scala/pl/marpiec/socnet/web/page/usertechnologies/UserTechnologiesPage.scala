@@ -15,9 +15,10 @@ import org.apache.wicket.markup.html.list.AbstractItem
 import org.apache.wicket.markup.html.basic.Label
 import pl.marpiec.socnet.constant.TechnologyKnowledgeLevel
 import org.apache.wicket.markup.html.form.{ChoiceRenderer, DropDownChoice, TextField}
-import org.apache.wicket.Component
 import pl.marpiec.socnet.web.component.wicket.form.{OneButtonAjaxForm, StandardAjaxSecureForm}
 import org.apache.commons.lang.StringUtils
+import pl.marpiec.socnet.model.ProgrammerProfile
+import org.apache.wicket.{AttributeModifier, Component}
 
 /**
  * @author Marcin Pieciukiewicz
@@ -28,17 +29,32 @@ class UserTechnologiesPage extends SecureWebPage(SocnetRoles.USER) {
   @SpringBean private var programmerProfileDatabase: ProgrammerProfileDatabase = _
   @SpringBean private var programmerProfileCommand: ProgrammerProfileCommand = _
 
-  val programmerProfile = programmerProfileDatabase.getProgrammerProfileByUserId(session.userId).
-    getOrElse(throw new IllegalStateException("No programmer profile defined for user"))
+  //load data
+
+  val programmerProfile = getProgrammerProfileOrThrow404
 
   var loadedTechnologiesList = programmerProfile.technologyKnowledge
   var addedTechnologies: Map[String, Int] = Map()
   var removedTechnologies: List[String] = List()
 
+  //build schema
+
+
   addOrReplaceTechnologyList
 
 
+  val saveButton = addAndReturn(new OneButtonAjaxForm("saveChangesButton", "Zapisz zmiany", (target: AjaxRequestTarget) => {
+
+    programmerProfileCommand.changeTechnologies(session.userId, programmerProfile.id, programmerProfile.version, addedTechnologies, removedTechnologies)
+    setResponsePage(classOf[UserTechnologiesPage])
+
+  }).setVisible(false).setOutputMarkupId(true).setOutputMarkupPlaceholderTag(true))
+
+
   add(new StandardAjaxSecureForm[AddTechnologyFormModel]("addTechnologyForm") {
+
+    val thisForm = this
+
     def initialize = {
       this.standardCancelButton = false
       setModel(new CompoundPropertyModel[AddTechnologyFormModel](new AddTechnologyFormModel))
@@ -55,12 +71,21 @@ class UserTechnologiesPage extends SecureWebPage(SocnetRoles.USER) {
       val technology = formModel.technologyName
       val level = formModel.knowledgeLevel
 
-      if(validateAddTechnologyForm(technology, level)) {
+      if (validateAddTechnologyForm(technology, level)) {
         addedTechnologies += technology -> level.value
         loadedTechnologiesList += technology -> level.value
 
+        formModel.clear
+
         val technologiesList = addOrReplaceTechnologyList
         target.add(technologiesList)
+        target.add(thisForm)
+
+        if (!saveButton.isVisible) {
+          saveButton.setVisible(true)
+          target.add(saveButton)
+        }
+
       } else {
         formModel.warningMessage = "Nalezy podac nazwe technologii i poziom jej znajomosci"
         target.add(this.warningMessageLabel)
@@ -72,12 +97,13 @@ class UserTechnologiesPage extends SecureWebPage(SocnetRoles.USER) {
     }
   })
 
-  add(new OneButtonAjaxForm("saveChangesButton", "Zapisz zmiany", (target: AjaxRequestTarget) => {
 
-    programmerProfileCommand.changeTechnologies(session.userId, programmerProfile.id, programmerProfile.version, addedTechnologies, removedTechnologies)
-    setResponsePage(classOf[UserTechnologiesPage])
+  //methods
 
-  }))
+  private def getProgrammerProfileOrThrow404: ProgrammerProfile = {
+    programmerProfileDatabase.getProgrammerProfileByUserId(session.userId).
+      getOrElse(throw new IllegalStateException("No programmer profile defined for user"))
+  }
 
   private def validateAddTechnologyForm(technology: String, level: TechnologyKnowledgeLevel): Boolean = {
     StringUtils.isNotBlank(technology) && level != null &&
@@ -93,18 +119,28 @@ class UserTechnologiesPage extends SecureWebPage(SocnetRoles.USER) {
         for (technology: (String, Int) <- loadedTechnologiesList) {
 
           add(new AbstractItem(newChildId()) {
+
             val (name, level) = technology
 
+
+            add(new AttributeModifier("class", "technologySummary level" + level));
             add(new Label("name", name))
-            add(new Label("level", TechnologyKnowledgeLevel.getByValue(level).translation))
+            add(new Label("level", level.toString))
 
             add(new OneButtonAjaxForm("removeTechnologyButton", "Usun", (target: AjaxRequestTarget) => {
 
-              loadedTechnologiesList -= name
-              removedTechnologies ::= name
+              if (loadedTechnologiesList.contains(name)) {
+                loadedTechnologiesList -= name
+                removedTechnologies ::= name
+              }
+              addedTechnologies -= name
 
               val technologiesList = addOrReplaceTechnologyList
               target.add(technologiesList)
+              if (!saveButton.isVisible) {
+                saveButton.setVisible(true)
+                target.add(saveButton)
+              }
             }))
           })
         }
