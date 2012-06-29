@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired
 import pl.marpiec.cqrs.{Aggregate, DataStore}
 import pl.marpiec.socnet.model.ProgrammerProfile
 import pl.marpiec.util.UID
+import org.springframework.stereotype.Repository
 
+@Repository("programmerProfileDatabase")
 class ProgrammerProfileDatabaseMockImpl @Autowired()(dataStore: DataStore)
   extends AbstractDatabase[ProgrammerProfile](dataStore) with ProgrammerProfileDatabase {
 
@@ -17,6 +19,6 @@ class ProgrammerProfileDatabaseMockImpl @Autowired()(dataStore: DataStore)
     programmerProfile.userId
   });
 
-  def getProgrammerProfileByUserId(userId: UID) = getByIndex(USER_ID_INDEX, userId)
+  def getProgrammerProfileByUserId(userId: UID):Option[ProgrammerProfile] = getByIndex(USER_ID_INDEX, userId)
 
 }

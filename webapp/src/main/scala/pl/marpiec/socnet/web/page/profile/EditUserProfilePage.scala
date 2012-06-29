@@ -24,7 +24,7 @@ class EditUserProfilePage extends SecureWebPage(SocnetRoles.USER) {
 
 
   val userProfileOption = userProfileDatabase.getUserProfileByUserId(session.user.id)
-  val userProfile = userProfileOption.getOrElse(createUserProfile)
+  val userProfile = userProfileOption.getOrElse(throw new IllegalStateException("No user profile defined"))
 
 
   //schema
@@ -35,13 +35,4 @@ class EditUserProfilePage extends SecureWebPage(SocnetRoles.USER) {
   add(new AdditionalInfoListPanel("additionalInfoListPanel", session.user, userProfile, userProfile.additionalInfo))
 
 
-  //methods
-  def createUserProfile: UserProfile = {
-    val userProfileId = uidGenerator.nextUid
-    userProfileCommand.createUserProfile(session.user.id, session.user.id, userProfileId)
-    val userProfile = new UserProfile
-    userProfile.id = userProfileId;
-    userProfile.version = 1
-    userProfile
-  }
 }

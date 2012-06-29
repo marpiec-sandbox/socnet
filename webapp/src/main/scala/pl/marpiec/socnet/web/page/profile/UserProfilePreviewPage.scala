@@ -35,13 +35,7 @@ class UserProfilePreviewPage(parameters: PageParameters) extends SecureWebPage(S
   //get data
   val userId = UID.parseOrZero(parameters.get(UserProfilePreviewPage.USER_ID_PARAM).toString)
 
-  val userOption = userDatabase.getUserById(userId)
-
-  if (userOption.isEmpty) {
-    throw new AbortWithHttpErrorCodeException(404);
-  }
-
-  val user = userOption.get
+  val user = userDatabase.getUserById(userId).getOrElse(throw new AbortWithHttpErrorCodeException(404))
 
   val userProfile = userProfileDatabase.getUserProfileByUserId(userId).getOrElse(new UserProfile)
 

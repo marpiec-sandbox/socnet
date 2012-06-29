@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import pl.marpiec.socnet.service.userprofile.UserProfileCommand
 import pl.marpiec.socnet.service.usercontacts.UserContactsCommand
 import pl.marpiec.cqrs.UidGenerator
+import pl.marpiec.socnet.service.programmerprofile.ProgrammerProfileCommand
 
 /**
  * @author Marcin Pieciukiewicz
@@ -19,6 +20,8 @@ class UserRegistrationCommandImpl extends UserRegistrationCommand {
   @Autowired
   var userContactsCommand: UserContactsCommand = _
   @Autowired
+  var programmerProfileCommand: ProgrammerProfileCommand = _
+  @Autowired
   var uidGenerator: UidGenerator = _
   @Autowired
   var userCommand: UserCommand = _
@@ -28,6 +31,7 @@ class UserRegistrationCommandImpl extends UserRegistrationCommand {
 
     userProfileCommand.createUserProfile(userId, userId, uidGenerator.nextUid)
     userContactsCommand.createUserContacts(userId, userId, uidGenerator.nextUid)
+    programmerProfileCommand.createProgrammerProfile(userId, userId, uidGenerator.nextUid)
 
     userId
   }

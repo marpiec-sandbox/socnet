@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
+<body>
+<wicket:extend>
+<div class="userTechnologiesPage">
+
+    <div>
+        Technologie <div wicket:id="saveChangesButton">removeTechnology</div>
+    </div>
+
+    <form wicket:id="addTechnologyForm">
+        <input type="hidden" wicket:id="sessionToken"/>
+        <div><span wicket:id="warningMessage"></span></div>
+        <div>
+            <input type="text" wicket:id="technologyName" />
+            <select wicket:id="knowledgeLevel"/>
+            <input type="submit" wicket:id="submitButton" value="Dodaj"/>
+        </div>
+    </form>
+
+    <div wicket:id="technologyList">
+        <div>Znane technologie</div>
+        <div wicket:id="technologySummary">
+            <span wicket:id="name">name</span>
+            <span wicket:id="level">level</span>
+            <div wicket:id="removeTechnologyButton">removeTechnology</div>
+        </div>
+    </div>
+
+</div>
+</wicket:extend>
+</body>
+</html>

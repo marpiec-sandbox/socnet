@@ -6,6 +6,7 @@ import conversation.{ConversationPage, UserConversationsPage, StartConversationP
 import forgotPassword.{PasswordHaveBeenChangedPage, ConfirmForgotPasswordPage, TriggerChangeForgottenPasswordPage, ForgotPasswordPage}
 import profile.{UserProfilePreviewPage, EditUserProfilePage}
 import registration.{ConfirmRegistrationPage, TriggerUserRegistrationPage, RegisterPage}
+import usertechnologies.UserTechnologiesPage
 
 /**
  * @author Marcin Pieciukiewicz
@@ -14,6 +15,9 @@ import registration.{ConfirmRegistrationPage, TriggerUserRegistrationPage, Regis
 object SocnetBookmakablePages {
 
   def apply(application: SocnetApplication) {
+
+    application.mountPage("dbupd", classOf[DbUpdatePage])
+
 
     application.mountPage("signout", classOf[SignOutPage])
     application.mountPage("new/article", classOf[NewArticlePage])
@@ -40,5 +44,7 @@ object SocnetBookmakablePages {
     application.mountPage("conversations", classOf[UserConversationsPage])
     application.mountPage("conversation/${" + ConversationPage.CONVERSATION_ID_PARAM + "}", classOf[ConversationPage])
     application.mountPage("start/conversation/${" + StartConversationPage.USER_ID_PARAM + "}", classOf[StartConversationPage])
+
+    application.mountPage("technologies", classOf[UserTechnologiesPage])
   }
 }

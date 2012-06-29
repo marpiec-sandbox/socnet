@@ -10,6 +10,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer
 import registration.RegisterPage
 import signin.SignInFormPanel
 import org.apache.wicket.spring.injection.annot.SpringBean
+import usertechnologies.UserTechnologiesPage
 
 class HomePage extends SimpleTemplatePage {
 
@@ -17,6 +18,7 @@ class HomePage extends SimpleTemplatePage {
 
   setStatelessHint(true)
 
+  add(AuthorizeUser(new BookmarkablePageLink("technologiesLink", classOf[UserTechnologiesPage])))
   add(AuthorizeUser(new BookmarkablePageLink("newArticleLink", classOf[NewArticlePage])))
 
   add(AuthorizeUser(new PeopleDashboardPanel("peopleDashboard")))
