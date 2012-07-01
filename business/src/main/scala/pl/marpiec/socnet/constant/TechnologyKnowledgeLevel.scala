@@ -15,9 +15,9 @@ object TechnologyKnowledgeLevel extends SEnumObject[TechnologyKnowledgeLevel] {
   val NONE = new TechnologyKnowledgeLevel("NONE", 0, "Brak znajomosci")
   val HEARED_ONLY = new TechnologyKnowledgeLevel("HEARED_ONLY", 1, "Cos slyszalem")
   val BASIC = new TechnologyKnowledgeLevel("BASIC", 2, "Troche sie uczylem")
-  val WORKED_WITH = new TechnologyKnowledgeLevel("WORKED_WITH", 3, "Przez chwil? pracowa?em")
-  val WORKED_FOR_LONG = new TechnologyKnowledgeLevel("WORKED_FOR_LONG", 4, "Dlugo pracowa?em")
-  val EXPERT = new TechnologyKnowledgeLevel("EXPERT", 5, "Jestem ekspereem")
+  val WORKED_WITH = new TechnologyKnowledgeLevel("WORKED_WITH", 3, "Przez chwile pracowalem")
+  val WORKED_FOR_LONG = new TechnologyKnowledgeLevel("WORKED_FOR_LONG", 4, "Dlugo pracowalem")
+  val EXPERT = new TechnologyKnowledgeLevel("EXPERT", 5, "Jestem ekspertem")
 
   val values = List(NONE, HEARED_ONLY, BASIC, WORKED_WITH, WORKED_FOR_LONG, EXPERT)
 
