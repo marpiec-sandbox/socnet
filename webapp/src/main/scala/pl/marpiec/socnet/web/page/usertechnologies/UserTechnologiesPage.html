@@ -3,93 +3,129 @@
 <body>
 <wicket:extend>
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
-    function levelClicked(level) {
-        var selectedOption = jQuery(".knowledgeLevel :nth-child("+(level+2)+")")
-        selectedOption.attr("selected", "selected")
-        jQuery(".levelDescription").html(selectedOption.html())
-        highlightLevel(level, level)
-    }
+        function levelClicked(level) {
+            markSelectedLevel(level)
+            highlightLevel(level, level)
+            showLevelDescription(level)
+        }
 
-    function highlightLevels(level) {
-        highlightLevel(getSelectedLevel(), level)
-    }
+        function highlightLevels(level) {
+            highlightLevel(getSelectedLevel(), level)
+            showLevelDescription(level)
+        }
 
-    function highlightSelectedLevel() {
-        highlightLevel(getSelectedLevel(), 0)
-    }
+        function highlightSelectedLevel() {
+            var level = getSelectedLevel()
+            highlightLevel(level, 0)
+            showLevelDescription(level)
+        }
 
-    function getSelectedLevel() {
-        return jQuery(".knowledgeLevel").val()
-    }
+        function markSelectedLevel(level) {
+            var selectedOption = jQuery(".knowledgeLevel :nth-child(" + (level*1 + 2) + ")")
+            selectedOption.attr("selected", "selected")
+        }
 
-    function highlightLevel(selectedLevel, activeLevel) {
-        var counter = 0;
-        jQuery(".levels a").each(function() {
-            counter++;
-            var jqThis = jQuery(this);
-            if(counter == selectedLevel || activeLevel==0 && counter <= selectedLevel) {
-                jqThis.addClass("selectedLevel");
-                jqThis.removeClass("activeLevel");
+        function getSelectedLevel() {
+            return jQuery(".knowledgeLevel").val()
+        }
+
+        function showLevelDescription(level) {
+            if(level == 0) {
+                jQuery(".levelDescription").html("")
             } else {
-                if(counter <= activeLevel) {
-                    jqThis.removeClass("selectedLevel");
-                    jqThis.addClass("activeLevel");
-                } else {
-                    jqThis.removeClass("selectedLevel");
-                    jqThis.removeClass("activeLevel");
-                }
+                var selectedOption = jQuery(".knowledgeLevel :nth-child(" + (level*1 + 2) + ")")
+                jQuery(".levelDescription").html(selectedOption.html())
             }
-        })
-    }
+        }
+
+        function highlightLevel(selectedLevel, activeLevel) {
+            var counter = 0;
+            jQuery(".levels a").each(function () {
+                counter++
+                var jqThis = jQuery(this)
+                if (counter == selectedLevel || activeLevel == 0 && counter <= selectedLevel || activeLevel > 0 && counter > activeLevel && counter <= selectedLevel) {
+                    jqThis.addClass("selectedLevel")
+                    jqThis.removeClass("activeLevel")
+                } else {
+                    if (counter <= activeLevel) {
+                        jqThis.removeClass("selectedLevel")
+                        jqThis.addClass("activeLevel")
+                    } else {
+                        jqThis.removeClass("selectedLevel")
+                        jqThis.removeClass("activeLevel")
+                    }
+                }
+            })
+        }
+    </script>
+
+    <div class="userTechnologiesPage">
+
+        <div>
+            <div wicket:id="saveChangesButton">saveChangesButton</div>
+        </div>
+
+        <div class="addTechnologyContainer">
+            <form wicket:id="addTechnologyForm">
+                <input type="hidden" wicket:id="sessionToken"/>
+
+                <div><span wicket:id="warningMessage"></span></div>
+                <div>
+                    Nazwa technologii
+                </div>
+                <div>
+                    <input type="text" wicket:id="technologyName" class="technologyName "/>
+                </div>
+                <select wicket:id="knowledgeLevel" class="knowledgeLevel"/>
+
+                <div>
+                    Poziom znajomości: <span class="levelDescription"></span>
+                </div>
+                <div class="levels">
+                    <div><a href="#" onclick="levelClicked(1); return false;" onmouseover="highlightLevels(1)"
+                       onfocus="highlightLevels(1)"
+                       onmouseout="highlightSelectedLevel()" onblur="highlightSelectedLevel()"><span>1</span></a>
+                    </div><div>
+                    <a href="#" onclick="levelClicked(2); return false;" onmouseover="highlightLevels(2)"
+                       onfocus="highlightLevels(2)"
+                       onmouseout="highlightSelectedLevel()" onblur="highlightSelectedLevel()"><span>2</span></a>
+                    </div><div>
+                    <a href="#" onclick="levelClicked(3); return false;" onmouseover="highlightLevels(3)"
+                       onfocus="highlightLevels(3)"
+                       onmouseout="highlightSelectedLevel()" onblur="highlightSelectedLevel()"><span>3</span></a>
+                    </div><div>
+                    <a href="#" onclick="levelClicked(4); return false;" onmouseover="highlightLevels(4)"
+                       onfocus="highlightLevels(4)"
+                       onmouseout="highlightSelectedLevel()" onblur="highlightSelectedLevel()"><span>4</span></a>
+                    </div><div>
+                    <a href="#" onclick="levelClicked(5); return false;" onmouseover="highlightLevels(5)"
+                       onfocus="highlightLevels(5)"
+                       onmouseout="highlightSelectedLevel()" onblur="highlightSelectedLevel()"><span>5</span></a></div>
+                </div>
+
+                <div class="button">
+                    <input type="submit" wicket:id="submitButton" value="Dodaj"/>
+                </div>
+            </form>
+        </div>
 
 
+        <div wicket:id="technologyList" class="technologyListContainer">
 
-</script>
+            <div class="technologyList">
+                <div wicket:id="technologySummary" class="replacedByWicket">
+                    <span wicket:id="name" class="name">name</span>
+                    <span wicket:id="level" class="level">level</span>
 
-<div class="userTechnologiesPage">
-
-    <div>
-        <div wicket:id="saveChangesButton">saveChangesButton</div>
-    </div>
-
-    <div class="addTechnologyContainer">
-        <form wicket:id="addTechnologyForm">
-            <input type="hidden" wicket:id="sessionToken"/>
-            <div><span wicket:id="warningMessage"></span></div>
-            <div>
-                <input type="text" wicket:id="technologyName" class="technologyName "/>
+                    <div wicket:id="removeTechnologyButton" class="remove">removeTechnology</div>
+                </div>
             </div>
-            <select wicket:id="knowledgeLevel" class="knowledgeLevel"/>
-            <div class="levels">
-                <a href="#" onclick="levelClicked(1); return false;" onmouseover="highlightLevels(1)" onfocus="highlightLevels(1)" onmouseout="highlightSelectedLevel()"></a>
-                <a href="#" onclick="levelClicked(2); return false;" onmouseover="highlightLevels(2)" onfocus="highlightLevels(2)" onmouseout="highlightSelectedLevel()"></a>
-                <a href="#" onclick="levelClicked(3); return false;" onmouseover="highlightLevels(3)" onfocus="highlightLevels(3)" onmouseout="highlightSelectedLevel()"></a>
-                <a href="#" onclick="levelClicked(4); return false;" onmouseover="highlightLevels(4)" onfocus="highlightLevels(4)" onmouseout="highlightSelectedLevel()"></a>
-                <a href="#" onclick="levelClicked(5); return false;" onmouseover="highlightLevels(5)" onfocus="highlightLevels(5)" onmouseout="highlightSelectedLevel()"></a>
-            </div>
-            <div class="levelDescription"></div>
-            <div class="button">
-                <input type="submit" wicket:id="submitButton" value="Dodaj"/>
-            </div>
-        </form>
-    </div>
 
-
-    <div wicket:id="technologyList" class="technologyListContainer">
-
-        <div class="technologyList">
-            <div wicket:id="technologySummary" class="replacedByWicket">
-                <span wicket:id="name" class="name">name</span>
-                <span wicket:id="level" class="level">level</span>
-                <div wicket:id="removeTechnologyButton" class="remove">removeTechnology</div>
-            </div>
         </div>
 
     </div>
-
-</div>
 </wicket:extend>
 </body>
 </html>
