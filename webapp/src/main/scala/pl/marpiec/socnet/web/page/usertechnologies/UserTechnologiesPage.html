@@ -72,16 +72,16 @@
                 <input type="hidden" wicket:id="sessionToken"/>
 
                 <div><span wicket:id="warningMessage"></span></div>
-                <div>
-                    Nazwa technologii
+                <div class="technologyNameLabel">
+                    Nazwa technologii:
                 </div>
                 <div>
-                    <input type="text" wicket:id="technologyName" class="technologyName "/>
+                    <input type="text" wicket:id="technologyName" class="technologyName"/>
                 </div>
                 <select wicket:id="knowledgeLevel" class="knowledgeLevel"/>
 
                 <div>
-                    Poziom znajomości: <span class="levelDescription"></span>
+                    <span class="levelDescriptionLabel">Poziom znajomości:</span><span class="levelDescription"></span>
                 </div>
                 <div class="levels">
                     <div><a href="#" onclick="levelClicked(1); return false;" onmouseover="highlightLevels(1)"
@@ -108,6 +108,7 @@
                 <div class="button">
                     <input type="submit" wicket:id="submitButton" value="Dodaj"/>
                 </div>
+
             </form>
         </div>
 

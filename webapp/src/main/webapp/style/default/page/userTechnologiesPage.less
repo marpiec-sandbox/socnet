@@ -7,6 +7,22 @@
         border-radius: 3px;
         width: 346px;
 
+        .technologyNameLabel {
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        .levelDescriptionLabel {
+            font-weight: bold;
+        }
+
+        .levelDescription {
+            height: 15px;
+            text-align: center;
+            margin: 10px 5px;
+            color: @mainThemeFontColor;
+        }
+
         .knowledgeLevel {
             display:none;
         }
@@ -49,7 +65,7 @@
 
                 a.selectedLevel {
                     span {
-                        background-color: #254f87;
+                        background-color: @mainThemeFontColor;
                         color: white;
                     }
                 }
@@ -63,14 +79,10 @@
 
         }
 
-        .levelDescription {
-            height: 15px;
-            text-align: center;
-            margin: 10px;
-        }
 
         .button {
             text-align: center;
+            padding-top: 4px;
         }
 
     }
