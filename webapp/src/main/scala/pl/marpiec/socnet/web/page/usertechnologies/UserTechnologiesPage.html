@@ -59,6 +59,54 @@
                 }
             })
         }
+
+        function showEditTechnologyForm(element) {
+            var jqTechnologySummary = jQuery(element).parents(".technologySummary");
+
+            var placeholderWidth = jqTechnologySummary.width();
+            var placeholderHeight = jqTechnologySummary.height();
+
+            jqTechnologySummary.css({width:placeholderWidth+"px",height:placeholderHeight+"px"})
+            var jqContainer = jqTechnologySummary.find(".container");
+
+
+            if(jqContainer.hasClass("opened")) {
+                jqContainer.animate({width:placeholderWidth,height:placeholderHeight}, 300, null, function() {
+                    jqContainer.toggleClass("opened")
+                    jqTechnologySummary.find(".editTechnologyPanel").toggle()
+                })
+            } else {
+
+                jqContainer.toggleClass("opened");
+                jqTechnologySummary.find(".editTechnologyPanel").css({display:"block",visibility:"hidden"});
+
+                if(jqContainer.data("width")) {
+                    var width = jqContainer.data("width");
+                    var height = jqContainer.data("height");
+                } else {
+                    var width = jqContainer.width();
+                    var height = jqContainer.height();
+                }
+
+                jqContainer.data("width", width)
+                jqContainer.data("height", height)
+                jqContainer.css({width:placeholderWidth+"px",height:placeholderHeight+"px"})
+                jqContainer.animate({width:width,height:height}, 300)
+                jqTechnologySummary.find(".editTechnologyPanel").css({visibility:"visible"})
+            }
+
+        }
+
+
+        function showConfirmDelete(link) {
+           jQuery(link).parents(".editTechnologyPanel").find(".confirmDeletePanel").css({display:"block"});
+        }
+
+        function hideConfirmDelete(link) {
+            jQuery(link).parents(".editTechnologyPanel").find(".confirmDeletePanel").css({display:"none"});
+        }
+
+
     </script>
 
     <div class="userTechnologiesPage">
@@ -116,15 +164,35 @@
         <div wicket:id="technologyList" class="technologyListContainer">
 
             <div class="technologyList">
-                <div wicket:id="technologySummary" class="replacedByWicket">
-                    <span wicket:id="name" class="name">name</span>
-                    <span wicket:id="level" class="level">level</span>
+                <div wicket:id="technologySummary" class="technologySummary replacedByWicket">
+                    <div class="container">
+                        <a href="#" onclick="showEditTechnologyForm(this); return false;">
+                            <span wicket:id="name" class="name">name</span>
+                            <span wicket:id="level" class="level">level</span>
+                        </a>
 
-                    <div wicket:id="removeTechnologyButton" class="remove">removeTechnology</div>
+                        <div class="editTechnologyPanel hiddenByDefault">
+
+                            <div>
+                                Czy polecasz tę technologię?
+                            </div>
+                            <div class="actionButtons">
+                                <a href="#" onclick="showConfirmDelete(this); return false;">Usuń</a>
+                            </div>
+                            <div class="confirmDeletePanel hiddenByDefault">
+                                <div>
+                                    Czy na pewno usunąć techologię?
+                                </div>
+                                <a href="#" onclick="hideConfirmDelete(this); return false;">Anuluj</a>
+                                <span wicket:id="removeTechnologyButton" class="remove">removeTechnology</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
         </div>
+        <div class="clearFloats"></div>
 
     </div>
 </wicket:extend>

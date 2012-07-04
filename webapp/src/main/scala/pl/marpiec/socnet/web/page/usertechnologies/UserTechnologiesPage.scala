@@ -127,7 +127,7 @@ class UserTechnologiesPage extends SecureWebPage(SocnetRoles.USER) {
             add(new Label("name", name))
             add(new Label("level", level.toString))
 
-            add(new OneButtonAjaxForm("removeTechnologyButton", "Usun", (target: AjaxRequestTarget) => {
+            add(new OneButtonAjaxForm("removeTechnologyButton", "OK", (target: AjaxRequestTarget) => {
 
               if (loadedTechnologiesList.contains(name)) {
                 loadedTechnologiesList -= name

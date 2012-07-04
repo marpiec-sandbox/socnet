@@ -94,30 +94,61 @@
         .technologyList {
                
             .technologySummary {   
-                
-                display:inline-block;
-                background-color: #F6F6F6;
-                border: 1px solid #CCCCCC;
+
+                float: left;
                 border-radius: 3px;
                 margin: 8px;
-                padding: 5px 9px;
-                
-                .name {
-                
+
+                .container {
+                    background-color: #F6F6F6;
+                    border: 1px solid #CCCCCC;
+
+                    a {
+                        display:inline-block;
+                        padding: 5px 9px;
+
+                        .name {
+
+                        }
+
+                        .level {
+
+                        }
+                    }
+
+                    .remove {
+                        display: inline;
+                    }
+
+                    .editTechnologyPanel {
+
+                        width: 244px;
+                        padding: 8px;
+                        position: relative;
+
+                        .actionButtons {
+                            text-align: right;
+                        }
+
+                        .confirmDeletePanel {
+                            position: absolute;
+                            top: 0;
+                            bottom: 0;
+                            left: 0;
+                            right: 0;
+                            background-color: #F6F6F6;
+                            text-align: center;
+                        }
+
+                    }
                 }
-                
-                .level {
-                
-                }
-                
-                .remove {
-                    display: inline;
+
+                .container.opened {
+                    width: 250px;
+                    position: relative;
+                    z-index: 1;
                 }
             }
-        
         }
     }
-    
-    
-
 }
