@@ -60,7 +60,7 @@
             })
         }
 
-        function showEditTechnologyForm(element) {
+        function onTechnologyClicked(element) {
             var jqTechnologySummary = jQuery(element).parents(".technologySummary");
 
             var placeholderWidth = jqTechnologySummary.width();
@@ -68,33 +68,62 @@
 
             jqTechnologySummary.css({width:placeholderWidth+"px",height:placeholderHeight+"px"})
             var jqContainer = jqTechnologySummary.find(".container");
-
+            jqContainer.addClass("dontClose");
+            closeAllOpenedForms();
+            jqContainer.removeClass("dontClose");
 
             if(jqContainer.hasClass("opened")) {
-                jqContainer.animate({width:placeholderWidth,height:placeholderHeight}, 300, null, function() {
-                    jqContainer.toggleClass("opened")
-                    jqTechnologySummary.find(".editTechnologyPanel").toggle()
-                })
+                hideTechnologyForm(jqContainer, jqTechnologySummary, placeholderWidth, placeholderHeight)
             } else {
+                showTechnologyForm(jqContainer, jqTechnologySummary, placeholderWidth, placeholderHeight)
 
-                jqContainer.toggleClass("opened");
-                jqTechnologySummary.find(".editTechnologyPanel").css({display:"block",visibility:"hidden"});
+            }
+        }
 
-                if(jqContainer.data("width")) {
-                    var width = jqContainer.data("width");
-                    var height = jqContainer.data("height");
-                } else {
-                    var width = jqContainer.width();
-                    var height = jqContainer.height();
+        function closeAllOpenedForms() {
+            jQuery(".technologySummary .container.opened").each(function() {
+
+                var jqContainer = jQuery(this);
+                if(!jqContainer.hasClass("dontClose")) {
+                    var jqTechnologySummary = jqContainer.parents(".technologySummary");
+                    var placeholderWidth = jqTechnologySummary.width();
+                    var placeholderHeight = jqTechnologySummary.height();
+                    jqTechnologySummary.css({width:placeholderWidth+"px",height:placeholderHeight+"px"});
+                    hideFastTechnologyForm(jqContainer, jqTechnologySummary, placeholderWidth, placeholderHeight);
                 }
+            });
+        }
 
-                jqContainer.data("width", width)
-                jqContainer.data("height", height)
-                jqContainer.css({width:placeholderWidth+"px",height:placeholderHeight+"px"})
-                jqContainer.animate({width:width,height:height}, 300)
-                jqTechnologySummary.find(".editTechnologyPanel").css({visibility:"visible"})
+        function hideFastTechnologyForm(jqContainer, jqTechnologySummary, placeholderWidth, placeholderHeight) {
+            jqContainer.css({width:placeholderWidth,height:placeholderHeight})
+            jqContainer.removeClass("opened")
+            jqTechnologySummary.find(".editTechnologyPanel").css({display:"none"})
+        }
+
+        function hideTechnologyForm(jqContainer, jqTechnologySummary, placeholderWidth, placeholderHeight) {
+            jqContainer.animate({width:placeholderWidth,height:placeholderHeight}, 300, null, function() {
+                jqContainer.removeClass("opened")
+                jqTechnologySummary.find(".editTechnologyPanel").css({display:"none"})
+            })
+        }
+
+        function showTechnologyForm(jqContainer, jqTechnologySummary, placeholderWidth, placeholderHeight) {
+            jqContainer.addClass("opened");
+            jqTechnologySummary.find(".editTechnologyPanel").css({display:"block",visibility:"hidden"});
+
+            if(jqContainer.data("width")) {
+                var width = jqContainer.data("width");
+                var height = jqContainer.data("height");
+            } else {
+                var width = jqContainer.width();
+                var height = jqContainer.height();
             }
 
+            jqContainer.data("width", width)
+            jqContainer.data("height", height)
+            jqContainer.css({width:placeholderWidth+"px",height:placeholderHeight+"px"})
+            jqContainer.animate({width:width,height:height}, 300)
+            jqTechnologySummary.find(".editTechnologyPanel").css({visibility:"visible"})
         }
 
 
@@ -171,7 +200,7 @@
             <div class="technologyList">
                 <div wicket:id="technologySummary" class="technologySummary replacedByWicket">
                     <div class="container">
-                        <a href="#" onclick="showEditTechnologyForm(this); return false;">
+                        <a href="#" onclick="onTechnologyClicked(this); return false;">
                             <span wicket:id="name" class="name">name</span>
                             <span wicket:id="level" class="level">level</span>
                         </a>
