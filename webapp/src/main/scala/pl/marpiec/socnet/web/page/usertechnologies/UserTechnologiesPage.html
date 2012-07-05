@@ -120,40 +120,45 @@
                 <input type="hidden" wicket:id="sessionToken"/>
 
                 <div><span wicket:id="warningMessage"></span></div>
+                <div class="title">
+                    Dodaj technologię którą znasz
+                </div>
                 <div class="technologyNameLabel">
                     Nazwa technologii:
-                </div>
-                <div>
                     <input type="text" wicket:id="technologyName" class="technologyName"/>
                 </div>
                 <select wicket:id="knowledgeLevel" class="knowledgeLevel"/>
 
                 <div>
-                    <span class="levelDescriptionLabel">Poziom znajomości:</span><span class="levelDescription"></span>
+                    <span class="levelDescriptionLabel">Poziom znajomości:</span>
+
+                    <div class="levels">
+                        <div><a href="#" onclick="levelClicked(1); return false;" onmouseover="highlightLevels(1)"
+                           onfocus="highlightLevels(1)"
+                           onmouseout="highlightSelectedLevel()" onblur="highlightSelectedLevel()"><span>1</span></a>
+                        </div><div>
+                        <a href="#" onclick="levelClicked(2); return false;" onmouseover="highlightLevels(2)"
+                           onfocus="highlightLevels(2)"
+                           onmouseout="highlightSelectedLevel()" onblur="highlightSelectedLevel()"><span>2</span></a>
+                        </div><div>
+                        <a href="#" onclick="levelClicked(3); return false;" onmouseover="highlightLevels(3)"
+                           onfocus="highlightLevels(3)"
+                           onmouseout="highlightSelectedLevel()" onblur="highlightSelectedLevel()"><span>3</span></a>
+                        </div><div>
+                        <a href="#" onclick="levelClicked(4); return false;" onmouseover="highlightLevels(4)"
+                           onfocus="highlightLevels(4)"
+                           onmouseout="highlightSelectedLevel()" onblur="highlightSelectedLevel()"><span>4</span></a>
+                        </div><div>
+                        <a href="#" onclick="levelClicked(5); return false;" onmouseover="highlightLevels(5)"
+                           onfocus="highlightLevels(5)"
+                           onmouseout="highlightSelectedLevel()" onblur="highlightSelectedLevel()"><span>5</span></a></div>
+                    </div>
                 </div>
-                <div class="levels">
-                    <div><a href="#" onclick="levelClicked(1); return false;" onmouseover="highlightLevels(1)"
-                       onfocus="highlightLevels(1)"
-                       onmouseout="highlightSelectedLevel()" onblur="highlightSelectedLevel()"><span>1</span></a>
-                    </div><div>
-                    <a href="#" onclick="levelClicked(2); return false;" onmouseover="highlightLevels(2)"
-                       onfocus="highlightLevels(2)"
-                       onmouseout="highlightSelectedLevel()" onblur="highlightSelectedLevel()"><span>2</span></a>
-                    </div><div>
-                    <a href="#" onclick="levelClicked(3); return false;" onmouseover="highlightLevels(3)"
-                       onfocus="highlightLevels(3)"
-                       onmouseout="highlightSelectedLevel()" onblur="highlightSelectedLevel()"><span>3</span></a>
-                    </div><div>
-                    <a href="#" onclick="levelClicked(4); return false;" onmouseover="highlightLevels(4)"
-                       onfocus="highlightLevels(4)"
-                       onmouseout="highlightSelectedLevel()" onblur="highlightSelectedLevel()"><span>4</span></a>
-                    </div><div>
-                    <a href="#" onclick="levelClicked(5); return false;" onmouseover="highlightLevels(5)"
-                       onfocus="highlightLevels(5)"
-                       onmouseout="highlightSelectedLevel()" onblur="highlightSelectedLevel()"><span>5</span></a></div>
+                <div class="levelDescriptionContainer">
+                    <div class="levelDescription"></div>
                 </div>
 
-                <div class="button">
+                <div class="buttons">
                     <input type="submit" wicket:id="submitButton" value="Dodaj"/>
                 </div>
 
