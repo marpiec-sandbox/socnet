@@ -165,21 +165,54 @@
 
                     .editTechnologyPanel {
 
-                        width: 244px;
+                        width: 236px;
                         padding: 8px;
-                        position: relative;
+                        position: relative;      
+                        
+                        div.mainElement {
+                            margin: 20px 5px 5px 5px;
+                                       
+                            div {
+                                margin: 4px 0px;
+                            }
+                            
+                            select {
+                                width: 210px;
+                            }
+                        }
 
-                        .actionButtons {
-                            text-align: right;
+                        div.mainElement.actionButtons {
+                            text-align: center;
+                            margin-top: 40px;
                         }
 
                         .confirmDeletePanel {
                             position: absolute;
                             top: 0;
                             bottom: 0;
-                            left: 0;
-                            right: 0;
+                            left: 2px;
+                            right: 2px;
                             background-color: #F6F6F6;
+
+                            .content {
+
+                               position: absolute;
+                               top: 40%;
+                               left: 0;
+                               right: 0;
+
+                               .question {
+
+                               }
+
+                               .buttons {
+                                  margin-top: 10px;
+                                  span.actionButton {
+                                    margin: 0px 30px;
+                                  }
+                               }
+                            }
+
                             text-align: center;
                         }
 

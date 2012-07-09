@@ -214,33 +214,45 @@
 
                         <div class="editTechnologyPanel hiddenByDefault">
 
-                            <div>
-                                Poziom znajomości:
+                            <div class="mainElement">
+                                <div>
+                                    Poziom znajomości:
+                                </div>
+                                <div>
+                                    <select wicket:id="knowledgeLevel" class="knowledgeLevel"/>
+                                </div>
                             </div>
-                            <div>
-                                <select wicket:id="knowledgeLevel" class="knowledgeLevel"/>
+                            <div class="mainElement">
+                                <div>
+                                    Co o sądzisz o tej technologii?
+                                </div>
+                                <div>
+                                    <select wicket:id="technologyLikeLevel" />
+                                </div>
                             </div>
-                            <div>
-                                Co o sądzisz o tej technologii?
+                            <div class="mainElement">
+                                <div>
+                                    Aktualnie:
+                                </div>
+                                <div>
+                                    <select wicket:id="technologyCurrentUsage" />
+                                </div>
                             </div>
-                            <div>
-                                <select wicket:id="technologyLikeLevel" />
-                            </div>
-                            <div>
-                                Aktualnie:
-                            </div>
-                            <div>
-                                <select wicket:id="technologyCurrentUsage" />
-                            </div>
-                            <div class="actionButtons">
+                            <div class="actionButtons mainElement">
                                 <a href="#" onclick="showConfirmDelete(this); return false;">Usuń</a>
                             </div>
                             <div class="confirmDeletePanel hiddenByDefault">
-                                <div>
-                                    Czy na pewno usunąć techologię?
+                                <div class="content">
+                                    <div class="question">
+                                        Czy na pewno usunąć techologię?
+                                    </div>
+                                    <div class="buttons">
+                                        <span class="actionButton">
+                                            <a href="#" onclick="hideConfirmDelete(this); return false;">Anuluj</a>
+                                        </span>
+                                        <span wicket:id="removeTechnologyButton" class="actionButton remove">removeTechnology</span>
+                                    </div>
                                 </div>
-                                <a href="#" onclick="hideConfirmDelete(this); return false;">Anuluj</a>
-                                <span wicket:id="removeTechnologyButton" class="remove">removeTechnology</span>
                             </div>
                         </div>
                     </div>
