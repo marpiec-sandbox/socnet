@@ -23,7 +23,7 @@
         }
 
         function markSelectedLevel(level) {
-            var selectedOption = jQuery(".knowledgeLevel :nth-child(" + (level*1 + 2) + ")")
+            var selectedOption = jQuery(".knowledgeLevel :nth-child(" + (level*1 + 1) + ")")
             selectedOption.attr("selected", "selected")
         }
 
@@ -35,7 +35,7 @@
             if(level == 0) {
                 jQuery(".levelDescription").html("")
             } else {
-                var selectedOption = jQuery(".knowledgeLevel :nth-child(" + (level*1 + 2) + ")")
+                var selectedOption = jQuery(".knowledgeLevel :nth-child(" + (level*1 + 1) + ")")
                 jQuery(".levelDescription").html(selectedOption.html())
             }
         }
@@ -107,6 +107,7 @@
                 jqContainer.removeClass("opened")
                 jqTechnologySummary.find(".editTechnologyPanel").css({display:"none"})
             })
+            jqContainer.find(".closeButton").animate({opacity:0}, 300)
         }
 
         function showTechnologyForm(jqContainer, jqTechnologySummary, placeholderWidth, placeholderHeight) {
@@ -127,6 +128,7 @@
             jqTechnologySummary.find(".showHideLink").blur();
             jqContainer.animate({width:width,height:height}, 300);
             jqTechnologySummary.find(".editTechnologyPanel").css({visibility:"visible"});
+            jqContainer.find(".closeButton").animate({opacity:1}, 300)
         }
 
 
@@ -208,10 +210,27 @@
                             <span wicket:id="level" class="level">level</span>
                         </a>
 
+                        <a href="#" onclick="onTechnologyClicked(this); return false;" class="closeButton invisibleByDefault"></a>
+
                         <div class="editTechnologyPanel hiddenByDefault">
 
                             <div>
-                                Czy polecasz tę technologię?
+                                Poziom znajomości:
+                            </div>
+                            <div>
+                                <select wicket:id="knowledgeLevel" class="knowledgeLevel"/>
+                            </div>
+                            <div>
+                                Co o sądzisz o tej technologii?
+                            </div>
+                            <div>
+                                <select wicket:id="technologyLikeLevel" />
+                            </div>
+                            <div>
+                                Aktualnie:
+                            </div>
+                            <div>
+                                <select wicket:id="technologyCurrentUsage" />
                             </div>
                             <div class="actionButtons">
                                 <a href="#" onclick="showConfirmDelete(this); return false;">Usuń</a>

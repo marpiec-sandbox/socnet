@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import pl.marpiec.util.UID
 import pl.marpiec.cqrs.{EventRow, EventStore}
 import org.springframework.stereotype.Service
+import pl.marpiec.socnet.model.programmerprofile.KnownTechnology
 
 @Service("programmerProfileCommand")
 class ProgrammerProfileCommandImpl @Autowired()(val eventStore: EventStore) extends ProgrammerProfileCommand {
@@ -14,13 +15,13 @@ class ProgrammerProfileCommandImpl @Autowired()(val eventStore: EventStore) exte
     eventStore.addEventForNewAggregate(newProgrammerProfileId, new EventRow(userId, newProgrammerProfileId, 0, createProgrammerProfile))
   }
 
-  def changeTechnologies(userId: UID, programmerProfileId: UID, programmerProfileVersion: Int, technologiesChanged: Map[String, Int], technologiesRemoved: List[String]) {
+  def changeTechnologies(userId: UID, programmerProfileId: UID, programmerProfileVersion: Int, technologiesChanged: List[KnownTechnology], technologiesRemoved: List[String]) {
     
-    val technologiesChangedArray:Array[(String,  String)] = new Array[(String,  String)](technologiesChanged.size)
+    val technologiesChangedArray:Array[KnownTechnology] = new Array[KnownTechnology](technologiesChanged.size)
 
     var counter = 0
-    for ((key, value) <- technologiesChanged) {
-      technologiesChangedArray(counter) = (key, value.toString)
+    for (knownTechnology <- technologiesChanged) {
+      technologiesChangedArray(counter) = (knownTechnology)
       counter = counter + 1
     }
 

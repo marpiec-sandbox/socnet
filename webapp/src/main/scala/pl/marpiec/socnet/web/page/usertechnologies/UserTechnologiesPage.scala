@@ -5,7 +5,6 @@ import model.AddTechnologyFormModel
 import pl.marpiec.socnet.web.authorization.SecureWebPage
 import pl.marpiec.socnet.web.application.SocnetRoles
 import org.apache.wicket.ajax.AjaxRequestTarget
-import org.apache.wicket.model.CompoundPropertyModel
 import org.apache.wicket.markup.html.WebMarkupContainer
 import org.apache.wicket.spring.injection.annot.SpringBean
 import pl.marpiec.socnet.readdatabase.ProgrammerProfileDatabase
@@ -13,12 +12,14 @@ import pl.marpiec.socnet.service.programmerprofile.ProgrammerProfileCommand
 import org.apache.wicket.markup.repeater.RepeatingView
 import org.apache.wicket.markup.html.list.AbstractItem
 import org.apache.wicket.markup.html.basic.Label
-import pl.marpiec.socnet.constant.TechnologyKnowledgeLevel
 import org.apache.wicket.markup.html.form.{ChoiceRenderer, DropDownChoice, TextField}
 import pl.marpiec.socnet.web.component.wicket.form.{OneButtonAjaxForm, StandardAjaxSecureForm}
 import org.apache.commons.lang.StringUtils
 import pl.marpiec.socnet.model.ProgrammerProfile
 import org.apache.wicket.{AttributeModifier, Component}
+import pl.marpiec.socnet.constant.{TechnologyCurrentUsage, TechnologyLikeLevel, TechnologyKnowledgeLevel}
+import org.apache.wicket.model.{Model, CompoundPropertyModel}
+import pl.marpiec.socnet.model.programmerprofile.KnownTechnology
 
 /**
  * @author Marcin Pieciukiewicz
@@ -34,7 +35,7 @@ class UserTechnologiesPage extends SecureWebPage(SocnetRoles.USER) {
   val programmerProfile = getProgrammerProfileOrThrow404
 
   var loadedTechnologiesList = programmerProfile.technologyKnowledge
-  var addedTechnologies: Map[String, Int] = Map()
+  var addedTechnologies: List[KnownTechnology] = List[KnownTechnology]()
   var removedTechnologies: List[String] = List()
 
   //build schema
@@ -72,8 +73,8 @@ class UserTechnologiesPage extends SecureWebPage(SocnetRoles.USER) {
       val level = formModel.knowledgeLevel
 
       if (validateAddTechnologyForm(technology, level)) {
-        addedTechnologies += technology -> level.value
-        loadedTechnologiesList += technology -> level.value
+        addedTechnologies ::= KnownTechnology(technology, TechnologyKnowledgeLevel.getByValue(level.value))
+        loadedTechnologiesList += technology -> KnownTechnology(technology, TechnologyKnowledgeLevel.getByValue(level.value))
 
         formModel.clear
 
@@ -116,16 +117,27 @@ class UserTechnologiesPage extends SecureWebPage(SocnetRoles.USER) {
       setOutputMarkupId(true)
 
       add(new RepeatingView("technologySummary") {
-        for (technology: (String, Int) <- loadedTechnologiesList) {
+        for (technology: (String, KnownTechnology) <- loadedTechnologiesList) {
 
           add(new AbstractItem(newChildId()) {
 
-            val (name, level) = technology
+            val (name, knownTechnology) = technology
 
 
-            add(new AttributeModifier("class", "technologySummary level" + level));
+            add(new AttributeModifier("class", "technologySummary level" + knownTechnology.knowledgeLevel.value.toString));
             add(new Label("name", name))
-            add(new Label("level", level.toString))
+            add(new Label("level", knownTechnology.knowledgeLevel.value.toString))
+
+            add(new DropDownChoice[TechnologyKnowledgeLevel]("knowledgeLevel",
+              new Model[TechnologyKnowledgeLevel](knownTechnology.knowledgeLevel),
+              TechnologyKnowledgeLevel.values,
+              new ChoiceRenderer[TechnologyKnowledgeLevel]("translation")))
+
+            add(new DropDownChoice[TechnologyLikeLevel]("technologyLikeLevel", TechnologyLikeLevel.values,
+              new ChoiceRenderer[TechnologyLikeLevel]("translation")))
+
+            add(new DropDownChoice[TechnologyCurrentUsage]("technologyCurrentUsage", TechnologyCurrentUsage.values,
+              new ChoiceRenderer[TechnologyCurrentUsage]("translation")))
 
             add(new OneButtonAjaxForm("removeTechnologyButton", "OK", (target: AjaxRequestTarget) => {
 
@@ -133,7 +145,9 @@ class UserTechnologiesPage extends SecureWebPage(SocnetRoles.USER) {
                 loadedTechnologiesList -= name
                 removedTechnologies ::= name
               }
-              addedTechnologies -= name
+              addedTechnologies = addedTechnologies.filter(technology => {
+                technology.name != name
+              })
 
               val technologiesList = addOrReplaceTechnologyList
               target.add(technologiesList)

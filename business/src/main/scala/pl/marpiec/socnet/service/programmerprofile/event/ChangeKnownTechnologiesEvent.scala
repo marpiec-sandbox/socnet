@@ -2,12 +2,13 @@ package pl.marpiec.socnet.service.programmerprofile.event
 
 import pl.marpiec.cqrs.{Aggregate, Event}
 import pl.marpiec.socnet.model.ProgrammerProfile
+import pl.marpiec.socnet.model.programmerprofile.KnownTechnology
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
-class ChangeKnownTechnologiesEvent(val technologiesChanged: Array[(String, String)], val technologiesRemoved: Array[String]) extends Event {
+class ChangeKnownTechnologiesEvent(val technologiesChanged: Array[KnownTechnology], val technologiesRemoved: Array[String]) extends Event {
 
   def entityClass = classOf[ProgrammerProfile]
 
@@ -18,8 +19,8 @@ class ChangeKnownTechnologiesEvent(val technologiesChanged: Array[(String, Strin
       !technologiesRemoved.contains(technology) && !technologiesChanged.contains(technology)
     })
 
-    for ((key, value) <- technologiesChanged) {
-      programmerProfile.technologyKnowledge += key -> value.toInt
+    for (technology <- technologiesChanged) {
+      programmerProfile.technologyKnowledge += technology.name -> technology
     }
 
   }
