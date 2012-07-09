@@ -95,13 +95,15 @@
         }
 
         function hideFastTechnologyForm(jqContainer, jqTechnologySummary, placeholderWidth, placeholderHeight) {
-            jqContainer.css({width:placeholderWidth,height:placeholderHeight})
+            jqTechnologySummary.find(".showHideLink").blur();
+            jqContainer.css({width:placeholderWidth-2,height:placeholderHeight-2})
             jqContainer.removeClass("opened")
             jqTechnologySummary.find(".editTechnologyPanel").css({display:"none"})
         }
 
         function hideTechnologyForm(jqContainer, jqTechnologySummary, placeholderWidth, placeholderHeight) {
-            jqContainer.animate({width:placeholderWidth,height:placeholderHeight}, 300, null, function() {
+            jqTechnologySummary.find(".showHideLink").blur();
+            jqContainer.animate({width:placeholderWidth-2,height:placeholderHeight-2}, 300, null, function() {
                 jqContainer.removeClass("opened")
                 jqTechnologySummary.find(".editTechnologyPanel").css({display:"none"})
             })
@@ -119,11 +121,12 @@
                 var height = jqContainer.height();
             }
 
-            jqContainer.data("width", width)
-            jqContainer.data("height", height)
-            jqContainer.css({width:placeholderWidth+"px",height:placeholderHeight+"px"})
-            jqContainer.animate({width:width,height:height}, 300)
-            jqTechnologySummary.find(".editTechnologyPanel").css({visibility:"visible"})
+            jqContainer.data("width", width);
+            jqContainer.data("height", height);
+            jqContainer.css({width:placeholderWidth+"px",height:placeholderHeight+"px"});
+            jqTechnologySummary.find(".showHideLink").blur();
+            jqContainer.animate({width:width,height:height}, 300);
+            jqTechnologySummary.find(".editTechnologyPanel").css({visibility:"visible"});
         }
 
 
@@ -200,7 +203,7 @@
             <div class="technologyList">
                 <div wicket:id="technologySummary" class="technologySummary replacedByWicket">
                     <div class="container">
-                        <a href="#" onclick="onTechnologyClicked(this); return false;">
+                        <a href="#" onclick="onTechnologyClicked(this); return false;" class="showHideLink">
                             <span wicket:id="name" class="name">name</span>
                             <span wicket:id="level" class="level">level</span>
                         </a>
