@@ -20,6 +20,7 @@ import org.apache.wicket.{AttributeModifier, Component}
 import pl.marpiec.socnet.constant.{TechnologyCurrentUsage, TechnologyLikeLevel, TechnologyKnowledgeLevel}
 import org.apache.wicket.model.{Model, CompoundPropertyModel}
 import pl.marpiec.socnet.model.programmerprofile.KnownTechnology
+import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior
 
 /**
  * @author Marcin Pieciukiewicz
@@ -35,7 +36,7 @@ class UserTechnologiesPage extends SecureWebPage(SocnetRoles.USER) {
   val programmerProfile = getProgrammerProfileOrThrow404
 
   var loadedTechnologiesList = programmerProfile.technologyKnowledge
-  var addedTechnologies: List[KnownTechnology] = List[KnownTechnology]()
+  var addedOrChangedTechnologies: List[KnownTechnology] = List()
   var removedTechnologies: List[String] = List()
 
   //build schema
@@ -46,7 +47,7 @@ class UserTechnologiesPage extends SecureWebPage(SocnetRoles.USER) {
 
   val saveButton = addAndReturn(new OneButtonAjaxForm("saveChangesButton", "Zapisz zmiany", (target: AjaxRequestTarget) => {
 
-    programmerProfileCommand.changeTechnologies(session.userId, programmerProfile.id, programmerProfile.version, addedTechnologies, removedTechnologies)
+    programmerProfileCommand.changeTechnologies(session.userId, programmerProfile.id, programmerProfile.version, addedOrChangedTechnologies, removedTechnologies)
     setResponsePage(classOf[UserTechnologiesPage])
 
   }).setVisible(false).setOutputMarkupId(true).setOutputMarkupPlaceholderTag(true))
@@ -73,7 +74,7 @@ class UserTechnologiesPage extends SecureWebPage(SocnetRoles.USER) {
       val level = formModel.knowledgeLevel
 
       if (validateAddTechnologyForm(technology, level)) {
-        addedTechnologies ::= KnownTechnology(technology, TechnologyKnowledgeLevel.getByValue(level.value))
+        addedOrChangedTechnologies ::= KnownTechnology(technology, TechnologyKnowledgeLevel.getByValue(level.value))
         loadedTechnologiesList += technology -> KnownTechnology(technology, TechnologyKnowledgeLevel.getByValue(level.value))
 
         formModel.clear
@@ -121,8 +122,8 @@ class UserTechnologiesPage extends SecureWebPage(SocnetRoles.USER) {
 
           add(new AbstractItem(newChildId()) {
 
+            val technologySummary = this
             val (name, knownTechnology) = technology
-
 
             add(new AttributeModifier("class", "technologySummary level" + knownTechnology.knowledgeLevel.value.toString));
             add(new Label("name", name))
@@ -131,13 +132,50 @@ class UserTechnologiesPage extends SecureWebPage(SocnetRoles.USER) {
             add(new DropDownChoice[TechnologyKnowledgeLevel]("knowledgeLevel",
               new Model[TechnologyKnowledgeLevel](knownTechnology.knowledgeLevel),
               TechnologyKnowledgeLevel.values,
-              new ChoiceRenderer[TechnologyKnowledgeLevel]("translation")))
+              new ChoiceRenderer[TechnologyKnowledgeLevel]("translation")).add(new AjaxFormComponentUpdatingBehavior("onchange") {
 
-            add(new DropDownChoice[TechnologyLikeLevel]("technologyLikeLevel", TechnologyLikeLevel.values,
-              new ChoiceRenderer[TechnologyLikeLevel]("translation")))
 
-            add(new DropDownChoice[TechnologyCurrentUsage]("technologyCurrentUsage", TechnologyCurrentUsage.values,
-              new ChoiceRenderer[TechnologyCurrentUsage]("translation")))
+              def onUpdate(target: AjaxRequestTarget) {
+                knownTechnology.knowledgeLevel = this.getFormComponent.getModel.getObject.asInstanceOf[TechnologyKnowledgeLevel]
+                if(!addedOrChangedTechnologies.contains(knownTechnology)) {
+                  addedOrChangedTechnologies ::= knownTechnology
+                }
+                if (!saveButton.isVisible) {
+                  saveButton.setVisible(true)
+                  target.add(saveButton)
+                }
+              }
+            }))
+
+            add(new DropDownChoice[TechnologyLikeLevel]("technologyLikeLevel",
+              new Model[TechnologyLikeLevel](knownTechnology.likeLevelOption.getOrElse(null)), TechnologyLikeLevel.values,
+              new ChoiceRenderer[TechnologyLikeLevel]("translation")).add(new AjaxFormComponentUpdatingBehavior("onchange") {
+              def onUpdate(target: AjaxRequestTarget) {
+                knownTechnology.likeLevelOption = Option(this.getFormComponent.getModel.getObject.asInstanceOf[TechnologyLikeLevel])
+                if(!addedOrChangedTechnologies.contains(knownTechnology)) {
+                  addedOrChangedTechnologies ::= knownTechnology
+                }
+                if (!saveButton.isVisible) {
+                  saveButton.setVisible(true)
+                  target.add(saveButton)
+                }
+              }
+            }))
+
+            add(new DropDownChoice[TechnologyCurrentUsage]("technologyCurrentUsage",
+              new Model[TechnologyCurrentUsage](knownTechnology.currentUsageOption.getOrElse(null)), TechnologyCurrentUsage.values,
+              new ChoiceRenderer[TechnologyCurrentUsage]("translation")).add(new AjaxFormComponentUpdatingBehavior("onchange") {
+              def onUpdate(target: AjaxRequestTarget) {
+                knownTechnology.currentUsageOption = Option(this.getFormComponent.getModel.getObject.asInstanceOf[TechnologyCurrentUsage])
+                if(!addedOrChangedTechnologies.contains(knownTechnology)) {
+                  addedOrChangedTechnologies ::= knownTechnology
+                }
+                if (!saveButton.isVisible) {
+                  saveButton.setVisible(true)
+                  target.add(saveButton)
+                }
+              }
+            }))
 
             add(new OneButtonAjaxForm("removeTechnologyButton", "OK", (target: AjaxRequestTarget) => {
 
@@ -145,12 +183,10 @@ class UserTechnologiesPage extends SecureWebPage(SocnetRoles.USER) {
                 loadedTechnologiesList -= name
                 removedTechnologies ::= name
               }
-              addedTechnologies = addedTechnologies.filter(technology => {
+              addedOrChangedTechnologies = addedOrChangedTechnologies.filter(technology => {
                 technology.name != name
               })
 
-              val technologiesList = addOrReplaceTechnologyList
-              target.add(technologiesList)
               if (!saveButton.isVisible) {
                 saveButton.setVisible(true)
                 target.add(saveButton)

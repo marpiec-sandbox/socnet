@@ -140,6 +140,38 @@
             jQuery(link).parents(".editTechnologyPanel").find(".confirmDeletePanel").css({display:"none"});
         }
 
+        function markTechnologyAsChanged(selectElement) {
+            var jqSelect = jQuery(selectElement);
+            var originalValue = jqSelect.data("originalValue");
+            if(originalValue!=null && originalValue != jqSelect.val() ) {
+                jqSelect.parents(".technologySummary").addClass("changed");
+            }
+            jqSelect.data("originalValue", jqSelect.val())
+        }
+
+        function writeCorerectKnowledgeLevelValue(selectElement) {
+            var jqSelect = jQuery(selectElement);
+            var summary = jqSelect.parents(".technologySummary");
+            var currentLevel = jqSelect.val()*1 + 1;
+            summary.find(".level").html(currentLevel);
+
+            for(var p=1; p<=5;p++) {
+                summary.removeClass("level"+p);
+            }
+
+            summary.addClass("level"+currentLevel)
+
+
+        }
+
+        function hideContainerAfterDelete(link) {
+            jQuery(link).parents(".technologySummary").animate({opacity:0}, 500, null, function() {
+               jQuery(this).animate({width:0}, 500, null, function() {
+                  jQuery(this).remove();
+               });
+            })
+        }
+
 
     </script>
 
@@ -219,7 +251,8 @@
                                     Poziom znajomości:
                                 </div>
                                 <div>
-                                    <select wicket:id="knowledgeLevel" class="knowledgeLevel"/>
+                                    <select wicket:id="knowledgeLevel" class="knowledgeLevel" onclick="markTechnologyAsChanged(this);writeCorerectKnowledgeLevelValue(this)"
+                                            onblur="markTechnologyAsChanged(selectElement);writeCorerectKnowledgeLevelValue(this)"/>
                                 </div>
                             </div>
                             <div class="mainElement">
@@ -227,7 +260,8 @@
                                     Co o sądzisz o tej technologii?
                                 </div>
                                 <div>
-                                    <select wicket:id="technologyLikeLevel" />
+                                    <select wicket:id="technologyLikeLevel" onclick="markTechnologyAsChanged(this)"
+                                            onblur="markTechnologyAsChanged(selectElement)"/>
                                 </div>
                             </div>
                             <div class="mainElement">
@@ -235,7 +269,8 @@
                                     Aktualnie:
                                 </div>
                                 <div>
-                                    <select wicket:id="technologyCurrentUsage" />
+                                    <select wicket:id="technologyCurrentUsage" onclick="markTechnologyAsChanged(this)"
+                                            onblur="markTechnologyAsChanged(selectElement)"/>
                                 </div>
                             </div>
                             <div class="actionButtons mainElement">
@@ -250,13 +285,15 @@
                                         <span class="actionButton">
                                             <a href="#" onclick="hideConfirmDelete(this); return false;">Anuluj</a>
                                         </span>
-                                        <span wicket:id="removeTechnologyButton" class="actionButton remove">removeTechnology</span>
+                                        <span wicket:id="removeTechnologyButton" class="actionButton remove"
+                                                onclick="hideContainerAfterDelete(this)">removeTechnology</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
             </div>
 
         </div>
