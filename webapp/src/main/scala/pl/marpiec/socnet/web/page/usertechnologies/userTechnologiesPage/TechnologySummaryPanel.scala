@@ -17,14 +17,13 @@ import pl.marpiec.socnet.web.page.usertechnologies.UserTechnologiesPage
  * @author Marcin Pieciukiewicz
  */
 
-class TechnologySummaryPanel(id: String, technology: (String, KnownTechnology),
+class TechnologySummaryPanel(id: String, technologyName: String, knownTechnology: KnownTechnology,
                              val parent: UserTechnologiesPage, changedByDefault:Boolean) extends Panel(id) {
 
   val technologySummary = this
-  val (name, knownTechnology) = technology
 
   add(new AttributeModifier("class", "technologySummary level" + knownTechnology.knowledgeLevel.value.toString + valueOrEmpty(changedByDefault, " changed")))
-  add(new Label("name", name))
+  add(new Label("name", technologyName))
   add(new Label("level", knownTechnology.knowledgeLevel.value.toString))
 
 
@@ -64,7 +63,7 @@ class TechnologySummaryPanel(id: String, technology: (String, KnownTechnology),
 
   add(new OneButtonAjaxForm("removeTechnologyButton", "OK", (target: AjaxRequestTarget) => {
 
-    parent.correctTechnologyListsAfterRemoval(name)
+    parent.correctTechnologyListsAfterRemoval(technologyName)
 
     parent.showSaveButtonAndAddToTargetIfNecessary(target)
   }))

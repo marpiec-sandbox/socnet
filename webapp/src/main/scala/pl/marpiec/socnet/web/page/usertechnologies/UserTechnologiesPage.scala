@@ -35,7 +35,7 @@ class UserTechnologiesPage extends SecureWebPage(SocnetRoles.USER) {
 
   val programmerProfile = getProgrammerProfileOrThrow404
 
-  var loadedTechnologiesList = programmerProfile.technologyKnowledge
+  var loadedTechnologiesMap = programmerProfile.technologyKnowledge
   var addedOrChangedTechnologies: List[KnownTechnology] = List()
   var removedTechnologies: List[String] = List()
 
@@ -76,15 +76,16 @@ class UserTechnologiesPage extends SecureWebPage(SocnetRoles.USER) {
       val level = formModel.knowledgeLevel
 
       if (validateAddTechnologyForm(technologyName, level)) {
-        addedOrChangedTechnologies ::= KnownTechnology(technologyName, TechnologyKnowledgeLevel.getByValue(level.value))
         val technology = KnownTechnology(technologyName, TechnologyKnowledgeLevel.getByValue(level.value))
-        loadedTechnologiesList += technologyName -> technology
+        addedOrChangedTechnologies ::= technology
+
+        loadedTechnologiesMap += technologyName -> technology
 
         formModel.clear
 
         target.add(thisForm)
 
-        val containerToRerender = recursiveTechnologiesList.addElementAndReturnContainer(new TechnologySummaryPanel("element", (technologyName, technology), UserTechnologiesPage.this, true))
+        val containerToRerender = recursiveTechnologiesList.addElementAndReturnContainer(new TechnologySummaryPanel("element", technologyName, technology, UserTechnologiesPage.this, true))
         target.add(containerToRerender)
 
         if (!saveButton.isVisible) {
@@ -121,11 +122,24 @@ class UserTechnologiesPage extends SecureWebPage(SocnetRoles.USER) {
     val technologiesList = new WebMarkupContainer("technologyList") {
 
       add(new RepeatingView("technologySummary") {
-        for (technology: (String, KnownTechnology) <- loadedTechnologiesList) {
+
+        val technologiesNamesAlphabetic = loadedTechnologiesMap.keySet.toList.sorted(new Ordering[String] {
+          def compare(x: String, y: String) = {
+            val comparisonResult = x.toLowerCase.compareTo(y.toLowerCase)
+            if(comparisonResult == 0) {
+              x.compareTo(y)
+            } else {
+              comparisonResult
+            }
+          }
+        })
+
+        for(technologyName: String <- technologiesNamesAlphabetic) {
+          val technology = loadedTechnologiesMap(technologyName)
 
           add(new AbstractItem(newChildId()) {
 
-            add(new TechnologySummaryPanel("summaryPanel", technology, UserTechnologiesPage.this, false))
+            add(new TechnologySummaryPanel("summaryPanel", technologyName, technology, UserTechnologiesPage.this, false))
 
           })
         }
@@ -145,8 +159,8 @@ class UserTechnologiesPage extends SecureWebPage(SocnetRoles.USER) {
   }
 
   def correctTechnologyListsAfterRemoval(technologyName: String) {
-    if (loadedTechnologiesList.contains(technologyName)) {
-      loadedTechnologiesList -= technologyName
+    if (loadedTechnologiesMap.contains(technologyName)) {
+      loadedTechnologiesMap -= technologyName
       removedTechnologies ::= technologyName
     }
     addedOrChangedTechnologies = addedOrChangedTechnologies.filter(technology => {
