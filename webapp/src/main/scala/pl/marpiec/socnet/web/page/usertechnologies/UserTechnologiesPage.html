@@ -236,62 +236,8 @@
 
             <div class="technologyList">
                 <div wicket:id="technologySummary" class="technologySummary replacedByWicket">
-                    <div class="container">
-                        <a href="#" onclick="onTechnologyClicked(this); return false;" class="showHideLink">
-                            <span wicket:id="name" class="name">name</span>
-                            <span wicket:id="level" class="level">level</span>
-                        </a>
 
-                        <a href="#" onclick="onTechnologyClicked(this); return false;" class="closeButton invisibleByDefault"></a>
-
-                        <div class="editTechnologyPanel hiddenByDefault">
-
-                            <div class="mainElement">
-                                <div>
-                                    Poziom znajomości:
-                                </div>
-                                <div>
-                                    <select wicket:id="knowledgeLevel" class="knowledgeLevel" onclick="markTechnologyAsChanged(this);writeCorerectKnowledgeLevelValue(this)"
-                                            onblur="markTechnologyAsChanged(selectElement);writeCorerectKnowledgeLevelValue(this)"/>
-                                </div>
-                            </div>
-                            <div class="mainElement">
-                                <div>
-                                    Co o sądzisz o tej technologii?
-                                </div>
-                                <div>
-                                    <select wicket:id="technologyLikeLevel" onclick="markTechnologyAsChanged(this)"
-                                            onblur="markTechnologyAsChanged(selectElement)"/>
-                                </div>
-                            </div>
-                            <div class="mainElement">
-                                <div>
-                                    Aktualnie:
-                                </div>
-                                <div>
-                                    <select wicket:id="technologyCurrentUsage" onclick="markTechnologyAsChanged(this)"
-                                            onblur="markTechnologyAsChanged(selectElement)"/>
-                                </div>
-                            </div>
-                            <div class="actionButtons mainElement">
-                                <a href="#" onclick="showConfirmDelete(this); return false;">Usuń</a>
-                            </div>
-                            <div class="confirmDeletePanel hiddenByDefault">
-                                <div class="content">
-                                    <div class="question">
-                                        Czy na pewno usunąć techologię?
-                                    </div>
-                                    <div class="buttons">
-                                        <span class="actionButton">
-                                            <a href="#" onclick="hideConfirmDelete(this); return false;">Anuluj</a>
-                                        </span>
-                                        <span wicket:id="removeTechnologyButton" class="actionButton remove"
-                                                onclick="hideContainerAfterDelete(this)">removeTechnology</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                   <div wicket:id="summaryPanel" />
                 </div>
 
             </div>

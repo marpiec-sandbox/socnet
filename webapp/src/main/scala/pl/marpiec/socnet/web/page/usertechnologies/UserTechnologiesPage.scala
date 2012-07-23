@@ -11,16 +11,15 @@ import pl.marpiec.socnet.readdatabase.ProgrammerProfileDatabase
 import pl.marpiec.socnet.service.programmerprofile.ProgrammerProfileCommand
 import org.apache.wicket.markup.repeater.RepeatingView
 import org.apache.wicket.markup.html.list.AbstractItem
-import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.markup.html.form.{ChoiceRenderer, DropDownChoice, TextField}
 import pl.marpiec.socnet.web.component.wicket.form.{OneButtonAjaxForm, StandardAjaxSecureForm}
 import org.apache.commons.lang.StringUtils
 import pl.marpiec.socnet.model.ProgrammerProfile
-import org.apache.wicket.{AttributeModifier, Component}
-import pl.marpiec.socnet.constant.{TechnologyCurrentUsage, TechnologyLikeLevel, TechnologyKnowledgeLevel}
-import org.apache.wicket.model.{Model, CompoundPropertyModel}
+import org.apache.wicket.Component
+import pl.marpiec.socnet.constant.TechnologyKnowledgeLevel
+import org.apache.wicket.model.CompoundPropertyModel
 import pl.marpiec.socnet.model.programmerprofile.KnownTechnology
-import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior
+import userTechnologiesPage.TechnologySummaryPanel
 
 /**
  * @author Marcin Pieciukiewicz
@@ -40,6 +39,7 @@ class UserTechnologiesPage extends SecureWebPage(SocnetRoles.USER) {
   var removedTechnologies: List[String] = List()
 
   //build schema
+
 
 
   addOrReplaceTechnologyList
@@ -113,6 +113,7 @@ class UserTechnologiesPage extends SecureWebPage(SocnetRoles.USER) {
   }
 
   private def addOrReplaceTechnologyList: Component = {
+
     val technologiesList = new WebMarkupContainer("technologyList") {
 
       setOutputMarkupId(true)
@@ -122,84 +123,37 @@ class UserTechnologiesPage extends SecureWebPage(SocnetRoles.USER) {
 
           add(new AbstractItem(newChildId()) {
 
-            val technologySummary = this
-            val (name, knownTechnology) = technology
+            add(new TechnologySummaryPanel("summaryPanel", technology, saveButton, UserTechnologiesPage.this))
 
-            add(new AttributeModifier("class", "technologySummary level" + knownTechnology.knowledgeLevel.value.toString));
-            add(new Label("name", name))
-            add(new Label("level", knownTechnology.knowledgeLevel.value.toString))
-
-            add(new DropDownChoice[TechnologyKnowledgeLevel]("knowledgeLevel",
-              new Model[TechnologyKnowledgeLevel](knownTechnology.knowledgeLevel),
-              TechnologyKnowledgeLevel.values,
-              new ChoiceRenderer[TechnologyKnowledgeLevel]("translation")).add(new AjaxFormComponentUpdatingBehavior("onchange") {
-
-
-              def onUpdate(target: AjaxRequestTarget) {
-                knownTechnology.knowledgeLevel = this.getFormComponent.getModel.getObject.asInstanceOf[TechnologyKnowledgeLevel]
-                if(!addedOrChangedTechnologies.contains(knownTechnology)) {
-                  addedOrChangedTechnologies ::= knownTechnology
-                }
-                if (!saveButton.isVisible) {
-                  saveButton.setVisible(true)
-                  target.add(saveButton)
-                }
-              }
-            }))
-
-            add(new DropDownChoice[TechnologyLikeLevel]("technologyLikeLevel",
-              new Model[TechnologyLikeLevel](knownTechnology.likeLevelOption.getOrElse(null)), TechnologyLikeLevel.values,
-              new ChoiceRenderer[TechnologyLikeLevel]("translation")).add(new AjaxFormComponentUpdatingBehavior("onchange") {
-              def onUpdate(target: AjaxRequestTarget) {
-                knownTechnology.likeLevelOption = Option(this.getFormComponent.getModel.getObject.asInstanceOf[TechnologyLikeLevel])
-                if(!addedOrChangedTechnologies.contains(knownTechnology)) {
-                  addedOrChangedTechnologies ::= knownTechnology
-                }
-                if (!saveButton.isVisible) {
-                  saveButton.setVisible(true)
-                  target.add(saveButton)
-                }
-              }
-            }))
-
-            add(new DropDownChoice[TechnologyCurrentUsage]("technologyCurrentUsage",
-              new Model[TechnologyCurrentUsage](knownTechnology.currentUsageOption.getOrElse(null)), TechnologyCurrentUsage.values,
-              new ChoiceRenderer[TechnologyCurrentUsage]("translation")).add(new AjaxFormComponentUpdatingBehavior("onchange") {
-              def onUpdate(target: AjaxRequestTarget) {
-                knownTechnology.currentUsageOption = Option(this.getFormComponent.getModel.getObject.asInstanceOf[TechnologyCurrentUsage])
-                if(!addedOrChangedTechnologies.contains(knownTechnology)) {
-                  addedOrChangedTechnologies ::= knownTechnology
-                }
-                if (!saveButton.isVisible) {
-                  saveButton.setVisible(true)
-                  target.add(saveButton)
-                }
-              }
-            }))
-
-            add(new OneButtonAjaxForm("removeTechnologyButton", "OK", (target: AjaxRequestTarget) => {
-
-              if (loadedTechnologiesList.contains(name)) {
-                loadedTechnologiesList -= name
-                removedTechnologies ::= name
-              }
-              addedOrChangedTechnologies = addedOrChangedTechnologies.filter(technology => {
-                technology.name != name
-              })
-
-              if (!saveButton.isVisible) {
-                saveButton.setVisible(true)
-                target.add(saveButton)
-              }
-            }))
           })
         }
       })
-
-
     }
+
     UserTechnologiesPage.this.addOrReplace(technologiesList)
     technologiesList
   }
 
+  def addAddedOrChangedTechnology(technology: KnownTechnology) {
+    if (!addedOrChangedTechnologies.contains(technology)) {
+      addedOrChangedTechnologies ::= technology
+    }
+  }
+
+  def correctTechnologyListsAfterRemoval(technologyName: String) {
+    if (loadedTechnologiesList.contains(technologyName)) {
+      loadedTechnologiesList -= technologyName
+      removedTechnologies ::= technologyName
+    }
+    addedOrChangedTechnologies = addedOrChangedTechnologies.filter(technology => {
+      technology.name != technologyName
+    })
+  }
+
+  def showSaveButtonAndAddToTargetIfNecessary(target: AjaxRequestTarget) {
+    if (!saveButton.isVisible) {
+      saveButton.setVisible(true)
+      target.add(saveButton)
+    }
+  }
 }
