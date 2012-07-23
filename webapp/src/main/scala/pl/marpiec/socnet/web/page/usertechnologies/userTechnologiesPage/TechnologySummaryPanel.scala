@@ -18,12 +18,12 @@ import pl.marpiec.socnet.web.page.usertechnologies.UserTechnologiesPage
  */
 
 class TechnologySummaryPanel(id: String, technology: (String, KnownTechnology),
-                             val parent: UserTechnologiesPage) extends Panel(id) {
+                             val parent: UserTechnologiesPage, changedByDefault:Boolean) extends Panel(id) {
 
   val technologySummary = this
   val (name, knownTechnology) = technology
 
-  add(new AttributeModifier("class", "technologySummary level" + knownTechnology.knowledgeLevel.value.toString));
+  add(new AttributeModifier("class", "technologySummary level" + knownTechnology.knowledgeLevel.value.toString + valueOrEmpty(changedByDefault, " changed")))
   add(new Label("name", name))
   add(new Label("level", knownTechnology.knowledgeLevel.value.toString))
 
@@ -68,4 +68,12 @@ class TechnologySummaryPanel(id: String, technology: (String, KnownTechnology),
 
     parent.showSaveButtonAndAddToTargetIfNecessary(target)
   }))
+  
+  private def valueOrEmpty(flag:Boolean, value:String):String = {
+    if(flag) {
+      value
+    } else {
+      ""
+    }
+  }
 }

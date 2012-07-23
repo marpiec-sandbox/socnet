@@ -20,6 +20,7 @@ import pl.marpiec.socnet.constant.TechnologyKnowledgeLevel
 import org.apache.wicket.model.CompoundPropertyModel
 import pl.marpiec.socnet.model.programmerprofile.KnownTechnology
 import userTechnologiesPage.TechnologySummaryPanel
+import pl.marpiec.socnet.web.component.wicket.recursiveList.RecursiveList
 
 /**
  * @author Marcin Pieciukiewicz
@@ -38,11 +39,12 @@ class UserTechnologiesPage extends SecureWebPage(SocnetRoles.USER) {
   var addedOrChangedTechnologies: List[KnownTechnology] = List()
   var removedTechnologies: List[String] = List()
 
+  var recursiveTechnologiesList = new RecursiveList("addedTechnologiesList")
+
+
   //build schema
 
-
-
-  addOrReplaceTechnologyList
+  add(createTechnologyList)
 
 
   val saveButton = addAndReturn(new OneButtonAjaxForm("saveChangesButton", "Zapisz zmiany", (target: AjaxRequestTarget) => {
@@ -70,18 +72,20 @@ class UserTechnologiesPage extends SecureWebPage(SocnetRoles.USER) {
 
     def onSecureSubmit(target: AjaxRequestTarget, formModel: AddTechnologyFormModel) {
 
-      val technology = formModel.technologyName
+      val technologyName = formModel.technologyName
       val level = formModel.knowledgeLevel
 
-      if (validateAddTechnologyForm(technology, level)) {
-        addedOrChangedTechnologies ::= KnownTechnology(technology, TechnologyKnowledgeLevel.getByValue(level.value))
-        loadedTechnologiesList += technology -> KnownTechnology(technology, TechnologyKnowledgeLevel.getByValue(level.value))
+      if (validateAddTechnologyForm(technologyName, level)) {
+        addedOrChangedTechnologies ::= KnownTechnology(technologyName, TechnologyKnowledgeLevel.getByValue(level.value))
+        val technology = KnownTechnology(technologyName, TechnologyKnowledgeLevel.getByValue(level.value))
+        loadedTechnologiesList += technologyName -> technology
 
         formModel.clear
 
-        val technologiesList = addOrReplaceTechnologyList
-        target.add(technologiesList)
         target.add(thisForm)
+
+        val containerToRerender = recursiveTechnologiesList.addElementAndReturnContainer(new TechnologySummaryPanel("element", (technologyName, technology), UserTechnologiesPage.this, true))
+        target.add(containerToRerender)
 
         if (!saveButton.isVisible) {
           saveButton.setVisible(true)
@@ -112,25 +116,25 @@ class UserTechnologiesPage extends SecureWebPage(SocnetRoles.USER) {
       level.value > TechnologyKnowledgeLevel.MIN_VALUE && level.value <= TechnologyKnowledgeLevel.MAX_VALUE
   }
 
-  private def addOrReplaceTechnologyList: Component = {
+  private def createTechnologyList: Component = {
 
     val technologiesList = new WebMarkupContainer("technologyList") {
-
-      setOutputMarkupId(true)
 
       add(new RepeatingView("technologySummary") {
         for (technology: (String, KnownTechnology) <- loadedTechnologiesList) {
 
           add(new AbstractItem(newChildId()) {
 
-            add(new TechnologySummaryPanel("summaryPanel", technology, UserTechnologiesPage.this))
+            add(new TechnologySummaryPanel("summaryPanel", technology, UserTechnologiesPage.this, false))
 
           })
         }
       })
+
+      add(recursiveTechnologiesList)
+
     }
 
-    UserTechnologiesPage.this.addOrReplace(technologiesList)
     technologiesList
   }
 
