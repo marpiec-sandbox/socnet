@@ -17,7 +17,7 @@ import pl.marpiec.socnet.web.page.usertechnologies.UserTechnologiesPage
  * @author Marcin Pieciukiewicz
  */
 
-class TechnologySummaryPanel(id: String, technology: (String, KnownTechnology), val saveButton: Component,
+class TechnologySummaryPanel(id: String, technology: (String, KnownTechnology),
                              val parent: UserTechnologiesPage) extends Panel(id) {
 
   val technologySummary = this

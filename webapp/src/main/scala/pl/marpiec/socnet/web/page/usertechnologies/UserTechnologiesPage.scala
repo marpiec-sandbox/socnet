@@ -123,7 +123,7 @@ class UserTechnologiesPage extends SecureWebPage(SocnetRoles.USER) {
 
           add(new AbstractItem(newChildId()) {
 
-            add(new TechnologySummaryPanel("summaryPanel", technology, saveButton, UserTechnologiesPage.this))
+            add(new TechnologySummaryPanel("summaryPanel", technology, UserTechnologiesPage.this))
 
           })
         }
