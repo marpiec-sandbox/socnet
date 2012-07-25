@@ -8,7 +8,8 @@ import org.apache.wicket.spring.injection.annot.SpringBean
 import pl.marpiec.socnet.readdatabase.{BookDatabase, ArticleDatabase}
 import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException
-import pl.marpiec.socnet.model.User
+import org.apache.wicket.markup.html.link.BookmarkablePageLink
+import pl.marpiec.socnet.model.{Book, User}
 
 /**
  * @author Marcin Pieciukiewicz
@@ -16,6 +17,10 @@ import pl.marpiec.socnet.model.User
 
 object BookPreviewPage {
   val BOOK_ID_PARAM = "bookId"
+
+  def getLink(book: Book): BookmarkablePageLink[_] = {
+    new BookmarkablePageLink("bookPreviewLink", classOf[BookPreviewPage], getParametersForLink(book.id))
+  }
 
   def getParametersForLink(bookId:UID): PageParameters = {
     new PageParameters().add(BOOK_ID_PARAM, bookId)

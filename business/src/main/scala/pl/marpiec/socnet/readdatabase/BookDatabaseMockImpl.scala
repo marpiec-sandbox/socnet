@@ -26,5 +26,5 @@ class BookDatabaseMockImpl @Autowired()(dataStore: DataStore) extends AbstractDa
 
   def getBookById(id: UID): Option[Book] = getById(id)
 
-  def getAllBooks = getAll
+  def getAllBooks: List[Book] = getAll
 }
