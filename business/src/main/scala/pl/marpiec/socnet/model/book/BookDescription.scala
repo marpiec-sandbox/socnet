@@ -9,7 +9,6 @@ class BookDescription {
   var title:String = _
   var polishTitle:String = _
   var authors:List[String] = Nil
-  var publisher:String = _
   var description:String = _
   var isbn:String = _
 

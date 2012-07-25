@@ -1,6 +1,7 @@
 package pl.marpiec.socnet.model.book
 
 import pl.marpiec.socnet.constant.Rating
+import pl.marpiec.util.UID
 
 /**
  * @author Marcin Pieciukiewicz
@@ -8,7 +9,8 @@ import pl.marpiec.socnet.constant.Rating
 
 class BookReview {
 
-  val rating: Rating = _
-  val description: String = _
+  var userId: UID = _
+  var rating: Rating = _
+  var description: String = _
 
 }

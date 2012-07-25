@@ -10,11 +10,11 @@ import pl.marpiec.util.BeanUtil
 
 class Book extends Aggregate(null, 0) {
 
-  val description: BookDescription = new BookDescription
-  val reviews: BookReviews = new BookReviews
+  var description: BookDescription = new BookDescription
+  var reviews: BookReviews = new BookReviews
 
 
   def copy: Aggregate = {
-    BeanUtil.copyProperties(new Article, this)
+    BeanUtil.copyProperties(new Book, this)
   }
 }
