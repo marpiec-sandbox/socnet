@@ -1,11 +1,12 @@
 package pl.marpiec.socnet.service.book
 
+import input.BookOwnershipInput
 import org.testng.annotations.Test
 
 import pl.marpiec.cqrs._
-import pl.marpiec.socnet.model.book.BookDescription
 import pl.marpiec.socnet.readdatabase.{BookDatabaseMockImpl, BookDatabase}
 import pl.marpiec.socnet.constant.Rating
+import pl.marpiec.socnet.model.book.{BookOwnership, BookDescription}
 import org.testng.Assert._
 
 /**
@@ -97,6 +98,28 @@ class BookServicesTest {
     assertEquals(review.rating, Rating.FOUR)
     assertEquals(review.userId, bookReviewerUserId)
 
+
+    val bookOwnerUserId = uidGenerator.nextUid
+
+    val bookOwnership = new BookOwnershipInput
+
+    bookOwnership.owner = true
+    bookOwnership.willingToLend = true
+    bookOwnership.willingToSell = false
+    bookOwnership.wantToBorrow = false
+    bookOwnership.wantToBuy = false
+
+    bookCommand.addOrUpdateBookOwnership(bookOwnerUserId, book.id, book.version, bookOwnership)
+
+    book = bookDatabase.getBookById(bookId).get
+
+    assertEquals(book.ownership.size, 1)
+    val ownership = book.ownership(bookOwnerUserId)
+    assertEquals(ownership.owner, true)
+    assertEquals(ownership.willingToLend, true)
+    assertEquals(ownership.willingToSell, false)
+    assertEquals(ownership.wantToBorrow, false)
+    assertEquals(ownership.wantToBuy, false)
   }
 
 }

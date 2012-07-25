@@ -1,6 +1,7 @@
 package pl.marpiec.socnet.service.book
 
-import event.{AddOrUpdateReviewBookEvent, VoteForBookEvent, ChangeBookDescriptionEvent, CreateBookEvent}
+import event._
+import input.BookOwnershipInput
 import org.springframework.stereotype.Service
 import org.springframework.beans.factory.annotation.Autowired
 import pl.marpiec.util.UID
@@ -30,5 +31,9 @@ class BookCommandImpl @Autowired()(val eventStore: EventStore) extends BookComma
 
   def addOrUpdateReview(userId: UID, id: UID, version: Int, description: String, rating: Rating) {
     eventStore.addEvent(new EventRow(userId, id, version, new AddOrUpdateReviewBookEvent(userId, description, rating)))
+  }
+
+  def addOrUpdateBookOwnership(userId: UID, id: UID, version: Int, bookOwnershipInput: BookOwnershipInput) {
+    eventStore.addEventIgnoreVersion(new EventRow(userId, id, version, new AddOrUpdateBookOwnership(userId, bookOwnershipInput)))
   }
 }

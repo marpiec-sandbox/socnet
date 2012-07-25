@@ -1,8 +1,8 @@
 package pl.marpiec.socnet.model
 
-import book.{BookReviews, BookDescription}
+import book.{BookOwnership, BookReviews, BookDescription}
 import pl.marpiec.cqrs.Aggregate
-import pl.marpiec.util.BeanUtil
+import pl.marpiec.util.{UID, BeanUtil}
 
 /**
  * @author Marcin Pieciukiewicz
@@ -10,8 +10,9 @@ import pl.marpiec.util.BeanUtil
 
 class Book extends Aggregate(null, 0) {
 
-  var description: BookDescription = new BookDescription
-  var reviews: BookReviews = new BookReviews
+  var description = new BookDescription
+  var reviews = new BookReviews
+  var ownership: Map[UID, BookOwnership] = Map()
 
 
   def copy: Aggregate = {

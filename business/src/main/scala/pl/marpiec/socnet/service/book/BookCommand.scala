@@ -1,5 +1,6 @@
 package pl.marpiec.socnet.service.book
 
+import input.BookOwnershipInput
 import pl.marpiec.util.UID
 import pl.marpiec.socnet.model.book.BookDescription
 import pl.marpiec.socnet.constant.Rating
@@ -15,5 +16,7 @@ trait BookCommand {
 
   def voteForBook(userId: UID, id: UID, version: Int, rating: Rating)
   def addOrUpdateReview(userId: UID, id: UID, version: Int, description: String, rating: Rating)
+
+  def addOrUpdateBookOwnership(userId: UID, id: UID, version: Int, input: BookOwnershipInput)
 
 }
