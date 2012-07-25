@@ -10,6 +10,7 @@ class BookOwnership {
 
   var userId:UID = _
   var owner = false
+  var description:String = _
   var willingToSell = false
   var willingToLend = false
   var wantToBuy = false

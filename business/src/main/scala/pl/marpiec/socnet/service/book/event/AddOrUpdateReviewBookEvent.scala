@@ -3,14 +3,15 @@ package pl.marpiec.socnet.service.book.event
 import pl.marpiec.socnet.constant.Rating
 import pl.marpiec.socnet.model.Book
 import pl.marpiec.cqrs.{Aggregate, Event}
-import pl.marpiec.util.{UID, BeanUtil}
+import pl.marpiec.util.UID
 import pl.marpiec.socnet.model.book.BookReview
+import org.joda.time.LocalDateTime
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
-class AddOrUpdateReviewBookEvent(val reviewerUserId:UID, val description:String, val rating:Rating) extends Event {
+class AddOrUpdateReviewBookEvent(val reviewerUserId: UID, val description: String, val rating: Rating, reviewTime: LocalDateTime) extends Event {
   def entityClass = classOf[Book]
 
   def applyEvent(aggregate: Aggregate) {
@@ -27,6 +28,7 @@ class AddOrUpdateReviewBookEvent(val reviewerUserId:UID, val description:String,
     review.description = description
     review.rating = rating
     review.userId = reviewerUserId
+    review.creationTime = reviewTime
 
   }
 }
