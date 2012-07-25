@@ -1,5 +1,6 @@
 package pl.marpiec.socnet.web.page
 
+import books.BooksPage
 import homePage.ArticleList
 import homePage.people.PeopleDashboardPanel
 import org.apache.wicket.markup.html.link.BookmarkablePageLink
@@ -18,13 +19,12 @@ class HomePage extends SimpleTemplatePage {
 
   setStatelessHint(true)
 
+  add(AuthorizeUser(new BookmarkablePageLink("booksLink", classOf[BooksPage])))
   add(AuthorizeUser(new BookmarkablePageLink("technologiesLink", classOf[UserTechnologiesPage])))
   add(AuthorizeUser(new BookmarkablePageLink("newArticleLink", classOf[NewArticlePage])))
 
   add(AuthorizeUser(new PeopleDashboardPanel("peopleDashboard")))
   add(AuthorizeUser(new ArticleList("articleList", articleDatabase.getAllArticles)))
-
-
 
   add(UnauthorizeAll(new WebMarkupContainer("loginPanel") {
     add(UnauthorizeAll(new SignInFormPanel("signInPanel")))

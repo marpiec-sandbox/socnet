@@ -50,6 +50,7 @@ class SocnetSession(request: Request, val userQuery: UserQuery) extends Authenti
 
     roles.clear
     roles.add(SocnetRoles.USER)
+    roles.add(SocnetRoles.TRUSTED_USER)
     roles.add(SocnetRoles.ARTICLE_AUTHOR)
 
   }

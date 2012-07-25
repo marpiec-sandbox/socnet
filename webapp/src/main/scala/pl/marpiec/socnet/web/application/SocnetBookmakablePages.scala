@@ -1,6 +1,7 @@
 package pl.marpiec.socnet.web.application
 
 import pl.marpiec.socnet.web.page._
+import books.{BookPreviewPage, AddBookPage, BooksPage}
 import contacts.{InvitationsReceivedPage, InvitationsSentPage, ContactsPage}
 import conversation.{ConversationPage, UserConversationsPage, StartConversationPage}
 import forgotPassword.{PasswordHaveBeenChangedPage, ConfirmForgotPasswordPage, TriggerChangeForgottenPasswordPage, ForgotPasswordPage}
@@ -46,5 +47,9 @@ object SocnetBookmakablePages {
     application.mountPage("start/conversation/${" + StartConversationPage.USER_ID_PARAM + "}", classOf[StartConversationPage])
 
     application.mountPage("technologies", classOf[UserTechnologiesPage])
+
+    application.mountPage("books", classOf[BooksPage])
+    application.mountPage("add/book", classOf[AddBookPage])
+    application.mountPage("book/${" + BookPreviewPage.BOOK_ID_PARAM + "}", classOf[BookPreviewPage])
   }
 }
