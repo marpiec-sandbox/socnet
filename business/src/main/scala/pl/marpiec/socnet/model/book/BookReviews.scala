@@ -8,7 +8,11 @@ import pl.marpiec.socnet.constant.Rating
 
 class BookReviews {
 
-  var reviews:List[BookReview] = Nil
-  var votes:Map[Rating, Int] = Map()
+  var userReviews:List[BookReview] = Nil
+  var votes:Map[Rating, Int] = Map() + (Rating.ONE -> 0) +
+                                       (Rating.TWO -> 0) +
+                                       (Rating.THREE -> 0) +
+                                       (Rating.FOUR -> 0) +
+                                       (Rating.FIVE -> 0)
   
 }

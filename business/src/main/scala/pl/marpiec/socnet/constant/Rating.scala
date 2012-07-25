@@ -9,11 +9,11 @@ import pl.marpiec.util.senum.{SEnumObject, SEnum}
 
 object Rating extends SEnumObject[Rating] {
 
-  val ONE = new Province("ONE", "1")
-  val TWO = new Province("TWO", "2")
-  val THREE = new Province("THREE", "3")
-  val FOUR = new Province("FOUR", "4")
-  val FIVE = new Province("FIVE", "5")
+  val ONE = new Rating("ONE", "1")
+  val TWO = new Rating("TWO", "2")
+  val THREE = new Rating("THREE", "3")
+  val FOUR = new Rating("FOUR", "4")
+  val FIVE = new Rating("FIVE", "5")
 
   val values = List(ONE, TWO, THREE, FOUR, FIVE)
 
