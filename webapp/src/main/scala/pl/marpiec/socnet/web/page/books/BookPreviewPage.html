@@ -3,23 +3,19 @@
 <body>
 <wicket:extend>
 
-  <div>Book preview page</div>
+    <div class="bookPreview">
 
-    <div>
-        <span wicket:id="title">title</span>
+        <div class="icon"></div>
+        <div wicket:id="title" class="title">title</div>
+        <div wicket:id="polishTitle" class="polishTitle">polishTitle</div>
+        <div wicket:id="authors" class="authors">authors</div>
+        <div class="isbn">
+            ISBN: <span wicket:id="isbn">isbn</span>
+        </div>
+        <div wicket:id="description" class="description">description</div>
+
     </div>
-    <div>
-        <span wicket:id="polishTitle">polishTitle</span>
-    </div>
-    <div>
-        <span wicket:id="authors">authors</span>
-    </div>
-    <div>
-        <span wicket:id="isbn">isbn</span>
-    </div>
-    <div>
-        <span wicket:id="description">description</span>
-    </div>
+
 </wicket:extend>
 </body>
 </html>

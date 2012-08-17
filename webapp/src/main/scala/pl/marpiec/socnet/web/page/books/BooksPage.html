@@ -5,16 +5,22 @@
 
     <div>Books page</div>
 
+    <div wicket:id="findBook" />
 
     <div>
-        <a wicket:id="addBookLink">
-            Dodaj nową książkę
-        </a>
+        <a wicket:id="yourBooksLink">Twoje książki</a>
     </div>
 
-    <div wicket:id="books">
-        <div wicket:id="bookSummaryPreview">bookSummaryPreview</div>
+    <div>
+        <a wicket:id="addBookLink">Dodaj nową książkę</a>
     </div>
+
+    <div class="bookList">
+        <div wicket:id="book" class="bookSummaryIterated">
+            <div wicket:id="bookSummaryPreview">bookSummaryPreview</div>
+        </div>
+    </div>
+
 
 
 </wicket:extend>

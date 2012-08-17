@@ -1,7 +1,7 @@
 package pl.marpiec.socnet.web.application
 
 import pl.marpiec.socnet.web.page._
-import books.{BookPreviewPage, AddBookPage, BooksPage}
+import books.{YourBooksPage, BookPreviewPage, AddBookPage, BooksPage}
 import contacts.{InvitationsReceivedPage, InvitationsSentPage, ContactsPage}
 import conversation.{ConversationPage, UserConversationsPage, StartConversationPage}
 import forgotPassword.{PasswordHaveBeenChangedPage, ConfirmForgotPasswordPage, TriggerChangeForgottenPasswordPage, ForgotPasswordPage}
@@ -34,7 +34,7 @@ object SocnetBookmakablePages {
     application.mountPage("forgot/password", classOf[ForgotPasswordPage])
     application.mountPage("confirm/forgot/password", classOf[ConfirmForgotPasswordPage])
     application.mountPage("cfp/${" + TriggerChangeForgottenPasswordPage.TRIGGER_PARAM + "}", classOf[TriggerChangeForgottenPasswordPage])
-    application.mountPage("forgotted-password-changed", classOf[PasswordHaveBeenChangedPage])
+    application.mountPage("forgotted/password/changed", classOf[PasswordHaveBeenChangedPage])
 
     application.mountPage("find/people/${" + FindPeoplePage.QUERY_PARAM + "}", classOf[FindPeoplePage])
 
@@ -51,5 +51,6 @@ object SocnetBookmakablePages {
     application.mountPage("books", classOf[BooksPage])
     application.mountPage("add/book", classOf[AddBookPage])
     application.mountPage("book/${" + BookPreviewPage.BOOK_ID_PARAM + "}", classOf[BookPreviewPage])
+    application.mountPage("your/books", classOf[YourBooksPage])
   }
 }
