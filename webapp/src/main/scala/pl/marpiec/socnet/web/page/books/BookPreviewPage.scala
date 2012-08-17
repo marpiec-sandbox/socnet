@@ -1,5 +1,6 @@
 package pl.marpiec.socnet.web.page.books
 
+import bookPreviewPage.BookOwnershipPanel
 import pl.marpiec.socnet.web.authorization.SecureWebPage
 import pl.marpiec.socnet.web.application.SocnetRoles
 import org.apache.wicket.request.mapper.parameter.PageParameters
@@ -33,10 +34,12 @@ class BookPreviewPage(parameters: PageParameters) extends SecureWebPage(SocnetRo
 
   val bookId = UID.parseOrZero(parameters.get(BookPreviewPage.BOOK_ID_PARAM).toString)
 
+  add(new BookOwnershipPanel("bookOwnership"))
+
   bookDatabase.getBookById(bookId) match {
     case Some(book) => {
 
-      add(new Label("title", book.description.title))
+      add(new Label("bookTitle", book.description.title))
       add(new Label("polishTitle", book.description.polishTitle))
       add(new Label("authors", book.description.authors.toString))
       add(new Label("isbn", book.description.isbn))
