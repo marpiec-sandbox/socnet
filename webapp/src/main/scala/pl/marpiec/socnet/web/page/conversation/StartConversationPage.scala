@@ -65,7 +65,7 @@ class StartConversationPage(parameters: PageParameters) extends SecureWebPage(So
         val conversationId = uidGenerator.nextUid
         val messageId = uidGenerator.nextUid
 
-        conversationCommand.createConversation(session.userId(), formModel.conversationTitle, createParticipantsList, conversationId,
+        conversationCommand.createConversation(session.userId, formModel.conversationTitle, createParticipantsList, conversationId,
           formModel.messageText, messageId)
 
         setResponsePage(classOf[ConversationPage], new PageParameters().add(ConversationPage.CONVERSATION_ID_PARAM, conversationId))
@@ -99,7 +99,7 @@ class StartConversationPage(parameters: PageParameters) extends SecureWebPage(So
 
 
   private def createParticipantsList: List[UID] = {
-    session.userId() :: user.id :: Nil
+    session.userId :: user.id :: Nil
   }
 
 

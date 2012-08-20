@@ -85,7 +85,7 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
         if (StringUtils.isNotBlank(formModel.messageText)) {
 
           val messageId = uidGenerator.nextUid
-          conversationCommand.createMessage(session.userId(), conversation.id, conversation.version, formModel.messageText, messageId)
+          conversationCommand.createMessage(session.userId, conversation.id, conversation.version, formModel.messageText, messageId)
 
           formModel.warningMessage = ""
           formModel.messageText = ""
@@ -173,7 +173,7 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
 
     val conversationOption = conversationDatabase.getConversationById(conversationId)
 
-    if (conversationOption.isEmpty || !conversationOption.get.participantsUserIds.contains(session.userId())) {
+    if (conversationOption.isEmpty || !conversationOption.get.participantsUserIds.contains(session.userId)) {
       throw new AbortWithHttpErrorCodeException(404);
     }
     conversationOption.get

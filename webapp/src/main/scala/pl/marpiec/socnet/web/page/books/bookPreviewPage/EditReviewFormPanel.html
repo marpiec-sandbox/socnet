@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:wicket="http://wicket.apache.org">
+<wicket:panel>
+
+    <div class="reviewForm">
+
+        <form wicket:id="reviewForm">
+
+            <input type="hidden" wicket:id="sessionToken"/>
+            <div><span wicket:id="warningMessage"></span></div>
+
+            <div>
+                <textarea wicket:id="reviewText" class="reviewText"></textarea>
+            </div>
+
+            <div class="ratingContainer">
+                Ocena recenzowanej książki: <select wicket:id="rating" />
+            </div>
+
+
+            <div class="buttons">
+                <div class="buttonContainer">
+                    <a wicket:id="cancelButton">Anuluj</a>
+                </div>
+                <div wicket:id="submitButton" class="buttonContainer">
+                    <button>Wyślij recenzję</button>
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+
+</wicket:panel>
+</html>

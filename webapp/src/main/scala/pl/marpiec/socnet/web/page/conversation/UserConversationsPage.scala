@@ -22,7 +22,7 @@ class UserConversationsPage extends SecureWebPage(SocnetRoles.USER) {
   @SpringBean private var conversationInfoDatabase: ConversationInfoDatabase = _
 
 
-  val userConversations: List[Conversation] = conversationDatabase.getConversationsByParticipantUserId(session.userId())
+  val userConversations: List[Conversation] = conversationDatabase.getConversationsByParticipantUserId(session.userId)
   val conversationInfoMap: Map[UID, ConversationInfo] = loadConversationInfo(userConversations)
 
 

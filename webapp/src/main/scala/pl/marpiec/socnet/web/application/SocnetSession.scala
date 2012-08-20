@@ -69,7 +69,7 @@ class SocnetSession(request: Request, val userQuery: UserQuery) extends Authenti
     user != null
   }
 
-  def userId(): UID = {
+  def userId: UID = {
     if (isAuthenticated()) {
       user.id
     } else {

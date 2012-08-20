@@ -3,6 +3,7 @@
 <body>
 <wicket:extend>
 
+
     <div class="bookPreview">
 
         <div wicket:id="bookOwnership">bookOwnership</div>
@@ -18,21 +19,23 @@
         <div class="ratings">
             <div>Twoja ocena książki: </div>
             <div>Ocena książki</div>
-            <button>Napisz recenzję książki</button>
+            <button wicket:id="showEditReviewFormButton" class="showWriteReviewButton">Napisz recenzję książki</button>
         </div>
 
         <div wicket:id="description" class="description">description</div>
+
+
+        <div wicket:id="editReviewForm">editReviewForm</div>
 
         <div>
             <div>
                 Recenzje:
             </div>
-            <div>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis malesuada varius dapibus.
-                Aenean ante neque, tristique sed commodo vel, mollis ac diam. Donec pretium, odio et
-                faucibus facilisis, massa eros semper libero, sed sodales metus ante non sapien. Morbi
-                laoreet interdum est id dignissim. Aliquam erat volutpat. Sed interdum purus erat, ut
-                pulvinar tortor. Duis nec tortor tortor. Aliquam id nisl metus, eget adipiscing nisi.
+            <div>Twoja recenzja</div>
+            <div wicket:id="currentUserBookReview"></div>
+            <div>Pozostałe recenzje</div>
+            <div wicket:id="bookReviews">
+                <div wicket:id="bookReview">bookReview</div>
             </div>
         </div>
 
