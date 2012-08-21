@@ -61,7 +61,7 @@ class BookPreviewPage(parameters: PageParameters) extends SecureWebPage(SocnetRo
 
 
       //build schema
-      add(new BookOwnershipPanel("bookOwnership"))
+      add(new BookOwnershipPanel("bookOwnership", book))
 
       add(new Label("bookTitle", book.description.title))
       add(new Label("polishTitle", book.description.polishTitle))
