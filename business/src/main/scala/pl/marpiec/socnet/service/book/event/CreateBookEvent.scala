@@ -9,7 +9,7 @@ import org.joda.time.LocalDateTime
  * @author Marcin Pieciukiewicz
  */
 
-class CreateBookEvent(bookDescription: BookDescription, val creationTime:LocalDateTime) extends Event {
+class CreateBookEvent(val bookDescription: BookDescription, val creationTime:LocalDateTime) extends Event {
 
   val title = bookDescription.title
   val polishTitle = bookDescription.polishTitle

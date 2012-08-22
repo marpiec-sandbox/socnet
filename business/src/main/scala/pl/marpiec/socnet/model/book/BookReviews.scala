@@ -1,6 +1,7 @@
 package pl.marpiec.socnet.model.book
 
 import pl.marpiec.socnet.constant.Rating
+import pl.marpiec.util.UID
 
 /**
  * @author Marcin Pieciukiewicz
@@ -15,4 +16,7 @@ class BookReviews {
                                        (Rating.FOUR -> 0) +
                                        (Rating.FIVE -> 0)
   
+  var userVotes:Map[UID, Rating] = Map()
+
+
 }

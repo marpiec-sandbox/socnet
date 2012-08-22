@@ -8,7 +8,7 @@ import pl.marpiec.cqrs.{Aggregate, Event}
  * @author Marcin Pieciukiewicz
  */
 
-class ChangeBookDescriptionEvent(bookDescription: BookDescription) extends Event {
+class ChangeBookDescriptionEvent(val bookDescription: BookDescription) extends Event {
 
   val title = bookDescription.title
   val polishTitle = bookDescription.polishTitle

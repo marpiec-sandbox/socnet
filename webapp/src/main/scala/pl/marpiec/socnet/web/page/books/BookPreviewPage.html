@@ -17,8 +17,14 @@
         </div>
 
         <div class="ratings">
-            <div>Twoja ocena książki: </div>
-            <div>Ocena książki</div>
+            <div>
+                Twoja ocena książki:
+                <select wicket:id="userBookRating" />
+            </div>
+            <div>
+                Średnia ocena książki:
+                <span wicket:id="rating">rating</span>
+            </div>
             <button wicket:id="showEditReviewFormButton" class="showWriteReviewButton">Napisz recenzję książki</button>
         </div>
 

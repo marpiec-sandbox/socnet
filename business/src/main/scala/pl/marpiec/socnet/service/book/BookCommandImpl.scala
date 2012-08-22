@@ -27,7 +27,7 @@ class BookCommandImpl @Autowired()(val eventStore: EventStore) extends BookComma
   }
 
   def voteForBook(userId: UID, id: UID, version: Int, rating: Rating) {
-    eventStore.addEvent(new EventRow(userId, id, version, new VoteForBookEvent(rating)))
+    eventStore.addEvent(new EventRow(userId, id, version, new VoteForBookEvent(userId, rating)))
   }
 
   def addOrUpdateReview(userId: UID, id: UID, version: Int, description: String, rating: Rating, reviewTime:LocalDateTime) {
