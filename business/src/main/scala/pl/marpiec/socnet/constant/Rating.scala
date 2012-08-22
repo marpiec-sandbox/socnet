@@ -9,11 +9,11 @@ import pl.marpiec.util.senum.{SEnumObject, SEnum}
 
 object Rating extends SEnumObject[Rating] {
 
-  val ONE = new Rating("ONE", "1")
-  val TWO = new Rating("TWO", "2")
-  val THREE = new Rating("THREE", "3")
-  val FOUR = new Rating("FOUR", "4")
-  val FIVE = new Rating("FIVE", "5")
+  val ONE = new Rating("ONE", "1", 1)
+  val TWO = new Rating("TWO", "2", 2)
+  val THREE = new Rating("THREE", "3", 3)
+  val FOUR = new Rating("FOUR", "4", 4)
+  val FIVE = new Rating("FIVE", "5", 5)
 
   val values = List(ONE, TWO, THREE, FOUR, FIVE)
 
@@ -21,6 +21,6 @@ object Rating extends SEnumObject[Rating] {
 }
 
 
-case class Rating(name: String, translation: String) extends SEnum[Rating] {
+case class Rating(name: String, translation: String, numericValue:Int) extends SEnum[Rating] {
   def getName() = name
 }
