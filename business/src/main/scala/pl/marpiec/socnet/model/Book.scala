@@ -50,7 +50,7 @@ class Book extends Aggregate(null, 0) {
 
   def getAverageRatingWithOneVoteChanged(userId: UID, rating: Rating) = {
     var (sum, votesCount) = calculateVotesSum
-    var previousUserRatingOption = reviews.userVotes.get(userId)
+    val previousUserRatingOption = reviews.userVotes.get(userId)
     if(previousUserRatingOption.isDefined) {
       sum -= previousUserRatingOption.get.numericValue
       sum += rating.numericValue
@@ -63,11 +63,25 @@ class Book extends Aggregate(null, 0) {
 
 
   def getFormattedAverageRating: String = {
-    "%1.0f".format(getAverageRating)
+    "%1.1f".format(getAverageRating)
   }
 
   def getFormattedAverageRatingWithOneVoteChanged(userId: UID, rating: Rating): String = {
-    "%1.0f".format(getAverageRatingWithOneVoteChanged(userId, rating))
+    "%1.1f".format(getAverageRatingWithOneVoteChanged(userId, rating))
+  }
+  
+  def getVotesCount:Int = {
+    reviews.userVotes.size
+  }
+  
+  def getVotesCountWithOneVoteChanged(userId: UID):Int = {
+    val previousUserRatingOption = reviews.userVotes.get(userId)
+    val votesCount = reviews.userVotes.size
+    if(previousUserRatingOption.isDefined) {
+      votesCount
+    } else {
+      votesCount + 1
+    }
   }
 
 }

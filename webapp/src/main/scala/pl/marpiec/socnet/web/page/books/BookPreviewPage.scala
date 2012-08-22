@@ -71,6 +71,7 @@ class BookPreviewPage(parameters: PageParameters) extends SecureWebPage(SocnetRo
   add(new Label("isbn", book.description.isbn))
   add(new Label("description", book.description.description))
   val ratingLabel = addAndReturn(new Label("rating", book.getFormattedAverageRating).setOutputMarkupId(true))
+  val votesCountLabel = addAndReturn(new Label("votesCount", book.getVotesCount.toString).setOutputMarkupId(true))
 
   add(new DropDownChoice[Rating]("userBookRating",  
     new Model[Rating](previousUserBookRatingOption.getOrElse(null)), Rating.values,
@@ -81,7 +82,10 @@ class BookPreviewPage(parameters: PageParameters) extends SecureWebPage(SocnetRo
       bookCommand.voteForBook(session.userId, book.id, book.version, rating)
 
       ratingLabel.setDefaultModelObject(book.getFormattedAverageRatingWithOneVoteChanged(session.userId, rating))
+      votesCountLabel.setDefaultModelObject(book.getVotesCountWithOneVoteChanged(session.userId))
+
       target.add(ratingLabel)
+      target.add(votesCountLabel)
     }
   }))
   

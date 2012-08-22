@@ -14,5 +14,6 @@ class BookSummaryPreviewPanel(id: String, book: Book) extends Panel(id) {
   add(BookPreviewPage.getLink(book).add(new Label("title", book.description.title)))
   add(new Label("author", book.description.authors.toString))
   add(new Label("rating", book.getFormattedAverageRating))
+  add(new Label("votesCount", book.getVotesCount.toString))
 
 }
