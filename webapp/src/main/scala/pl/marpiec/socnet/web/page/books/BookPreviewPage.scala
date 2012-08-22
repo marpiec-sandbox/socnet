@@ -117,7 +117,7 @@ class BookPreviewPage(parameters: PageParameters) extends SecureWebPage(SocnetRo
 
     notCurrentUserReviews.foreach(bookReview => {
       add(new AbstractItem(newChildId()) {
-        add(new BookReviewPreviewPanel("bookReview", bookReview))
+        add(new BookReviewPreviewPanel("bookReview", bookReview, false))
       })
     })
 
@@ -133,7 +133,7 @@ class BookPreviewPage(parameters: PageParameters) extends SecureWebPage(SocnetRo
 
     var panel: Component = null
     if (currentUserReviewOption.isDefined) {
-      panel = new BookReviewPreviewPanel(CURRENT_USER_REVIEW_PANEL_ID, currentUserReviewOption.get).setOutputMarkupId(true)
+      panel = new BookReviewPreviewPanel(CURRENT_USER_REVIEW_PANEL_ID, currentUserReviewOption.get, true).setOutputMarkupId(true)
     } else {
       panel = new EmptyPanel(CURRENT_USER_REVIEW_PANEL_ID).setOutputMarkupId(true)
     }

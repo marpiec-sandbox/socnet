@@ -105,25 +105,80 @@
         }
 
     }
-}
 
-.bookOwnership {
 
-    .option {
-        margin: 6px;
-        label {
-            margin-left: 4px;
-            position: relative;
-            top: -1px;
+    .bookOwnership {
+
+        .option {
+            margin: 6px;
+            label {
+                margin-left: 4px;
+                position: relative;
+                top: -1px;
+            }
+        }
+
+        .changed {
+            color: #804232;
+        }
+
+        .saveButton {
+            margin-top: 20px;
+            text-align: center;
         }
     }
 
-    .changed {
-        color: #804232;
-    }
 
-    .saveButton {
+    .reviews {
+
         margin-top: 20px;
-        text-align: center;
+
+       .reviewsTitle {
+           border-bottom: 2px solid #444444;
+           color: @mainThemeFontColor;
+           font-size: 16px;
+           font-weight: bold;
+       }
+
+       .yourReviewHolder {
+
+           margin-top: 20px;
+
+           .yourReviewTitle {
+               font-size: 14px;
+               font-weight: bold;
+               border-bottom: 1px solid #444444;
+               margin-bottom: 10px;
+               padding-bottom: 5px;
+               width: 50%;
+           }
+       }
+
+       .usersReviews {
+
+       }
+
+       .bookReview {
+           margin-bottom: 40px;
+
+            .yourReview {
+                font-weight: bold;
+            }
+
+            .reviewAuthor {
+               border-bottom: 1px solid #444444;
+               margin-bottom: 10px;
+               padding-bottom: 5px;
+               width: 50%;
+            }
+
+            .bookRating {
+                float: right;
+            }
+       }
+
     }
 }
+
+
+

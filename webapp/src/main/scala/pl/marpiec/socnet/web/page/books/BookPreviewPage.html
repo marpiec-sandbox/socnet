@@ -33,14 +33,15 @@
 
         <div wicket:id="editReviewForm">editReviewForm</div>
 
-        <div>
-            <div>
+        <div class="reviews">
+            <div class="reviewsTitle">
                 Recenzje:
             </div>
-            <div>Twoja recenzja</div>
-            <div wicket:id="currentUserBookReview"></div>
-            <div>Pozostałe recenzje</div>
-            <div wicket:id="bookReviews">
+            <div class="yourReviewHolder">
+                <div wicket:id="currentUserBookReview"></div>
+            </div>
+
+            <div class="usersReviews" wicket:id="bookReviews">
                 <div wicket:id="bookReview">bookReview</div>
             </div>
         </div>

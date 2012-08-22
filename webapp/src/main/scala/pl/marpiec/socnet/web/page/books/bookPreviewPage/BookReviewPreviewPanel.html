@@ -2,8 +2,19 @@
 <html xmlns:wicket="http://wicket.apache.org">
 <wicket:panel>
 
-    <div>Recenzja</div>
+    <div class="bookReview">
 
-    <div wicket:id="reviewText"></div>
+        <div class="reviewAuthor">
+            <a wicket:id="profileLink" class="profileLink"><span wicket:id="userName">fullName</span></a>
+            <span wicket:id="yourReview" class="yourReview">Twoja recenzja</span>
+            <span class="bookRating">
+                Ocena książki:
+                <span wicket:id="reviewRating">reviewRating</span>
+            </span>
+        </div>
+
+        <div wicket:id="reviewText">reviewText</div>
+
+    </div>
 </wicket:panel>
 </html>
