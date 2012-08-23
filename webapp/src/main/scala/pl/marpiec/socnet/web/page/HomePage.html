@@ -4,27 +4,18 @@
 <wicket:extend>
 
 
-    <div wicket:id="peopleDashboard"></div>
-
     <div>
-        <a wicket:id="technologiesLink">
-            Technologie
-        </a>
+        <div>
+            TODO
+        </div>
+        <ul>
+            <li>Lista znajomych na podglądzie profilu</li>
+            <li>Lista wpisów na blogu</li>
+            <li>Artykuły</li>
+            <li>Wykop linków Javowych</li>
+        </ul>
     </div>
 
-    <div>
-        <a wicket:id="booksLink">
-            Książki
-        </a>
-    </div>
-
-    <div>
-        <a wicket:id="newArticleLink">
-            Nowy artykuł
-        </a>
-    </div>
-
-    <div wicket:id="articleList"></div>
 
     <div wicket:id="loginPanel" class="loginPanel">
         <div>
@@ -37,17 +28,66 @@
         </div>
     </div>
 
-    <div>
-        <div>
-            TODO
+
+
+    <div class="homePageContent">
+
+        <div class="column columnA">
+            <div class="mainPageModule articles">
+                <div class="title">Artykuły</div>
+                <div class="content">
+                   <div wicket:id="articlesModule">articlesModule</div>
+                </div>
+            </div>
+
+            <div class="mainPageModule links">
+                <div class="title">W internecie</div>
+                <div class="content">
+                    <div wicket:id="linksModule">linksModule</div>
+                </div>
+            </div>
         </div>
-        <ul>
-            <li>Lista znajomych na podglądzie profilu</li>
-            <li>Lista wpisów na blogu</li>
-            <li>Artykuły</li>
-            <li>Wykop linków Javowych</li>
-            <li>Profil Javowy, lista znanych i uczonych technologii</li>
-        </ul>
+        
+        <div class="column columnB">
+            <div class="mainPageModule technologies">
+                <div class="title">Technologie</div>
+                <div class="content">
+                    <div wicket:id="technologiesModule">technologiesModule</div>
+                </div>
+            </div>
+
+            <div class="mainPageModule books">
+                <div class="title">Książki</div>
+                <div class="content">
+                    <div wicket:id="booksModule">booksModule</div>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="column columnC">
+            <div class="mainPageModule profile">
+                <div class="title">Twój profil</div>
+                <div class="content">
+                    <div wicket:id="profileModule">profileModule</div>
+                </div>
+            </div>
+
+            <div class="mainPageModule contacts">
+                <div class="title">Ludzie</div>
+                <div class="content">
+                    <div wicket:id="peopleModule">peopleModule</div>
+                </div>
+            </div>
+
+            <div class="mainPageModule messages">
+                <div class="title">Wiadomości</div>
+                <div class="content">
+                    <div wicket:id="messagesModule">messagesModule</div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
 </wicket:extend>
