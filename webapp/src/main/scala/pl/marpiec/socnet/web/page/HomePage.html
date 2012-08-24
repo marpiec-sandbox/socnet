@@ -4,19 +4,6 @@
 <wicket:extend>
 
 
-    <div>
-        <div>
-            TODO
-        </div>
-        <ul>
-            <li>Lista znajomych na podglądzie profilu</li>
-            <li>Lista wpisów na blogu</li>
-            <li>Artykuły</li>
-            <li>Wykop linków Javowych</li>
-        </ul>
-    </div>
-
-
     <div wicket:id="loginPanel" class="loginPanel">
         <div>
             <span wicket:id="signInPanel"></span>
@@ -35,6 +22,7 @@
         <div class="column columnA">
             <div class="mainPageModule articles">
                 <div class="title">Artykuły</div>
+                <div class="titleShadow">Artykuły</div>
                 <div class="content">
                    <div wicket:id="articlesModule">articlesModule</div>
                 </div>
@@ -42,6 +30,7 @@
 
             <div class="mainPageModule links">
                 <div class="title">W internecie</div>
+                <div class="titleShadow">W internecie</div>
                 <div class="content">
                     <div wicket:id="linksModule">linksModule</div>
                 </div>
@@ -51,6 +40,7 @@
         <div class="column columnB">
             <div class="mainPageModule technologies">
                 <div class="title">Technologie</div>
+                <div class="titleShadow">Technologie</div>
                 <div class="content">
                     <div wicket:id="technologiesModule">technologiesModule</div>
                 </div>
@@ -58,6 +48,7 @@
 
             <div class="mainPageModule books">
                 <div class="title">Książki</div>
+                <div class="titleShadow">Książki</div>
                 <div class="content">
                     <div wicket:id="booksModule">booksModule</div>
                 </div>
@@ -68,6 +59,7 @@
         <div class="column columnC">
             <div class="mainPageModule profile">
                 <div class="title">Twój profil</div>
+                <div class="titleShadow">Twój profil</div>
                 <div class="content">
                     <div wicket:id="profileModule">profileModule</div>
                 </div>
@@ -75,13 +67,15 @@
 
             <div class="mainPageModule contacts">
                 <div class="title">Ludzie</div>
+                <div class="titleShadow">Ludzie</div>
                 <div class="content">
                     <div wicket:id="peopleModule">peopleModule</div>
                 </div>
             </div>
 
             <div class="mainPageModule messages">
-                <div class="title">Wiadomości</div>
+                <div class="title">Rozmowy</div>
+                <div class="titleShadow">Rozmowy</div>
                 <div class="content">
                     <div wicket:id="messagesModule">messagesModule</div>
                 </div>

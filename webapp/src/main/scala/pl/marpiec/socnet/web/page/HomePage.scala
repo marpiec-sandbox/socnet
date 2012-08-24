@@ -32,9 +32,9 @@ class HomePage extends SimpleTemplatePage {
   add(new ArticlesModule("articlesModule"))
   add(new BooksModule("booksModule"))
   add(new LinksModule("linksModule"))
-  add(new MessagesModule("messagesModule"))
+  add(AuthorizeUser(new MessagesModule("messagesModule")))
   add(new PeopleModule("peopleModule"))
-  add(new ProfileModule("profileModule"))
+  add(AuthorizeUser(new ProfileModule("profileModule")))
   add(new TechnologiesModule("technologiesModule"))
 
 }
