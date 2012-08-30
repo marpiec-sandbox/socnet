@@ -28,24 +28,24 @@
     .column {
 
         float: left;
-        margin: 0 10px;
+        margin: 0 15px;
 
         .mainPageModule {
 
             .glassBox;
 
-            padding: 39px 0 0 0;
-            margin: 0 0 20px;
+            padding: 30px 0 0 0;
+            margin: 0 0 30px;
             background: none repeat scroll 0 0 white;
-            border: 1px solid #7E96AC;
+            border: 1px solid  #769CAD;
             position: relative;
 
             .title, .titleShadow {
-                font-size: 32px;
+                font-size: 25px;
                 font-weight: bold;
                 position: absolute;
                 text-transform: uppercase;
-                left: 5px;
+                left: 7px;
                 top: -1px;
                 cursor: default;
             }
@@ -53,56 +53,71 @@
             .title {
                 color: @mainThemeFontColor;
                 text-shadow: 1px 1px 0 #aaa;
+                opacity: 0.77;
             }
 
             .titleShadow {
                 color: transparent;
-                color: transparent;
                 text-shadow: 1px 1px 1px white;
+                opacity: 1;
             }
 
             .content {
                 margin: 3px 8px;
             }
 
-            a.defaultButton {
-                background-color: #EFF3F3;
-                border: 1px solid #BBBBBB;
-                display: table-cell;
-                font-size: 16px;
-                font-weight: bold;
-                height: 79px;
-                line-height: 21px;
-                padding: 5px 10px 6px;
+            .buttons {
+
                 text-align: right;
-                text-decoration: none;
-                vertical-align: bottom;
-                width: 88px;
+
+                .buttonHolder {
+                    display: inline-block;
+                    margin: 27px 11px 3px 0;
+
+                    a.defaultButton {
+                        background-color: #F4F8FA;
+                        border: 1px solid #ddd;
+                        display: table-cell;
+                        font-size: 16px;
+                        font-weight: bold;
+                        height: 79px;
+                        line-height: 21px;
+                        padding: 5px 10px 6px;
+                        text-align: right;
+                        text-decoration: none;
+                        vertical-align: bottom;
+                        width: 88px;
+                    }
+
+                    a.defaultButton:hover {
+                        background-color: #FCFCFC;
+                    }
+
+                    a.defaultButton:active {
+                        background-color: #F5F5F5;
+                    }
+                }
+
             }
 
-            a.defaultButton:hover {
-                background-color: #FCFCFC;
+            .buttonHolder:last-child {
+                margin-right: 3px;
             }
 
-            a.defaultButton:active {
-                background-color: #F5F5F5;
-            }
+
 
         }
 
         .articles, .links {
             width: 500px;
-            min-height: 250px;
         }
 
         .technologies, .books {
             width: 270px;
-            min-height: 150px;
         }
 
         .profile, .contacts, .messages {
             width: 270px;
-            min-height: 150px;
         }
 
     }
@@ -115,12 +130,18 @@
         width: 270px;
     }
 
-
-
-
-
-
 }
 
 
+
+.userProfileContent {
+    padding: 11px 16px;
+
+    .userName {
+        color: @mainThemeFontColor;
+        font-size: 18px;
+        font-weight: bold;
+        padding: 5px 0;
+    }
+}
 
