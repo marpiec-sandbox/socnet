@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <html xmlns:wicket="http://wicket.apache.org">
 <wicket:panel>
-    <span wicket:id="title">Article list</span>
 
-    <div wicket:id="repeating" style="padding-bottom: 20px">
-        <div>
-            <span wicket:id="content"></span>
-        </div>
-        <div>
-            <span wicket:id="time"></span>
-        </div>
-        <div>
-            <span wicket:id="author"></span>
-        </div>
-        <div>
-            <a wicket:id="articleLink">Czytaj</a>
-        </div>
+    <div class="articleList">
+        <div wicket:id="repeating" class="articleSummary">
+            <div class="articleIcon"></div>
+            <div class="articleTitle">
+                <span wicket:id="title">title</span>
+                <span class="articleAuthor" wicket:id="author">author</span>
+                <a wicket:id="articleLink">Czytaj</a>
+            </div>
+            <div class="articleSummaryText">
+                <span wicket:id="articleSummaryText">articleSummaryText</span>
+            </div>
 
+        </div>
     </div>
+
 </wicket:panel>
 </html>

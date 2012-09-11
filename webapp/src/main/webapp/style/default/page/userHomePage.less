@@ -89,7 +89,7 @@
                         width: 88px;
 
                         &:hover {
-                            background-color: #FCFCFC;
+                            background-color: #fbfaf3;
                         }
 
                         &:active {
@@ -119,6 +119,7 @@
         .profile, .contacts, .messages {
             width: 270px;
         }
+
     }
 
     .columnA {
@@ -144,3 +145,37 @@
     }
 }
 
+
+.articleList {
+    .articleSummary {
+
+        clear: both;
+        margin-bottom: 16px;
+        overflow: hidden;
+
+        .articleIcon {
+            float:left;
+            width: 50px;
+            height: 50px;
+            border: 1px solid black;
+            background-color: white;
+            margin: 0px 10px;
+        }
+
+        .articleTitle {
+           font-weight: bold;
+           .articleAuthor {
+              font-weight: bold;
+           }
+        }
+
+        .articleSummaryText {
+
+        }
+
+    }
+
+    .articleSummary:last-child {
+        margin-bottom: 0px;
+    }
+}
