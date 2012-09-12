@@ -3,21 +3,15 @@
 <wicket:panel>
 
     <div class="conversationSummary">
-        <div class="icon"></div>
 
         <div class="conversationTitle">
             <a wicket:id="conversationLink"><span wicket:id="conversationTitle">conversationTitle</span></a>
-            <span wicket:id="creationTime" class="creationTime">creationTime</span>
-        </div>
-
-        <div wicket:id="participant" class="conversationParticipant">
-            <span wicket:id="userName">userName</span>
         </div>
 
         <div class="additionalInfo">
             Ostatnia wiadomość: <span wicket:id="lastMessageUsername">lastMessageUsername</span>
             (<span wicket:id="lastMessageTime">lastMessageTime</span>)
-            Nieprzeczytanych wiadomości: <span wicket:id="unreadMessagesCount">unreadMessagesCount</span>
+            Nieprzeczytanych: <span wicket:id="unreadMessagesCount">unreadMessagesCount</span>
         </div>
 
     </div>

@@ -4,7 +4,6 @@ import org.apache.wicket.markup.html.panel.Panel
 import pl.marpiec.socnet.model.User
 import pl.marpiec.socnet.web.page.profile.UserProfilePreviewPage
 import org.apache.wicket.markup.html.basic.Label
-import pl.marpiec.util.DateUtil
 
 /**
  * @author Marcin Pieciukiewicz

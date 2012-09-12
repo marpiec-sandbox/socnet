@@ -2,9 +2,13 @@
 <html xmlns:wicket="http://wicket.apache.org">
 <wicket:panel>
 
-    <a class="defaultButton">
-        Wszystkie rozmowy
-    </a>
+    <div wicket:id="recentMessages">recentMessages</div>
+
+    <div class="buttons">
+        <div class="buttonHolder">
+            <a wicket:id="conversationsLink" class="defaultButton">Wszystkie rozmowy</a>
+        </div>
+    </div>
 
 </wicket:panel>
 </html>
