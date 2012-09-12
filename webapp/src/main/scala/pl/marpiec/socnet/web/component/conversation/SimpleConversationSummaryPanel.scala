@@ -19,10 +19,12 @@ class SimpleConversationSummaryPanel(id: String, val conversation: Conversation,
                                      conversationInfoOption: Option[ConversationInfo]) extends Panel(id) {
 
 
+  val unreadMessageCount = conversation.calculateUnreadMessagesCount(conversationInfoOption)
+
   add(createLinkToConversation.add(new Label("conversationTitle", conversation.title)))
   add(new Label("lastMessageUsername", getUserById(conversation.messages.head.authorUserId).fullName))
   add(new Label("lastMessageTime", DateUtil.printDateTime(conversation.messages.head.sentTime)))
-  add(new Label("unreadMessagesCount", conversation.calculateUnreadMessagesCount(conversationInfoOption).toString))
+  add(new Label("unreadMessagesCount", unreadMessageCount.toString).setVisible(unreadMessageCount > 0))
 
 
   def getUserById(userId: UID): User = {
