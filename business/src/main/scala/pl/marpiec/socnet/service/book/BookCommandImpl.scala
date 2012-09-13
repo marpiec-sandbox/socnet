@@ -35,6 +35,6 @@ class BookCommandImpl @Autowired()(val eventStore: EventStore) extends BookComma
   }
 
   def addOrUpdateBookOwnership(userId: UID, id: UID, version: Int, bookOwnershipInput: BookOwnershipInput) {
-    eventStore.addEventIgnoreVersion(new EventRow(userId, id, version, new AddOrUpdateBookOwnership(userId, bookOwnershipInput)))
+    eventStore.addEventIgnoreVersion(new EventRow(userId, id, version, new AddOrUpdateBookOwnershipEvent(userId, bookOwnershipInput)))
   }
 }

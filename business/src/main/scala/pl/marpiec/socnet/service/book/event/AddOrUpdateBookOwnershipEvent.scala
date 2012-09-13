@@ -10,7 +10,7 @@ import pl.marpiec.socnet.model.book.BookOwnership
  * @author Marcin Pieciukiewicz
  */
 
-class AddOrUpdateBookOwnership(val userId:UID, val bookOwnershipInput: BookOwnershipInput) extends Event {
+class AddOrUpdateBookOwnershipEvent(val userId:UID, val bookOwnershipInput: BookOwnershipInput) extends Event {
   def entityClass = classOf[Book]
 
   def applyEvent(aggregate: Aggregate) {

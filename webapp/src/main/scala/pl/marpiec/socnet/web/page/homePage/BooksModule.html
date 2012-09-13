@@ -2,34 +2,27 @@
 <html xmlns:wicket="http://wicket.apache.org">
 <wicket:panel>
 
-   books
-
-
     <div>
         <div>
             Ostatnio dodane:
         </div>
-        <div>
-            Thinking in  Java
-        </div>
-        <div>
-            Java concurrency in practice
+
+        <div class="bookList">
+            <div wicket:id="book" class="bookSummaryIterated">
+                <div wicket:id="simpleBookSummaryPreview">bookSummaryPreview</div>
+            </div>
         </div>
     </div>
 
     <div class="buttons">
         <div class="buttonHolder">
-            <a wicket:id="booksLink" class="defaultButton">Księgozbiór</a>
+            <a wicket:id="booksLink" class="defaultButton">Wszystkie książki</a>
         </div>
 
         <div class="buttonHolder">
-            <a class="defaultButton">Twoje Książki</a>
+            <a wicket:id="yourBooksLink" class="defaultButton">Twoje Książki</a>
         </div>
     </div>
-
-
-
-
 
 
 </wicket:panel>
