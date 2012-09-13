@@ -8,7 +8,7 @@ import pl.marpiec.socnet.model.programmerprofile.KnownTechnology
  * @author Marcin Pieciukiewicz
  */
 
-class ChangeKnownTechnologiesEvent(val technologiesChanged: Array[KnownTechnology], val technologiesRemoved: Array[String]) extends Event {
+class ChangeKnownTechnologiesEvent(val technologiesChanged: Array[KnownTechnology], val technologiesRemoved: List[String]) extends Event {
 
   def entityClass = classOf[ProgrammerProfile]
 
@@ -19,9 +19,9 @@ class ChangeKnownTechnologiesEvent(val technologiesChanged: Array[KnownTechnolog
       !technologiesRemoved.contains(technology) && !technologiesChanged.contains(technology)
     })
 
-    for (technology <- technologiesChanged) {
+    technologiesChanged.foreach(technology => {
       programmerProfile.technologyKnowledge += technology.name -> technology
-    }
+    })
 
   }
 }

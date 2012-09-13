@@ -16,7 +16,7 @@ class ProgrammerProfileCommandImpl @Autowired()(val eventStore: EventStore) exte
   }
 
   def changeTechnologies(userId: UID, programmerProfileId: UID, programmerProfileVersion: Int, technologiesChanged: List[KnownTechnology], technologiesRemoved: List[String]) {
-    
+
     val technologiesChangedArray:Array[KnownTechnology] = new Array[KnownTechnology](technologiesChanged.size)
 
     var counter = 0
@@ -26,7 +26,7 @@ class ProgrammerProfileCommandImpl @Autowired()(val eventStore: EventStore) exte
     }
 
     eventStore.addEvent(new EventRow(userId, programmerProfileId, programmerProfileVersion,
-      new ChangeKnownTechnologiesEvent(technologiesChangedArray, technologiesRemoved.toArray)))
+      new ChangeKnownTechnologiesEvent(technologiesChangedArray, technologiesRemoved)))
   }
 
 

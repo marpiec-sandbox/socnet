@@ -12,7 +12,7 @@ class ChangeBookDescriptionEvent(bookDescription: BookDescription) extends Event
 
   val title = bookDescription.title
   val polishTitle = bookDescription.polishTitle
-  val authors = bookDescription.authors.toArray
+  val authors = bookDescription.authors
   val description = bookDescription.description
   val isbn = bookDescription.isbn
 
@@ -23,7 +23,7 @@ class ChangeBookDescriptionEvent(bookDescription: BookDescription) extends Event
 
     book.description.title = title
     book.description.polishTitle = polishTitle
-    book.description.authors = authors.toList
+    book.description.authors = authors
     book.description.description = description
     book.description.isbn = isbn
   }

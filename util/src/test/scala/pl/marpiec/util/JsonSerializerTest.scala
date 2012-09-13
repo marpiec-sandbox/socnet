@@ -23,6 +23,11 @@ class OptionalDataObject {
   var sdo:Option[SimpleDataObject] = _
 }
 
+class CollectionsDataObject {
+  var stringsList: List[String] = _
+  var longsList: List[Long] = _
+}
+
 @Test
 class JsonSerializerTest {
   
@@ -114,4 +119,25 @@ class JsonSerializerTest {
     assertEquals(dataObject.asInstanceOf[OptionalDataObject].sdo.get.stringValue, odo.sdo.get.stringValue)
 
   }
+  
+  
+  def testCollectionsSerialization() {
+    val jsonSerializer = new JsonSerializer
+
+    val cdo = new CollectionsDataObject
+
+    cdo.stringsList = List[String]("a", "b", "c")
+
+    val simpleJson = jsonSerializer.toJson(cdo)
+    val dataObject = jsonSerializer.fromJson(simpleJson, classOf[CollectionsDataObject])
+
+    val deserializedObject = dataObject.asInstanceOf[CollectionsDataObject]
+    assertEquals(deserializedObject.stringsList.size, cdo.stringsList.size)
+    assertEquals(deserializedObject.stringsList(0), cdo.stringsList(0))
+    assertEquals(deserializedObject.stringsList(1), cdo.stringsList(1))
+    assertEquals(deserializedObject.stringsList(2), cdo.stringsList(2))
+
+  }
+  
+  
 }

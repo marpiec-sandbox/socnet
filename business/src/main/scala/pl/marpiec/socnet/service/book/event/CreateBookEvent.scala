@@ -13,7 +13,7 @@ class CreateBookEvent(bookDescription: BookDescription, val creationTime:LocalDa
 
   val title = bookDescription.title
   val polishTitle = bookDescription.polishTitle
-  val authors = bookDescription.authors.toArray
+  val authors = bookDescription.authors
   val description = bookDescription.description
   val isbn = bookDescription.isbn
 
@@ -25,7 +25,7 @@ class CreateBookEvent(bookDescription: BookDescription, val creationTime:LocalDa
 
     book.description.title = title
     book.description.polishTitle = polishTitle
-    book.description.authors = authors.toList
+    book.description.authors = authors
     book.description.description = description
     book.description.isbn = isbn
 

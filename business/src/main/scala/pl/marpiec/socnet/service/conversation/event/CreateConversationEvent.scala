@@ -10,14 +10,14 @@ import org.joda.time.LocalDateTime
  * @author Marcin Pieciukiewicz
  */
 
-class CreateConversationEvent(val creatorUserId: UID, val title: String, val participantsUserIds: Array[UID],
+class CreateConversationEvent(val creatorUserId: UID, val title: String, val participantsUserIds: List[UID],
                               val creationTime: LocalDateTime,
                               val firstMessageText: String, val firstMessageId: UID) extends Event {
   def applyEvent(aggregate: Aggregate) {
     val conversation = aggregate.asInstanceOf[Conversation]
     conversation.creatorUserId = creatorUserId;
     conversation.title = title
-    conversation.participantsUserIds = participantsUserIds.toList
+    conversation.participantsUserIds = participantsUserIds
 
     val message = new Message(firstMessageId, firstMessageText, creationTime, creatorUserId)
     conversation.messages ::= message
