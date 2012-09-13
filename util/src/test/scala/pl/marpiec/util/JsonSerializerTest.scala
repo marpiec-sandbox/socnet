@@ -26,6 +26,7 @@ class OptionalDataObject {
 class CollectionsDataObject {
   var stringsList: List[String] = _
   var longsList: List[Long] = _
+  var emptyList: List[String] = _
 }
 
 @Test
@@ -127,7 +128,9 @@ class JsonSerializerTest {
     val cdo = new CollectionsDataObject
 
     cdo.stringsList = List[String]("a", "b", "c")
-
+    cdo.longsList = List[Long](5, 10, 20)
+    cdo.emptyList = List[String]()
+    
     val simpleJson = jsonSerializer.toJson(cdo)
     val dataObject = jsonSerializer.fromJson(simpleJson, classOf[CollectionsDataObject])
 
@@ -137,7 +140,13 @@ class JsonSerializerTest {
     assertEquals(deserializedObject.stringsList(1), cdo.stringsList(1))
     assertEquals(deserializedObject.stringsList(2), cdo.stringsList(2))
 
+    assertEquals(deserializedObject.longsList.size, cdo.longsList.size)
+    assertEquals(deserializedObject.longsList(0), cdo.longsList(0))
+    assertEquals(deserializedObject.longsList(1), cdo.longsList(1))
+    assertEquals(deserializedObject.longsList(2), cdo.longsList(2))
+
+    assertEquals(deserializedObject.emptyList.size, cdo.emptyList.size)
+
   }
-  
-  
+
 }
