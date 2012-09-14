@@ -19,6 +19,7 @@ class MPSimpleDataObject {
   var booleanValue:Boolean = _
   var innerObject:InnerObject = _
   var arrayObject:Array[String] = _
+  var arrayPrimitive:Array[Long] = _
   var listObject:List[String] = _
   var listPrimitive:List[Int] = _
 }
@@ -38,6 +39,7 @@ class MPJsonTest {
     sdo.innerObject.stringValue = "inner string"
     
     sdo.arrayObject = Array[String]("Ala","ma","kota")
+    sdo.arrayPrimitive = Array[Long](6, 8, 10)
 
     var serialized = "{" +
                       "longValue:1234567891234," +
@@ -48,7 +50,8 @@ class MPJsonTest {
                         "intValue:2222," +
                         "stringValue:\"inner string\"" +
                         "}," +
-                      "arrayObject:[\"Ala\",\"ma\",\"kota\"]"+
+                      "arrayObject:[\"Ala\",\"ma\",\"kota\"],"+
+                      "arrayPrimitive:[6,8,10]"+
                       "}"
 
     var deserialized:MPSimpleDataObject = MPJson.deserialize(serialized, classOf[MPSimpleDataObject]).asInstanceOf[MPSimpleDataObject]
@@ -67,6 +70,10 @@ class MPJsonTest {
     assertEquals(deserialized.arrayObject(1), sdo.arrayObject(1))
     assertEquals(deserialized.arrayObject(2), sdo.arrayObject(2))
 
+    assertNotNull(deserialized.arrayPrimitive)
+    assertEquals(deserialized.arrayPrimitive(0), sdo.arrayPrimitive(0))
+    assertEquals(deserialized.arrayPrimitive(1), sdo.arrayPrimitive(1))
+    assertEquals(deserialized.arrayPrimitive(2), sdo.arrayPrimitive(2))
   }
 
 

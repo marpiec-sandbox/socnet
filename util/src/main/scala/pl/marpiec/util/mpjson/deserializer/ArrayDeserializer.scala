@@ -1,7 +1,6 @@
 package pl.marpiec.util.mpjson.deserializer
 
 import pl.marpiec.util.mpjson.{DeserializerFactory, StringIterator}
-import collection.mutable.ArrayBuilder
 
 
 /**
@@ -31,13 +30,12 @@ object ArrayDeserializer extends SimpleValueDeserializer[Array[_]] {
 
     jsonIterator.nextChar
 
-
-    val array:Array[Any] = java.lang.reflect.Array.newInstance(elementsType, listInstance.size).asInstanceOf[Array[Any]]
+    val array: Array[_] = java.lang.reflect.Array.newInstance(elementsType, listInstance.size).asInstanceOf[Array[_]]
 
     var p = 0
     listInstance = listInstance.reverse
-    while(listInstance.nonEmpty) {
-      array.update(p, listInstance.head)
+    while (listInstance.nonEmpty) {
+      java.lang.reflect.Array.set(array, p, listInstance.head)
       listInstance = listInstance.tail
       p = p + 1
     }
