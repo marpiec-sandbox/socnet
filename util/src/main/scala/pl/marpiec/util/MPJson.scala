@@ -1,6 +1,7 @@
 package pl.marpiec.util
 
-import mpjson.{StringIterator, ObjectDeserializer}
+import mpjson.deserializer.ObjectDeserializer
+import mpjson.{StringIterator}
 
 
 /**
