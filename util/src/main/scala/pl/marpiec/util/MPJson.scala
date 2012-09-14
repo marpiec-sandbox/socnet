@@ -10,14 +10,7 @@ import mpjson.{StringIterator, ObjectDeserializer}
 object MPJson {
 
   def deserialize(json: String, clazz: Class[_]): Any = {
-
     val jsonIterator = new StringIterator(json)
-
-    
-    val obj = ObjectDeserializer.deserialize(jsonIterator, clazz)
-
-    obj
-    
+    ObjectDeserializer.deserialize(jsonIterator, clazz)
   }
-
 }

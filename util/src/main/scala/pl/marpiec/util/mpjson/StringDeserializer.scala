@@ -7,34 +7,34 @@ package pl.marpiec.util.mpjson
 object StringDeserializer extends SimpleValueDeserializer[String] {
   def deserialize(jsonIterator: StringIterator, clazz: Class[_]): String = {
 
-    var currentChar = jsonIterator.getNextChar
+    jsonIterator.nextChar
 
-    if (currentChar != '"') {
-      throw new IllegalArgumentException("String value shuld start with \", but was [" + currentChar + "]")
+    if (jsonIterator.currentChar != '"') {
+      throw new IllegalArgumentException("String value shuld start with \", but was [" + jsonIterator.currentChar + "]")
     }
 
     val stringValue = new StringBuilder()
 
-    currentChar = jsonIterator.getNextChar
+    jsonIterator.nextChar
 
-    while (currentChar != '"') {
+    while (jsonIterator.currentChar != '"') {
 
-      if (currentChar == '\\') {
-        currentChar = jsonIterator.getNextChar
+      if (jsonIterator.currentChar == '\\') {
+        jsonIterator.nextChar
 
-        if (currentChar == '"' || currentChar == '\\') {
-          stringValue.append(currentChar)
+        if (jsonIterator.currentChar == '"' || jsonIterator.currentChar == '\\') {
+          stringValue.append(jsonIterator.currentChar)
         } else {
-          throw new IllegalArgumentException("Unsupported control character [\\" + currentChar + "]")
+          throw new IllegalArgumentException("Unsupported control character [\\" + jsonIterator.currentChar + "]")
         }
       } else {
-        stringValue.append(currentChar)
+        stringValue.append(jsonIterator.currentChar)
       }
 
-      currentChar = jsonIterator.getNextChar
+      jsonIterator.nextChar
     }
 
-    currentChar = jsonIterator.getNextChar //to pass closing "
+    jsonIterator.nextChar //to pass closing ", it is " for sure because of previous while
 
     stringValue.toString
   }

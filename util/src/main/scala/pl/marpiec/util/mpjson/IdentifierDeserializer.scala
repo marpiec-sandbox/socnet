@@ -5,15 +5,15 @@ package pl.marpiec.util.mpjson
  */
 
 object IdentifierDeserializer {
-  def deserialize(jsonIterator: StringIterator):String = {
+  def deserialize(jsonIterator: StringIterator): String = {
 
-    val identifier = new StringBuilder().append(jsonIterator.lastChar)
+    val identifier = new StringBuilder().append(jsonIterator.currentChar)
 
-    var currentChar = jsonIterator.getNextChar
+    jsonIterator.nextChar
 
-    while (currentChar != ':') {
-      identifier.append(currentChar)
-      currentChar = jsonIterator.getNextChar
+    while (jsonIterator.currentChar != ':') {
+      identifier.append(jsonIterator.currentChar)
+      jsonIterator.nextChar
     }
 
     identifier.toString

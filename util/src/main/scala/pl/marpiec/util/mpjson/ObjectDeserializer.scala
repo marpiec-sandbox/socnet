@@ -6,19 +6,19 @@ package pl.marpiec.util.mpjson
 
 object ObjectDeserializer extends SimpleValueDeserializer[Any] {
 
-  def deserialize(jsonIterator: StringIterator, clazz: Class[_]):Any = {
+  def deserialize(jsonIterator: StringIterator, clazz: Class[_]): Any = {
 
-    var currentChar = jsonIterator.getNextChar
-    
-    if (currentChar!='{') {
-       throw new IllegalArgumentException("Object should start with '{' symbol but was ["+currentChar+"], object type is "+clazz)
+    jsonIterator.nextChar
+
+    if (jsonIterator.currentChar != '{') {
+      throw new IllegalArgumentException("Object should start with '{' symbol but was [" + jsonIterator.currentChar + "], object type is " + clazz)
     }
 
-    var instance: Any = clazz.newInstance()
+    val instance: Any = clazz.newInstance()
 
-    currentChar = jsonIterator.getNextChar
+    jsonIterator.nextChar
 
-    while (currentChar != '}') {
+    while (jsonIterator.currentChar != '}') {
 
       val identifier = IdentifierDeserializer.deserialize(jsonIterator)
 
@@ -26,19 +26,19 @@ object ObjectDeserializer extends SimpleValueDeserializer[Any] {
       val fieldType = field.getType
       val setter = clazz.getDeclaredMethod(identifier + "_$eq", fieldType)
 
-      if (jsonIterator.lastChar != ':') {
-        throw new IllegalArgumentException("After type name there should be ':' separator but was [" + currentChar + "], field=" + identifier)
+      if (jsonIterator.currentChar != ':') {
+        throw new IllegalArgumentException("After type name there should be ':' separator but was [" + jsonIterator.currentChar + "], field=" + identifier)
       }
 
       val deserializer = DeserializerFactory.getDeserializer(fieldType)
-      
+
       val value = deserializer.deserialize(jsonIterator, fieldType)
 
       setter.invoke(instance, value.asInstanceOf[AnyRef])
 
-      currentChar = jsonIterator.lastChar
-      if (currentChar == ',') {
-        currentChar = jsonIterator.getNextChar
+      jsonIterator.currentChar
+      if (jsonIterator.currentChar == ',') {
+        jsonIterator.nextChar
       }
     }
 

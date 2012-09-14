@@ -9,11 +9,11 @@ object BooleanDeserializer extends SimpleValueDeserializer[Boolean] {
 
     val booleanString = new StringBuilder()
 
-    var currentChar = jsonIterator.getNextChar
+    jsonIterator.nextChar
 
-    while (currentChar >= 'a' && currentChar <= 'z') {
-      booleanString.append(currentChar)
-      currentChar = jsonIterator.getNextChar
+    while (jsonIterator.isCurrentCharASmallLetter) {
+      booleanString.append(jsonIterator.currentChar)
+      jsonIterator.nextChar
     }
 
     booleanString.toBoolean

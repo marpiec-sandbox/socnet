@@ -4,18 +4,8 @@ package pl.marpiec.util.mpjson
  * @author Marcin Pieciukiewicz
  */
 
-object IntDeserializer extends SimpleValueDeserializer[Int]  {
-  def deserialize(jsonIterator: StringIterator, clazz: Class[_]): Int = {
+object IntDeserializer extends AbstractIntegerDeserializer[Int] {
 
-    val identifier = new StringBuilder()
+  protected def toProperInteger(identifier: StringBuilder) = identifier.toInt
 
-    var currentChar = jsonIterator.getNextChar
-
-    while (currentChar >= '0' && currentChar <= '9' || currentChar == '-') {
-      identifier.append(currentChar)
-      currentChar = jsonIterator.getNextChar
-    }
-
-    identifier.toInt
-  }
 }
