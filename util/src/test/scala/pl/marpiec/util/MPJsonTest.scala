@@ -18,6 +18,9 @@ class MPSimpleDataObject {
   var stringValue:String = _
   var booleanValue:Boolean = _
   var innerObject:InnerObject = _
+  var arrayObject:Array[String] = _
+  var listObject:List[String] = _
+  var listPrimitive:List[Int] = _
 }
 
 @Test
@@ -29,9 +32,12 @@ class MPJsonTest {
     sdo.intValue = 1111
     sdo.stringValue = "Hello Json \" parser\\serializer \""   //Hello Json " parser\serializer "
     sdo.booleanValue = true
+    
     sdo.innerObject = new InnerObject
     sdo.innerObject.intValue = 2222
     sdo.innerObject.stringValue = "inner string"
+    
+    sdo.arrayObject = Array[String]("Ala","ma","kota")
 
     var serialized = "{" +
                       "longValue:1234567891234," +
@@ -41,7 +47,8 @@ class MPJsonTest {
                       "innerObject:{" +
                         "intValue:2222," +
                         "stringValue:\"inner string\"" +
-                        "}"
+                        "}," +
+                      "arrayObject:[\"Ala\",\"ma\",\"kota\"]"+
                       "}"
 
     var deserialized:MPSimpleDataObject = MPJson.deserialize(serialized, classOf[MPSimpleDataObject]).asInstanceOf[MPSimpleDataObject]
@@ -51,8 +58,15 @@ class MPJsonTest {
     assertEquals(deserialized.stringValue, sdo.stringValue)
     assertEquals(deserialized.booleanValue, sdo.booleanValue)
 
+    assertNotNull(deserialized.innerObject)
     assertEquals(deserialized.innerObject.intValue, sdo.innerObject.intValue)
     assertEquals(deserialized.innerObject.stringValue, sdo.innerObject.stringValue)
+
+    assertNotNull(deserialized.arrayObject)
+    assertEquals(deserialized.arrayObject(0), sdo.arrayObject(0))
+    assertEquals(deserialized.arrayObject(1), sdo.arrayObject(1))
+    assertEquals(deserialized.arrayObject(2), sdo.arrayObject(2))
+
   }
 
 

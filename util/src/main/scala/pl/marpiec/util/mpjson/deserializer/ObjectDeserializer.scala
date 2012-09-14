@@ -38,11 +38,12 @@ object ObjectDeserializer extends SimpleValueDeserializer[Any] {
 
       setter.invoke(instance, value.asInstanceOf[AnyRef])
 
-      jsonIterator.currentChar
       if (jsonIterator.currentChar == ',') {
         jsonIterator.nextChar
       }
     }
+
+    jsonIterator.nextCharOrNullIfLast
 
     instance
   }

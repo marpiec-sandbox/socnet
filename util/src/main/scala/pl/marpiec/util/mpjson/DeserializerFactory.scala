@@ -22,6 +22,8 @@ object DeserializerFactory {
       return ShortDeserializer
     } else if (clazz.equals(classOf[Byte])) {
       return ByteDeserializer
+    } else if (clazz.isArray) {
+      return ArrayDeserializer
     }
 
     ObjectDeserializer

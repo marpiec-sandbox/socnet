@@ -13,6 +13,14 @@ class StringIterator(val stringValue: String) {
     currentChar = stringValue.charAt(nextIndex)
     nextIndex = nextIndex + 1
   }
+  
+  def nextCharOrNullIfLast = {
+    if (nextIndex < stringValue.length()) {
+      nextChar
+    } else {
+      null
+    }
+  }
 
   def isCurrentCharASmallLetter: Boolean = {
     currentChar >= 'a' && currentChar <= 'z'
@@ -20,6 +28,10 @@ class StringIterator(val stringValue: String) {
 
   def isCurrentCharADigitPart: Boolean = {
     currentChar >= '0' && currentChar <= '9' || currentChar == '-'
+  }
+  
+  def checkFutureChar:Char = {
+    stringValue.charAt(nextIndex)
   }
 
 }
