@@ -1,4 +1,6 @@
-package pl.marpiec.util.mpjson
+package pl.marpiec.util.mpjson.deserializer
+
+import pl.marpiec.util.mpjson.{DeserializerFactory, StringIterator}
 
 /**
  * @author Marcin Pieciukiewicz

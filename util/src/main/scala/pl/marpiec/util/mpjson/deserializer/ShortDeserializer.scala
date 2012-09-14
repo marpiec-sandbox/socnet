@@ -1,4 +1,4 @@
-package pl.marpiec.util.mpjson
+package pl.marpiec.util.mpjson.deserializer
 
 /**
  * @author Marcin Pieciukiewicz

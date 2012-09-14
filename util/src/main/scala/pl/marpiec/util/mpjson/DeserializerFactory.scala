@@ -1,5 +1,7 @@
 package pl.marpiec.util.mpjson
 
+import deserializer._
+
 
 /**
  * @author Marcin Pieciukiewicz
