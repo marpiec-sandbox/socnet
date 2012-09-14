@@ -1,6 +1,7 @@
 package pl.marpiec.util.mpjson.deserializer
 
 import pl.marpiec.util.mpjson.StringIterator
+import java.lang.reflect.Field
 
 /**
  * @author Marcin Pieciukiewicz
@@ -9,7 +10,7 @@ import pl.marpiec.util.mpjson.StringIterator
 trait AbstractIntegerDeserializer[T] extends SimpleValueDeserializer[T] {
 
 
-  def deserialize(jsonIterator: StringIterator, clazz: Class[_]): T = {
+  def deserialize(jsonIterator: StringIterator, clazz: Class[_], field:Field): T = {
 
     val identifier = new StringBuilder()
 

@@ -1,5 +1,6 @@
 package pl.marpiec.util
 
+import json.annotation.SubType
 import org.testng.Assert._
 import org.testng.annotations.Test
 
@@ -21,6 +22,7 @@ class MPSimpleDataObject {
   var arrayObject:Array[String] = _
   var arrayPrimitive:Array[Long] = _
   var listObject:List[String] = _
+  @SubType(classOf[Int])
   var listPrimitive:List[Int] = _
 }
 
@@ -41,6 +43,9 @@ class MPJsonTest {
     sdo.arrayObject = Array[String]("Ala","ma","kota")
     sdo.arrayPrimitive = Array[Long](6, 8, 10)
 
+    sdo.listObject = List[String]("Hello","json","serializer")
+    sdo.listPrimitive = List[Int](15, 30, 1)
+
     var serialized = "{" +
                       "longValue:1234567891234," +
                       "intValue:1111," +
@@ -51,7 +56,9 @@ class MPJsonTest {
                         "stringValue:\"inner string\"" +
                         "}," +
                       "arrayObject:[\"Ala\",\"ma\",\"kota\"],"+
-                      "arrayPrimitive:[6,8,10]"+
+                      "arrayPrimitive:[6,8,10],"+
+                      "listObject:[\"Hello\",\"json\",\"serializer\"],"+
+                      "listPrimitive:[15,30,1]"+
                       "}"
 
     var deserialized:MPSimpleDataObject = MPJson.deserialize(serialized, classOf[MPSimpleDataObject]).asInstanceOf[MPSimpleDataObject]
@@ -74,6 +81,16 @@ class MPJsonTest {
     assertEquals(deserialized.arrayPrimitive(0), sdo.arrayPrimitive(0))
     assertEquals(deserialized.arrayPrimitive(1), sdo.arrayPrimitive(1))
     assertEquals(deserialized.arrayPrimitive(2), sdo.arrayPrimitive(2))
+
+    assertNotNull(deserialized.listObject)
+    assertEquals(deserialized.listObject(0), sdo.listObject(0))
+    assertEquals(deserialized.listObject(1), sdo.listObject(1))
+    assertEquals(deserialized.listObject(2), sdo.listObject(2))
+
+    assertNotNull(deserialized.listPrimitive)
+    assertEquals(deserialized.listPrimitive(0), sdo.listPrimitive(0))
+    assertEquals(deserialized.listPrimitive(1), sdo.listPrimitive(1))
+    assertEquals(deserialized.listPrimitive(2), sdo.listPrimitive(2))
   }
 
 

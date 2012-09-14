@@ -24,6 +24,8 @@ object DeserializerFactory {
       return ByteDeserializer
     } else if (clazz.isArray) {
       return ArrayDeserializer
+    } else if (clazz.equals(classOf[List[_]])) {
+      return ListDeserializer
     }
 
     ObjectDeserializer

@@ -1,6 +1,7 @@
 package pl.marpiec.util.mpjson.deserializer
 
 import pl.marpiec.util.mpjson.{DeserializerFactory, StringIterator}
+import java.lang.reflect.Field
 
 
 /**
@@ -9,7 +10,7 @@ import pl.marpiec.util.mpjson.{DeserializerFactory, StringIterator}
 
 object ArrayDeserializer extends SimpleValueDeserializer[Array[_]] {
 
-  def deserialize(jsonIterator: StringIterator, clazz: Class[_]) = {
+  def deserialize(jsonIterator: StringIterator, clazz: Class[_], field:Field) = {
     jsonIterator.nextChar
 
     if (jsonIterator.currentChar != '[') {
@@ -23,7 +24,7 @@ object ArrayDeserializer extends SimpleValueDeserializer[Array[_]] {
     while (jsonIterator.currentChar != ']') {
 
       val deserializer = DeserializerFactory.getDeserializer(elementsType)
-      val value = deserializer.deserialize(jsonIterator, elementsType)
+      val value = deserializer.deserialize(jsonIterator, elementsType, field)
 
       listInstance = value :: listInstance
     }
