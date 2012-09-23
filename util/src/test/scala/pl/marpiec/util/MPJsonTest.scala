@@ -29,39 +29,41 @@ class MPSimpleDataObject {
 @Test
 class MPJsonTest {
 
+  var sdo = new MPSimpleDataObject
+  sdo.longValue = 1234567891234L
+  sdo.intValue = 1111
+  sdo.stringValue = "Hello Json \" parser\\serializer \""   //Hello Json " parser\serializer "
+  sdo.booleanValue = true
+
+  sdo.innerObject = new InnerObject
+  sdo.innerObject.intValue = -2222
+  sdo.innerObject.stringValue = "inner string"
+
+  sdo.arrayObject = Array[String]("Ala","ma","kota")
+  sdo.arrayPrimitive = Array[Long](6, 8, 10)
+
+  sdo.listObject = List[String]("Hello","json","serializer")
+  sdo.listPrimitive = List[Int](15, 30, 1)
+
+  var properJson = "{" +
+    "longValue:1234567891234," +
+    "intValue:1111," +
+    "stringValue:\"Hello Json \\\" parser\\\\serializer \\\"\"," +
+    "booleanValue:true," +
+    "innerObject:{" +
+    "intValue:-2222," +
+    "stringValue:\"inner string\"" +
+    "}," +
+    "arrayObject:[\"Ala\",\"ma\",\"kota\"],"+
+    "arrayPrimitive:[6,8,10],"+
+    "listObject:[\"Hello\",\"json\",\"serializer\"],"+
+    "listPrimitive:[15,30,1]"+
+    "}"
+
+
   def testSimpleDeserialization {
-    var sdo = new MPSimpleDataObject
-    sdo.longValue = 1234567891234L
-    sdo.intValue = 1111
-    sdo.stringValue = "Hello Json \" parser\\serializer \""   //Hello Json " parser\serializer "
-    sdo.booleanValue = true
-    
-    sdo.innerObject = new InnerObject
-    sdo.innerObject.intValue = 2222
-    sdo.innerObject.stringValue = "inner string"
-    
-    sdo.arrayObject = Array[String]("Ala","ma","kota")
-    sdo.arrayPrimitive = Array[Long](6, 8, 10)
 
-    sdo.listObject = List[String]("Hello","json","serializer")
-    sdo.listPrimitive = List[Int](15, 30, 1)
-
-    var serialized = "{" +
-                      "longValue:1234567891234," +
-                      "intValue:1111," +
-                      "stringValue:\"Hello Json \\\" parser\\\\serializer \\\"\"," +
-                      "booleanValue:true," +
-                      "innerObject:{" +
-                        "intValue:2222," +
-                        "stringValue:\"inner string\"" +
-                        "}," +
-                      "arrayObject:[\"Ala\",\"ma\",\"kota\"],"+
-                      "arrayPrimitive:[6,8,10],"+
-                      "listObject:[\"Hello\",\"json\",\"serializer\"],"+
-                      "listPrimitive:[15,30,1]"+
-                      "}"
-
-    var deserialized:MPSimpleDataObject = MPJson.deserialize(serialized, classOf[MPSimpleDataObject]).asInstanceOf[MPSimpleDataObject]
+    var deserialized:MPSimpleDataObject = MPJson.deserialize(properJson, classOf[MPSimpleDataObject]).asInstanceOf[MPSimpleDataObject]
 
     assertEquals(deserialized.longValue, sdo.longValue)
     assertEquals(deserialized.intValue, sdo.intValue)
@@ -93,5 +95,12 @@ class MPJsonTest {
     assertEquals(deserialized.listPrimitive(2), sdo.listPrimitive(2))
   }
 
+
+  def testSimpleSerialization {
+
+    var serialized = MPJson.serialize(sdo)
+    assertEquals(serialized, properJson)
+
+  }
 
 }

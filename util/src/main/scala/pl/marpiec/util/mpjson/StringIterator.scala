@@ -6,6 +6,7 @@ package pl.marpiec.util.mpjson
 
 class StringIterator(val stringValue: String) {
 
+  val stringLength = stringValue.length
   var nextIndex = 0
   var currentChar: Char = _
 
@@ -32,6 +33,10 @@ class StringIterator(val stringValue: String) {
   
   def checkFutureChar:Char = {
     stringValue.charAt(nextIndex)
+  }
+
+  def hasNextChar:Boolean = {
+    return nextIndex < stringLength
   }
 
 }
