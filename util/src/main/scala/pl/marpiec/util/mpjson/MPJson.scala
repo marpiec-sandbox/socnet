@@ -9,12 +9,7 @@ import serializer.BeanSerializer
  *
  *
  * TODO:
- * - Serializacja, deserializacja Map
  * - Serializacja, deserializacja typu Class
- * - Serializacja deserializacja pozostałych prymitywów
- * - Zmiana fabryk na dynamiczne
- * - Refaktoryzacja
- * - Dodanie obsługi nietypowych typów
  */
 
 object MPJson {
