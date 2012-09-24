@@ -1,34 +1,35 @@
-package pl.marpiec.util
+package pl.marpiec.util.mpjson
 
-import json.annotation.{SecondSubType, FirstSubType}
 import org.testng.annotations.Test
 import org.testng.Assert._
+import pl.marpiec.util.json.annotation.{SecondSubType, FirstSubType}
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
 class SimpleDataObject {
-  var longValue:Long = _
-  var stringValue:String = _
-  var tuple:(String, String) = _
-  @FirstSubType(classOf[Int]) @SecondSubType(classOf[Long])
-  var tuplePrimitive:(Int, Long) = _
+  var longValue: Long = _
+  var stringValue: String = _
+  var tuple: (String, String) = _
+  @FirstSubType(classOf[Int])
+  @SecondSubType(classOf[Long])
+  var tuplePrimitive: (Int, Long) = _
 }
 
 class OptionalDataObject {
   @FirstSubType(classOf[Int])
-  var intOption:Option[Int] = _
+  var intOption: Option[Int] = _
   @FirstSubType(classOf[Long])
-  var smallLongOption:Option[Long] = _
+  var smallLongOption: Option[Long] = _
   @FirstSubType(classOf[Long])
-  var longOption:Option[Long] = _
+  var longOption: Option[Long] = _
   @FirstSubType(classOf[Double])
-  var doubleOption:Option[Double] = _
+  var doubleOption: Option[Double] = _
   @FirstSubType(classOf[Boolean])
-  var booleanOption:Option[Boolean] = _
-  var stringOption:Option[String] = _
-  var sdo:Option[SimpleDataObject] = _
+  var booleanOption: Option[Boolean] = _
+  var stringOption: Option[String] = _
+  var sdo: Option[SimpleDataObject] = _
 }
 
 class CollectionsDataObject {
@@ -41,34 +42,32 @@ class CollectionsDataObject {
 
 @Test
 class JsonSerializerTest {
-  
+
   def testSimpleObjectSerializationAndDeserialization() {
-    val jsonSerializer = new JsonSerializer
-    
+
     val sdo = new SimpleDataObject
     sdo.longValue = 4
     sdo.stringValue = "testString"
     sdo.tuple = ("test", "4")
     sdo.tuplePrimitive = (3, 15)
-    
-    val simpleJson = jsonSerializer.toJson(sdo)
-    
-    val sdoFromJson = jsonSerializer.fromJson(simpleJson, classOf[SimpleDataObject])
-    
+
+    val simpleJson = MPJson.serialize(sdo)
+
+    val sdoFromJson = MPJson.deserialize(simpleJson, classOf[SimpleDataObject])
+
     assertTrue(sdoFromJson.isInstanceOf[SimpleDataObject])
     assertEquals(sdoFromJson.asInstanceOf[SimpleDataObject].longValue, sdo.longValue)
     assertEquals(sdoFromJson.asInstanceOf[SimpleDataObject].stringValue, sdo.stringValue)
-    val (t1:String, t2:String) = sdoFromJson.asInstanceOf[SimpleDataObject].tuple
+    val (t1: String, t2: String) = sdoFromJson.asInstanceOf[SimpleDataObject].tuple
     assertEquals(t1, "test")
     assertEquals(t2, "4")
-    val (p1:Int, p2:Long) = sdoFromJson.asInstanceOf[SimpleDataObject].tuplePrimitive
+    val (p1: Int, p2: Long) = sdoFromJson.asInstanceOf[SimpleDataObject].tuplePrimitive
     assertEquals(p1, 3)
     assertEquals(p2, 15)
   }
-  
+
   def testEmptyOptionSerializationAndDeserialization() {
 
-    val jsonSerializer = new JsonSerializer
 
     val odo = new OptionalDataObject
     odo.intOption = None
@@ -77,9 +76,9 @@ class JsonSerializerTest {
     odo.booleanOption = None
     odo.stringOption = None
 
-    val simpleJson = jsonSerializer.toJson(odo)
+    val simpleJson = MPJson.serialize(odo)
 
-    val dataObject = jsonSerializer.fromJson(simpleJson, classOf[OptionalDataObject])
+    val dataObject = MPJson.deserialize(simpleJson, classOf[OptionalDataObject])
 
     assertTrue(dataObject.isInstanceOf[OptionalDataObject])
 
@@ -95,8 +94,6 @@ class JsonSerializerTest {
 
   def testFilledOptionSerializationAndDeserialization() {
 
-    val jsonSerializer = new JsonSerializer
-
     val odo = new OptionalDataObject
     odo.intOption = Option[Int](3)
     odo.smallLongOption = Option[Long](10L)
@@ -104,15 +101,15 @@ class JsonSerializerTest {
     odo.doubleOption = Option[Double](123.321)
     odo.booleanOption = Option[Boolean](true)
     odo.stringOption = Option[String]("test")
-    
+
     val sdo = new SimpleDataObject
     sdo.longValue = 4
     sdo.stringValue = "testString"
     odo.sdo = Option[SimpleDataObject](sdo)
 
-    val simpleJson = jsonSerializer.toJson(odo)
+    val simpleJson = MPJson.serialize(odo)
 
-    val dataObject = jsonSerializer.fromJson(simpleJson, classOf[OptionalDataObject])
+    val dataObject = MPJson.deserialize(simpleJson, classOf[OptionalDataObject])
 
     assertTrue(dataObject.isInstanceOf[OptionalDataObject])
 
@@ -134,19 +131,18 @@ class JsonSerializerTest {
     assertEquals(dataObject.asInstanceOf[OptionalDataObject].sdo.get.stringValue, odo.sdo.get.stringValue)
 
   }
-  
-  
+
+
   def testCollectionsSerialization() {
-    val jsonSerializer = new JsonSerializer
 
     val cdo = new CollectionsDataObject
 
     cdo.stringsList = List[String]("a", "b", "c")
     cdo.longsList = List[Long](5, 10, 20)
     cdo.emptyList = List[String]()
-    
-    val simpleJson = jsonSerializer.toJson(cdo)
-    val dataObject = jsonSerializer.fromJson(simpleJson, classOf[CollectionsDataObject])
+
+    val simpleJson = MPJson.serialize(cdo)
+    val dataObject = MPJson.deserialize(simpleJson, classOf[CollectionsDataObject])
 
     val deserializedObject = dataObject.asInstanceOf[CollectionsDataObject]
     assertEquals(deserializedObject.stringsList.size, cdo.stringsList.size)

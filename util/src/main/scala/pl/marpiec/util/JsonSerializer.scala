@@ -2,6 +2,8 @@ package pl.marpiec.util
 
 import com.google.gson._
 import json._
+import mpjson.MPJson
+import mpjsoncustom.LocalDateTimeConverter
 import org.joda.time.{Instant, LocalDate, LocalDateTime}
 import senum.SEnum
 
@@ -23,6 +25,9 @@ class JsonSerializer {
     gsonBuilder.registerTypeAdapter(classOf[List[_]], new ListTypeConverter)
     gsonBuilder.create
   }
+
+  MPJson.registerConverter(classOf[LocalDateTime], LocalDateTimeConverter)
+
 
   def toJson(obj: AnyRef): String = {
     MPJson.serialize(obj)
