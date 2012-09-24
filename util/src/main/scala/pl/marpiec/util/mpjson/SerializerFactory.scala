@@ -41,6 +41,8 @@ object SerializerFactory {
       return Tuple2Serializer
     } else if (obj.isInstanceOf[Option[_]]) {
       return OptionSerializer
+    } else if (obj.isInstanceOf[Map[_,_]]) {
+      return MapSerializer
     }
 
     for ((clazzType, serializer) <- additionalSuperclassSerializers) {

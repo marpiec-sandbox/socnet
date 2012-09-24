@@ -20,7 +20,6 @@ object SimpleEnum extends SEnumObject[SimpleEnum] {
   def getValues = values
 }
 
-
 case class SimpleEnum(name: String, translation: String, numericValue:Int) extends SEnum[SimpleEnum] {
   def getName() = name
 }

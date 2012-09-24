@@ -45,6 +45,8 @@ object DeserializerFactory {
       return Tuple2Deserializer
     } else if (clazz.equals(classOf[Option[_]])) {
       return OptionDeserializer
+    } else if (clazz.equals(classOf[Map[_,_]])) {
+      return MapDeserializer
     }
 
     for ((clazzType, deserializer) <- additionalSuperclassDeserializers) {
