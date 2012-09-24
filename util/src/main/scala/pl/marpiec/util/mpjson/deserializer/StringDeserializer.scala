@@ -24,12 +24,21 @@ object StringDeserializer extends SimpleValueDeserializer[String] {
 
       if (jsonIterator.currentChar == '\\') {
         jsonIterator.nextChar
+        
+        val char = jsonIterator.currentChar
 
-        if (jsonIterator.currentChar == '"' || jsonIterator.currentChar == '\\') {
-          stringValue.append(jsonIterator.currentChar)
-        } else {
-          throw new IllegalArgumentException("Unsupported control character [\\" + jsonIterator.currentChar + "]")
+        char match {
+          case '"' => stringValue.append('"')
+          case '\\' => stringValue.append('\\')
+          case '/' => stringValue.append('/')
+          case 'b' => stringValue.append('\b')
+          case 'f' => stringValue.append('\f')
+          case 'n' => stringValue.append('\n')
+          case 'r' => stringValue.append('\r')
+          case 't' => stringValue.append('\t')
+          case _ => throw new IllegalArgumentException("Unsupported control character [\\" + jsonIterator.currentChar + "]")
         }
+
       } else {
         stringValue.append(jsonIterator.currentChar)
       }

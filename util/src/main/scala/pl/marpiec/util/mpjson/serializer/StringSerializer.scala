@@ -13,12 +13,16 @@ object StringSerializer extends SimpleSerializer {
       iterator.nextChar
        val char = iterator.currentChar
 
-      if (char=='"') {
-        jsonBuilder.append("\\\"")
-      } else if (char=='\\') {
-        jsonBuilder.append("\\\\")
-      } else {
-        jsonBuilder.append(char)
+      char match {
+        case '"' => jsonBuilder.append("\\\"")
+        case '\\' => jsonBuilder.append("\\\\")
+        case '/' => jsonBuilder.append("\\/")
+        case '\b' => jsonBuilder.append("\\b")
+        case '\f' => jsonBuilder.append("\\f")
+        case '\n' => jsonBuilder.append("\\n")
+        case '\r' => jsonBuilder.append("\\r")
+        case '\t' => jsonBuilder.append("\\t")
+        case _ => jsonBuilder.append(char)
       }
     }
 

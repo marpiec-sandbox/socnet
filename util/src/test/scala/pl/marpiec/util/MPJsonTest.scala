@@ -32,7 +32,7 @@ class MPJsonTest {
   var sdo = new MPSimpleDataObject
   sdo.longValue = 1234567891234L
   sdo.intValue = 1111
-  sdo.stringValue = "Hello Json \" parser\\serializer \""   //Hello Json " parser\serializer "
+  sdo.stringValue = "Hello Json \n\" parser\\serializer \""   //Hello Json " parser\serializer "
   sdo.booleanValue = true
 
   sdo.innerObject = new InnerObject
@@ -48,7 +48,7 @@ class MPJsonTest {
   var properJson = "{" +
     "longValue:1234567891234," +
     "intValue:1111," +
-    "stringValue:\"Hello Json \\\" parser\\\\serializer \\\"\"," +
+    "stringValue:\"Hello Json \\n\\\" parser\\\\serializer \\\"\"," +
     "booleanValue:true," +
     "innerObject:{" +
     "intValue:-2222," +

@@ -10,7 +10,6 @@ import mpjson.{StringIterator}
  *
  *
  * TODO:
- * - Escapeowanie znaków w String
  * - Serializacja, deserializacja Map
  * - Serializacja, deserializacja typu Class
  * - Serializacja deserializacja pozostałych prymitywów
