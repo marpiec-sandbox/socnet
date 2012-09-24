@@ -1,6 +1,7 @@
 package pl.marpiec.util.mpjson
 
 import deserializer._
+import primitives._
 
 /**
  * @author Marcin Pieciukiewicz
@@ -46,7 +47,7 @@ object DeserializerFactory {
     if(deserializerOption.isDefined) {
       return deserializerOption.get
     } else {
-      return ObjectDeserializer
+      return BeanDeserializer
     }
   }
 

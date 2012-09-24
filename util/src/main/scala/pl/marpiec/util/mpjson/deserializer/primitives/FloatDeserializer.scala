@@ -1,6 +1,6 @@
-package pl.marpiec.util.mpjson.deserializer
+package pl.marpiec.util.mpjson.deserializer.primitives
 
-import inner.AbstractFloatingPointDeserializer
+import pl.marpiec.util.mpjson.deserializer.inner.AbstractFloatingPointDeserializer
 
 
 /**

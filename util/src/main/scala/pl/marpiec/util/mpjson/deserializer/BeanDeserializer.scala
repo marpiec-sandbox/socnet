@@ -7,7 +7,7 @@ import pl.marpiec.util.mpjson.{JsonTypeDeserializer, DeserializerFactory, String
  * @author Marcin Pieciukiewicz
  */
 
-object ObjectDeserializer extends JsonTypeDeserializer[Any] {
+object BeanDeserializer extends JsonTypeDeserializer[Any] {
 
   def deserialize(jsonIterator: StringIterator, clazz: Class[_], field:Field): Any = {
 

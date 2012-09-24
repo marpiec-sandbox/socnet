@@ -7,7 +7,7 @@ import pl.marpiec.util.mpjson.{SerializerFactory, JsonTypeSerializer}
  * @author Marcin Pieciukiewicz
  */
 
-object OptionSerializer extends JsonTypeSerializer {
+object BeanSerializer extends JsonTypeSerializer {
 
   def serialize(obj: Any, jsonBuilder: StringBuilder) = {
 
