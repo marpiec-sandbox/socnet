@@ -1,10 +1,16 @@
 package pl.marpiec.util.mpjson
 
-import deserializer.{ListDeserializer, ArrayDeserializer}
 import serializer._
 
 object SerializerFactory {
-  def getDeserializer(obj: Any): SimpleSerializer = {
+
+  var additionalSerializers:Map[Class[_], JsonTypeSerializer] = Map[Class[_], JsonTypeSerializer]()
+
+  def registerSerializer(clazz: Class[_], serializer:JsonTypeSerializer) {
+    additionalSerializers += clazz -> serializer
+  }
+
+  def getSerializer(obj: Any): JsonTypeSerializer = {
 
     if (obj.isInstanceOf[Long]) {
       return SimpleToStringSerializer
@@ -23,9 +29,14 @@ object SerializerFactory {
     } else if (obj.isInstanceOf[List[_]]) {
       return ListSerializer
     }
+    
+    val serializerOption = additionalSerializers.get(obj.asInstanceOf[AnyRef].getClass) 
 
-    return ObjectSerializer
-
+    if(serializerOption.isDefined) {
+      return serializerOption.get
+    } else {
+      return ObjectSerializer
+    }
 
   }
 }

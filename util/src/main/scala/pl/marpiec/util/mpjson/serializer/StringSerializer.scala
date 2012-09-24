@@ -1,8 +1,9 @@
 package pl.marpiec.util.mpjson.serializer
 
-import pl.marpiec.util.mpjson.StringIterator
+import pl.marpiec.util.mpjson.{JsonTypeSerializer, StringIterator}
 
-object StringSerializer extends SimpleSerializer {
+
+object StringSerializer extends JsonTypeSerializer {
   def serialize(obj:Any, jsonBuilder:StringBuilder) {
 
     val iterator = new StringIterator(obj.asInstanceOf[String])

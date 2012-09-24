@@ -1,10 +1,10 @@
 package pl.marpiec.util.mpjson.deserializer
 
-import pl.marpiec.util.mpjson.{DeserializerFactory, StringIterator}
 import java.lang.reflect.{Field, ParameterizedType, Type}
 import pl.marpiec.util.json.annotation.SubType
+import pl.marpiec.util.mpjson.{JsonTypeDeserializer, DeserializerFactory, StringIterator}
 
-object ListDeserializer extends SimpleValueDeserializer[List[_]] {
+object ListDeserializer extends JsonTypeDeserializer[List[_]] {
 
   def deserialize(jsonIterator: StringIterator, clazz: Class[_], field:Field) = {
     jsonIterator.nextChar
@@ -14,24 +14,31 @@ object ListDeserializer extends SimpleValueDeserializer[List[_]] {
     }
 
     var listInstance = List[Any]()
+    
+    if (jsonIterator.checkFutureChar == ']') {
+      jsonIterator.nextChar
+      jsonIterator.nextChar
+      listInstance
+    } else {
 
-    var elementsType = field.getGenericType.asInstanceOf[ParameterizedType].getActualTypeArguments()(0).asInstanceOf[Class[_]]
+      var elementsType = field.getGenericType.asInstanceOf[ParameterizedType].getActualTypeArguments()(0).asInstanceOf[Class[_]]
 
-    if(elementsType.equals(classOf[Object])) {
-      val subtype = field.getAnnotation(classOf[SubType])
-      if (subtype!=null) {
-        elementsType = subtype.value()
+      if(elementsType.equals(classOf[Object])) {
+        val subtype = field.getAnnotation(classOf[SubType])
+        if (subtype!=null) {
+          elementsType = subtype.value()
+        }
       }
-    }
 
-    while (jsonIterator.currentChar != ']') {
-      val deserializer = DeserializerFactory.getDeserializer(elementsType)
-      val value = deserializer.deserialize(jsonIterator, elementsType, field)
-      listInstance = value :: listInstance
-    }
+      while (jsonIterator.currentChar != ']') {
+        val deserializer = DeserializerFactory.getDeserializer(elementsType)
+        val value = deserializer.deserialize(jsonIterator, elementsType, field)
+        listInstance = value :: listInstance
+      }
 
-    jsonIterator.nextChar
-    listInstance.reverse
+      jsonIterator.nextChar
+      listInstance.reverse
+    }
   }
 
 }

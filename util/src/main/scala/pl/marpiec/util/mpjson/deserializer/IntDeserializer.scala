@@ -1,5 +1,7 @@
 package pl.marpiec.util.mpjson.deserializer
 
+import inner.AbstractIntegerDeserializer
+
 /**
  * @author Marcin Pieciukiewicz
  */

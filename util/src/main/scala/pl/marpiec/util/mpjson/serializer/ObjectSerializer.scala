@@ -1,8 +1,9 @@
 package pl.marpiec.util.mpjson.serializer
 
-import pl.marpiec.util.mpjson.SerializerFactory
+import pl.marpiec.util.mpjson.{JsonTypeSerializer, SerializerFactory}
 
-object ObjectSerializer extends SimpleSerializer {
+
+object ObjectSerializer extends JsonTypeSerializer {
 
 
   def serialize(obj: Any, jsonBuilder:StringBuilder) = {
@@ -28,7 +29,7 @@ object ObjectSerializer extends SimpleSerializer {
         }
 
         jsonBuilder.append(field.getName).append(':')
-        SerializerFactory.getDeserializer(value).serialize(value, jsonBuilder)
+        SerializerFactory.getSerializer(value).serialize(value, jsonBuilder)
       }
     })
 

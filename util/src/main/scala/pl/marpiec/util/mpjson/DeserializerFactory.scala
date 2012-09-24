@@ -1,6 +1,7 @@
 package pl.marpiec.util.mpjson
 
 import deserializer._
+import serializer.ObjectSerializer
 
 
 /**
@@ -9,7 +10,13 @@ import deserializer._
 
 object DeserializerFactory {
 
-  def getDeserializer(clazz: Class[_]): SimpleValueDeserializer[_] = {
+  var additionalDeserializers:Map[Class[_], JsonTypeDeserializer[_]] = Map[Class[_], JsonTypeDeserializer[_]]()
+
+  def registerDeserializer(clazz: Class[_], deserializer:JsonTypeDeserializer[_]) {
+    additionalDeserializers += clazz -> deserializer
+  }
+
+  def getDeserializer(clazz: Class[_]): JsonTypeDeserializer[_] = {
     if (clazz.equals(classOf[Long])) {
       return LongDeserializer
     } else if (clazz.equals(classOf[Int])) {
@@ -28,8 +35,13 @@ object DeserializerFactory {
       return ListDeserializer
     }
 
-    ObjectDeserializer
+    val deserializerOption = additionalDeserializers.get(clazz)
 
+    if(deserializerOption.isDefined) {
+      return deserializerOption.get
+    } else {
+      return ObjectDeserializer
+    }
   }
 
 }

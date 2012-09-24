@@ -29,10 +29,10 @@ class MPSimpleDataObject {
 @Test
 class MPJsonTest {
 
-  var sdo = new MPSimpleDataObject
+  val sdo = new MPSimpleDataObject
   sdo.longValue = 1234567891234L
   sdo.intValue = 1111
-  sdo.stringValue = "Hello Json \n\" parser\\serializer \""   //Hello Json " parser\serializer "
+  sdo.stringValue = "Hello Json \n\" parser\\serializer \""   //Hello Json " parser\deserializer "
   sdo.booleanValue = true
 
   sdo.innerObject = new InnerObject
@@ -45,7 +45,7 @@ class MPJsonTest {
   sdo.listObject = List[String]("Hello","json","serializer")
   sdo.listPrimitive = List[Int](15, 30, 1)
 
-  var properJson = "{" +
+  val properJson = "{" +
     "longValue:1234567891234," +
     "intValue:1111," +
     "stringValue:\"Hello Json \\n\\\" parser\\\\serializer \\\"\"," +

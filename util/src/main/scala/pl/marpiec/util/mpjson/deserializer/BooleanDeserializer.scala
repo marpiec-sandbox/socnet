@@ -1,13 +1,13 @@
 package pl.marpiec.util.mpjson.deserializer
 
-import pl.marpiec.util.mpjson.StringIterator
 import java.lang.reflect.Field
+import pl.marpiec.util.mpjson.{JsonTypeDeserializer, StringIterator}
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
-object BooleanDeserializer extends SimpleValueDeserializer[Boolean] {
+object BooleanDeserializer extends JsonTypeDeserializer[Boolean] {
   def deserialize(jsonIterator: StringIterator, clazz: Class[_], field:Field): Boolean = {
 
     val booleanString = new StringBuilder()

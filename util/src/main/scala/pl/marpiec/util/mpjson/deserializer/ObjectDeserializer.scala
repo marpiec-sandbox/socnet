@@ -1,13 +1,13 @@
 package pl.marpiec.util.mpjson.deserializer
 
-import pl.marpiec.util.mpjson.{DeserializerFactory, StringIterator}
 import java.lang.reflect.Field
+import pl.marpiec.util.mpjson.{JsonTypeDeserializer, DeserializerFactory, StringIterator}
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
-object ObjectDeserializer extends SimpleValueDeserializer[Any] {
+object ObjectDeserializer extends JsonTypeDeserializer[Any] {
 
   def deserialize(jsonIterator: StringIterator, clazz: Class[_], field:Field): Any = {
 
