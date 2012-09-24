@@ -3,7 +3,7 @@ package pl.marpiec.util
 import com.google.gson._
 import json._
 import mpjson.MPJson
-import mpjsoncustom.LocalDateTimeConverter
+import mpjsoncustom.{InstantConverter, LocalDateConverter, LocalDateTimeConverter}
 import org.joda.time.{Instant, LocalDate, LocalDateTime}
 import senum.SEnum
 
@@ -27,6 +27,8 @@ class JsonSerializer {
   }
 
   MPJson.registerConverter(classOf[LocalDateTime], LocalDateTimeConverter)
+  MPJson.registerConverter(classOf[LocalDate], LocalDateConverter)
+  MPJson.registerConverter(classOf[Instant], InstantConverter)
 
 
   def toJson(obj: AnyRef): String = {
