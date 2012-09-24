@@ -43,7 +43,7 @@ object SerializerFactory {
     if(serializerOption.isDefined) {
       return serializerOption.get
     } else {
-      return Bean2Serializer
+      return BeanSerializer
     }
 
   }

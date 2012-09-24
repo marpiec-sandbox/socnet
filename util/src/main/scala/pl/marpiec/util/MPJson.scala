@@ -1,7 +1,7 @@
 package pl.marpiec.util
 
 import mpjson.deserializer.BeanDeserializer
-import mpjson.serializer.Bean2Serializer
+import mpjson.serializer.BeanSerializer
 import mpjson.{StringIterator}
 
 
@@ -27,7 +27,7 @@ object MPJson {
 
   def serialize(obj: AnyRef): String = {
     val json = new StringBuilder()
-    Bean2Serializer.serialize(obj, json)
+    BeanSerializer.serialize(obj, json)
     json.toString
   }
 }
