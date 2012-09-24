@@ -35,7 +35,7 @@ object SerializerFactory {
     } else if (obj.isInstanceOf[Tuple2[_, _]]) {
       return Tuple2Serializer
     } else if (obj.isInstanceOf[Option[_]]) {
-      return BeanSerializer
+      return OptionSerializer
     }
     
     val serializerOption = additionalSerializers.get(obj.asInstanceOf[AnyRef].getClass) 
@@ -43,7 +43,7 @@ object SerializerFactory {
     if(serializerOption.isDefined) {
       return serializerOption.get
     } else {
-      return ObjectSerializer
+      return Bean2Serializer
     }
 
   }

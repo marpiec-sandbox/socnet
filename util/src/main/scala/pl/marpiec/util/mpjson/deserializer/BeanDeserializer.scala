@@ -2,6 +2,7 @@ package pl.marpiec.util.mpjson.deserializer
 
 import java.lang.reflect.Field
 import pl.marpiec.util.mpjson.{JsonTypeDeserializer, DeserializerFactory, StringIterator}
+import pl.marpiec.util.mpjson.util.ScalaLanguageUtils
 
 /**
  * @author Marcin Pieciukiewicz
@@ -27,7 +28,7 @@ object BeanDeserializer extends JsonTypeDeserializer[Any] {
 
       val field = clazz.getDeclaredField(identifier)
       val fieldType = field.getType
-      val setter = clazz.getDeclaredMethod(identifier + "_$eq", fieldType)
+      val setter = clazz.getDeclaredMethod(ScalaLanguageUtils.getSetterName(identifier), fieldType)
 
       if (jsonIterator.currentChar != ':') {
         throw new IllegalArgumentException("After type name there should be ':' separator but was [" + jsonIterator.currentChar + "], field=" + identifier)
