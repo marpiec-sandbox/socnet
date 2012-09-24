@@ -1,7 +1,7 @@
 package pl.marpiec.util.mpjson.deserializer
 
 import java.lang.reflect.{Field, ParameterizedType, Type}
-import pl.marpiec.util.json.annotation.SubType
+import pl.marpiec.util.json.annotation.FirstSubType
 import pl.marpiec.util.mpjson.{JsonTypeDeserializer, DeserializerFactory, StringIterator}
 
 object ListDeserializer extends JsonTypeDeserializer[List[_]] {
@@ -24,7 +24,7 @@ object ListDeserializer extends JsonTypeDeserializer[List[_]] {
       var elementsType = field.getGenericType.asInstanceOf[ParameterizedType].getActualTypeArguments()(0).asInstanceOf[Class[_]]
 
       if(elementsType.equals(classOf[Object])) {
-        val subtype = field.getAnnotation(classOf[SubType])
+        val subtype = field.getAnnotation(classOf[FirstSubType])
         if (subtype!=null) {
           elementsType = subtype.value()
         }

@@ -1,6 +1,6 @@
 package pl.marpiec.util
 
-import json.annotation.{SecondSubType, FirstSubType, SubType}
+import json.annotation.{SecondSubType, FirstSubType}
 import org.testng.annotations.Test
 import org.testng.Assert._
 
@@ -17,10 +17,15 @@ class SimpleDataObject {
 }
 
 class OptionalDataObject {
+  @FirstSubType(classOf[Int])
   var intOption:Option[Int] = _
+  @FirstSubType(classOf[Long])
   var smallLongOption:Option[Long] = _
+  @FirstSubType(classOf[Long])
   var longOption:Option[Long] = _
+  @FirstSubType(classOf[Double])
   var doubleOption:Option[Double] = _
+  @FirstSubType(classOf[Boolean])
   var booleanOption:Option[Boolean] = _
   var stringOption:Option[String] = _
   var sdo:Option[SimpleDataObject] = _
@@ -28,7 +33,7 @@ class OptionalDataObject {
 
 class CollectionsDataObject {
   var stringsList: List[String] = _
-  @SubType(classOf[Long])
+  @FirstSubType(classOf[Long])
   var longsList: List[Long] = _
   var emptyList: List[String] = _
   var emptyArray: Array[Long] = Array()

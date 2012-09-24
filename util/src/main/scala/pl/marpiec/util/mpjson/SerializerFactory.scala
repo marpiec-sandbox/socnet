@@ -24,12 +24,18 @@ object SerializerFactory {
       return SimpleToStringSerializer
     } else if (obj.isInstanceOf[String]) {
       return StringSerializer
+    } else if (obj.isInstanceOf[Double]) {
+      return SimpleToStringSerializer
+    } else if (obj.isInstanceOf[Float]) {
+      return SimpleToStringSerializer
     }  else if (obj.asInstanceOf[AnyRef].getClass.isArray) {
       return ArraySerializer
     } else if (obj.isInstanceOf[List[_]]) {
       return ListSerializer
-    } else if (obj.isInstanceOf[Tuple2[_,  _]]) {
+    } else if (obj.isInstanceOf[Tuple2[_, _]]) {
       return Tuple2Serializer
+    } else if (obj.isInstanceOf[Option[_]]) {
+      return OptionSerializer
     }
     
     val serializerOption = additionalSerializers.get(obj.asInstanceOf[AnyRef].getClass) 

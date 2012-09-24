@@ -1,6 +1,6 @@
 package pl.marpiec.util
 
-import json.annotation.SubType
+import json.annotation.FirstSubType
 import org.testng.Assert._
 import org.testng.annotations.Test
 
@@ -22,7 +22,7 @@ class MPSimpleDataObject {
   var arrayObject:Array[String] = _
   var arrayPrimitive:Array[Long] = _
   var listObject:List[String] = _
-  @SubType(classOf[Int])
+  @FirstSubType(classOf[Int])
   var listPrimitive:List[Int] = _
 }
 

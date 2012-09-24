@@ -30,6 +30,10 @@ class StringIterator(val stringValue: String) {
   def isCurrentCharADigitPart: Boolean = {
     currentChar >= '0' && currentChar <= '9' || currentChar == '-'
   }
+
+  def isCurrentCharAFloatingPointPart: Boolean = {
+    currentChar >= '0' && currentChar <= '9' || currentChar == '-' || currentChar == '.'
+  }
   
   def checkFutureChar:Char = {
     stringValue.charAt(nextIndex)
