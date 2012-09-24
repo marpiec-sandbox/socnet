@@ -24,14 +24,18 @@ object Tuple2Deserializer extends JsonTypeDeserializer[Tuple2[_,_]] {
 
     if(firstElementType.equals(classOf[Object])) {
       val subtype = field.getAnnotation(classOf[FirstSubType])
-      if (subtype!=null) {
+      if (subtype == null) {
+        throw new IllegalStateException("No @"+classOf[FirstSubType].getSimpleName+" defined for Tuple first element of field "+field.getName)
+      } else {
         firstElementType = subtype.value()
       }
     }
 
     if(secondElementType.equals(classOf[Object])) {
       val subtype = field.getAnnotation(classOf[SecondSubType])
-      if (subtype!=null) {
+      if (subtype == null) {
+        throw new IllegalStateException("No @"+classOf[SecondSubType].getSimpleName+" defined for Tuple second element type of field "+field.getName)
+      } else {
         secondElementType = subtype.value()
       }
     }

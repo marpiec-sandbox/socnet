@@ -25,7 +25,9 @@ object ListDeserializer extends JsonTypeDeserializer[List[_]] {
 
       if(elementsType.equals(classOf[Object])) {
         val subtype = field.getAnnotation(classOf[FirstSubType])
-        if (subtype!=null) {
+        if (subtype == null) {
+          throw new IllegalStateException("No @"+classOf[FirstSubType].getSimpleName+" defined for List type of field "+field.getName)
+        } else {
           elementsType = subtype.value()
         }
       }

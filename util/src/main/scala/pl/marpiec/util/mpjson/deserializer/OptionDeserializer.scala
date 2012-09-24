@@ -28,7 +28,9 @@ object OptionDeserializer extends JsonTypeDeserializer[Option[_]] {
 
       if (elementType.equals(classOf[Object])) {
         val subtype = field.getAnnotation(classOf[FirstSubType])
-        if (subtype != null) {
+        if (subtype == null) {
+          throw new IllegalStateException("No @"+classOf[FirstSubType].getSimpleName+" defined for Option type of field "+field.getName)
+        } else {
           elementType = subtype.value()
         }
       }
