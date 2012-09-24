@@ -10,9 +10,14 @@ import primitives._
 object DeserializerFactory {
 
   var additionalDeserializers:Map[Class[_], JsonTypeDeserializer[_]] = Map[Class[_], JsonTypeDeserializer[_]]()
+  var additionalSuperclassDeserializers:Map[Class[_], JsonTypeDeserializer[_]] = Map[Class[_], JsonTypeDeserializer[_]]()
 
   def registerDeserializer(clazz: Class[_], deserializer:JsonTypeDeserializer[_]) {
     additionalDeserializers += clazz -> deserializer
+  }
+
+  def registerSuperclassDeserializer(clazz: Class[_], deserializer:JsonTypeDeserializer[_]) {
+    additionalSuperclassDeserializers += clazz -> deserializer
   }
 
   def getDeserializer(clazz: Class[_]): JsonTypeDeserializer[_] = {
@@ -40,6 +45,12 @@ object DeserializerFactory {
       return Tuple2Deserializer
     } else if (clazz.equals(classOf[Option[_]])) {
       return OptionDeserializer
+    }
+
+    for ((clazzType, deserializer) <- additionalSuperclassDeserializers) {
+      if (clazzType.isAssignableFrom(clazz)) {
+        return deserializer
+      }
     }
 
     val deserializerOption = additionalDeserializers.get(clazz)

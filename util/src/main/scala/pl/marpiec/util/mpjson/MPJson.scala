@@ -30,17 +30,14 @@ object MPJson {
     json.toString
   }
 
-  def registerDeserializer(clazz: Class[_], deserializer:JsonTypeDeserializer[_]) {
-    DeserializerFactory.registerDeserializer(clazz, deserializer)
-  }
-
-  def registerSerializer(clazz: Class[_], serializer:JsonTypeSerializer) {
-    SerializerFactory.registerSerializer(clazz, serializer)
-  }
-
   def registerConverter(clazz: Class[_], converter:JsonTypeConverter[_]) {
     SerializerFactory.registerSerializer(clazz, converter)
     DeserializerFactory.registerDeserializer(clazz, converter)
+  }
+
+  def registerSuperclassConverter(clazz: Class[_], converter:JsonTypeConverter[_]) {
+    SerializerFactory.registerSuperclassSerializer(clazz, converter)
+    DeserializerFactory.registerSuperclassDeserializer(clazz, converter)
   }
 
 }

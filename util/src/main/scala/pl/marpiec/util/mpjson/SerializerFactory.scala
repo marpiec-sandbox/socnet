@@ -5,9 +5,14 @@ import serializer._
 object SerializerFactory {
 
   var additionalSerializers:Map[Class[_], JsonTypeSerializer] = Map[Class[_], JsonTypeSerializer]()
+  var additionalSuperclassSerializers:Map[Class[_], JsonTypeSerializer] = Map[Class[_], JsonTypeSerializer]()
 
   def registerSerializer(clazz: Class[_], serializer:JsonTypeSerializer) {
     additionalSerializers += clazz -> serializer
+  }
+
+  def registerSuperclassSerializer(clazz: Class[_], serializer:JsonTypeSerializer) {
+    additionalSuperclassSerializers += clazz -> serializer
   }
 
   def getSerializer(obj: Any): JsonTypeSerializer = {
@@ -37,7 +42,13 @@ object SerializerFactory {
     } else if (obj.isInstanceOf[Option[_]]) {
       return OptionSerializer
     }
-    
+
+    for ((clazzType, serializer) <- additionalSuperclassSerializers) {
+      if (clazzType.isInstance(obj)) {
+        return serializer
+      }
+    }
+
     val serializerOption = additionalSerializers.get(obj.asInstanceOf[AnyRef].getClass) 
 
     if(serializerOption.isDefined) {
