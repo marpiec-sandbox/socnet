@@ -33,6 +33,8 @@ object DeserializerFactory {
       return ArrayDeserializer
     } else if (clazz.equals(classOf[List[_]])) {
       return ListDeserializer
+    }  else if (clazz.equals(classOf[Tuple2[_,_]])) {
+      return Tuple2Deserializer
     }
 
     val deserializerOption = additionalDeserializers.get(clazz)

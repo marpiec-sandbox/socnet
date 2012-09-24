@@ -28,6 +28,8 @@ object SerializerFactory {
       return ArraySerializer
     } else if (obj.isInstanceOf[List[_]]) {
       return ListSerializer
+    } else if (obj.isInstanceOf[Tuple2[_,  _]]) {
+      return Tuple2Serializer
     }
     
     val serializerOption = additionalSerializers.get(obj.asInstanceOf[AnyRef].getClass) 

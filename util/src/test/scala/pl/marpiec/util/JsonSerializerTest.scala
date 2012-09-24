@@ -1,5 +1,6 @@
 package pl.marpiec.util
 
+import json.annotation.{SecondSubType, FirstSubType, SubType}
 import org.testng.annotations.Test
 import org.testng.Assert._
 
@@ -10,7 +11,9 @@ import org.testng.Assert._
 class SimpleDataObject {
   var longValue:Long = _
   var stringValue:String = _
-  var touple:(String, String) = _
+  var tuple:(String, String) = _
+  @FirstSubType(classOf[Int]) @SecondSubType(classOf[Long])
+  var tuplePrimitive:(Int, Long) = _
 }
 
 class OptionalDataObject {
@@ -25,8 +28,10 @@ class OptionalDataObject {
 
 class CollectionsDataObject {
   var stringsList: List[String] = _
+  @SubType(classOf[Long])
   var longsList: List[Long] = _
   var emptyList: List[String] = _
+  var emptyArray: Array[Long] = Array()
 }
 
 @Test
@@ -38,7 +43,8 @@ class JsonSerializerTest {
     val sdo = new SimpleDataObject
     sdo.longValue = 4
     sdo.stringValue = "testString"
-    sdo.touple = ("test", "4")
+    sdo.tuple = ("test", "4")
+    sdo.tuplePrimitive = (3, 15)
     
     val simpleJson = jsonSerializer.toJson(sdo)
     
@@ -47,9 +53,12 @@ class JsonSerializerTest {
     assertTrue(sdoFromJson.isInstanceOf[SimpleDataObject])
     assertEquals(sdoFromJson.asInstanceOf[SimpleDataObject].longValue, sdo.longValue)
     assertEquals(sdoFromJson.asInstanceOf[SimpleDataObject].stringValue, sdo.stringValue)
-    val (t1:String, t2:String) = sdoFromJson.asInstanceOf[SimpleDataObject].touple
+    val (t1:String, t2:String) = sdoFromJson.asInstanceOf[SimpleDataObject].tuple
     assertEquals(t1, "test")
     assertEquals(t2, "4")
+    val (p1:Int, p2:Long) = sdoFromJson.asInstanceOf[SimpleDataObject].tuplePrimitive
+    assertEquals(p1, 3)
+    assertEquals(p2, 15)
   }
   
   def testEmptyOptionSerializationAndDeserialization() {
@@ -146,6 +155,7 @@ class JsonSerializerTest {
     assertEquals(deserializedObject.longsList(2), cdo.longsList(2))
 
     assertEquals(deserializedObject.emptyList.size, cdo.emptyList.size)
+    assertEquals(deserializedObject.emptyArray.size, cdo.emptyArray.size)
 
   }
 
