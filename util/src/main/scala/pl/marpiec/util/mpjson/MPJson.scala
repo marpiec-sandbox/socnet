@@ -3,13 +3,8 @@ package pl.marpiec.util.mpjson
 import deserializer.BeanDeserializer
 import serializer.BeanSerializer
 
-
 /**
  * @author Marcin Pieciukiewicz
- *
- *
- * TODO:
- * - Serializacja, deserializacja typu Class
  */
 
 object MPJson {
