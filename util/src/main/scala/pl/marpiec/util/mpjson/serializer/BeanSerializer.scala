@@ -1,6 +1,7 @@
 package pl.marpiec.util.mpjson.serializer
 
 import pl.marpiec.util.mpjson.{JsonTypeSerializer, SerializerFactory}
+import java.lang.reflect.AccessibleObject
 
 object BeanSerializer extends JsonTypeSerializer {
 
@@ -11,15 +12,13 @@ object BeanSerializer extends JsonTypeSerializer {
 
     val clazz = obj.asInstanceOf[AnyRef].getClass()
     val fields = clazz.getDeclaredFields
+    AccessibleObject.setAccessible(fields.asInstanceOf[Array[AccessibleObject]], true)
 
     var isNotFirstField = false
 
     fields.foreach(field => {
 
-      field.setAccessible(true)
-
       val value = field.get(obj)
-
       if(value != null) {
 
         if(isNotFirstField) {
