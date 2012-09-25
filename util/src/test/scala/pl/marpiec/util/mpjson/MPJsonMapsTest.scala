@@ -8,6 +8,7 @@ import org.testng.annotations.Test
 import pl.marpiec.util.JsonSerializer
 import pl.marpiec.util.json.annotation.{SecondSubType, FirstSubType}
 
+// this tests also non default constructor and final fields
 class MapElement(var intValue: Int, val stringValue: String)
 
 class SimpleMapsObject {

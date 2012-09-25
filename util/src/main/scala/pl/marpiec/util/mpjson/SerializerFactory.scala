@@ -35,8 +35,8 @@ object SerializerFactory {
       return SimpleToStringSerializer
     }  else if (obj.asInstanceOf[AnyRef].getClass.isArray) {
       return ArraySerializer
-    } else if (obj.isInstanceOf[List[_]]) {
-      return ListSerializer
+    } else if (obj.isInstanceOf[Seq[_]]) {
+      return SeqSerializer
     } else if (obj.isInstanceOf[Tuple2[_, _]]) {
       return Tuple2Serializer
     } else if (obj.isInstanceOf[Option[_]]) {

@@ -1,8 +1,6 @@
 package pl.marpiec.util.mpjson.serializer
 
 import pl.marpiec.util.mpjson.{JsonTypeSerializer, SerializerFactory}
-import pl.marpiec.util.mpjson.util.LanguageUtils
-
 
 object BeanSerializer extends JsonTypeSerializer {
 
