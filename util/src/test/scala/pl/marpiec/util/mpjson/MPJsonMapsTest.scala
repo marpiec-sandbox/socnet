@@ -8,7 +8,7 @@ import org.testng.annotations.Test
 import pl.marpiec.util.JsonSerializer
 import pl.marpiec.util.json.annotation.{SecondSubType, FirstSubType}
 
-class MapElement(var intValue: Int, var stringValue: String)
+class MapElement(var intValue: Int, val stringValue: String)
 
 class SimpleMapsObject {
   

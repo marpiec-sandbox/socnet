@@ -15,10 +15,6 @@ object LanguageUtils {
   val DEFAULT_BOOLEAN = java.lang.Boolean.FALSE
   val DEFAULT_CHARACTER = java.lang.Character.valueOf('\0')
 
-  def getSetterName(fieldName:String) = fieldName + "_$eq"
-
-  def getGetterName(fieldName:String) = fieldName
-
   def getDefaultValueForPrimitive(clazz:Class[_]):AnyRef = {
     if (classOf[Int].equals(clazz)) {
       return DEFAULT_INTEGER

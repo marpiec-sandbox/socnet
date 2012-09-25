@@ -28,9 +28,10 @@ object BeanDeserializer extends JsonTypeDeserializer[Any] {
       val identifier = IdentifierDeserializer.deserialize(jsonIterator)
 
       val field = clazz.getDeclaredField(identifier)
+      field.setAccessible(true)
+      
       val fieldType = field.getType
-      val setter = clazz.getDeclaredMethod(LanguageUtils.getSetterName(identifier), fieldType)
-
+      
       if (jsonIterator.currentChar != ':') {
         throw new IllegalArgumentException("After type name there should be ':' separator but was [" + jsonIterator.currentChar + "], field=" + identifier)
       }
@@ -39,8 +40,8 @@ object BeanDeserializer extends JsonTypeDeserializer[Any] {
 
       val value = deserializer.deserialize(jsonIterator, fieldType, field)
 
-      setter.invoke(instance, value.asInstanceOf[AnyRef])
-
+      field.set(instance, value)
+      
       if (jsonIterator.currentChar == ',') {
         jsonIterator.nextChar
       }

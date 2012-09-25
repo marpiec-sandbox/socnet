@@ -17,9 +17,10 @@ object BeanSerializer extends JsonTypeSerializer {
     var isNotFirstField = false
 
     fields.foreach(field => {
-      val getter = clazz.getMethod(LanguageUtils.getGetterName(field.getName))
 
-      val value = getter.invoke(obj)
+      field.setAccessible(true)
+
+      val value = field.get(obj)
 
       if(value != null) {
 
