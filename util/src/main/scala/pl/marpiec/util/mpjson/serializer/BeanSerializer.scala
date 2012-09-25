@@ -1,7 +1,7 @@
 package pl.marpiec.util.mpjson.serializer
 
 import pl.marpiec.util.mpjson.{JsonTypeSerializer, SerializerFactory}
-import pl.marpiec.util.mpjson.util.ScalaLanguageUtils
+import pl.marpiec.util.mpjson.util.LanguageUtils
 
 
 object BeanSerializer extends JsonTypeSerializer {
@@ -17,7 +17,7 @@ object BeanSerializer extends JsonTypeSerializer {
     var isNotFirstField = false
 
     fields.foreach(field => {
-      val getter = clazz.getMethod(ScalaLanguageUtils.getGetterName(field.getName))
+      val getter = clazz.getMethod(LanguageUtils.getGetterName(field.getName))
 
       val value = getter.invoke(obj)
 

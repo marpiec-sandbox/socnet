@@ -8,19 +8,7 @@ import org.testng.annotations.Test
 import pl.marpiec.util.JsonSerializer
 import pl.marpiec.util.json.annotation.{SecondSubType, FirstSubType}
 
-class MapElement {
-  var intValue: Int = _
-  var stringValue: String = _
-}
-
-object MapElement {
-  def apply(intValue: Int, stringValue: String):MapElement = {
-    val element = new MapElement
-    element.intValue = intValue
-    element.stringValue = stringValue
-    element
-  }
-}
+class MapElement(var intValue: Int, var stringValue: String)
 
 class SimpleMapsObject {
   
@@ -48,8 +36,8 @@ class MPJsonMapsTest {
 
     smo.objectMap = Map()
     
-    smo.objectMap += MapElement(1, "one") -> MapElement(100, "one hundred")
-    smo.objectMap += MapElement(5, "five") -> MapElement(500, "five hundred")
+    smo.objectMap += new MapElement(1, "one") -> new MapElement(100, "one hundred")
+    smo.objectMap += new MapElement(5, "five") -> new MapElement(500, "five hundred")
 
     val json = new JsonSerializer
     val serialized = json.toJson(smo)

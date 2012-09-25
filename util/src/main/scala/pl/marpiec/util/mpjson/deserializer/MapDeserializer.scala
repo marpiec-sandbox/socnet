@@ -1,7 +1,7 @@
 package pl.marpiec.util.mpjson.deserializer
 
 import pl.marpiec.util.mpjson.{JsonTypeDeserializer, DeserializerFactory, StringIterator}
-import pl.marpiec.util.mpjson.util.ScalaLanguageUtils
+import pl.marpiec.util.mpjson.util.LanguageUtils
 import java.lang.reflect.{ParameterizedType, Field}
 import pl.marpiec.util.json.annotation.{SecondSubType, FirstSubType}
 
