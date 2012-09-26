@@ -2,7 +2,7 @@ package pl.marpiec.util.mpjson.deserializer
 
 import java.lang.reflect.Field
 import pl.marpiec.util.mpjson.{JsonTypeDeserializer, DeserializerFactory, StringIterator}
-import pl.marpiec.util.mpjson.util.{ObjectConstructionUtil, LanguageUtils}
+import pl.marpiec.util.mpjson.util.ObjectConstructionUtil
 
 /**
  * @author Marcin Pieciukiewicz
