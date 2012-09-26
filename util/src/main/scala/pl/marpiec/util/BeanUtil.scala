@@ -15,6 +15,8 @@ object BeanUtil {
   private val ZERO_LONG: java.lang.Long = 0L
   private val ZERO_FLOAT: java.lang.Float = 0.0f
   private val ZERO_DOUBLE: java.lang.Double = 0.0
+  private val ZERO_SHORT = java.lang.Short.valueOf("0")
+  private val ZERO_BYTE = java.lang.Byte.valueOf("0")
 
   private var fieldsCache = Map[Class[_], List[String]]()
   private var fieldCache = Map[(Class[_], String), Field]()
@@ -45,10 +47,14 @@ object BeanUtil {
       setter.invoke(bean, "")
     } else if (fieldType == classOf[Long]) {
       setter.invoke(bean, ZERO_LONG)
-    } else if (fieldType == classOf[Float]) {
-      setter.invoke(bean, ZERO_FLOAT)
     } else if (fieldType == classOf[Double]) {
       setter.invoke(bean, ZERO_DOUBLE)
+    } else if (fieldType == classOf[Short]) {
+      setter.invoke(bean, ZERO_SHORT)
+    } else if (fieldType == classOf[Byte]) {
+      setter.invoke(bean, ZERO_BYTE)
+    } else if (fieldType == classOf[Float]) {
+      setter.invoke(bean, ZERO_FLOAT)
     } else if (fieldType == classOf[Option[_]]) {
       setter.invoke(bean, None)
     } else {
