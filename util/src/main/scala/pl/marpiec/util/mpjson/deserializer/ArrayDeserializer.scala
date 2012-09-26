@@ -1,54 +1,32 @@
 package pl.marpiec.util.mpjson.deserializer
 
+import inner.AbstractJsonArrayDeserializer
 import java.lang.reflect.Field
-import pl.marpiec.util.mpjson.{JsonTypeDeserializer, DeserializerFactory, StringIterator}
+import pl.marpiec.util.mpjson.util.{TypesUtil, ObjectConstructionUtil}
 
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
-object ArrayDeserializer extends JsonTypeDeserializer[Array[_]] {
+object ArrayDeserializer extends AbstractJsonArrayDeserializer[Array[_]] {
 
-  def deserialize(jsonIterator: StringIterator, clazz: Class[_], field:Field):Array[_] = {
-    jsonIterator.nextChar
+  protected def getSubElementsType(clazz: Class[_], field: Field) = TypesUtil.getArraySubElementsType(clazz)
 
-    if (jsonIterator.currentChar != '[') {
-      throw new IllegalArgumentException("Array should start with '[' symbol but was [" + jsonIterator.currentChar + "], object type is " + clazz)
+  protected def createEmptyCollectionInstance(elementsType: Class[_]) = ObjectConstructionUtil.createArrayInstance(elementsType, 0)
+
+  protected def convertListIntoCollectionAndReturn(elementsType: Class[_], listInstance: List[Any]) = {
+
+    val array = ObjectConstructionUtil.createArrayInstance(elementsType, listInstance.size)
+    var list = listInstance.reverse
+    var p = 0
+
+    while (list.nonEmpty) {
+      java.lang.reflect.Array.set(array, p, list.head)
+      list = list.tail
+      p = p + 1
     }
 
-    var listInstance = List[Any]()
-    val elementsType = clazz.getComponentType
-
-    if (jsonIterator.checkFutureChar == ']') {
-      jsonIterator.nextChar
-      jsonIterator.nextChar
-      val array: Array[_] = java.lang.reflect.Array.newInstance(elementsType, listInstance.size).asInstanceOf[Array[_]]
-      array
-
-    } else {
-
-      while (jsonIterator.currentChar != ']') {
-        val deserializer = DeserializerFactory.getDeserializer(elementsType)
-        val value = deserializer.deserialize(jsonIterator, elementsType, field)
-        listInstance = value :: listInstance
-      }
-
-      jsonIterator.nextChar
-
-      val array: Array[_] = java.lang.reflect.Array.newInstance(elementsType, listInstance.size).asInstanceOf[Array[_]]
-
-      var p = 0
-      listInstance = listInstance.reverse
-      while (listInstance.nonEmpty) {
-        java.lang.reflect.Array.set(array, p, listInstance.head)
-        listInstance = listInstance.tail
-        p = p + 1
-      }
-
-      array
-    }
-
+    array
   }
-
 }

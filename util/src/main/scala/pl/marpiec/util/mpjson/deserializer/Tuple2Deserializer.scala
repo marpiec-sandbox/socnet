@@ -1,44 +1,23 @@
 package pl.marpiec.util.mpjson.deserializer
 
-import java.lang.reflect.{ParameterizedType, Field}
+import java.lang.reflect.Field
 import pl.marpiec.util.mpjson.{DeserializerFactory, StringIterator, JsonTypeDeserializer}
-import pl.marpiec.util.json.annotation.{SecondSubType, FirstSubType}
+import pl.marpiec.util.mpjson.util.TypesUtil
 
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
-object Tuple2Deserializer extends JsonTypeDeserializer[Tuple2[_,_]] {
-  def deserialize(jsonIterator: StringIterator, clazz: Class[_], field: Field):Tuple2[_,_] = {
+object Tuple2Deserializer extends JsonTypeDeserializer[Tuple2[_, _]] {
+  def deserialize(jsonIterator: StringIterator, clazz: Class[_], field: Field): Tuple2[_, _] = {
     jsonIterator.nextChar
 
     if (jsonIterator.currentChar != '[') {
       throw new IllegalArgumentException("Tuple should start with '[' symbol but was [" + jsonIterator.currentChar + "], object type is " + clazz)
     }
 
-    val types = field.getGenericType.asInstanceOf[ParameterizedType].getActualTypeArguments()
-
-    var firstElementType = types(0).asInstanceOf[Class[_]]
-    var secondElementType = types(1).asInstanceOf[Class[_]]
-
-    if(firstElementType.equals(classOf[Object])) {
-      val subtype = field.getAnnotation(classOf[FirstSubType])
-      if (subtype == null) {
-        throw new IllegalStateException("No @"+classOf[FirstSubType].getSimpleName+" defined for Tuple first element of field "+field.getName)
-      } else {
-        firstElementType = subtype.value()
-      }
-    }
-
-    if(secondElementType.equals(classOf[Object])) {
-      val subtype = field.getAnnotation(classOf[SecondSubType])
-      if (subtype == null) {
-        throw new IllegalStateException("No @"+classOf[SecondSubType].getSimpleName+" defined for Tuple second element type of field "+field.getName)
-      } else {
-        secondElementType = subtype.value()
-      }
-    }
+    val (firstElementType, secondElementType) = TypesUtil.getDoubleSubElementsType(field)
 
     val first = DeserializerFactory.getDeserializer(firstElementType).deserialize(jsonIterator, firstElementType, field)
 
@@ -49,6 +28,6 @@ object Tuple2Deserializer extends JsonTypeDeserializer[Tuple2[_,_]] {
     val second = DeserializerFactory.getDeserializer(secondElementType).deserialize(jsonIterator, secondElementType, field)
 
     jsonIterator.nextChar
-    (first,second)
+    (first, second)
   }
 }

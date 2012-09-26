@@ -1,46 +1,15 @@
 package pl.marpiec.util.mpjson.deserializer
 
-import java.lang.reflect.{Field, ParameterizedType, Type}
-import pl.marpiec.util.json.annotation.FirstSubType
-import pl.marpiec.util.mpjson.{JsonTypeDeserializer, DeserializerFactory, StringIterator}
+import inner.AbstractJsonArrayDeserializer
+import java.lang.reflect.Field
+import pl.marpiec.util.mpjson.util.TypesUtil
 
-object ListDeserializer extends JsonTypeDeserializer[List[_]] {
+object ListDeserializer extends AbstractJsonArrayDeserializer[List[_]] {
 
-  def deserialize(jsonIterator: StringIterator, clazz: Class[_], field:Field) = {
-    jsonIterator.nextChar
+  protected def getSubElementsType(clazz: Class[_], field: Field) = TypesUtil.getSubElementsType(field)
 
-    if (jsonIterator.currentChar != '[') {
-      throw new IllegalArgumentException("List should start with '[' symbol but was [" + jsonIterator.currentChar + "], object type is " + field.getType)
-    }
+  protected def createEmptyCollectionInstance(elementsType: Class[_]) = List[Any]()
 
-    var listInstance = List[Any]()
-    
-    if (jsonIterator.checkFutureChar == ']') {
-      jsonIterator.nextChar
-      jsonIterator.nextChar
-      listInstance
-    } else {
-
-      var elementsType = field.getGenericType.asInstanceOf[ParameterizedType].getActualTypeArguments()(0).asInstanceOf[Class[_]]
-
-      if(elementsType.equals(classOf[Object])) {
-        val subtype = field.getAnnotation(classOf[FirstSubType])
-        if (subtype == null) {
-          throw new IllegalStateException("No @"+classOf[FirstSubType].getSimpleName+" defined for List type of field "+field.getName)
-        } else {
-          elementsType = subtype.value()
-        }
-      }
-
-      while (jsonIterator.currentChar != ']') {
-        val deserializer = DeserializerFactory.getDeserializer(elementsType)
-        val value = deserializer.deserialize(jsonIterator, elementsType, field)
-        listInstance = value :: listInstance
-      }
-
-      jsonIterator.nextChar
-      listInstance.reverse
-    }
-  }
+  protected def convertListIntoCollectionAndReturn(elementsType: Class[_], listInstance: List[Any]) = listInstance.reverse
 
 }

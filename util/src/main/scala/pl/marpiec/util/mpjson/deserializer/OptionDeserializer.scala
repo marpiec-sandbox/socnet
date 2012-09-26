@@ -1,43 +1,22 @@
 package pl.marpiec.util.mpjson.deserializer
 
-import java.lang.reflect.{ParameterizedType, Field}
-import pl.marpiec.util.mpjson.{DeserializerFactory, StringIterator, JsonTypeDeserializer}
-import pl.marpiec.util.json.annotation.FirstSubType
+import inner.AbstractJsonArrayDeserializer
+import java.lang.reflect.Field
+import pl.marpiec.util.mpjson.util.TypesUtil
 
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
-object OptionDeserializer extends JsonTypeDeserializer[Option[_]] {
-  def deserialize(jsonIterator: StringIterator, clazz: Class[_], field: Field): Option[_] = {
-    jsonIterator.nextChar
+object OptionDeserializer extends AbstractJsonArrayDeserializer[Option[_]] {
 
-    if (jsonIterator.currentChar != '[') {
-      throw new IllegalArgumentException("Option should start with '[' symbol but was [" + jsonIterator.currentChar + "], object type is " + clazz)
-    }
+  protected def getSubElementsType(clazz: Class[_], field: Field) = TypesUtil.getSubElementsType(field)
 
-    if (jsonIterator.checkFutureChar == ']' ) {
-      jsonIterator.nextChar
-      jsonIterator.nextChar
-      None
-    } else {
-      val types = field.getGenericType.asInstanceOf[ParameterizedType].getActualTypeArguments()
+  protected def createEmptyCollectionInstance(elementsType: Class[_]) = None
 
-      var elementType = types(0).asInstanceOf[Class[_]]
-
-      if (elementType.equals(classOf[Object])) {
-        val subtype = field.getAnnotation(classOf[FirstSubType])
-        if (subtype == null) {
-          throw new IllegalStateException("No @"+classOf[FirstSubType].getSimpleName+" defined for Option type of field "+field.getName)
-        } else {
-          elementType = subtype.value()
-        }
-      }
-      val value = DeserializerFactory.getDeserializer(elementType).deserialize(jsonIterator, elementType, field)
-
-      jsonIterator.nextChar
-      Option(value)
-    }
+  protected def convertListIntoCollectionAndReturn(elementsType: Class[_], listInstance: List[Any]) = {
+    Option(listInstance.head)
   }
+
 }

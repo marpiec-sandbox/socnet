@@ -1,6 +1,7 @@
 package pl.marpiec.util.mpjson.util
 
 import java.lang.reflect.Constructor
+import scala.Array
 
 /**
  * @author Marcin Pieciukiewicz
@@ -8,7 +9,10 @@ import java.lang.reflect.Constructor
 
 object ObjectConstructionUtil {
 
-
+  def createArrayInstance(elementsType:Class[_], size:Int): Array[_] = {
+    java.lang.reflect.Array.newInstance(elementsType, size).asInstanceOf[Array[_]]
+  }
+  
 
   def createInstance(clazz: Class[_]): AnyRef = {
 
