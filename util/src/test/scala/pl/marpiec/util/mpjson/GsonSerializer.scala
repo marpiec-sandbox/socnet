@@ -1,8 +1,9 @@
 package pl.marpiec.util.mpjson
 
 import com.google.gson.{GsonBuilder, Gson}
+import gson._
 import pl.marpiec.util.senum.SEnum
-import pl.marpiec.util.json._
+
 import org.joda.time.{Instant, LocalDateTime, LocalDate}
 
 /**

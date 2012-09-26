@@ -1,4 +1,4 @@
-package pl.marpiec.util.json
+package pl.marpiec.util.mpjson.gson
 
 import pl.marpiec.util.senum.SEnum
 import com.google.gson._

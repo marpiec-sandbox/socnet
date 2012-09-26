@@ -1,4 +1,4 @@
-package pl.marpiec.util.json
+package pl.marpiec.util.mpjson.gson
 
 import com.google.gson._
 import java.lang.reflect.{ParameterizedType, Type}

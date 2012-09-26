@@ -1,4 +1,4 @@
-package pl.marpiec.util.json
+package pl.marpiec.util.mpjson.gson
 
 import org.joda.time.Instant
 import java.lang.reflect.Type
