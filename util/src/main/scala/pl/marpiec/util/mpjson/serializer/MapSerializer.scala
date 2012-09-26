@@ -11,7 +11,7 @@ object MapSerializer extends JsonTypeSerializer {
 
   def serialize(obj: Any, jsonBuilder:StringBuilder) = {
 
-    jsonBuilder.append('{')
+    jsonBuilder.append('[')
     
     val map:Map[_,_] = obj.asInstanceOf[Map[_,_]]
 
@@ -23,13 +23,14 @@ object MapSerializer extends JsonTypeSerializer {
       } else {
         isNotFirstField = true
       }
+      jsonBuilder.append("{k:")
       SerializerFactory.getSerializer(key).serialize(key, jsonBuilder)
-      jsonBuilder.append(':')
+      jsonBuilder.append(",v:")
       SerializerFactory.getSerializer(value).serialize(value, jsonBuilder)
-
+      jsonBuilder.append("}");
     }
 
-    jsonBuilder.append('}')
+    jsonBuilder.append(']')
   }
 
 

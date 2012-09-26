@@ -17,8 +17,13 @@ object IdentifierDeserializer {
       identifier.append(jsonIterator.currentChar)
       jsonIterator.nextChar
     }
+    
+    if(identifier.charAt(0) == '"') {
+      identifier.substring(1, identifier.length - 1)
+    } else {
+      identifier.toString
+    }
 
-    identifier.toString
   }
 
 }

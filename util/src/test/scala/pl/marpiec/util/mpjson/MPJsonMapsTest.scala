@@ -44,12 +44,12 @@ class MPJsonMapsTest {
     val json = new JsonSerializer
     val serialized = json.toJson(smo)
 
-    assertEquals(serialized, "{simpleMap:{\"a\":\"Ala\",\"k\":\"Kot\"}," +
-                              "primitiveMap:{1:1224,5:5324}," +
-                              "objectMap:{" +
-                                "{intValue:1,stringValue:\"one\"}:{intValue:100,stringValue:\"one hundred\"}," +
-                                "{intValue:5,stringValue:\"five\"}:{intValue:500,stringValue:\"five hundred\"}" +
-                              "}}")
+    assertEquals(serialized, "{simpleMap:[{k:\"a\",v:\"Ala\"},{k:\"k\",v:\"Kot\"}]," +
+                              "primitiveMap:[{k:1,v:1224},{k:5,v:5324}]," +
+                              "objectMap:[" +
+                                "{k:{intValue:1,stringValue:\"one\"},v:{intValue:100,stringValue:\"one hundred\"}}," +
+                                "{k:{intValue:5,stringValue:\"five\"},v:{intValue:500,stringValue:\"five hundred\"}}" +
+                              "]}")
 
     val smoDeserialized:SimpleMapsObject = json.fromJson(serialized, classOf[SimpleMapsObject])
 

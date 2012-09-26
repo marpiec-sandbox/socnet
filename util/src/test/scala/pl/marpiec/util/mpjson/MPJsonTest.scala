@@ -104,4 +104,14 @@ class MPJsonTest {
 
   }
 
+
+  def testDeserializationWithFieldNamesInQuotes {
+    val json = "{\"intValue\":10,\"stringValue\":\"Hello\"}"
+
+    val deserialized = MPJson.deserialize(json, classOf[InnerObject]).asInstanceOf[InnerObject]
+
+    assertEquals(deserialized.intValue, 10)
+    assertEquals(deserialized.stringValue, "Hello")
+  }
+
 }
