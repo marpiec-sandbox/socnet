@@ -3,10 +3,11 @@ package pl.marpiec.util.mpjson
 /**
  * @author Marcin Pieciukiewicz
  */
+
+import annotation.{SecondSubType, FirstSubType}
 import org.testng.Assert._
 import org.testng.annotations.Test
 import pl.marpiec.util.JsonSerializer
-import pl.marpiec.util.json.annotation.{SecondSubType, FirstSubType}
 
 // this tests also non default constructor and final fields
 class MapElement(var intValue: Int, val stringValue: String)

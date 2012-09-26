@@ -1,7 +1,7 @@
 package pl.marpiec.util.mpjson.util
 
 import java.lang.reflect.{Field, ParameterizedType}
-import pl.marpiec.util.json.annotation.{SecondSubType, FirstSubType}
+import pl.marpiec.util.mpjson.annotation.{SecondSubType, FirstSubType}
 
 /**
  * @author Marcin Pieciukiewicz

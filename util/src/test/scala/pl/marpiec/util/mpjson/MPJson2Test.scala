@@ -1,8 +1,9 @@
 package pl.marpiec.util.mpjson
 
+import annotation.{SecondSubType, FirstSubType}
 import org.testng.annotations.Test
 import org.testng.Assert._
-import pl.marpiec.util.json.annotation.{SecondSubType, FirstSubType}
+
 
 /**
  * @author Marcin Pieciukiewicz

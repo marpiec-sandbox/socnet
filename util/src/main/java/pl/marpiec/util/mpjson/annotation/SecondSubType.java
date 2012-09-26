@@ -1,4 +1,4 @@
-package pl.marpiec.util.json.annotation;
+package pl.marpiec.util.mpjson.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,6 +7,6 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface FirstSubType {
+public @interface SecondSubType {
     public Class<?> value();
 }
