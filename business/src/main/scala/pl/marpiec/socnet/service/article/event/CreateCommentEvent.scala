@@ -15,7 +15,7 @@ class CreateCommentEvent(val commentContent: String, val commentAuthorUserId: UI
   def applyEvent(aggregate: Aggregate) {
     val article = aggregate.asInstanceOf[Article]
     val comment = new ArticleComment(commentContent, new LocalDateTime, commentAuthorUserId)
-    article.comments += comment
+    article.comments ::= comment
   }
 
   def entityClass = classOf[Article]

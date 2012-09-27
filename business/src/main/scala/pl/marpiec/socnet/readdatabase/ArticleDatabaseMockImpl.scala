@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired
  * @author Marcin Pieciukiewicz
  */
 
-@Repository("articleDatabase")
+
 class ArticleDatabaseMockImpl @Autowired()(dataStore: DataStore)
   extends AbstractDatabase[Article](dataStore) with ArticleDatabase {
 

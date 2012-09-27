@@ -31,6 +31,7 @@ trait AbstractJsonArrayDeserializer[T] extends JsonTypeDeserializer[T] {
   private def readElementsIntoList(elementsType: Class[_], jsonIterator: StringIterator, field: Field): List[Any] = {
     var listInstance = List[Any]()
 
+    jsonIterator.skipWhitespaceChars
     while (jsonIterator.currentChar != ']') {
       val deserializer = DeserializerFactory.getDeserializer(elementsType)
       val value = deserializer.deserialize(jsonIterator, elementsType, field)

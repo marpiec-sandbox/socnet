@@ -58,7 +58,7 @@ class StringIterator(val stringValue: String) {
   def consumeObjectStart = {
     skipWhitespaceChars
     if (currentChar != '{') {
-      throw new IllegalArgumentException("Object should start with '{' symbol but was [" + currentChar + "]")
+      throw new IllegalArgumentException("Object should start with '{' symbol but was [" + currentChar + "]\n"+debugShowLeftString)
     }
     nextChar
   }
@@ -66,7 +66,7 @@ class StringIterator(val stringValue: String) {
   def consumeObjectEnd = {
     skipWhitespaceChars
     if (currentChar != '}') {
-      throw new IllegalArgumentException("Object should end with '{' symbol but was [" + currentChar + "]")
+      throw new IllegalArgumentException("Object should end with '{' symbol but was [" + currentChar + "]\n"+debugShowLeftString)
     }
     nextChar
   }
@@ -74,7 +74,7 @@ class StringIterator(val stringValue: String) {
   def consumeFieldValueSeparator = {
     skipWhitespaceChars
     if (currentChar != ':') {
-      throw new IllegalArgumentException("Field name and value should be separated by ':' symbol but was [" + currentChar + "]")
+      throw new IllegalArgumentException("Field name and value should be separated by ':' symbol but was [" + currentChar + "]\n"+debugShowLeftString)
     }
     nextChar
   }
@@ -82,7 +82,7 @@ class StringIterator(val stringValue: String) {
   def consumeArrayStart = {
     skipWhitespaceChars
     if (currentChar != '[') {
-      throw new IllegalArgumentException("Array should start with '[' symbol but was [" + currentChar + "]")
+      throw new IllegalArgumentException("Array should start with '[' symbol but was [" + currentChar + "]\n"+debugShowLeftString)
     }
     nextChar
   }
@@ -90,7 +90,7 @@ class StringIterator(val stringValue: String) {
   def consumeArrayEnd = {
     skipWhitespaceChars
     if (currentChar != ']') {
-      throw new IllegalArgumentException("Array should end with ']' symbol but was [" + currentChar + "]")
+      throw new IllegalArgumentException("Array should end with ']' symbol but was [" + currentChar + "]\n"+debugShowLeftString)
     }
     nextChar
   }
@@ -98,7 +98,7 @@ class StringIterator(val stringValue: String) {
   def consumeArrayValuesSeparator = {
     skipWhitespaceChars
     if (currentChar != ',') {
-      throw new IllegalArgumentException("Array values should be separated by ',' symbol but was [" + currentChar + "]")
+      throw new IllegalArgumentException("Array values should be separated by ',' symbol but was [" + currentChar + "]\n"+debugShowLeftString)
     }
     nextChar
   }
