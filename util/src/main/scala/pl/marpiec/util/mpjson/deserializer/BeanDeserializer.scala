@@ -12,18 +12,12 @@ object BeanDeserializer extends JsonTypeDeserializer[Any] {
 
   def deserialize(jsonIterator: StringIterator, clazz: Class[_], field:Field): Any = {
 
-    jsonIterator.nextChar
-
-    if (jsonIterator.currentChar != '{') {
-      throw new IllegalArgumentException("Object should start with '{' symbol but was [" + jsonIterator.currentChar + "], object type is " + clazz)
-    }
+    jsonIterator.consumeObjectStart
 
     val instance = ObjectConstructionUtil.createInstance(clazz)
 
-
-    jsonIterator.nextChar
-
     while (jsonIterator.currentChar != '}') {
+
 
       val identifier = IdentifierDeserializer.deserialize(jsonIterator)
 
@@ -31,17 +25,16 @@ object BeanDeserializer extends JsonTypeDeserializer[Any] {
       field.setAccessible(true)
       
       val fieldType = field.getType
-      
-      if (jsonIterator.currentChar != ':') {
-        throw new IllegalArgumentException("After type name there should be ':' separator but was [" + jsonIterator.currentChar + "], field=" + identifier)
-      }
+
+      jsonIterator.consumeFieldValueSeparator
 
       val deserializer = DeserializerFactory.getDeserializer(fieldType)
 
       val value = deserializer.deserialize(jsonIterator, fieldType, field)
 
       field.set(instance, value)
-      
+
+      jsonIterator.skipWhitespaceChars
       if (jsonIterator.currentChar == ',') {
         jsonIterator.nextChar
       }

@@ -11,9 +11,9 @@ trait AbstractIntegerDeserializer[T] extends JsonTypeDeserializer[T] {
 
   def deserialize(jsonIterator: StringIterator, clazz: Class[_], field: Field): T = {
 
-    val identifier = new StringBuilder()
+    jsonIterator.skipWhitespaceChars
 
-    jsonIterator.nextChar
+    val identifier = new StringBuilder()
 
     while (jsonIterator.isCurrentCharADigitPart) {
       identifier.append(jsonIterator.currentChar)

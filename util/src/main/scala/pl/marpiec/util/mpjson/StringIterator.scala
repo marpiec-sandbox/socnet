@@ -7,12 +7,24 @@ package pl.marpiec.util.mpjson
 class StringIterator(val stringValue: String) {
 
   val stringLength = stringValue.length
-  var nextIndex = 0
-  var currentChar: Char = _
+  var nextIndex = 1
+  var currentChar: Char = stringValue.charAt(0)
 
-  def nextChar = {
+  def skipWhitespaceChars {
+    while (currentChar.isWhitespace) {
+      nextChar
+    }
+  }
+  
+  def nextChar {
     currentChar = stringValue.charAt(nextIndex)
     nextIndex = nextIndex + 1
+  }
+
+  def nextNonWhitespaceChar {
+    do {
+      nextChar
+    } while (currentChar.isWhitespace)
   }
   
   def nextCharOrNullIfLast = {
@@ -41,6 +53,58 @@ class StringIterator(val stringValue: String) {
 
   def hasNextChar:Boolean = {
     return nextIndex < stringLength
+  }
+
+  def consumeObjectStart = {
+    skipWhitespaceChars
+    if (currentChar != '{') {
+      throw new IllegalArgumentException("Object should start with '{' symbol but was [" + currentChar + "]")
+    }
+    nextChar
+  }
+
+  def consumeObjectEnd = {
+    skipWhitespaceChars
+    if (currentChar != '}') {
+      throw new IllegalArgumentException("Object should end with '{' symbol but was [" + currentChar + "]")
+    }
+    nextChar
+  }
+
+  def consumeFieldValueSeparator = {
+    skipWhitespaceChars
+    if (currentChar != ':') {
+      throw new IllegalArgumentException("Field name and value should be separated by ':' symbol but was [" + currentChar + "]")
+    }
+    nextChar
+  }
+
+  def consumeArrayStart = {
+    skipWhitespaceChars
+    if (currentChar != '[') {
+      throw new IllegalArgumentException("Array should start with '[' symbol but was [" + currentChar + "]")
+    }
+    nextChar
+  }
+
+  def consumeArrayEnd = {
+    skipWhitespaceChars
+    if (currentChar != ']') {
+      throw new IllegalArgumentException("Array should end with ']' symbol but was [" + currentChar + "]")
+    }
+    nextChar
+  }
+
+  def consumeArrayValuesSeparator = {
+    skipWhitespaceChars
+    if (currentChar != ',') {
+      throw new IllegalArgumentException("Array values should be separated by ',' symbol but was [" + currentChar + "]")
+    }
+    nextChar
+  }
+
+  def debugShowLeftString:String = {
+    stringValue.substring(nextIndex - 1)
   }
 
 }

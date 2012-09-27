@@ -12,7 +12,7 @@ object BooleanDeserializer extends JsonTypeDeserializer[Boolean] {
 
     val booleanString = new StringBuilder()
 
-    jsonIterator.nextChar
+    jsonIterator.skipWhitespaceChars
 
     while (jsonIterator.isCurrentCharASmallLetter) {
       booleanString.append(jsonIterator.currentChar)

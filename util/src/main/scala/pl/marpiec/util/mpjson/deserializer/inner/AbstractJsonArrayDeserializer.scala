@@ -13,22 +13,19 @@ trait AbstractJsonArrayDeserializer[T] extends JsonTypeDeserializer[T] {
 
 
   def deserialize(jsonIterator: StringIterator, clazz: Class[_], field: Field): T = {
-    jsonIterator.nextChar
 
-    if (jsonIterator.currentChar != '[') {
-      throw new IllegalArgumentException("Json Array should start with '[' symbol but was [" + jsonIterator.currentChar + "], object type is " + clazz)
-    }
+    jsonIterator.consumeArrayStart
 
     val elementsType = getSubElementsType(clazz, field)
 
-    if (jsonIterator.checkFutureChar == ']') {
-      jsonIterator.nextChar
-      jsonIterator.nextChar
+    val listInstance = readElementsIntoList(elementsType, jsonIterator, field)
+    
+    if (listInstance.isEmpty) {
       createEmptyCollectionInstance(elementsType)
     } else {
-      val listInstance = readElementsIntoList(elementsType, jsonIterator, field)
       convertListIntoCollectionAndReturn(elementsType, listInstance)
     }
+
   }
 
   private def readElementsIntoList(elementsType: Class[_], jsonIterator: StringIterator, field: Field): List[Any] = {
@@ -38,6 +35,11 @@ trait AbstractJsonArrayDeserializer[T] extends JsonTypeDeserializer[T] {
       val deserializer = DeserializerFactory.getDeserializer(elementsType)
       val value = deserializer.deserialize(jsonIterator, elementsType, field)
       listInstance = value :: listInstance
+
+      jsonIterator.skipWhitespaceChars
+      if (jsonIterator.currentChar == ',') {
+        jsonIterator.nextChar
+      }
     }
 
     jsonIterator.nextChar

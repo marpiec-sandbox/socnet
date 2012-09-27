@@ -12,37 +12,40 @@ import pl.marpiec.socnet.model.Conversation
 @Test
 class ConversationDatabaseMockImplTest {
 
-  val eventStore: EventStore = new EventStoreMockImpl
-  val entityCache: AggregateCache = new AggregateCacheSimpleImpl
-  val dataStore: DataStore = new DataStoreImpl(eventStore, entityCache)
-  val conversationDatabase: ConversationDatabase = new ConversationDatabaseMockImpl(dataStore)
+  def testBasicDatabaseOperations() {
 
-  val uidGenerator: UidGenerator = new UidGeneratorMockImpl
+    val eventStore: EventStore = new EventStoreMockImpl
+    val entityCache: AggregateCache = new AggregateCacheSimpleImpl
+    val dataStore: DataStore = new DataStoreImpl(eventStore, entityCache)
+    val conversationDatabase: ConversationDatabase = new ConversationDatabaseMockImpl(dataStore)
 
-  val conversationId = uidGenerator.nextUid
-  val participantAUserId = uidGenerator.nextUid
-  val participantBUserId = uidGenerator.nextUid
-  val nonParticipantCUserId = uidGenerator.nextUid
+    val uidGenerator: UidGenerator = new UidGeneratorMockImpl
 
-  val conversation = new Conversation
-  conversation.id = conversationId
-  conversation.title = "Database test conversation"
-  conversation.participantsUserIds = participantAUserId :: participantBUserId :: Nil
-  conversation.creatorUserId = participantAUserId
+    val conversationId = uidGenerator.nextUid
+    val participantAUserId = uidGenerator.nextUid
+    val participantBUserId = uidGenerator.nextUid
+    val nonParticipantCUserId = uidGenerator.nextUid
 
-  conversationDatabase.addConversation(conversation)
+    val conversation = new Conversation
+    conversation.id = conversationId
+    conversation.title = "Database test conversation"
+    conversation.participantsUserIds = participantAUserId :: participantBUserId :: Nil
+    conversation.creatorUserId = participantAUserId
 
-  val conversationOption = conversationDatabase.getConversationById(conversationId)
-  assertTrue(conversationOption.isDefined)
-  assertEquals(conversationOption.get.id, conversationId)
-  assertEquals(conversationOption.get.title, "Database test conversation")
+    conversationDatabase.addConversation(conversation)
 
-  val conversationsOfA = conversationDatabase.getConversationsByParticipantUserId(participantAUserId)
-  val conversationsOfB = conversationDatabase.getConversationsByParticipantUserId(participantBUserId)
-  val conversationsOfC = conversationDatabase.getConversationsByParticipantUserId(nonParticipantCUserId)
+    val conversationOption = conversationDatabase.getConversationById(conversationId)
+    assertTrue(conversationOption.isDefined)
+    assertEquals(conversationOption.get.id, conversationId)
+    assertEquals(conversationOption.get.title, "Database test conversation")
 
-  assertEquals(conversationsOfA.size, 1)
-  assertEquals(conversationsOfB.size, 1)
-  assertEquals(conversationsOfC.size, 0)
+    val conversationsOfA = conversationDatabase.getConversationsByParticipantUserId(participantAUserId)
+    val conversationsOfB = conversationDatabase.getConversationsByParticipantUserId(participantBUserId)
+    val conversationsOfC = conversationDatabase.getConversationsByParticipantUserId(nonParticipantCUserId)
+
+    assertEquals(conversationsOfA.size, 1)
+    assertEquals(conversationsOfB.size, 1)
+    assertEquals(conversationsOfC.size, 0)
+  }
 
 }

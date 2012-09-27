@@ -10,10 +10,10 @@ import pl.marpiec.util.mpjson.{JsonTypeDeserializer, StringIterator}
 object StringDeserializer extends JsonTypeDeserializer[String] {
   def deserialize(jsonIterator: StringIterator, clazz: Class[_], field:Field): String = {
 
-    jsonIterator.nextChar
+    jsonIterator.skipWhitespaceChars
 
     if (jsonIterator.currentChar != '"') {
-      throw new IllegalArgumentException("String value shuld start with \", but was [" + jsonIterator.currentChar + "]")
+      throw new IllegalArgumentException("String value shuld start with '\"', but was [" + jsonIterator.currentChar + "]")
     }
 
     val stringValue = new StringBuilder()

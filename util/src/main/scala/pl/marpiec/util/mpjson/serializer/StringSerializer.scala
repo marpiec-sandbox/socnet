@@ -6,15 +6,18 @@ import pl.marpiec.util.mpjson.{JsonTypeSerializer, StringIterator}
 object StringSerializer extends JsonTypeSerializer {
   def serialize(obj:Any, jsonBuilder:StringBuilder) {
 
-    val iterator = new StringIterator(obj.asInstanceOf[String])
+    val string = obj.asInstanceOf[String]
+    val stringLength = string.length
 
+    var nextIndex = 0
+    
     jsonBuilder.append('"')
 
-    while(iterator.hasNextChar) {
-      iterator.nextChar
-       val char = iterator.currentChar
+    while(stringLength > nextIndex) {
+      val currentChar = string.charAt(nextIndex)
+      nextIndex = nextIndex + 1
 
-      char match {
+      currentChar match {
         case '"' => jsonBuilder.append("\\\"")
         case '\\' => jsonBuilder.append("\\\\")
         case '/' => jsonBuilder.append("\\/")
@@ -23,7 +26,7 @@ object StringSerializer extends JsonTypeSerializer {
         case '\n' => jsonBuilder.append("\\n")
         case '\r' => jsonBuilder.append("\\r")
         case '\t' => jsonBuilder.append("\\t")
-        case _ => jsonBuilder.append(char)
+        case _ => jsonBuilder.append(currentChar)
       }
     }
 

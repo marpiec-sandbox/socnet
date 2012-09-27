@@ -27,6 +27,11 @@ class MPSimpleDataObject {
   var listPrimitive: List[Int] = _
 }
 
+class TupleDataObject {
+  @FirstSubType(classOf[Int])
+  var tuple:(Int, String) = _
+}
+
 @Test
 class MPJsonTest {
 
@@ -46,7 +51,23 @@ class MPJsonTest {
   sdo.listObject = List[String]("Hello", "json", "serializer")
   sdo.listPrimitive = List[Int](15, 30, 1)
 
-  val properJson = "{" +
+  val properJson = " { " +
+    "longValue  : 1234567891234 , " +
+    "intValue : 1111 , " +
+    "stringValue : \"Hello Json \\n\\\" parser\\\\serializer \\\"\" , " +
+    "booleanValue : true , " +
+    "innerObject : { " +
+    "intValue : -2222 , " +
+    "stringValue : \"inner string\" " +
+    "} , " +
+    "arrayObject : [ \"Ala\" , \"ma\" , \"kota\" ] , " +
+    "arrayPrimitive:[6,8,10]," +
+    "listObject:[\"Hello\",\"json\", \"serializer\"] , " +
+    "listPrimitive : [ 15 , 30 , 1 ] " +
+    "} "
+
+
+  val properJsonNonWhitespaces = "{" +
     "longValue:1234567891234," +
     "intValue:1111," +
     "stringValue:\"Hello Json \\n\\\" parser\\\\serializer \\\"\"," +
@@ -100,7 +121,7 @@ class MPJsonTest {
   def testSimpleSerialization {
 
     var serialized = MPJson.serialize(sdo)
-    assertEquals(serialized, properJson)
+    assertEquals(serialized, properJsonNonWhitespaces)
 
   }
 
@@ -112,6 +133,24 @@ class MPJsonTest {
 
     assertEquals(deserialized.intValue, 10)
     assertEquals(deserialized.stringValue, "Hello")
+  }
+
+  def testDeserializationWithWhitespaces {
+    val json = " {  \"intValue\"  :  10  ,  stringValue  :   \"Hello\"   }   "
+
+    val deserialized = MPJson.deserialize(json, classOf[InnerObject]).asInstanceOf[InnerObject]
+
+    assertEquals(deserialized.intValue, 10)
+    assertEquals(deserialized.stringValue, "Hello")
+  }
+
+  def testTupleDeserializationWithWhitespaces {
+    val json = " {  tuple :  [ 5 , \"Ala\" ]  }   "
+
+    val deserialized = MPJson.deserialize(json, classOf[TupleDataObject]).asInstanceOf[TupleDataObject]
+
+    assertEquals(deserialized.tuple._1,5)
+    assertEquals(deserialized.tuple._2, "Ala")
   }
 
 }
