@@ -25,6 +25,7 @@ class MPSimpleDataObject {
   var listObject: List[String] = _
   @FirstSubType(classOf[Int])
   var listPrimitive: List[Int] = _
+  var emptyArray: Array[Long] = _
 }
 
 class TupleDataObject {
@@ -50,6 +51,8 @@ class MPJsonTest {
 
   sdo.listObject = List[String]("Hello", "json", "serializer")
   sdo.listPrimitive = List[Int](15, 30, 1)
+  
+  sdo.emptyArray = Array[Long]()
 
   val properJson = " { " +
     "longValue  : 1234567891234 , " +
@@ -63,7 +66,8 @@ class MPJsonTest {
     "arrayObject : [ \"Ala\" , \"ma\" , \"kota\" ] , " +
     "arrayPrimitive:[6,8,10]," +
     "listObject:[\"Hello\",\"json\", \"serializer\"] , " +
-    "listPrimitive : [ 15 , 30 , 1 ] " +
+    "listPrimitive : [ 15 , 30 , 1 ]," +
+    "emptyArray : [ ] " +
     "} "
 
 
@@ -79,7 +83,8 @@ class MPJsonTest {
     "arrayObject:[\"Ala\",\"ma\",\"kota\"]," +
     "arrayPrimitive:[6,8,10]," +
     "listObject:[\"Hello\",\"json\",\"serializer\"]," +
-    "listPrimitive:[15,30,1]" +
+    "listPrimitive:[15,30,1]," +
+    "emptyArray:[]" +
     "}"
 
 
@@ -115,6 +120,9 @@ class MPJsonTest {
     assertEquals(deserialized.listPrimitive(0), sdo.listPrimitive(0))
     assertEquals(deserialized.listPrimitive(1), sdo.listPrimitive(1))
     assertEquals(deserialized.listPrimitive(2), sdo.listPrimitive(2))
+
+    assertNotNull(deserialized.emptyArray)
+    assertTrue(deserialized.emptyArray.isEmpty)
   }
 
 
