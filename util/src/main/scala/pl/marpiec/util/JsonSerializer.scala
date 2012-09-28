@@ -1,7 +1,7 @@
 package pl.marpiec.util
 
 import mpjson.MPJson
-import mpjsoncustom.{SEnumConverter, InstantConverter, LocalDateConverter, LocalDateTimeConverter}
+import mpjsoncustom._
 import org.joda.time.{Instant, LocalDate, LocalDateTime}
 import senum.SEnum
 
@@ -14,7 +14,9 @@ class JsonSerializer {
   MPJson.registerConverter(classOf[LocalDateTime], LocalDateTimeConverter)
   MPJson.registerConverter(classOf[LocalDate], LocalDateConverter)
   MPJson.registerConverter(classOf[Instant], InstantConverter)
+  MPJson.registerConverter(classOf[UID], UIDConverter)
   MPJson.registerSuperclassConverter(classOf[SEnum[_]], SEnumConverter)
+
 
 
   def toJson(obj: AnyRef): String = {
