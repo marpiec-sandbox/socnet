@@ -1,7 +1,6 @@
 package pl.marpiec.socnet.web.page.profile.editUserProfilePage.elementListPanel
 
 import org.apache.wicket.markup.html.panel.Panel
-import collection.mutable.ListBuffer
 import org.apache.wicket.markup.repeater.RepeatingView
 import org.apache.wicket.markup.html.list.AbstractItem
 import org.apache.wicket.ajax.markup.html.AjaxLink
@@ -19,7 +18,7 @@ import pl.marpiec.socnet.web.wicket.SecureFormModel
  */
 
 abstract class ElementListPanel[T <: Identifiable, TM <: SecureFormModel](id: String, val user: User, val userProfile: UserProfile,
-                                                                          val elements: ListBuffer[T]) extends Panel(id) {
+                                                                          val elements: List[T]) extends Panel(id) {
 
 
   //schema

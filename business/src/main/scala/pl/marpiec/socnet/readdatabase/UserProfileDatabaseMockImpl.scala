@@ -12,7 +12,7 @@ import pl.marpiec.socnet.model.{User, UserProfile}
  * @author Marcin Pieciukiewicz
  */
 
-@Repository("userProfileDatabase")
+
 class UserProfileDatabaseMockImpl @Autowired()(dataStore: DataStore) extends AbstractDatabase[UserProfile](dataStore) with UserProfileDatabase {
 
   val USER_ID_INDEX = "userId"

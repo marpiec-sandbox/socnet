@@ -16,7 +16,7 @@ import pl.marpiec.cqrs.{Aggregate, DataStoreListener, DataStore}
 class ArticleDatabaseNoSqlImpl @Autowired()(dataStore: DataStore)
   extends DataStoreListener with ArticleDatabase {
 
-  val connector = new DatabaseConnectorImpl
+  val connector = new DatabaseConnectorImpl("articles")
 
   startListeningToDataStore(dataStore, classOf[Article])
 
@@ -33,7 +33,6 @@ class ArticleDatabaseNoSqlImpl @Autowired()(dataStore: DataStore)
   def getAllArticles = connector.getAllAggregates(classOf[Article]).asInstanceOf[List[Article]]
 
   def onEntityChanged(aggregate: Aggregate) {
-    val article = aggregate.asInstanceOf[Article]
-    connector.insertAggregate(article)
+    connector.insertAggregate(aggregate.asInstanceOf[Article])
   }
 }

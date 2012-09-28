@@ -20,7 +20,7 @@ class RemoveAdditionalInfoEvent(val additionalInfoId: UID) extends Event {
 
     if (additionalInfoOption.isDefined) {
       val additionalInfo = additionalInfoOption.get
-      userProfile.additionalInfo -= additionalInfo
+      userProfile.additionalInfo = userProfile.additionalInfo.filterNot(ai => ai.id == additionalInfo.id)
     } else {
       throw new IllegalStateException("No AdditionalInfo with given uid")
     }

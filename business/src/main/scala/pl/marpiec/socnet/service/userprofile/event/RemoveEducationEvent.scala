@@ -20,7 +20,7 @@ class RemoveEducationEvent(val educationId: UID) extends Event {
 
     if (educationOption.isDefined) {
       val education = educationOption.get
-      userProfile.education -= education
+      userProfile.education = userProfile.education.filterNot(e => e.id == education.id)
     } else {
       throw new IllegalStateException("No Education with given uid")
     }

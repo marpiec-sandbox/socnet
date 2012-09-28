@@ -3,18 +3,18 @@ package pl.marpiec.socnet.mongodb
 import com.mongodb.util.JSON
 import pl.marpiec.util.mpjson.MPJson
 import pl.marpiec.util.{UID, JsonSerializer}
-import pl.marpiec.cqrs.Aggregate
-import com.mongodb.{Mongo, BasicDBObject}
 import pl.marpiec.socnet.model.Article
+import pl.marpiec.cqrs.Aggregate
+import com.mongodb.{DBObject, Mongo, BasicDBObject}
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
-class DatabaseConnectorImpl {
+class DatabaseConnectorImpl(val collectionName:String) {
   val mongoConn = new Mongo("localhost", 27017)
   val socnetDB = mongoConn.getDB("socnet")
-  val collection = socnetDB.getCollection("articles")
+  val collection = socnetDB.getCollection(collectionName)
 
   val jsonSerializer = new JsonSerializer
 
@@ -54,7 +54,7 @@ class DatabaseConnectorImpl {
     val doc = JSON.parse(MPJson.serialize(aggregate)).asInstanceOf[BasicDBObject]
     doc.remove("id")
     doc.append("_id", aggregate.id.uid)
-    val writeResult = collection.insert(doc)
+    val writeResult = collection.update(new BasicDBObject().append("_id", aggregate.id.uid), doc, true, false)
     writeResult
   }
 
@@ -80,5 +80,14 @@ class DatabaseConnectorImpl {
       resultList ::= aggregate
     }
     resultList
+  }
+  
+  def findAggregateByQuery[E <: Aggregate](query:DBObject, clazz: Class[_ <: Aggregate]):E = {
+    var basicObject = collection.findOne(query).asInstanceOf[BasicDBObject]
+    val id = new UID(basicObject.get("_id").asInstanceOf[Long])
+    basicObject.removeField("_id")
+    var aggregate = jsonSerializer.fromJson(basicObject.toString, clazz).asInstanceOf[E]
+    aggregate.id = id
+    aggregate
   }
 }

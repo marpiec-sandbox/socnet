@@ -19,7 +19,7 @@ class RemoveJobExperienceEvent(val jobExperienceId: UID) extends Event {
 
     if (jobExperienceOption.isDefined) {
       val jobExperience = jobExperienceOption.get
-      userProfile.jobExperience -= jobExperience
+      userProfile.jobExperience = userProfile.jobExperience.filterNot(je => je.id == jobExperience.id)
     } else {
       throw new IllegalStateException("No JobExperience with given uid")
     }

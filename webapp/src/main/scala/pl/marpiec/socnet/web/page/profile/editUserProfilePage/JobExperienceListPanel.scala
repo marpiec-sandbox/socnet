@@ -4,7 +4,6 @@ import model.{JobExperienceFormModel, JobExperienceFormModelValidator, JobExperi
 import scala.collection.JavaConversions._
 import elementListPanel.ElementListPanel
 import pl.marpiec.socnet.model.{UserProfile, User}
-import collection.mutable.ListBuffer
 import pl.marpiec.socnet.constant.Month
 import org.apache.wicket.markup.html.form._
 import org.apache.wicket.model.PropertyModel
@@ -19,7 +18,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean
  * @author Marcin Pieciukiewicz
  */
 
-class JobExperienceListPanel(id: String, user: User, userProfile: UserProfile, jobExperienceList: ListBuffer[JobExperience])
+class JobExperienceListPanel(id: String, user: User, userProfile: UserProfile, jobExperienceList: List[JobExperience])
   extends ElementListPanel[JobExperience, JobExperienceFormModel](id, user, userProfile, jobExperienceList) {
 
   @SpringBean private var userProfileCommand: UserProfileCommand = _

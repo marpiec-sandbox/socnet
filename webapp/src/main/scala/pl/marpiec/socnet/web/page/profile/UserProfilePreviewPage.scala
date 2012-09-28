@@ -3,7 +3,6 @@ package pl.marpiec.socnet.web.page.profile
 import pl.marpiec.util.UID
 import org.apache.wicket.request.mapper.parameter.PageParameters
 import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException
-import collection.mutable.ListBuffer
 import org.apache.wicket.markup.repeater.RepeatingView
 import org.apache.wicket.markup.html.list.AbstractItem
 import pl.marpiec.socnet.model.userprofile.{Education, JobExperience}
@@ -58,7 +57,7 @@ class UserProfilePreviewPage(parameters: PageParameters) extends SecureWebPage(S
   add(new UserContactsPreviewPanel("userContactsPreviewPanel", userContacts, loggedInUserContacts))
 
   //methods
-  def addJobExperienceList(jobExperienceList: ListBuffer[JobExperience]) {
+  def addJobExperienceList(jobExperienceList: List[JobExperience]) {
     add(new RepeatingView("jobExperiencePreview") {
       setVisible(jobExperienceList.size > 0)
 
@@ -71,7 +70,7 @@ class UserProfilePreviewPage(parameters: PageParameters) extends SecureWebPage(S
   }
 
   //methods
-  def addEducationList(educationList: ListBuffer[Education]) {
+  def addEducationList(educationList: List[Education]) {
     add(new RepeatingView("educationPreview") {
       setVisible(educationList.size > 0)
 
@@ -84,7 +83,7 @@ class UserProfilePreviewPage(parameters: PageParameters) extends SecureWebPage(S
   }
 
   //methods
-  def addAdditionalInfoList(additionalInfoList: ListBuffer[AdditionalInfo]) {
+  def addAdditionalInfoList(additionalInfoList: List[AdditionalInfo]) {
     add(new RepeatingView("additionalInfoPreview") {
       setVisible(additionalInfoList.size > 0)
 

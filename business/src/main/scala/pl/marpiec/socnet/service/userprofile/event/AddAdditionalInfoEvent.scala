@@ -21,7 +21,7 @@ class AddAdditionalInfoEvent(val additionalInfo: AdditionalInfo,
 
     newAdditionalInfo.id = additionalInfoId
 
-    userProfile.additionalInfo += newAdditionalInfo
+    userProfile.additionalInfo ::= newAdditionalInfo
   }
 
 

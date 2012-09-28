@@ -2,6 +2,7 @@ package pl.marpiec.util.mpjson
 
 import deserializer._
 import primitives._
+import collection.mutable.ListBuffer
 
 /**
  * @author Marcin Pieciukiewicz
@@ -53,6 +54,10 @@ object DeserializerFactory {
       if (clazzType.isAssignableFrom(clazz)) {
         return deserializer
       }
+    }
+    
+    if(clazz.equals(classOf[ListBuffer[_]])) {
+      throw new IllegalArgumentException("ListBuffer is not supported, use immutable List instead")
     }
 
     val deserializerOption = additionalDeserializers.get(clazz)

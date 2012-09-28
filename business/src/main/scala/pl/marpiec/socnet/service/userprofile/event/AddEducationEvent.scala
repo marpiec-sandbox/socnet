@@ -21,7 +21,7 @@ class AddEducationEvent(val education: Education,
 
     newEducation.id = educationId
 
-    userProfile.education += newEducation
+    userProfile.education ::= newEducation
   }
 
 

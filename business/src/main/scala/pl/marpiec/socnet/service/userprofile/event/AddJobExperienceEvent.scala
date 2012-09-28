@@ -20,7 +20,7 @@ class AddJobExperienceEvent(val jobExperience: JobExperience,
     val newExperience: JobExperience = BeanUtil.copyProperties(new JobExperience, jobExperience)
     newExperience.id = jobExperienceId
 
-    userProfile.jobExperience += newExperience
+    userProfile.jobExperience ::= newExperience
   }
 
 

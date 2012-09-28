@@ -4,7 +4,6 @@ import model._
 import scala.collection.JavaConversions._
 import elementListPanel.ElementListPanel
 import pl.marpiec.socnet.model.{UserProfile, User}
-import collection.mutable.ListBuffer
 import pl.marpiec.socnet.constant.Month
 import org.apache.wicket.markup.html.panel.Panel
 import pl.marpiec.util.UID
@@ -19,7 +18,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean
  * @author Marcin Pieciukiewicz
  */
 
-class EducationListPanel(id: String, user: User, userProfile: UserProfile, educationList: ListBuffer[Education])
+class EducationListPanel(id: String, user: User, userProfile: UserProfile, educationList: List[Education])
   extends ElementListPanel[Education, EducationFormModel](id, user, userProfile, educationList) {
 
   @SpringBean private var userProfileCommand: UserProfileCommand = _

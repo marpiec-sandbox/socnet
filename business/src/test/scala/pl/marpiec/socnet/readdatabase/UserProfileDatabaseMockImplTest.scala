@@ -39,7 +39,7 @@ class UserProfileDatabaseMockImplTest {
     education.major = "Elektronika i Inżynieria Komputerowa"
     education.level = "Magisterskie"
 
-    profile.education += education
+    profile.education ::= education
 
     userProfileDatabase.addUserProfile(profile)
     val userProfileOption = userProfileDatabase.getUserProfileById(profileId)
