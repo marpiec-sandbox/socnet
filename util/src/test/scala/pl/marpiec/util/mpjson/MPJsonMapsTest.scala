@@ -52,7 +52,7 @@ class MPJsonMapsTest {
                               "]}")
 
 
-    val serializedWithWhitespaces = "  {  simpleMap  :  [  {  k : \"a\" , v : \"Ala\" } , {  k : \"k\" , v : \"Kot\" } ] , " +
+    val serializedWithWhitespaces = "  {  simpleMap  :  [  {  \"k\" : \"a\" , \"v\" : \"Ala\" } , {  k : \"k\" , v : \"Kot\" } ] , " +
       "primitiveMap : [ { k : 1 , v : 1224 } , { k : 5 , v : 5324 } ] , " +
       "objectMap : [ " +
       "{ k : { intValue : 1 , stringValue : \"one\" } , v  : { intValue : 100 , stringValue : \"one hundred\" } } , " +

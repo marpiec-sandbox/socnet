@@ -24,7 +24,13 @@ object MapDeserializer extends JsonTypeDeserializer[Map[_, _]] {
       jsonIterator.consumeObjectStart
 
       jsonIterator.skipWhitespaceChars
-      jsonIterator.nextNonWhitespaceChar // pass k:
+      if (jsonIterator.currentChar == '"') {
+        jsonIterator.nextNonWhitespaceChar
+      }
+      jsonIterator.nextNonWhitespaceChar // skip k: or "k":
+      if (jsonIterator.currentChar == '"') {
+        jsonIterator.nextNonWhitespaceChar
+      }
       jsonIterator.nextNonWhitespaceChar
 
       val key: Any = DeserializerFactory.getDeserializer(firstElementType).deserialize(jsonIterator, firstElementType, field)
@@ -32,7 +38,13 @@ object MapDeserializer extends JsonTypeDeserializer[Map[_, _]] {
       jsonIterator.consumeArrayValuesSeparator
 
       jsonIterator.skipWhitespaceChars
-      jsonIterator.nextNonWhitespaceChar // pass v:
+      if (jsonIterator.currentChar == '"') {
+        jsonIterator.nextNonWhitespaceChar
+      }
+      jsonIterator.nextNonWhitespaceChar // skip v: or "v":
+      if (jsonIterator.currentChar == '"') {
+        jsonIterator.nextNonWhitespaceChar
+      }
       jsonIterator.nextNonWhitespaceChar
 
       val value: Any = DeserializerFactory.getDeserializer(secondElementType).deserialize(jsonIterator, secondElementType, field)
