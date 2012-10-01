@@ -69,7 +69,7 @@ object MapDeserializer extends JsonTypeDeserializer[Map[_, _]] {
     if (identifier == "k") {
       DeserializerFactory.getDeserializer(keyType).deserialize(jsonIterator, keyType, field)
     } else if (identifier == "v") {
-      DeserializerFactory.getDeserializer(keyType).deserialize(jsonIterator, valueType, field)
+      DeserializerFactory.getDeserializer(valueType).deserialize(jsonIterator, valueType, field)
     } else {
       throw new IllegalArgumentException("Map entry should contain k or v element but was: [" + identifier + "]")
     }
