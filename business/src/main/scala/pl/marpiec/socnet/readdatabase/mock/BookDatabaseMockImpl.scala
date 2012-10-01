@@ -11,7 +11,7 @@ import pl.marpiec.socnet.readdatabase.BookDatabase
  * @author Marcin Pieciukiewicz
  */
 
-@Repository("bookDatabase")
+
 class BookDatabaseMockImpl @Autowired()(dataStore: DataStore)
   extends AbstractDatabase[Book](dataStore) with BookDatabase {
 
