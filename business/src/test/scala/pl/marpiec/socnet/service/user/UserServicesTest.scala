@@ -1,6 +1,7 @@
 package pl.marpiec.socnet.service.user
 
-import pl.marpiec.socnet.readdatabase.{UserDatabaseMockImpl, UserDatabase}
+import pl.marpiec.socnet.readdatabase.mock.UserDatabaseMockImpl
+import pl.marpiec.socnet.readdatabase.UserDatabase
 import pl.marpiec.cqrs._
 import exception.ConcurrentAggregateModificationException
 import org.testng.Assert._

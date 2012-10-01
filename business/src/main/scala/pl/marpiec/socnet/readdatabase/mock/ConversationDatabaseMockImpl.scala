@@ -1,17 +1,19 @@
-package pl.marpiec.socnet.readdatabase
+package pl.marpiec.socnet.readdatabase.mock
 
 import org.springframework.beans.factory.annotation.Autowired
 import pl.marpiec.cqrs.DataStore
 import pl.marpiec.socnet.model.Conversation
 import org.springframework.stereotype.Repository
 import pl.marpiec.util.UID
+import pl.marpiec.socnet.readdatabase.ConversationDatabase
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
 @Repository("conversationDatabase")
-class ConversationDatabaseMockImpl @Autowired()(dataStore: DataStore) extends AbstractDatabase[Conversation](dataStore) with ConversationDatabase {
+class ConversationDatabaseMockImpl @Autowired()(dataStore: DataStore)
+  extends AbstractDatabase[Conversation](dataStore) with ConversationDatabase {
 
   startListeningToDataStore(dataStore, classOf[Conversation])
 

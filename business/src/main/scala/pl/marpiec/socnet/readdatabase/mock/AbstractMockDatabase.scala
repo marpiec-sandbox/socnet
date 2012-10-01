@@ -1,9 +1,9 @@
-package pl.marpiec.socnet.readdatabase
+package pl.marpiec.socnet.readdatabase.mock
 
-import exception.EntryAlreadyExistsException
 import pl.marpiec.cqrs.{Aggregate, DataStoreListener, DataStore}
 import collection.mutable.HashMap
 import pl.marpiec.util.UID
+import pl.marpiec.socnet.readdatabase.exception.EntryAlreadyExistsException
 
 
 /**

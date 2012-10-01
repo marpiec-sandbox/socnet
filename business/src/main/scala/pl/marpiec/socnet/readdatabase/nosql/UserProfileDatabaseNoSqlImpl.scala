@@ -1,4 +1,4 @@
-package pl.marpiec.socnet.readdatabase
+package pl.marpiec.socnet.readdatabase.nosql
 
 import org.springframework.stereotype.Repository
 import org.springframework.beans.factory.annotation.Autowired
@@ -8,6 +8,7 @@ import pl.marpiec.socnet.mongodb.DatabaseConnectorImpl
 import pl.marpiec.socnet.model.{Article, UserProfile, User}
 import scala.Predef._
 import com.mongodb.BasicDBObject
+import pl.marpiec.socnet.readdatabase.UserProfileDatabase
 
 /**
  * @author Marcin Pieciukiewicz
@@ -28,7 +29,7 @@ class UserProfileDatabaseNoSqlImpl @Autowired()(dataStore: DataStore)
   def updateUserProfile(userProfile: UserProfile) {
     connector.insertAggregate(userProfile)
   }
-  
+
   def getUserProfileByUserId(userId: UID): Option[UserProfile] = {
     Option(connector.findAggregateByQuery((new BasicDBObject).append("userId", userId.uid), classOf[UserProfile]))
   }
@@ -36,6 +37,7 @@ class UserProfileDatabaseNoSqlImpl @Autowired()(dataStore: DataStore)
   def getUserProfileById(id: UID): Option[UserProfile] = {
     Option(connector.getAggregateById(id, classOf[UserProfile]))
   }
+
   def getUserProfiles(list: List[User]) = Map[User, UserProfile]()
 
   def onEntityChanged(entity: Aggregate) {

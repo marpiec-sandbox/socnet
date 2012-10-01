@@ -1,6 +1,7 @@
 package pl.marpiec.socnet.readdatabase
 
 
+import mock.UserProfileDatabaseMockImpl
 import org.testng.annotations.Test
 import pl.marpiec.socnet.model.UserProfile
 import pl.marpiec.socnet.model.userprofile.Education

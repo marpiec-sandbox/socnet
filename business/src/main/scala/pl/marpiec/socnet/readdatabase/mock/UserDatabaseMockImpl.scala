@@ -1,4 +1,4 @@
-package pl.marpiec.socnet.readdatabase
+package pl.marpiec.socnet.readdatabase.mock
 
 import pl.marpiec.socnet.model.User
 import pl.marpiec.cqrs.{Aggregate, DataStore}
@@ -6,6 +6,7 @@ import pl.marpiec.util.UID
 import org.springframework.stereotype.Repository
 import org.springframework.beans.factory.annotation.Autowired
 import org.apache.commons.lang.StringUtils
+import pl.marpiec.socnet.readdatabase.UserDatabase
 
 /**
  * ...
@@ -13,7 +14,8 @@ import org.apache.commons.lang.StringUtils
  */
 
 @Repository("userDatabase")
-class UserDatabaseMockImpl @Autowired()(dataStore: DataStore) extends AbstractDatabase[User](dataStore) with UserDatabase {
+class UserDatabaseMockImpl @Autowired()(dataStore: DataStore)
+  extends AbstractDatabase[User](dataStore) with UserDatabase {
 
   val EMAIL_INDEX: String = "email"
 

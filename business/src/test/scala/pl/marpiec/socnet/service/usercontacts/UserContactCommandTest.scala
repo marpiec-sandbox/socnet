@@ -4,7 +4,7 @@ import org.testng.annotations.Test
 import org.testng.Assert._
 import pl.marpiec.cqrs._
 import pl.marpiec.socnet.model.UserContacts
-import pl.marpiec.socnet.readdatabase.UserContactsDatabaseMockImpl
+import pl.marpiec.socnet.readdatabase.mock.UserContactsDatabaseMockImpl
 
 /**
  * @author Marcin Pieciukiewicz

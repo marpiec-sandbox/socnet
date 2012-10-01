@@ -4,9 +4,10 @@ import input.BookOwnershipInput
 import org.testng.annotations.Test
 
 import pl.marpiec.cqrs._
-import pl.marpiec.socnet.readdatabase.{BookDatabaseMockImpl, BookDatabase}
+import pl.marpiec.socnet.readdatabase.mock.BookDatabaseMockImpl
+import pl.marpiec.socnet.readdatabase.BookDatabase
 import pl.marpiec.socnet.constant.Rating
-import pl.marpiec.socnet.model.book.{BookOwnership, BookDescription}
+import pl.marpiec.socnet.model.book.BookDescription
 import org.testng.Assert._
 import org.joda.time.LocalDateTime
 

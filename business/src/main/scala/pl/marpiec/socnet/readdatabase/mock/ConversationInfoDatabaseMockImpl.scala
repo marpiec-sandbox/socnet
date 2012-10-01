@@ -1,10 +1,11 @@
-package pl.marpiec.socnet.readdatabase
+package pl.marpiec.socnet.readdatabase.mock
 
 import org.springframework.beans.factory.annotation.Autowired
 import pl.marpiec.socnet.model.ConversationInfo
 import pl.marpiec.util.UID
 import pl.marpiec.cqrs.{Aggregate, DataStore}
 import org.springframework.stereotype.Repository
+import pl.marpiec.socnet.readdatabase.ConversationInfoDatabase
 
 /**
  * @author Marcin Pieciukiewicz

@@ -4,7 +4,8 @@ import org.testng.annotations.Test
 import pl.marpiec.cqrs._
 import pl.marpiec.socnet.model.Conversation
 import org.testng.Assert._
-import pl.marpiec.socnet.readdatabase.{ConversationInfoDatabaseMockImpl, ConversationInfoDatabase}
+import pl.marpiec.socnet.readdatabase.mock.ConversationInfoDatabaseMockImpl
+import pl.marpiec.socnet.readdatabase.ConversationInfoDatabase
 
 /**
  * @author Marcin Pieciukiewicz

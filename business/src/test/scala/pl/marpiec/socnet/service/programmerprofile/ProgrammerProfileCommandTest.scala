@@ -5,9 +5,8 @@ import org.testng.Assert._
 import pl.marpiec.cqrs._
 import pl.marpiec.socnet.model.ProgrammerProfile
 import pl.marpiec.socnet.constant.TechnologyKnowledgeLevel
-import pl.marpiec.socnet.readdatabase.ProgrammerProfileDatabaseMockImpl
+import pl.marpiec.socnet.readdatabase.mock.ProgrammerProfileDatabaseMockImpl
 import pl.marpiec.socnet.model.programmerprofile.KnownTechnology
-import pl.marpiec.socnet.model.programmerprofile.KnownTechnology._
 
 /**
  * @author Marcin Pieciukiewicz

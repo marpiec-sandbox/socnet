@@ -1,5 +1,6 @@
 package pl.marpiec.socnet.readdatabase
 
+import mock.ConversationDatabaseMockImpl
 import org.testng.annotations.Test
 import org.testng.Assert._
 import pl.marpiec.cqrs._

@@ -1,5 +1,6 @@
 package pl.marpiec.socnet.readdatabase
 
+import mock.ArticleDatabaseMockImpl
 import org.testng.annotations.Test
 import org.testng.Assert._
 import org.joda.time.LocalDateTime

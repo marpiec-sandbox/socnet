@@ -1,4 +1,4 @@
-package pl.marpiec.socnet.readdatabase
+package pl.marpiec.socnet.readdatabase.nosql
 
 import pl.marpiec.socnet.model.Article
 import pl.marpiec.util.UID
@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository
 import org.springframework.beans.factory.annotation.Autowired
 import pl.marpiec.socnet.mongodb.DatabaseConnectorImpl
 import pl.marpiec.cqrs.{Aggregate, DataStoreListener, DataStore}
+import pl.marpiec.socnet.readdatabase.ArticleDatabase
 
 
 /**

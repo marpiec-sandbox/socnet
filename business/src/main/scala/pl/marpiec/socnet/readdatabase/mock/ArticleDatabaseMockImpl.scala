@@ -1,10 +1,10 @@
-package pl.marpiec.socnet.readdatabase
+package pl.marpiec.socnet.readdatabase.mock
 
 import pl.marpiec.cqrs.DataStore
 import pl.marpiec.socnet.model.Article
 import pl.marpiec.util.UID
-import org.springframework.stereotype.Repository
 import org.springframework.beans.factory.annotation.Autowired
+import pl.marpiec.socnet.readdatabase.ArticleDatabase
 
 
 /**
