@@ -10,11 +10,13 @@ import pl.marpiec.util.mpjson.util.TypesUtil
 
 object MapDeserializer extends JsonTypeDeserializer[Map[_, _]] {
 
+
+
   def deserialize(jsonIterator: StringIterator, clazz: Class[_], field: Field): Map[_, _] = {
 
     jsonIterator.consumeArrayStart
 
-    val (firstElementType, secondElementType) = TypesUtil.getDoubleSubElementsType(field)
+    val (keyType, valueType) = TypesUtil.getDoubleSubElementsType(field)
     var map = Map[Any, Any]()
 
     jsonIterator.skipWhitespaceChars
@@ -22,33 +24,32 @@ object MapDeserializer extends JsonTypeDeserializer[Map[_, _]] {
     while (jsonIterator.currentChar != ']') {
 
       jsonIterator.consumeObjectStart
+      
+      val firstIdentifier = IdentifierDeserializer.deserialize(jsonIterator)
 
-      jsonIterator.skipWhitespaceChars
-      if (jsonIterator.currentChar == '"') {
-        jsonIterator.nextNonWhitespaceChar
-      }
-      jsonIterator.nextNonWhitespaceChar // skip k: or "k":
-      if (jsonIterator.currentChar == '"') {
-        jsonIterator.nextNonWhitespaceChar
-      }
-      jsonIterator.nextNonWhitespaceChar
+      jsonIterator.consumeFieldValueSeparator //skip ":"
 
-      val key: Any = DeserializerFactory.getDeserializer(firstElementType).deserialize(jsonIterator, firstElementType, field)
-
+      val firstValue = deserializeValue(jsonIterator, field, firstIdentifier, keyType, valueType)
+      
       jsonIterator.consumeArrayValuesSeparator
 
-      jsonIterator.skipWhitespaceChars
-      if (jsonIterator.currentChar == '"') {
-        jsonIterator.nextNonWhitespaceChar
-      }
-      jsonIterator.nextNonWhitespaceChar // skip v: or "v":
-      if (jsonIterator.currentChar == '"') {
-        jsonIterator.nextNonWhitespaceChar
-      }
-      jsonIterator.nextNonWhitespaceChar
 
-      val value: Any = DeserializerFactory.getDeserializer(secondElementType).deserialize(jsonIterator, secondElementType, field)
-      map += key -> value
+      val secondIdentifier = IdentifierDeserializer.deserialize(jsonIterator)
+      
+      if (secondIdentifier == firstIdentifier) {
+        throw new IllegalArgumentException("Map entry elements must be 'k' and 'v' but both was ["+firstIdentifier+"]")
+      }
+
+      jsonIterator.consumeFieldValueSeparator //skip ":"
+
+      val secondValue = deserializeValue(jsonIterator, field, secondIdentifier, keyType, valueType)
+
+      
+      if (firstIdentifier == "k") {
+        map += firstValue -> secondValue
+      } else {
+        map += secondValue -> firstValue
+      }
 
       jsonIterator.consumeObjectEnd // }
       jsonIterator.skipWhitespaceChars
@@ -62,4 +63,17 @@ object MapDeserializer extends JsonTypeDeserializer[Map[_, _]] {
     jsonIterator.nextChar
     map
   }
+
+  def deserializeValue(jsonIterator: StringIterator, field: Field, identifier: String,
+                       keyType: Class[_], valueType: Class[_]):Any = {
+    if (identifier == "k") {
+      DeserializerFactory.getDeserializer(keyType).deserialize(jsonIterator, keyType, field)
+    } else if (identifier == "v") {
+      DeserializerFactory.getDeserializer(keyType).deserialize(jsonIterator, valueType, field)
+    } else {
+      throw new IllegalArgumentException("Map entry should contain k or v element but was: [" + identifier + "]")
+    }
+  }
+
+
 }

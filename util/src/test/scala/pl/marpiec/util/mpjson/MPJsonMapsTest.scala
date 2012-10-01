@@ -52,14 +52,14 @@ class MPJsonMapsTest {
                               "]}")
 
 
-    val serializedWithWhitespaces = "  {  simpleMap  :  [  {  \"k\" : \"a\" , \"v\" : \"Ala\" } , {  k : \"k\" , v : \"Kot\" } ] , " +
-      "primitiveMap : [ { k : 1 , v : 1224 } , { k : 5 , v : 5324 } ] , " +
+    val serializedWithWhitespacesQuotesAndInvertedKV = "  {  simpleMap  :  [  {  \"k\" : \"a\" , \"v\" : \"Ala\" } , {  k : \"k\" , v : \"Kot\" } ] , " +
+      "primitiveMap : [ { k : 1 , v : 1224 } , { v : 5324 , \"k\" : 5} ] , " +
       "objectMap : [ " +
       "{ k : { intValue : 1 , stringValue : \"one\" } , v  : { intValue : 100 , stringValue : \"one hundred\" } } , " +
       "{k:{intValue:5,stringValue:\"five\"},v:{intValue:500,stringValue:\"five hundred\"}} " +
       "] } "
 
-    val smoDeserialized:SimpleMapsObject = json.fromJson(serializedWithWhitespaces, classOf[SimpleMapsObject])
+    val smoDeserialized:SimpleMapsObject = json.fromJson(serializedWithWhitespacesQuotesAndInvertedKV, classOf[SimpleMapsObject])
 
     assertNotNull(smoDeserialized)
 
