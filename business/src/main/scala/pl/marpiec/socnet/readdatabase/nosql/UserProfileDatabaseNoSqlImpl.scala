@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import pl.marpiec.cqrs.{Aggregate, DataStoreListener, DataStore}
 import pl.marpiec.util.UID
 import pl.marpiec.socnet.mongodb.DatabaseConnectorImpl
-import pl.marpiec.socnet.model.{Article, UserProfile, User}
+import pl.marpiec.socnet.model.{UserProfile, User}
 import scala.Predef._
 import com.mongodb.BasicDBObject
 import pl.marpiec.socnet.readdatabase.UserProfileDatabase
@@ -31,11 +31,11 @@ class UserProfileDatabaseNoSqlImpl @Autowired()(dataStore: DataStore)
   }
 
   def getUserProfileByUserId(userId: UID): Option[UserProfile] = {
-    Option(connector.findAggregateByQuery((new BasicDBObject).append("userId", userId.uid), classOf[UserProfile]))
+    connector.findAggregateByQuery((new BasicDBObject).append("userId", userId.uid), classOf[UserProfile])
   }
 
   def getUserProfileById(id: UID): Option[UserProfile] = {
-    Option(connector.getAggregateById(id, classOf[UserProfile]))
+    connector.getAggregateById(id, classOf[UserProfile])
   }
 
   def getUserProfiles(list: List[User]) = Map[User, UserProfile]()

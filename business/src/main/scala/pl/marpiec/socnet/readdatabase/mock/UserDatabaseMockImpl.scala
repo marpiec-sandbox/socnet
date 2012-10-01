@@ -13,7 +13,7 @@ import pl.marpiec.socnet.readdatabase.UserDatabase
  * @author Marcin Pieciukiewicz
  */
 
-@Repository("userDatabase")
+
 class UserDatabaseMockImpl @Autowired()(dataStore: DataStore)
   extends AbstractDatabase[User](dataStore) with UserDatabase {
 

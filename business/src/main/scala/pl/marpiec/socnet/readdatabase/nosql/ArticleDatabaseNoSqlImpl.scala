@@ -29,9 +29,9 @@ class ArticleDatabaseNoSqlImpl @Autowired()(dataStore: DataStore)
     connector.insertAggregate(article)
   }
 
-  def getArticleById(id: UID): Option[Article] = Option[Article](connector.getAggregateById(id, classOf[Article]))
+  def getArticleById(id: UID): Option[Article] = connector.getAggregateById(id, classOf[Article])
 
-  def getAllArticles = connector.getAllAggregates(classOf[Article]).asInstanceOf[List[Article]]
+  def getAllArticles = connector.getAllAggregates(classOf[Article])
 
   def onEntityChanged(aggregate: Aggregate) {
     connector.insertAggregate(aggregate.asInstanceOf[Article])
