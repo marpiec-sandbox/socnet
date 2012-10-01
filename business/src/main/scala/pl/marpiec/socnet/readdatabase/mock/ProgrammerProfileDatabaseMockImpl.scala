@@ -7,7 +7,7 @@ import pl.marpiec.util.UID
 import org.springframework.stereotype.Repository
 import pl.marpiec.socnet.readdatabase.ProgrammerProfileDatabase
 
-@Repository("programmerProfileDatabase")
+
 class ProgrammerProfileDatabaseMockImpl @Autowired()(dataStore: DataStore)
   extends AbstractDatabase[ProgrammerProfile](dataStore) with ProgrammerProfileDatabase {
 
