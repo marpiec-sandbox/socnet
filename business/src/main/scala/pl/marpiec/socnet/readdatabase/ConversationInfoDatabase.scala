@@ -11,5 +11,5 @@ import pl.marpiec.socnet.model.ConversationInfo
 trait ConversationInfoDatabase {
   def getConversationInfo(userId: UID, conversationId: UID): Option[ConversationInfo]
 
-  def getConversationInfoList(userIdConversationId: List[(UID, UID)]): List[ConversationInfo]
+  def getConversationInfoList(userId: UID, conversationId: List[UID]): List[ConversationInfo]
 }

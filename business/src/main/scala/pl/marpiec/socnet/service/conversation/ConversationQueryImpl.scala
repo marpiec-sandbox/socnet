@@ -3,39 +3,39 @@ package pl.marpiec.socnet.service.conversation
 import org.springframework.stereotype.Service
 import pl.marpiec.util.UID
 import pl.marpiec.socnet.model.{ConversationInfo, Conversation}
-import pl.marpiec.socnet.readdatabase.{ConversationInfoDatabase, UserDatabase, ConversationDatabase}
-import org.springframework.beans.factory.annotation.{Autowired, Autowire}
+import pl.marpiec.socnet.readdatabase.{ConversationInfoDatabase, ConversationDatabase}
+import org.springframework.beans.factory.annotation.Autowired
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
 @Service("conversationQuery")
-class ConversationQueryImpl @Autowired() (val conversationDatabase: ConversationDatabase,
-                                          conversationInfoDatabase: ConversationInfoDatabase) extends ConversationQuery {
+class ConversationQueryImpl @Autowired()(val conversationDatabase: ConversationDatabase,
+                                         conversationInfoDatabase: ConversationInfoDatabase) extends ConversationQuery {
 
-  def loadConversationsOfUser(userId:UID):(List[Conversation], Map[UID, ConversationInfo]) = {
+  def loadConversationsOfUser(userId: UID): (List[Conversation], Map[UID, ConversationInfo]) = {
     val userConversations: List[Conversation] = conversationDatabase.getConversationsByParticipantUserId(userId)
     val conversationInfoMap: Map[UID, ConversationInfo] = loadConversationInfo(userId, userConversations)
     (userConversations, conversationInfoMap)
   }
 
 
-  private def loadConversationInfo(userId:UID, conversations: List[Conversation]): Map[UID, ConversationInfo] = {
+  private def loadConversationInfo(userId: UID, conversations: List[Conversation]): Map[UID, ConversationInfo] = {
 
-    val userIdConversationIdList: scala.List[(UID, UID)] = prepareKeyList(conversations, userId)
-    val conversationInfoList: List[ConversationInfo] = conversationInfoDatabase.getConversationInfoList(userIdConversationIdList)
+    val conversationIdList: List[UID] = prepareConversationIdsList(conversations, userId)
+    val conversationInfoList: List[ConversationInfo] = conversationInfoDatabase.getConversationInfoList(userId, conversationIdList)
     createConversationInfoMapFromList(conversationInfoList)
 
   }
 
-  private def prepareKeyList(conversations: List[Conversation], userId: UID): List[(UID, UID)] = {
-    var userIdConversationIdList: List[(UID, UID)] = List()
+  private def prepareConversationIdsList(conversations: List[Conversation], userId: UID): List[UID] = {
+    var conversationIdList: List[UID] = List()
 
     conversations.foreach(conversation => {
-      userIdConversationIdList ::=(userId, conversation.id)
+      conversationIdList ::= conversation.id
     })
-    userIdConversationIdList
+    conversationIdList
   }
 
   private def createConversationInfoMapFromList(conversationInfoList: List[ConversationInfo]): Map[UID, ConversationInfo] = {

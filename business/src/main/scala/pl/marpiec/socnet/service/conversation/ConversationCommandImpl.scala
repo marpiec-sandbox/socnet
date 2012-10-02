@@ -16,6 +16,7 @@ import pl.marpiec.cqrs.{UidGenerator, EventRow, EventStore}
 class ConversationCommandImpl @Autowired()(val eventStore: EventStore, val uidGenerator: UidGenerator) extends ConversationCommand {
 
 
+  //TODO to powinno być w tranzakcji!!!
   def createConversation(userId: UID, title: String, participantsUserIds: List[UID], newConversationId: UID,
                          firstMessageText: String, firstMessageId: UID) {
     val createConversation = new CreateConversationEvent(userId, title, participantsUserIds, new LocalDateTime(), firstMessageText, firstMessageId)

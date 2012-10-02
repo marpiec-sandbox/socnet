@@ -75,7 +75,15 @@ resultList
 
   def getMultipleAggregatesByIds[E <: Aggregate](ids: List[UID], clazz: Class[_ <: Aggregate]): List[E] = {
     val queryBuilder = QueryBuilder.start("_id")
-    ids.foreach(id => queryBuilder.in(id))
+    
+    val idsArray = new Array[Long](ids.size)
+
+    for (i <- 0 until ids.size) {
+      idsArray(i) = ids(i).uid
+    }
+
+    queryBuilder.in(idsArray)
+
     val query = queryBuilder.get()
 
     val dbCursor = collection.find(query)

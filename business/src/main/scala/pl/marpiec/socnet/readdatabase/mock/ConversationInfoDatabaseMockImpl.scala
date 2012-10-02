@@ -4,14 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired
 import pl.marpiec.socnet.model.ConversationInfo
 import pl.marpiec.util.UID
 import pl.marpiec.cqrs.{Aggregate, DataStore}
-import org.springframework.stereotype.Repository
 import pl.marpiec.socnet.readdatabase.ConversationInfoDatabase
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
-@Repository("conversationInfoDatabase")
+
 class ConversationInfoDatabaseMockImpl @Autowired()(dataStore: DataStore)
   extends AbstractDatabase[ConversationInfo](dataStore) with ConversationInfoDatabase {
 
@@ -28,12 +27,11 @@ class ConversationInfoDatabaseMockImpl @Autowired()(dataStore: DataStore)
     getByIndex(USER_ID_CONVERSATION_ID_INDEX, (userId, conversationId))
   }
 
-  def getConversationInfoList(userIdConversationIdList: List[(UID, UID)]) = {
+  def getConversationInfoList(userId: UID, conversationId: List[UID]) = {
 
     getAll.filter(info => {
 
-      val userIdConversationIdOption = userIdConversationIdList.find((userIdConversationId: (UID, UID)) => {
-        val (userId, conversationId) = userIdConversationId
+      val userIdConversationIdOption = conversationId.find(conversationId => {
         info.userId == userId && info.conversationId == conversationId
       })
 
