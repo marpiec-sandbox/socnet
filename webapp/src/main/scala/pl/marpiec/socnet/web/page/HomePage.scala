@@ -22,7 +22,6 @@ class HomePage extends SimpleTemplatePage {
   add(AuthorizeUser(new LinksModule("linksModule")))
   add(AuthorizeUser(new MessagesModule("messagesModule")))
   add(AuthorizeUser(new PeopleModule("peopleModule")))
-  add(AuthorizeUser(new ProfileModule("profileModule")))
   add(AuthorizeUser(new TechnologiesModule("technologiesModule")))
 
 }

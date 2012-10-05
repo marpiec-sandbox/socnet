@@ -8,8 +8,9 @@ import pl.marpiec.socnet.readdatabase.{UserDatabase, UserContactsDatabase}
 import pl.marpiec.socnet.web.application.SocnetSession
 import org.apache.wicket.markup.repeater.RepeatingView
 import org.apache.wicket.markup.html.list.AbstractItem
-import org.apache.wicket.markup.repeater.RepeatingView._
 import pl.marpiec.socnet.web.component.user.UserSummaryPreviewPanel
+import org.apache.wicket.markup.html.link.BookmarkablePageLink
+import pl.marpiec.socnet.web.page.contacts.{InvitationsReceivedPage, InvitationsSentPage, ContactsPage}
 
 /**
  * @author Marcin Pieciukiewicz
@@ -19,6 +20,10 @@ class PeopleModule(id:String) extends Panel(id) {
 
   @SpringBean var userContactsDatabase: UserContactsDatabase = _
   @SpringBean var userDatabase: UserDatabase = _
+
+  add(AuthorizeUser(new BookmarkablePageLink("contactsLink", classOf[ContactsPage])))
+  add(AuthorizeUser(new BookmarkablePageLink("invitationsSentLink", classOf[InvitationsSentPage])))
+  add(AuthorizeUser(new BookmarkablePageLink("invitationsReceivedLink", classOf[InvitationsReceivedPage])))
 
   if(getSession.asInstanceOf[SocnetSession].isAuthenticated) {
     val CONTACTS_COUNT_TO_DISPLAY = 6

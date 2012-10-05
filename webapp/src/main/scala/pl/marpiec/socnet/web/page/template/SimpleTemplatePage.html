@@ -13,102 +13,50 @@
     <script src="js/form.js"></script>
 </head>
 <body>
-<div class="pageHeader">
-    <a wicket:id="homeLink" class="mainLogo">Socnet</a>
 
-    <div class="userInfo" wicket:id="userInfo"></div>
-</div>
+
 <div class="pageContent">
+
+
+    <div class="topContainer mainPageModule">
+
+        <div class="portalLogo">
+            <a wicket:id="homeLink" class="mainLogo">Socnet</a>
+        </div>
+
+        <div class="userInfo" wicket:id="userInfo"></div>
+
+    </div>
+
+
     <wicket:child/>
 </div>
-<!--  <div wicket:id="debug"></div>
-<div wicket:id="applicationView"></div>
-<div wicket:id="sessionView"></div>
-<div wicket:id="inspectorDebugPanel"></div>
-<div wicket:id="sessionSizeDebugPanel"></div>
-<div wicket:id="inspectorBug"></div>-->
-
 
 </body>
 
 <wicket:fragment wicket:id="loggedUser">
-    <div class="menuLinkContainer profileLink">
 
-        <a href="#" class="link">Profil</a>
-
-        <div class="popup">
-            <div class="title">Profil</div>
-            <div class="links">
-                <a wicket:id="profileLink">Podgląd profilu</a>
-                <a wicket:id="editProfileLink">Edytuj profil</a>
-            </div>
+    <div class="userProfile">
+        <div class="userName">
+            <a wicket:id="profileLink" class="profileLink"><span wicket:id="userName">fullName</span></a>
         </div>
-
-    </div>
-    <div class="menuLinkContainer contactsLink">
-        <a href="#" class="link">Kontakty</a>
-
-        <div class="popup">
-            <div class="title">Kontakty</div>
-            <div class="links">
-                <a href="#" wicket:id="contactsLink">Lista kontaków</a>
-                <a href="#" wicket:id="invitationsSentLink">Wysłane zaproszenia</a>
-                <a href="#" wicket:id="invitationsReceivedLink">Otrzymane zaproszenia</a>
-            </div>
+        <div class="professionalTitle">
+            <span wicket:id="userProfessionalTitle">userProfessionalTitle</span>
         </div>
     </div>
-    <div class="menuLinkContainer">
-        <a href="#" wicket:id="conversationsLink" class="conversationsLink">Wiadomości</a>
+
+    <div class="accountOptions">
+        <a class="defaultButton editProfileLink" wicket:id="editProfileLink">Edytuj profil</a>
+        <a class="defaultButton logoutButton" wicket:id="signoutLink">Wyloguj</a>
     </div>
-    <span class="userName" wicket:id="userName">userName</span>
-    <a wicket:id="signoutLink" class="signoutLink">Wyloguj</a>
-
-
-    <script type="text/javascript">
-
-        function showProfilePopup() {
-            jQuery(".profileLink .popup").css({display:"block"});
-            hideContactsPopup();
-        }
-
-        function hideProfilePopup() {
-            jQuery(".profileLink .popup").css({display:"none"});
-        }
-
-        function showContactsPopup() {
-            jQuery(".contactsLink .popup").css({display:"block"});
-            hideProfilePopup();
-        }
-
-        function hideContactsPopup() {
-            jQuery(".contactsLink .popup").css({display:"none"});
-        }
-
-        jQuery(function () {
-            var jqProfileLink = jQuery(".profileLink .link");
-            jqProfileLink.focus(showProfilePopup);
-            jqProfileLink.mouseenter(showProfilePopup);
-            jqProfileLink.click(showProfilePopup);
-
-            jQuery(".menuLinkContainer .title").click(hideProfilePopup);
-            jQuery(".menuLinkContainer .popup").mouseleave(hideProfilePopup);
-
-            var jqContactsLink = jQuery(".contactsLink .link");
-            jqContactsLink.focus(showContactsPopup);
-            jqContactsLink.mouseenter(showContactsPopup);
-            jqContactsLink.click(showContactsPopup);
-
-            jQuery(".menuLinkContainer .title").click(hideContactsPopup);
-            jQuery(".menuLinkContainer .popup").mouseleave(hideContactsPopup);
-        })
-
-    </script>
 
 </wicket:fragment>
 
 <wicket:fragment wicket:id="userNotLoggedIn">
-    <a href="#" class="loginFormLink">Zaloguj się</a>
-
+    <div class="accountOptions">
+        <a href="#" class="defaultButton loginFormLink">Zaloguj się</a>
+    </div>
+        
     <div class="signInPopup">
         <div class="title">Zaloguj się</div>
         <span wicket:id="signInPanel"></span>

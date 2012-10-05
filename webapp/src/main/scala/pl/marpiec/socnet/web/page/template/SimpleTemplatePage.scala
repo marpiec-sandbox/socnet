@@ -32,17 +32,12 @@ class SimpleTemplatePage extends WebPage {
 
   add(new Label("pageTitle", titleLabelModel))
 
-
   if (session.isSignedIn) {
     add(new Fragment("userInfo", "loggedUser", this) {
-      add(new Label("userName", session.user.fullName))
-      add(AuthorizeUser(new BookmarkablePageLink("signoutLink", classOf[SignOutPage])))
-      add(AuthorizeUser(new BookmarkablePageLink("conversationsLink", classOf[UserConversationsPage])))
-      add(AuthorizeUser(new BookmarkablePageLink("contactsLink", classOf[ContactsPage])))
-      add(AuthorizeUser(new BookmarkablePageLink("invitationsSentLink", classOf[InvitationsSentPage])))
-      add(AuthorizeUser(new BookmarkablePageLink("invitationsReceivedLink", classOf[InvitationsReceivedPage])))
+      add(UserProfilePreviewPage.getLink(session.user).add(new Label("userName", session.user.fullName)))
+      add(new Label("userProfessionalTitle", session.user.summary))
       add(AuthorizeUser(new BookmarkablePageLink("editProfileLink", classOf[EditUserProfilePage])))
-      add(AuthorizeUser(UserProfilePreviewPage.getLink(session.user)))
+      add(AuthorizeUser(new BookmarkablePageLink("signoutLink", classOf[SignOutPage])))
     })
   } else {
     add(new Fragment("userInfo", "userNotLoggedIn", this) {

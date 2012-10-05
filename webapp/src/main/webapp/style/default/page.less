@@ -1,4 +1,4 @@
-.pageHeader {
+/*.pageHeader {
     height: 20px;
     padding-bottom: 3px;
     border-bottom: 1px solid #CCC;
@@ -25,30 +25,7 @@
         }
 
 
-        .signInPopup {
-            display: none;
-            position: absolute;
-            top: -4px;
-            right: -8px;
-            background-color: @defaultBackgroundColor;
-            border: 1px solid #CCCCCC;
 
-
-            .title {
-                text-align: right;
-                position: relative;
-                top:-1px;
-                left:-3px;
-                border-radius: 5px 0px 0px 5px;
-                padding: 4px;
-                border-bottom: 0px;
-            }
-
-            .links {
-                border-radius: 0px 5px 5px 5px;
-                padding: 4px;
-            }
-        }
 
 
         .menuLinkContainer {
@@ -108,9 +85,163 @@
 
     }
 
-}
+}       */
 
 .pageContent {
     padding: 10px 20px;
     width: 1150px;
+
+
+    .mainPageModule {
+
+        .glassBox;
+
+        padding: 30px 0 0 0;
+        margin: 0 0 30px;
+        background: none repeat scroll 0 0 #F3F7FB;
+        border: 1px solid #9EB5C6;
+        position: relative;
+
+        .title, .titleShadow {
+            font-size: 17px;
+            font-weight: bold;
+            position: absolute;
+            text-transform: uppercase;
+            left: 1px;
+            top: -1px;
+            cursor: default;
+        }
+
+        .title {
+            color: @mainThemeFontColor;
+            /*text-shadow: 1px 1px 0 #aaa;*/
+            opacity: 0.77;
+        }
+
+        .titleShadow {
+            color: transparent;
+            text-shadow: 1px 1px 1px white;
+            opacity: 0;
+        }
+
+        .content {
+            margin: 3px 8px;
+        }
+
+        .buttons {
+
+            text-align: right;
+
+            .buttonHolder {
+                display: inline-block;
+                margin: 7px 11px 3px 0;
+            }
+
+        }
+
+        a.defaultButton {
+            background-color: #F9FDFF;
+            border: 1px solid #ddd;
+            display: table-cell;
+            font-size: 14px;
+            font-weight: bold;
+            height: 79px;
+            line-height: 21px;
+            padding: 5px 10px 6px;
+            text-align: right;
+            text-decoration: none;
+            vertical-align: bottom;
+            width: 88px;
+
+            &:hover {
+                background-color: #fbfaf3;
+            }
+
+            &:active {
+                background-color: #F5F5F5;
+            }
+
+        }
+
+        .buttonHolder:first-child {
+            margin-top: 20px;
+        }
+
+        .buttonHolder:last-child {
+            margin-right: 3px;
+        }
+
+    }
+
+    .mainPageModule.topContainer {
+        margin: 10px 33px 0 15px;
+        position: relative;
+        height: 25px;
+
+
+        .portalLogo {
+            position: absolute;
+            top: 0px;
+            left: 6px;
+            color: @mainThemeFontColor;
+            opacity: 0.77;
+
+            font-size: 32px;
+            font-weight: bold;
+            font-family: Courier New;
+        }
+        .userProfile{
+
+            position: absolute;
+            top: 5px;
+            right: 386px;
+            .userName {
+                color: @mainThemeFontColor;
+                font-size: 18px;
+                font-weight: bold;
+            }
+            .professionalTitle {
+
+            }
+        }
+        .accountOptions {
+            position: absolute;
+            top: 5px;
+            right: 6px;
+
+            .logoutButton, .loginFormLink, .editProfileLink {
+                height: 20px;
+            }
+        }
+
+        .signInPopup {
+            display: none;
+            position: absolute;
+            right: 6px;
+            top: 6px;
+            background-color: @defaultBackgroundColor;
+            border: 1px solid #CCCCCC;
+
+
+            .title {
+                text-align: right;
+                position: relative;
+                top:-1px;
+                left:-3px;
+                border-radius: 5px 0px 0px 5px;
+                padding: 4px;
+                border-bottom: 0px;
+            }
+
+            .links {
+                border-radius: 0px 5px 5px 5px;
+                padding: 4px;
+            }
+        }
+    }
+
+
+
 }
+
+
