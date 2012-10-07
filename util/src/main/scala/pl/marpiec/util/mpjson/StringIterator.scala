@@ -107,4 +107,8 @@ class StringIterator(val stringValue: String) {
     stringValue.substring(nextIndex - 1)
   }
 
+  def debugShowConsumedString:String = {
+    stringValue.substring(0, nextIndex - 1)
+  }
+
 }

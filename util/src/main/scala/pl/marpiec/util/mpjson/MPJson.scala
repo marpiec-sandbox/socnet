@@ -11,7 +11,11 @@ object MPJson {
 
   def deserialize(json: String, clazz: Class[_]): Any = {
     val jsonIterator = new StringIterator(json)
-    BeanDeserializer.deserialize(jsonIterator, clazz, null)
+    try {
+      BeanDeserializer.deserialize(jsonIterator, clazz, null)
+    } catch {
+      case e:RuntimeException => throw new JsonInnerException("Problem deserializing:\n"+json+"\n"+jsonIterator.debugShowConsumedString, e)
+    }
   }
 
   def serialize(obj: AnyRef): String = {
