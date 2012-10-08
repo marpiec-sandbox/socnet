@@ -16,4 +16,8 @@ class BookOwnership {
   var wantToBuy = false
   var wantToBorrow = false
   
+  def isInterestedInBook:Boolean = {
+    owner || willingToSell || willingToLend || wantToBuy || wantToBorrow
+  }
+  
 }

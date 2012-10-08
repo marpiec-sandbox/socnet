@@ -141,4 +141,15 @@ resultList
     }
     resultList
   }
+  
+  def findIdsByQuery(query:DBObject):List[UID] = {
+    var dbCursor = collection.find(query, QueryBuilder.start("_id").is("1").get())
+    var resultList = List[UID]()
+    while (dbCursor.hasNext) {
+      val basicObject = dbCursor.next()
+      val id = new UID(basicObject.get("_id").asInstanceOf[Long])
+      resultList ::= id
+    }
+    resultList
+  }
 }

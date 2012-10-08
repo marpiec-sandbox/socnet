@@ -29,4 +29,19 @@ class BookDatabaseMockImpl @Autowired()(dataStore: DataStore)
   def getBookById(id: UID): Option[Book] = getById(id)
 
   def getAllBooks: List[Book] = getAll
+
+  def getBooksOwnedBy(userId: UID):List[Book] = {
+    
+    var resultList = List[Book]()
+    
+    getAll.foreach(book => {
+      val ownershipOption = book.ownership.get(userId)
+      if(ownershipOption.isDefined && ownershipOption.get.isInterestedInBook) {
+        resultList ::= book
+      }
+    })
+
+    resultList
+    
+  }
 }

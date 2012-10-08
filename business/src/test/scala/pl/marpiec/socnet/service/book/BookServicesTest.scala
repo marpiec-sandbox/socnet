@@ -10,6 +10,7 @@ import pl.marpiec.socnet.constant.Rating
 import pl.marpiec.socnet.model.book.BookDescription
 import org.testng.Assert._
 import org.joda.time.LocalDateTime
+import pl.marpiec.socnet.model.Book
 
 /**
  * @author Marcin Pieciukiewicz
@@ -156,6 +157,11 @@ class BookServicesTest {
     assertEquals(ownership.willingToSell, false)
     assertEquals(ownership.wantToBorrow, false)
     assertEquals(ownership.wantToBuy, false)
+
+    val booksOwnedByUser:List[Book] = bookDatabase.getBooksOwnedBy(bookOwnerUserId)
+
+    assertEquals(booksOwnedByUser.size, 1)
+    assertEquals(booksOwnedByUser.head.id, bookId)
   }
 
 }

@@ -12,5 +12,6 @@ trait BookDatabase {
   def getBookByTitle(title: String): Option[Book]
   def getBookById(id: UID): Option[Book]
   def getAllBooks: List[Book]
+  def getBooksOwnedBy(userId: UID): List[Book]
 
 }

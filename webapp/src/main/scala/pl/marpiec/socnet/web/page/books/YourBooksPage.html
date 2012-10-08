@@ -3,7 +3,23 @@
 <body>
 <wicket:extend>
 
-    <div>Your books page</div>
+    <div>Your books:</div>
+
+    <div wicket:id="findBook" />
+
+    <div>
+        <a wicket:id="yourBooksLink">Twoje książki</a>
+    </div>
+
+    <div>
+        <a wicket:id="addBookLink">Dodaj nową książkę</a>
+    </div>
+
+    <div class="bookList">
+        <div wicket:id="book" class="bookSummaryIterated">
+            <div wicket:id="bookSummaryPreview">bookSummaryPreview</div>
+        </div>
+    </div>
 
 
 

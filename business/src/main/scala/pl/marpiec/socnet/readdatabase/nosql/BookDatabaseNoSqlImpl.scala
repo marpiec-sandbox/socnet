@@ -32,4 +32,12 @@ class BookDatabaseNoSqlImpl @Autowired()(dataStore: DataStore)
   def onEntityChanged(entity: Aggregate) {
     connector.insertAggregate(entity.asInstanceOf[Book])
   }
+
+  def getBooksOwnedBy(userId: UID):List[Book] = {
+    val allBooks:List[Book] = connector.findMultipleAggregatesByQuery(QueryBuilder.start("ownership.k").is(userId.uid).get, classOf[Book])
+    allBooks.filter(book => {
+      book.ownership.get(userId).get.isInterestedInBook
+    })
+    
+  }
 }
