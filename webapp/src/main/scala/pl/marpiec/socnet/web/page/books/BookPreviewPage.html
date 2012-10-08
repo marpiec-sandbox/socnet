@@ -6,30 +6,33 @@
 
     <div class="bookPreview">
 
-        <div wicket:id="bookOwnership">bookOwnership</div>
+        <div class="bookDetailsPanel">
 
-        <div class="icon"></div>
-        <div wicket:id="bookTitle" class="bookTitle">title</div>
-        <div wicket:id="polishTitle" class="polishTitle">polishTitle</div>
-        <div wicket:id="authors" class="authors">authors</div>
-        <div class="isbn">
-            ISBN: <span wicket:id="isbn">isbn</span>
+            <div class="icon"></div>
+            <div wicket:id="bookTitle" class="bookTitle">title</div>
+            <div wicket:id="polishTitle" class="polishTitle">polishTitle</div>
+            <div wicket:id="authors" class="authors">authors</div>
+            <div class="isbn">
+                ISBN: <span wicket:id="isbn">isbn</span>
+            </div>
+
+            <div class="ratings">
+                <div>
+                    Twoja ocena książki:
+                    <select wicket:id="userBookRating" />
+                </div>
+                <div>
+                    Średnia ocena książki: <span wicket:id="rating">rating</span>,
+                    (głosów: <span wicket:id="votesCount">votesCount</span>)
+                </div>
+                <button wicket:id="showEditReviewFormButton" class="showWriteReviewButton">Napisz recenzję książki</button>
+            </div>
+
+            <div wicket:id="description" class="description">description</div>
         </div>
 
-        <div class="ratings">
-            <div>
-                Twoja ocena książki:
-                <select wicket:id="userBookRating" />
-            </div>
-            <div>
-                Średnia ocena książki: <span wicket:id="rating">rating</span>,
-                (głosów: <span wicket:id="votesCount">votesCount</span>)
-            </div>
-            <button wicket:id="showEditReviewFormButton" class="showWriteReviewButton">Napisz recenzję książki</button>
-        </div>
 
-        <div wicket:id="description" class="description">description</div>
-
+        <div class="bookOwnershipContainer" wicket:id="bookOwnership">bookOwnership</div>
 
         <div wicket:id="editReviewForm">editReviewForm</div>
 

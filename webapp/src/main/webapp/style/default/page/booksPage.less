@@ -35,56 +35,78 @@
 
 .bookPreview {
 
-    .icon {
-        float: left;
-        width: 100px;
-        height: 120px;
-        margin: 15px;
-    }
 
-    .bookTitle {
-        font-size: 20px;
-        font-weight: bold;
-        color: @mainThemeFontColor;
-    }
 
-    .polishTitle {
+   .bookDetailsPanel {
 
-    }
+       .standardContainer;
+       margin: 20px 31px 0 15px;
+       padding: 10px 0 20px;
+       width: 760px;
+       float: left;
 
-    .authors {
-       font-size: 14px;
-       font-weight: bold;
-    }
-
-    .isbn {
-
-    }
-
-    .description {
-       margin-top: 20px;
-    }
-
-    .bookOwnership {
-        border: 1px solid #ccc;
-        padding: 10px;
-        border-radius: 10px;
-        margin: 0px 20px 0px 20px;
-        float: right;
-        width: 300px;
-        height: 200px;
-
-        .title {
-            font-weight: bold;
-            margin-bottom: 10px;
+        .icon {
+            float: left;
+            width: 100px;
+            height: 120px;
+            margin: 15px;
         }
-    }
+
+        .bookTitle {
+            font-size: 20px;
+            font-weight: bold;
+            color: @mainThemeFontColor;
+        }
+
+        .polishTitle {
+
+        }
+
+        .authors {
+           font-size: 14px;
+           font-weight: bold;
+        }
+
+        .isbn {
+
+        }
+
+        .description {
+           margin-top: 20px;
+        }
+   }
+
+
+  .bookOwnershipContainer {
+
+      float: left;
+
+     .bookOwnership {
+             .standardContainer;
+
+             padding: 10px;
+             margin: 20px 0px 0px 0px;
+             float: right;
+             width: 287px;
+             height: 200px;
+
+
+             .title {
+                 font-weight: bold;
+                 margin-bottom: 10px;
+             }
+         }
+  }
+
 
     .reviewForm {
+        .standardContainer;
 
+        clear: both;
         text-align: center;
         width: 630px;
-        margin: 20px 0px;
+        margin: 20px 12px 20px 15px;
+        padding: 10px 10px 0;
 
         .reviewText {
             width: 600px;
@@ -130,8 +152,11 @@
 
 
     .reviews {
+        .standardContainer;
 
-        margin-top: 20px;
+        clear: both;
+        margin: 20px 32px 20px 15px;
+        padding: 10px;
 
        .reviewsTitle {
            border-bottom: 2px solid #444444;
