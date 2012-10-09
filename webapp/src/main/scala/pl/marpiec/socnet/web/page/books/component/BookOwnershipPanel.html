@@ -4,9 +4,15 @@
 
     <script type="text/javascript">
 
-        function bookOwnerFlagChanged(elementName) {
-            jQuery(".bookOwnership ."+elementName).toggleClass("changed");
-            jQuery(".bookOwnership .saveButton").css({visibility:"visible"});
+        function bookOwnerFlagChanged(invoker, elementName) {
+            var jqThis = jQuery(invoker);
+            jqThis.parents(".bookOwnership").find("."+elementName).toggleClass("changed");
+            jqThis.parents(".bookOwnership").find(".saveButton").css({visibility:"visible"});
+        }
+
+        function labelForInputClicked(invoker) {
+            var jqThis = jQuery(invoker);
+            jqThis.parents(".option").find("input").click();
         }
 
     </script>
@@ -15,28 +21,25 @@
         <form wicket:id="bookOwnershipForm">
             <input type="hidden" wicket:id="sessionToken"/>
             <div><span wicket:id="warningMessage"></span></div>
-            <div class="title">
-                Twoja książka
-            </div>
             <div class="option owner">
-                <input wicket:id="owner" id="owner" type="checkbox" onclick="bookOwnerFlagChanged('owner')" />
-                <label for="owner">Posiadam tę książkę</label>
+                <input wicket:id="owner" type="checkbox" onclick="bookOwnerFlagChanged(this, 'owner')" />
+                <label onclick="labelForInputClicked(this)">Posiadam tę książkę</label>
             </div>
             <div class="option wantToBuy">
-                <input wicket:id="wantToBuy" id="wantToBuy" type="checkbox" onclick="bookOwnerFlagChanged('wantToBuy')" />
-                <label for="wantToBuy">Chciałbym ją kupić</label>
+                <input wicket:id="wantToBuy" type="checkbox" onclick="bookOwnerFlagChanged(this, 'wantToBuy')" />
+                <label onclick="labelForInputClicked(this)">Chciałbym ją kupić</label>
             </div>
             <div class="option willingToSell">
-                <input wicket:id="willingToSell" id="willingToSell" type="checkbox" onclick="bookOwnerFlagChanged('willingToSell')" />
-                <label for="willingToSell">Mógłbym ją sprzedać</label>
+                <input wicket:id="willingToSell" type="checkbox" onclick="bookOwnerFlagChanged(this, 'willingToSell')" />
+                <label onclick="labelForInputClicked(this)">Mógłbym ją sprzedać</label>
             </div>
             <div class="option wantToBorrow">
-                <input wicket:id="wantToBorrow" id="wantToBorrow" type="checkbox" onclick="bookOwnerFlagChanged('wantToBorrow')" />
-                <label for="wantToBorrow">Mógłbym ją komuś pożyczyć</label>
+                <input wicket:id="wantToBorrow" type="checkbox" onclick="bookOwnerFlagChanged(this, 'wantToBorrow')" />
+                <label onclick="labelForInputClicked(this)">Mógłbym ją komuś pożyczyć</label>
             </div>
             <div class="option willingToLend">
-                <input wicket:id="willingToLend" id="willingToLend" type="checkbox" onclick="bookOwnerFlagChanged('willingToLend')" />
-                <label for="willingToLend">Chciałbym ją od kogoś pożyczyć</label>
+                <input wicket:id="willingToLend" type="checkbox" onclick="bookOwnerFlagChanged(this, 'willingToLend')" />
+                <label onclick="labelForInputClicked(this)">Chciałbym ją od kogoś pożyczyć</label>
             </div>
             <div class="saveButton invisibleByDefault">
                 <button wicket:id="submitButton">Potwierdź zmiany</button>

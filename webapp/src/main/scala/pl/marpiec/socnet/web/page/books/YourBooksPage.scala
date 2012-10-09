@@ -20,8 +20,7 @@ class YourBooksPage extends SecureWebPage(SocnetRoles.USER) {
 
   val books = bookDatabase.getBooksOwnedBy(session.userId)
 
-  add(AuthorizeUser(new BookmarkablePageLink("yourBooksLink", classOf[YourBooksPage])))
-  add(AuthorizeTrustedUser(new BookmarkablePageLink("addBookLink", classOf[AddBookPage])))
+  add(AuthorizeUser(new BookmarkablePageLink("booksPageLink", classOf[BooksPage])))
 
   add(new FindBookFormPanel("findBook"))
 
