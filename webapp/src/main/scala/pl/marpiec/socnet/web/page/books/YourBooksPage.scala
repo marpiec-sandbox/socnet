@@ -7,8 +7,8 @@ import pl.marpiec.socnet.readdatabase.BookDatabase
 import org.apache.wicket.markup.html.link.BookmarkablePageLink
 import org.apache.wicket.markup.repeater.RepeatingView
 import org.apache.wicket.markup.html.list.AbstractItem
-import pl.marpiec.socnet.web.component.book.BookSummaryPreviewPanel
 import pl.marpiec.socnet.web.authorization.{AuthorizeTrustedUser, AuthorizeUser, SecureWebPage}
+import yourBooksPage.BookPreviewWithOwnershipPanel
 
 /**
  * @author Marcin Pieciukiewicz
@@ -31,7 +31,7 @@ class YourBooksPage extends SecureWebPage(SocnetRoles.USER) {
     books.foreach(book => {
 
       add(new AbstractItem(newChildId()) {
-        add(new BookSummaryPreviewPanel("bookSummaryPreview", book))
+        add(new BookPreviewWithOwnershipPanel("bookPreviewWithOwnershipPanel", book))
       })
     })
   })

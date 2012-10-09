@@ -1,6 +1,5 @@
-package pl.marpiec.socnet.web.page.books.bookPreviewPage
+package pl.marpiec.socnet.web.page.books.component
 
-import model.BookOwnershipFormModel
 import org.apache.wicket.markup.html.panel.Panel
 import pl.marpiec.socnet.web.component.wicket.form.StandardAjaxSecureForm
 import org.apache.wicket.ajax.AjaxRequestTarget
@@ -11,6 +10,7 @@ import pl.marpiec.socnet.service.book.BookCommand
 import pl.marpiec.socnet.web.application.SocnetSession
 import pl.marpiec.socnet.model.Book
 import pl.marpiec.socnet.model.book.BookOwnership
+import pl.marpiec.socnet.web.page.books.bookPreviewPage.model.BookOwnershipFormModel
 
 /**
  * @author Marcin Pieciukiewicz
@@ -42,7 +42,6 @@ class BookOwnershipPanel(id: String, book: Book) extends Panel(id) {
     }
 
     def onSecureSubmit(target: AjaxRequestTarget, formModel: BookOwnershipFormModel) {
-
 
 
       bookCommand.addOrUpdateBookOwnership(currentUserId, book.id, book.version, formModel.buildBookOwnershipInput())

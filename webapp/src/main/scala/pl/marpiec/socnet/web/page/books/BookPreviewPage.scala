@@ -1,7 +1,8 @@
 package pl.marpiec.socnet.web.page.books
 
+import component.BookOwnershipPanel
 import scala.collection.JavaConversions._
-import bookPreviewPage.{BookReviewPreviewPanel, EditReviewFormPanel, BookOwnershipPanel}
+import bookPreviewPage.{BookReviewPreviewPanel, EditReviewFormPanel}
 import pl.marpiec.socnet.web.authorization.SecureWebPage
 import pl.marpiec.socnet.web.application.SocnetRoles
 import org.apache.wicket.request.mapper.parameter.PageParameters
@@ -21,7 +22,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.ajax.markup.html.AjaxLink
 import org.apache.wicket.markup.html.form.{ChoiceRenderer, DropDownChoice}
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior
-import pl.marpiec.socnet.constant.{Rating, TechnologyCurrentUsage}
+import pl.marpiec.socnet.constant.Rating
 import pl.marpiec.socnet.service.book.BookCommand
 import org.apache.wicket.model.Model
 
@@ -51,7 +52,7 @@ class BookPreviewPage(parameters: PageParameters) extends SecureWebPage(SocnetRo
   val bookId = UID.parseOrZero(parameters.get(BookPreviewPage.BOOK_ID_PARAM).toString)
 
   var editReviewLink: AjaxLink[_] = _
-  
+
   val bookOption = bookDatabase.getBookById(bookId)
   val book = bookOption.getOrElse(throw new AbortWithHttpErrorCodeException(404))
 
@@ -73,7 +74,7 @@ class BookPreviewPage(parameters: PageParameters) extends SecureWebPage(SocnetRo
   val ratingLabel = addAndReturn(new Label("rating", book.getFormattedAverageRating).setOutputMarkupId(true))
   val votesCountLabel = addAndReturn(new Label("votesCount", book.getVotesCount.toString).setOutputMarkupId(true))
 
-  add(new DropDownChoice[Rating]("userBookRating",  
+  add(new DropDownChoice[Rating]("userBookRating",
     new Model[Rating](previousUserBookRatingOption.getOrElse(null)), Rating.values,
     new ChoiceRenderer[Rating]("translation")).add(new AjaxFormComponentUpdatingBehavior("onchange") {
     def onUpdate(target: AjaxRequestTarget) {
@@ -88,7 +89,7 @@ class BookPreviewPage(parameters: PageParameters) extends SecureWebPage(SocnetRo
       target.add(votesCountLabel)
     }
   }))
-  
+
 
   editReviewLink = addAndReturn(new AjaxLink("showEditReviewFormButton") {
 
@@ -124,9 +125,6 @@ class BookPreviewPage(parameters: PageParameters) extends SecureWebPage(SocnetRo
   })
 
 
-
-  
-  
   def addCurrentUserReview(currentUserReviewOption: Option[BookReview]): Component = {
 
     val CURRENT_USER_REVIEW_PANEL_ID = "currentUserBookReview"
