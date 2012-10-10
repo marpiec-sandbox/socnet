@@ -1,12 +1,21 @@
 package pl.marpiec.util
 
-/**
- * Created with IntelliJ IDEA.
- * User: Marcin
- * Date: 10.10.12
- * Time: 18:32
- * To change this template use File | Settings | File Templates.
- */
+import org.testng.Assert._
+import org.testng.annotations.Test
+
+@Test
 class IdProtectionUtilTest {
+
+  def testIdCodingAndDecoding() {
+    val id = new UID(12345)
+    val encrypted:String = IdProtectionUtil.encrypt(id)
+
+    assertEquals(encrypted, "u394ah598pej")
+
+    val decrypted:UID = IdProtectionUtil.decrypt(encrypted)
+
+    assertEquals(id, decrypted)
+
+  }
 
 }

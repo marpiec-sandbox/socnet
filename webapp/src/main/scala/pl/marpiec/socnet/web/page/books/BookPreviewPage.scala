@@ -5,7 +5,7 @@ import scala.collection.JavaConversions._
 import bookPreviewPage.{BookReviewPreviewPanel, EditReviewFormPanel}
 import pl.marpiec.socnet.web.authorization.SecureWebPage
 import org.apache.wicket.request.mapper.parameter.PageParameters
-import pl.marpiec.util.UID
+import pl.marpiec.util.{IdProtectionUtil, UID}
 import org.apache.wicket.spring.injection.annot.SpringBean
 import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException
@@ -40,7 +40,7 @@ object BookPreviewPage {
   }
 
   def getParametersForLink(bookId: UID): PageParameters = {
-    new PageParameters().add(BOOK_ID_PARAM, bookId)
+    new PageParameters().add(BOOK_ID_PARAM, IdProtectionUtil.encrypt(bookId))
   }
 }
 
@@ -54,7 +54,7 @@ class BookPreviewPage(parameters: PageParameters) extends SecureWebPage(SocnetRo
 
   val thisPage = this
 
-  val bookId = UID.parseOrZero(parameters.get(BookPreviewPage.BOOK_ID_PARAM).toString)
+  val bookId = IdProtectionUtil.decrypt(parameters.get(BookPreviewPage.BOOK_ID_PARAM).toString)
 
   var editReviewLink: AjaxLink[_] = _
 
