@@ -6,5 +6,5 @@ trait DataStore {
 
   def getEntity(entityClass: Class[_ <: Aggregate], id: UID): Aggregate
 
-  def addListener(entityClass: Class[_ <: Aggregate], listener: DataStoreListener)
+  def addListener(entityClass: Class[_ <: Aggregate], listener: DataStoreListener[_  <: Aggregate])
 }

@@ -1,9 +1,9 @@
 package pl.marpiec.socnet.web.page.books.bookPreviewPage.model
 
 import pl.marpiec.socnet.web.wicket.SecureFormModel
-import pl.marpiec.socnet.service.book.input.BookOwnershipInput
 import pl.marpiec.util.BeanUtil
-import pl.marpiec.socnet.model.book.BookOwnership
+import pl.marpiec.socnet.model.bookuserinfo.BookOwnership
+import pl.marpiec.socnet.service.bookuserinfo.input.BookOwnershipInput
 
 /**
  * @author Marcin Pieciukiewicz
@@ -16,7 +16,7 @@ class BookOwnershipFormModel extends SecureFormModel {
   var wantToBuy = false
   var wantToBorrow = false
 
-  def buildBookOwnershipInput():BookOwnershipInput = {
+  def buildBookOwnershipInput(): BookOwnershipInput = {
     val bookOwnership = new BookOwnershipInput
     BeanUtil.copyProperties(bookOwnership, this)
     bookOwnership
@@ -26,7 +26,7 @@ class BookOwnershipFormModel extends SecureFormModel {
 
 object BookOwnershipFormModel {
 
-  def apply(bookOwnership: BookOwnership):BookOwnershipFormModel = {
+  def apply(bookOwnership: BookOwnership): BookOwnershipFormModel = {
     val model = new BookOwnershipFormModel
     BeanUtil.copyProperties(model, bookOwnership)
     model

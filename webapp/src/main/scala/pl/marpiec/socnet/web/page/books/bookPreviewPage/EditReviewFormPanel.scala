@@ -7,22 +7,22 @@ import pl.marpiec.socnet.web.component.wicket.form.StandardAjaxSecureForm
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.model.CompoundPropertyModel
 import org.apache.wicket.spring.injection.annot.SpringBean
-import pl.marpiec.socnet.service.book.BookCommand
 import pl.marpiec.socnet.web.application.SocnetSession
-import pl.marpiec.socnet.model.Book
 import org.joda.time.LocalDateTime
 import org.apache.wicket.markup.html.form.{ChoiceRenderer, DropDownChoice, TextArea}
 import pl.marpiec.socnet.constant.Rating
 import pl.marpiec.socnet.web.page.books.BookPreviewPage
-import pl.marpiec.socnet.model.book.BookReview
+import pl.marpiec.socnet.model.bookuserinfo.BookReview
+import pl.marpiec.socnet.service.bookuserinfo.BookUserInfoCommand
+import pl.marpiec.socnet.model.{BookUserInfo, Book}
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
-class EditReviewFormPanel(id: String, book: Book, parentPage: BookPreviewPage) extends Panel(id) {
+class EditReviewFormPanel(id: String, book: Book, bookUserInfoOption: Option[BookUserInfo], parentPage: BookPreviewPage) extends Panel(id) {
 
-  @SpringBean private var bookCommand: BookCommand = _
+  @SpringBean private var bookUserInfoCommand: BookUserInfoCommand = _
 
   setOutputMarkupId(true)
 
@@ -48,8 +48,12 @@ class EditReviewFormPanel(id: String, book: Book, parentPage: BookPreviewPage) e
         val creationTime = new LocalDateTime
         val currentUserId = getSession.asInstanceOf[SocnetSession].userId
 
-        bookCommand.addOrUpdateReview(currentUserId, book.id,
-          book.version, formModel.reviewText, formModel.rating, creationTime)
+        val bookUserInfo = bookUserInfoOption.getOrElse({
+          bookUserInfoCommand.createAndGetNewBookUserInfo(getSession.asInstanceOf[SocnetSession].userId, book.id)
+        })
+        
+        bookUserInfoCommand.addOrUpdateReview(currentUserId, bookUserInfo.id,
+          bookUserInfo.version, formModel.reviewText, formModel.rating, creationTime)
 
         val review = new BookReview
         review.creationTime = creationTime

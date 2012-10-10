@@ -1,4 +1,4 @@
-package pl.marpiec.socnet.model.book
+package pl.marpiec.socnet.model.bookuserinfo
 
 import pl.marpiec.socnet.constant.Rating
 import pl.marpiec.util.UID

@@ -1,4 +1,4 @@
-package pl.marpiec.socnet.service.book.input
+package pl.marpiec.socnet.service.bookuserinfo.input
 
 /**
  * @author Marcin Pieciukiewicz

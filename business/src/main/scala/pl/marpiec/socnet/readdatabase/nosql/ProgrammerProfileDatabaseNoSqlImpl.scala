@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
 import pl.marpiec.socnet.readdatabase.ProgrammerProfileDatabase
 import pl.marpiec.util.UID
-import pl.marpiec.cqrs.{Aggregate, DataStoreListener, DataStore}
+import pl.marpiec.cqrs.{DataStoreListener, DataStore}
 import pl.marpiec.socnet.mongodb.DatabaseConnectorImpl
-import pl.marpiec.socnet.model.{Book, ProgrammerProfile}
+import pl.marpiec.socnet.model.ProgrammerProfile
 import com.mongodb.QueryBuilder
 
 /**
@@ -15,14 +15,14 @@ import com.mongodb.QueryBuilder
 
 @Repository("programmerProfileDatabase")
 class ProgrammerProfileDatabaseNoSqlImpl @Autowired()(dataStore: DataStore)
-  extends DataStoreListener with ProgrammerProfileDatabase {
+  extends DataStoreListener[ProgrammerProfile] with ProgrammerProfileDatabase {
 
   val connector = new DatabaseConnectorImpl("programmersProfiles")
 
   startListeningToDataStore(dataStore, classOf[ProgrammerProfile])
 
-  def onEntityChanged(entity: Aggregate) = {
-    connector.insertAggregate(entity.asInstanceOf[ProgrammerProfile])
+  def onEntityChanged(programmerProfile: ProgrammerProfile) = {
+    connector.insertAggregate(programmerProfile)
   }
 
   def getProgrammerProfileByUserId(userId: UID) = {

@@ -1,6 +1,5 @@
 package pl.marpiec.socnet.readdatabase.mock
 
-import org.springframework.stereotype.Repository
 import org.springframework.beans.factory.annotation.Autowired
 import pl.marpiec.socnet.model.Book
 import pl.marpiec.cqrs.{Aggregate, DataStore}
@@ -30,18 +29,9 @@ class BookDatabaseMockImpl @Autowired()(dataStore: DataStore)
 
   def getAllBooks: List[Book] = getAll
 
-  def getBooksOwnedBy(userId: UID):List[Book] = {
-    
-    var resultList = List[Book]()
-    
-    getAll.foreach(book => {
-      val ownershipOption = book.ownership.get(userId)
-      if(ownershipOption.isDefined && ownershipOption.get.isInterestedInBook) {
-        resultList ::= book
-      }
+  def getBooksByIds(booksIds: List[UID]): List[Book] = {
+    getAllBooks.filter(book => {
+      booksIds.contains(book.id)
     })
-
-    resultList
-    
   }
 }

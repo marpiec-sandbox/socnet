@@ -1,1 +1,1 @@
-C:\Marcin\Coding\Srodowisko\mongodb-win32-i386-2.2.0\bin\mongo
+c:\mar\scala\mongodb\bin\mongo

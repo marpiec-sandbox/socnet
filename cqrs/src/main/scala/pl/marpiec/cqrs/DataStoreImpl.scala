@@ -10,7 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired
 class DataStoreImpl @Autowired()(val eventStore: EventStore, val aggregateCache: AggregateCache)
   extends EventStoreListener with DataStore {
 
-  private val listeners = new HashMap[Class[_ <: Aggregate], ListBuffer[DataStoreListener]]
+
+
+
+  private val listeners = new HashMap[Class[_ <: Aggregate], ListBuffer[DataStoreListener[_ <: Aggregate]]]
 
   startListeningToEventStore(eventStore)
 
@@ -43,19 +46,19 @@ class DataStoreImpl @Autowired()(val eventStore: EventStore, val aggregateCache:
     }
   }
 
-  def addListener(entityClass: Class[_ <: Aggregate], listener: DataStoreListener) {
-    val entityListeners = listeners.getOrElseUpdate(entityClass, new ListBuffer[DataStoreListener])
+  def addListener(entityClass: Class[_ <: Aggregate], listener: DataStoreListener[_ <: Aggregate]) {
+    val entityListeners = listeners.getOrElseUpdate(entityClass, new ListBuffer[DataStoreListener[_ <: Aggregate]])
     entityListeners += listener
   }
 
   def onEntityChanged(entityClass: Class[_ <: Aggregate], entityId: UID) {
 
-    val entity = getEntity(entityClass, entityId: UID)
+    val entity:Aggregate = getEntity(entityClass, entityId: UID)
 
     val entityListenersOption = listeners.get(entityClass)
 
     if (entityListenersOption.isDefined) {
-      entityListenersOption.get.foreach(listener => listener.onEntityChanged(entity))
+      entityListenersOption.get.foreach(listener => listener.onAggregateChanged(entity))
     }
   }
 }

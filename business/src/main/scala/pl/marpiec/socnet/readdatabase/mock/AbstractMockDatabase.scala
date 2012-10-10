@@ -14,7 +14,7 @@ class DatabaseIndex(val indexFunction: (Aggregate) => Any) {
   val index = new HashMap[Any, Aggregate]
 }
 
-class AbstractDatabase[E <: Aggregate](dataStore: DataStore) extends DataStoreListener {
+class AbstractDatabase[E <: Aggregate](dataStore: DataStore) extends DataStoreListener[E] {
 
   private val entityDatabase = new HashMap[UID, E]
   private val indexes = new HashMap[String, DatabaseIndex]
@@ -23,9 +23,8 @@ class AbstractDatabase[E <: Aggregate](dataStore: DataStore) extends DataStoreLi
     indexes += name -> new DatabaseIndex(keyFunction)
   }
 
-  def onEntityChanged(aggregate: Aggregate) {
-    val entity = aggregate.asInstanceOf[E]
-    addOrUpdate(entity)
+  def onEntityChanged(aggregate: E) {
+    addOrUpdate(aggregate)
   }
 
   def add(entity: E) {

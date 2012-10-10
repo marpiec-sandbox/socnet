@@ -1,34 +1,29 @@
-package pl.marpiec.socnet.service.book.event
+package pl.marpiec.socnet.service.bookuserinfo.event
 
 import pl.marpiec.socnet.constant.Rating
-import pl.marpiec.socnet.model.Book
 import pl.marpiec.cqrs.{Aggregate, Event}
 import pl.marpiec.util.UID
-import pl.marpiec.socnet.model.book.BookReview
+import pl.marpiec.socnet.model.bookuserinfo.BookReview
 import org.joda.time.LocalDateTime
+import pl.marpiec.socnet.model.BookUserInfo
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
 class AddOrUpdateReviewBookEvent(val reviewerUserId: UID, val description: String, val rating: Rating, reviewTime: LocalDateTime) extends Event {
-  def entityClass = classOf[Book]
+  def entityClass = classOf[BookUserInfo]
 
   def applyEvent(aggregate: Aggregate) {
-    val book = aggregate.asInstanceOf[Book]
+    val bookUserInfo = aggregate.asInstanceOf[BookUserInfo]
 
-    val reviewOption = book.reviews.userReviews.find(userReview => userReview.userId == reviewerUserId)
-
-    val review = reviewOption.getOrElse({
-      val newReview = new BookReview
-      book.reviews.userReviews ::= newReview
-      newReview
-    })
-
+    val review = new BookReview
     review.description = description
     review.rating = rating
     review.userId = reviewerUserId
     review.creationTime = reviewTime
+
+    bookUserInfo.reviewOption = Option(review)
 
   }
 }

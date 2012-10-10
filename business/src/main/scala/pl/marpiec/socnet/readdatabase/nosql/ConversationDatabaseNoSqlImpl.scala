@@ -15,7 +15,7 @@ import com.mongodb.QueryBuilder
 
 @Repository("conversationDatabase")
 class ConversationDatabaseNoSqlImpl @Autowired()(dataStore: DataStore)
-  extends DataStoreListener with ConversationDatabase {
+  extends DataStoreListener[Conversation] with ConversationDatabase {
 
   val connector = new DatabaseConnectorImpl("conversations")
 
@@ -31,7 +31,7 @@ class ConversationDatabaseNoSqlImpl @Autowired()(dataStore: DataStore)
     connector.findMultipleAggregatesByQuery(QueryBuilder.start("participantsUserIds").is(id.uid).get(), classOf[Conversation])
   }
 
-  def onEntityChanged(entity: Aggregate) {
-    connector.insertAggregate(entity.asInstanceOf[Conversation])
+  def onEntityChanged(conversation: Conversation) {
+    connector.insertAggregate(conversation)
   }
 }

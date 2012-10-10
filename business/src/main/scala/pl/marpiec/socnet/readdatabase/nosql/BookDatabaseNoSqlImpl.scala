@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository
 
 @Repository("bookDatabase")
 class BookDatabaseNoSqlImpl @Autowired()(dataStore: DataStore)
-  extends DataStoreListener with BookDatabase {
+  extends DataStoreListener[Book] with BookDatabase {
 
   val connector = new DatabaseConnectorImpl("books")
 
@@ -29,15 +29,18 @@ class BookDatabaseNoSqlImpl @Autowired()(dataStore: DataStore)
 
   def getAllBooks = connector.getAllAggregates(classOf[Book])
 
-  def onEntityChanged(entity: Aggregate) {
-    connector.insertAggregate(entity.asInstanceOf[Book])
+  def onEntityChanged(book: Book) {
+    connector.insertAggregate(book)
   }
 
-  def getBooksOwnedBy(userId: UID):List[Book] = {
-    val allBooks:List[Book] = connector.findMultipleAggregatesByQuery(QueryBuilder.start("ownership.k").is(userId.uid).get, classOf[Book])
-    allBooks.filter(book => {
-      book.ownership.get(userId).get.isInterestedInBook
-    })
+  def getBooksByIds(booksIds: List[UID]) = {
     
+    val ids:Array[Long] = Array[Long](booksIds.size)
+
+    for (i <- 0 until booksIds.size) {
+      ids(i) = booksIds(i).uid
+    }
+
+    connector.findMultipleAggregatesByQuery(QueryBuilder.start("_id").in(ids).get, classOf[Book])
   }
 }

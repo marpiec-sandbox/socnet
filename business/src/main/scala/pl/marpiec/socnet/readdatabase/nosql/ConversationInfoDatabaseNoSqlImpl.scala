@@ -15,14 +15,14 @@ import com.mongodb.QueryBuilder
 
 @Repository("conversationInfoDatabase")
 class ConversationInfoDatabaseNoSqlImpl @Autowired()(dataStore: DataStore)
-  extends DataStoreListener with ConversationInfoDatabase {
+  extends DataStoreListener[ConversationInfo] with ConversationInfoDatabase {
 
   val connector = new DatabaseConnectorImpl("conversationsInfos")
 
   startListeningToDataStore(dataStore, classOf[ConversationInfo])
 
-  def onEntityChanged(entity: Aggregate) {
-    connector.insertAggregate(entity.asInstanceOf[ConversationInfo])
+  def onEntityChanged(conversationInfo: ConversationInfo) {
+    connector.insertAggregate(conversationInfo)
   }
 
   def getConversationInfo(userId: UID, conversationId: UID): Option[ConversationInfo] = {

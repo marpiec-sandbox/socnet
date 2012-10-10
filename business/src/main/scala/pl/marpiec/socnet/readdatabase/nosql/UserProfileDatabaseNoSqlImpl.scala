@@ -2,7 +2,7 @@ package pl.marpiec.socnet.readdatabase.nosql
 
 import org.springframework.stereotype.Repository
 import org.springframework.beans.factory.annotation.Autowired
-import pl.marpiec.cqrs.{Aggregate, DataStoreListener, DataStore}
+import pl.marpiec.cqrs.{DataStoreListener, DataStore}
 import pl.marpiec.util.UID
 import pl.marpiec.socnet.mongodb.DatabaseConnectorImpl
 import pl.marpiec.socnet.model.{UserProfile, User}
@@ -16,7 +16,7 @@ import pl.marpiec.socnet.readdatabase.UserProfileDatabase
 
 @Repository("userProfileDatabase")
 class UserProfileDatabaseNoSqlImpl @Autowired()(dataStore: DataStore)
-  extends DataStoreListener with UserProfileDatabase {
+  extends DataStoreListener[UserProfile] with UserProfileDatabase {
 
   val connector = new DatabaseConnectorImpl("usersProfiles")
 
@@ -40,7 +40,7 @@ class UserProfileDatabaseNoSqlImpl @Autowired()(dataStore: DataStore)
 
   def getUserProfiles(list: List[User]) = Map[User, UserProfile]()
 
-  def onEntityChanged(entity: Aggregate) {
-    connector.insertAggregate(entity.asInstanceOf[UserProfile])
+  def onEntityChanged(userProfile: UserProfile) {
+    connector.insertAggregate(userProfile)
   }
 }

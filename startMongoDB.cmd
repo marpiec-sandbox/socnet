@@ -1,1 +1,1 @@
-C:\Marcin\Coding\Srodowisko\mongodb-win32-i386-2.2.0\bin\mongod --dbpath C:\Marcin\Coding\Projekty\socnet\database\
+c:\mar\scala\mongodb\bin\mongod --dbpath c:\mar\scala\mongodb\data

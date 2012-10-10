@@ -1,4 +1,4 @@
-package pl.marpiec.socnet.model.book
+package pl.marpiec.socnet.model.bookuserinfo
 
 import pl.marpiec.util.UID
 
@@ -8,16 +8,16 @@ import pl.marpiec.util.UID
 
 class BookOwnership {
 
-  var userId:UID = _
+  var userId: UID = _
   var owner = false
-  var description:String = _
+  var description: String = _
   var willingToSell = false
   var willingToLend = false
   var wantToBuy = false
   var wantToBorrow = false
-  
-  def isInterestedInBook:Boolean = {
+
+  def isInterestedInBook: Boolean = {
     owner || willingToSell || willingToLend || wantToBuy || wantToBorrow
   }
-  
+
 }

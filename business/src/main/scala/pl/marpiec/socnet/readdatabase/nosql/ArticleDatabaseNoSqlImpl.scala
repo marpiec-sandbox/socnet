@@ -15,7 +15,7 @@ import pl.marpiec.socnet.readdatabase.ArticleDatabase
 
 @Repository("articleDatabase")
 class ArticleDatabaseNoSqlImpl @Autowired()(dataStore: DataStore)
-  extends DataStoreListener with ArticleDatabase {
+  extends DataStoreListener[Article] with ArticleDatabase {
 
   val connector = new DatabaseConnectorImpl("articles")
 
@@ -33,7 +33,7 @@ class ArticleDatabaseNoSqlImpl @Autowired()(dataStore: DataStore)
 
   def getAllArticles = connector.getAllAggregates(classOf[Article])
 
-  def onEntityChanged(aggregate: Aggregate) {
-    connector.insertAggregate(aggregate.asInstanceOf[Article])
+  def onEntityChanged(article: Article) {
+    connector.insertAggregate(article)
   }
 }

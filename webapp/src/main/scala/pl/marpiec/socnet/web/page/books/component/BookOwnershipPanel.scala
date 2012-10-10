@@ -6,25 +6,27 @@ import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.model.CompoundPropertyModel
 import org.apache.wicket.markup.html.form.CheckBox
 import org.apache.wicket.spring.injection.annot.SpringBean
-import pl.marpiec.socnet.service.book.BookCommand
 import pl.marpiec.socnet.web.application.SocnetSession
-import pl.marpiec.socnet.model.Book
-import pl.marpiec.socnet.model.book.BookOwnership
+import pl.marpiec.socnet.model.bookuserinfo.BookOwnership
 import pl.marpiec.socnet.web.page.books.bookPreviewPage.model.BookOwnershipFormModel
+import pl.marpiec.socnet.service.bookuserinfo.BookUserInfoCommand
+import pl.marpiec.socnet.model.BookUserInfo
+import pl.marpiec.util.UID
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
-class BookOwnershipPanel(id: String, book: Book) extends Panel(id) {
+class BookOwnershipPanel(id: String, bookId:UID, bookUserInfoOption: Option[BookUserInfo]) extends Panel(id) {
 
-  @SpringBean private var bookCommand: BookCommand = _
+  @SpringBean private var bookUserInfoCommand: BookUserInfoCommand = _
 
   setOutputMarkupId(true)
 
   val currentUserId = getSession.asInstanceOf[SocnetSession].userId
 
-  val bookOwnership = book.ownership.getOrElse(currentUserId, new BookOwnership)
+  
+  val bookOwnership = bookUserInfoOption.getOrElse(new BookUserInfo).ownershipOption.getOrElse(new BookOwnership)
 
   add(new StandardAjaxSecureForm[BookOwnershipFormModel]("bookOwnershipForm") {
     def initialize = {
@@ -43,8 +45,11 @@ class BookOwnershipPanel(id: String, book: Book) extends Panel(id) {
 
     def onSecureSubmit(target: AjaxRequestTarget, formModel: BookOwnershipFormModel) {
 
+      val bookUserInfo: BookUserInfo = bookUserInfoOption.getOrElse({
+        bookUserInfoCommand.createAndGetNewBookUserInfo(currentUserId, bookId)
+      })
 
-      bookCommand.addOrUpdateBookOwnership(currentUserId, book.id, book.version, formModel.buildBookOwnershipInput())
+      bookUserInfoCommand.addOrUpdateBookOwnership(currentUserId, bookUserInfo.id, bookUserInfo.version, formModel.buildBookOwnershipInput())
 
       target.add(BookOwnershipPanel.this)
     }
