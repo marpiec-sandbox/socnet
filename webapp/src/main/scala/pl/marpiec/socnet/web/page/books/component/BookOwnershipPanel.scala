@@ -12,12 +12,13 @@ import pl.marpiec.socnet.web.page.books.bookPreviewPage.model.BookOwnershipFormM
 import pl.marpiec.socnet.service.bookuserinfo.BookUserInfoCommand
 import pl.marpiec.socnet.model.BookUserInfo
 import pl.marpiec.util.UID
+import pl.marpiec.cqrs.AggregatesUtil
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
-class BookOwnershipPanel(id: String, bookId:UID, bookUserInfoOption: Option[BookUserInfo]) extends Panel(id) {
+class BookOwnershipPanel(id: String, bookId:UID, bookUserInfo: BookUserInfo) extends Panel(id) {
 
   @SpringBean private var bookUserInfoCommand: BookUserInfoCommand = _
 
@@ -26,7 +27,7 @@ class BookOwnershipPanel(id: String, bookId:UID, bookUserInfoOption: Option[Book
   val currentUserId = getSession.asInstanceOf[SocnetSession].userId
 
   
-  val bookOwnership = bookUserInfoOption.getOrElse(new BookUserInfo).ownershipOption.getOrElse(new BookOwnership)
+  val bookOwnership = bookUserInfo.ownershipOption.getOrElse(new BookOwnership)
 
   add(new StandardAjaxSecureForm[BookOwnershipFormModel]("bookOwnershipForm") {
     def initialize = {
@@ -45,11 +46,8 @@ class BookOwnershipPanel(id: String, bookId:UID, bookUserInfoOption: Option[Book
 
     def onSecureSubmit(target: AjaxRequestTarget, formModel: BookOwnershipFormModel) {
 
-      val bookUserInfo: BookUserInfo = bookUserInfoOption.getOrElse({
-        bookUserInfoCommand.createAndGetNewBookUserInfo(currentUserId, bookId)
-      })
-
-      bookUserInfoCommand.addOrUpdateBookOwnership(currentUserId, bookUserInfo.id, bookUserInfo.version, formModel.buildBookOwnershipInput())
+      bookUserInfoCommand.addOrUpdateBookOwnership(currentUserId, bookId, bookUserInfo, formModel.buildBookOwnershipInput())
+      AggregatesUtil.incrementVersion(bookUserInfo)
 
       target.add(BookOwnershipPanel.this)
     }

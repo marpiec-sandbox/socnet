@@ -12,14 +12,10 @@ import pl.marpiec.socnet.model.BookUserInfo
 
 trait BookUserInfoCommand {
 
-  def createAndGetNewBookUserInfo(userId: UID, bookId: UID): BookUserInfo
+  def voteForBook(userId: UID, bookId: UID, bookUserInfo: BookUserInfo, rating: Rating)
 
-  def createBookUserInfo(userId: UID, bookId: UID, bookUserInfoId: UID)
+  def addOrUpdateReview(userId: UID, bookId: UID, bookUserInfo: BookUserInfo, description: String, rating: Rating, review: LocalDateTime)
 
-  def voteForBook(userId: UID, id: UID, version: Int, rating: Rating)
-
-  def addOrUpdateReview(userId: UID, id: UID, version: Int, description: String, rating: Rating, review: LocalDateTime)
-
-  def addOrUpdateBookOwnership(userId: UID, id: UID, version: Int, input: BookOwnershipInput)
+  def addOrUpdateBookOwnership(userId: UID, bookId: UID, bookUserInfo: BookUserInfo, input: BookOwnershipInput)
 
 }

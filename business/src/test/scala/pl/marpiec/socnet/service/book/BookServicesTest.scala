@@ -13,6 +13,7 @@ import pl.marpiec.socnet.service.bookuserinfo.{BookUserInfoCommandImpl, BookUser
 import pl.marpiec.socnet.readdatabase.{BookReviewsDatabase, BookUserInfoDatabase, BookDatabase}
 import pl.marpiec.socnet.service.bookuserinfo.input.BookOwnershipInput
 import pl.marpiec.socnet.readdatabase.mock.{BookReviewsDatabaseMockImpl, BookUserInfoDatabaseMockImpl, BookDatabaseMockImpl}
+import pl.marpiec.socnet.model.BookUserInfo
 
 /**
  * @author Marcin Pieciukiewicz
@@ -87,31 +88,15 @@ class BookServicesTest {
     assertEquals(book.description.description, "Ksiazka o efektywnym programowaniu w jezyku Java")
     assertEquals(book.description.isbn, "9788324620845")
 
-    /*
-     * Create book user info
-     */
-
-    val bookUserInfoId = uidGenerator.nextUid
-    bookUserInfoCommand.createBookUserInfo(bookCreatorUserId, bookId, bookUserInfoId)
-
-    //get by id
-    var bookUserInfoOption = bookUserInfoDatabase.getUserInfoById(bookUserInfoId)
-
-    assertTrue(bookUserInfoOption.isDefined)
-
-    //find by book and user
-    bookUserInfoOption = bookUserInfoDatabase.getUserInfoByUserAndBook(bookCreatorUserId, bookId)
-
-    assertTrue(bookUserInfoOption.isDefined)
 
 
     /*
      * Vote for a book
      */
 
-    var bookUserInfo = bookUserInfoOption.get
+    var creatorBookUserInfo = new BookUserInfo
 
-    bookUserInfoCommand.voteForBook(bookCreatorUserId, bookUserInfo.id, bookUserInfo.version, Rating.FOUR)
+    bookUserInfoCommand.voteForBook(bookCreatorUserId, bookId, creatorBookUserInfo, Rating.FOUR)
 
     var bookReviews:BookReviews = bookReviewsDatabase.getBookReviews(bookId).get
   
@@ -121,9 +106,9 @@ class BookServicesTest {
     assertEquals(bookReviews.votes(Rating.FOUR), 1)
     assertEquals(bookReviews.votes(Rating.FIVE), 0)
 
-    bookUserInfo = bookUserInfoDatabase.getUserInfoByUserAndBook(bookCreatorUserId, bookId).get
+    creatorBookUserInfo = bookUserInfoDatabase.getUserInfoByUserAndBook(bookCreatorUserId, bookId).get
 
-    assertEquals(bookUserInfo.voteOption.get, Rating.FOUR)
+    assertEquals(creatorBookUserInfo.voteOption.get, Rating.FOUR)
 
 
     /*
@@ -132,13 +117,11 @@ class BookServicesTest {
 
     val bookReviewerUserId = uidGenerator.nextUid
 
-    val reviewerBookUserInfoId = uidGenerator.nextUid
-    bookUserInfoCommand.createBookUserInfo(bookReviewerUserId, bookId, reviewerBookUserInfoId)
-    var reviewerBookUserInfo = bookUserInfoDatabase.getUserInfoById(reviewerBookUserInfoId).get
+    var reviewerBookUserInfo = new BookUserInfo
 
     val reviewTime = new LocalDateTime(2012, 7, 4, 14, 0, 5)
 
-    bookUserInfoCommand.addOrUpdateReview(bookReviewerUserId, reviewerBookUserInfo.id, reviewerBookUserInfo.version, "Bardzo dobra ksiazka", Rating.FIVE, reviewTime)
+    bookUserInfoCommand.addOrUpdateReview(bookReviewerUserId, bookId, reviewerBookUserInfo, "Bardzo dobra ksiazka", Rating.FIVE, reviewTime)
 
     bookReviews = bookReviewsDatabase.getBookReviews(bookId).get
 
@@ -164,7 +147,7 @@ class BookServicesTest {
 
     val updateReviewTime = new LocalDateTime(2012, 10, 1, 14, 0, 5)
 
-    bookUserInfoCommand.addOrUpdateReview(bookReviewerUserId, reviewerBookUserInfo.id, reviewerBookUserInfo.version, "Dosc dobra ksiazka", Rating.FOUR, updateReviewTime)
+    bookUserInfoCommand.addOrUpdateReview(bookReviewerUserId, bookId, reviewerBookUserInfo, "Dosc dobra ksiazka", Rating.FOUR, updateReviewTime)
 
 
     bookReviews = bookReviewsDatabase.getBookReviews(bookId).get
@@ -190,10 +173,8 @@ class BookServicesTest {
      */
 
     val bookOwnerUserId = uidGenerator.nextUid
-    val ownerBookUserInfoId = uidGenerator.nextUid
 
-    bookUserInfoCommand.createBookUserInfo(bookOwnerUserId, bookId, ownerBookUserInfoId)
-    var ownerBookUserInfo = bookUserInfoDatabase.getUserInfoById(ownerBookUserInfoId).get
+    var ownerBookUserInfo = new BookUserInfo
 
     val bookOwnership = new BookOwnershipInput
 
@@ -204,12 +185,12 @@ class BookServicesTest {
     bookOwnership.wantToBorrow = false
     bookOwnership.wantToBuy = false
 
-    bookUserInfoCommand.addOrUpdateBookOwnership(bookOwnerUserId, ownerBookUserInfo.id, ownerBookUserInfo.version, bookOwnership)
+    bookUserInfoCommand.addOrUpdateBookOwnership(bookOwnerUserId, bookId, ownerBookUserInfo, bookOwnership)
 
 
-    bookUserInfo = bookUserInfoDatabase.getUserInfoByUserAndBook(bookOwnerUserId, bookId).get
+    ownerBookUserInfo = bookUserInfoDatabase.getUserInfoByUserAndBook(bookOwnerUserId, bookId).get
 
-    val ownership = bookUserInfo.ownershipOption.get
+    val ownership = ownerBookUserInfo.ownershipOption.get
     assertEquals(ownership.owner, true)
     assertEquals(ownership.description, "Wydanie polskie")
     assertEquals(ownership.willingToLend, true)

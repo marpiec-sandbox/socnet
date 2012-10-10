@@ -15,12 +15,13 @@ import pl.marpiec.socnet.web.page.books.BookPreviewPage
 import pl.marpiec.socnet.model.bookuserinfo.BookReview
 import pl.marpiec.socnet.service.bookuserinfo.BookUserInfoCommand
 import pl.marpiec.socnet.model.{BookUserInfo, Book}
+import pl.marpiec.cqrs.AggregatesUtil
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
-class EditReviewFormPanel(id: String, book: Book, bookUserInfoOption: Option[BookUserInfo], parentPage: BookPreviewPage) extends Panel(id) {
+class EditReviewFormPanel(id: String, book: Book, bookUserInfo: BookUserInfo, parentPage: BookPreviewPage) extends Panel(id) {
 
   @SpringBean private var bookUserInfoCommand: BookUserInfoCommand = _
 
@@ -48,12 +49,9 @@ class EditReviewFormPanel(id: String, book: Book, bookUserInfoOption: Option[Boo
         val creationTime = new LocalDateTime
         val currentUserId = getSession.asInstanceOf[SocnetSession].userId
 
-        val bookUserInfo = bookUserInfoOption.getOrElse({
-          bookUserInfoCommand.createAndGetNewBookUserInfo(getSession.asInstanceOf[SocnetSession].userId, book.id)
-        })
         
-        bookUserInfoCommand.addOrUpdateReview(currentUserId, bookUserInfo.id,
-          bookUserInfo.version, formModel.reviewText, formModel.rating, creationTime)
+        bookUserInfoCommand.addOrUpdateReview(currentUserId, book.id, bookUserInfo, formModel.reviewText, formModel.rating, creationTime)
+        AggregatesUtil.incrementVersion(bookUserInfo)
 
         val review = new BookReview
         review.creationTime = creationTime

@@ -6,10 +6,10 @@ import org.apache.wicket.spring.injection.annot.SpringBean
 import org.apache.wicket.markup.html.link.BookmarkablePageLink
 import org.apache.wicket.markup.repeater.RepeatingView
 import org.apache.wicket.markup.html.list.AbstractItem
-import pl.marpiec.socnet.web.authorization.{AuthorizeTrustedUser, AuthorizeUser, SecureWebPage}
+import pl.marpiec.socnet.web.authorization.{AuthorizeUser, SecureWebPage}
 import yourBooksPage.BookPreviewWithOwnershipPanel
-import pl.marpiec.socnet.redundandmodel.book.BookReviews
 import pl.marpiec.socnet.readdatabase.{BookUserInfoDatabase, BookReviewsDatabase, BookDatabase}
+import pl.marpiec.socnet.model.BookUserInfo
 
 /**
  * @author Marcin Pieciukiewicz
@@ -33,10 +33,10 @@ class YourBooksPage extends SecureWebPage(SocnetRoles.USER) {
 
     books.foreach(book => {
 
-      val bookUserInfoOption = bookUserInfoDatabase.getUserInfoByUserAndBook(session.userId, book.id)
+      val bookUserInfo = bookUserInfoDatabase.getUserInfoByUserAndBook(session.userId, book.id).getOrElse(new BookUserInfo)
 
       add(new AbstractItem(newChildId()) {
-        add(new BookPreviewWithOwnershipPanel("bookPreviewWithOwnershipPanel", book, bookUserInfoOption))
+        add(new BookPreviewWithOwnershipPanel("bookPreviewWithOwnershipPanel", book, bookUserInfo))
       })
     })
   })

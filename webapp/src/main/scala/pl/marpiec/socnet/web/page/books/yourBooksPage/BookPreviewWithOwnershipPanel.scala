@@ -9,9 +9,9 @@ import pl.marpiec.socnet.model.{BookUserInfo, Book}
  * @author Marcin Pieciukiewicz
  */
 
-class BookPreviewWithOwnershipPanel(id: String, book: Book, bookUserInfoOption: Option[BookUserInfo]) extends Panel(id) {
+class BookPreviewWithOwnershipPanel(id: String, book: Book, bookUserInfo: BookUserInfo) extends Panel(id) {
 
   add(new SimpleBookSummaryPreviewPanel("simpleBookSummaryPreview", book))
-  add(new BookOwnershipPanel("bookOwnershipPanel", book.id, bookUserInfoOption))
+  add(new BookOwnershipPanel("bookOwnershipPanel", book.id, bookUserInfo))
 
 }

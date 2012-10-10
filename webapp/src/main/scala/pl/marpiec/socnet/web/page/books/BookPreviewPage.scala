@@ -10,7 +10,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean
 import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException
 import org.apache.wicket.markup.html.link.BookmarkablePageLink
-import pl.marpiec.socnet.model.Book
 import org.apache.wicket.markup.repeater.RepeatingView
 import org.apache.wicket.markup.html.list.AbstractItem
 import pl.marpiec.socnet.model.bookuserinfo.BookReview
@@ -26,6 +25,8 @@ import pl.marpiec.socnet.redundandmodel.book.BookReviews
 import pl.marpiec.socnet.service.bookuserinfo.BookUserInfoCommand
 import pl.marpiec.socnet.readdatabase.{BookUserInfoDatabase, BookReviewsDatabase, BookDatabase}
 import pl.marpiec.socnet.web.application.{SocnetSession, SocnetRoles}
+import pl.marpiec.socnet.model.{BookUserInfo, Book}
+import pl.marpiec.cqrs.AggregatesUtil
 
 /**
  * @author Marcin Pieciukiewicz
@@ -62,7 +63,7 @@ class BookPreviewPage(parameters: PageParameters) extends SecureWebPage(SocnetRo
 
   val bookReviews = bookReviewsDatabase.getBookReviews(bookId).getOrElse(new BookReviews)
 
-  val bookUserInfoOption = bookUserInfoDatabase.getUserInfoByUserAndBook(session.userId, bookId)
+  val bookUserInfo = bookUserInfoDatabase.getUserInfoByUserAndBook(session.userId, bookId).getOrElse(new BookUserInfo)
 
   //init data
   val (notCurrentUserReviews, currentUserReviews) = bookReviews.userReviews.partition(bookReview => {
@@ -72,7 +73,7 @@ class BookPreviewPage(parameters: PageParameters) extends SecureWebPage(SocnetRo
   val previousUserBookRatingOption = bookReviews.getUserRating(session.userId)
 
   //build schema
-  add(new BookOwnershipPanel("bookOwnership", bookId, bookUserInfoOption))
+  add(new BookOwnershipPanel("bookOwnership", bookId, bookUserInfo))
 
   add(new Label("bookTitle", book.description.title))
   add(new Label("polishTitle", book.description.polishTitle))
@@ -88,11 +89,9 @@ class BookPreviewPage(parameters: PageParameters) extends SecureWebPage(SocnetRo
     def onUpdate(target: AjaxRequestTarget) {
       val rating = this.getFormComponent.getModel.getObject.asInstanceOf[Rating]
 
-      val bookUserInfo = bookUserInfoOption.getOrElse({
-        bookUserInfoCommand.createAndGetNewBookUserInfo(getSession.asInstanceOf[SocnetSession].userId, book.id)
-      })
 
-      bookUserInfoCommand.voteForBook(session.userId, bookUserInfo.id, bookUserInfo.version, rating)
+      bookUserInfoCommand.voteForBook(session.userId, bookId, bookUserInfo, rating)
+      AggregatesUtil.incrementVersion(bookUserInfo)
 
       ratingLabel.setDefaultModelObject(bookReviews.getFormattedAverageRatingWithOneVoteChanged(session.userId, rating))
       votesCountLabel.setDefaultModelObject(bookReviews.getVotesCountWithOneVoteChanged(session.userId))
@@ -159,7 +158,7 @@ class BookPreviewPage(parameters: PageParameters) extends SecureWebPage(SocnetRo
   }
 
   def addEditReviewForm(book: Book, currentUserReviewOption: Option[BookReview]): Component = {
-    val component = new EditReviewFormPanel("editReviewForm", book, bookUserInfoOption, BookPreviewPage.this)
+    val component = new EditReviewFormPanel("editReviewForm", book, bookUserInfo, BookPreviewPage.this)
     addOrReplace(component)
     component
   }
