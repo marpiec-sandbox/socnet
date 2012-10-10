@@ -24,6 +24,7 @@ class YourBooksPage extends SecureWebPage(SocnetRoles.USER) {
   val booksIds = bookUserInfoDatabase.getBooksOwnedBy(session.userId)
 
   val books = bookDatabase.getBooksByIds(booksIds)
+  val booksUserInfos = bookUserInfoDatabase.getUserInfoForBooks(session.userId, booksIds)
 
   add(AuthorizeUser(new BookmarkablePageLink("booksPageLink", classOf[BooksPage])))
 
@@ -33,7 +34,7 @@ class YourBooksPage extends SecureWebPage(SocnetRoles.USER) {
 
     books.foreach(book => {
 
-      val bookUserInfo = bookUserInfoDatabase.getUserInfoByUserAndBook(session.userId, book.id).getOrElse(new BookUserInfo)
+      val bookUserInfo = booksUserInfos.getOrElse(book.id, new BookUserInfo)
 
       add(new AbstractItem(newChildId()) {
         add(new BookPreviewWithOwnershipPanel("bookPreviewWithOwnershipPanel", book, bookUserInfo))

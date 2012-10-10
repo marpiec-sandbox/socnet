@@ -42,4 +42,14 @@ class BookUserInfoDatabaseMockImpl @Autowired()(dataStore: DataStore)
 
     books
   }
+
+  def getUserInfoForBooks(userId: UID, booksIds: List[UID]) = {
+    var booksInfos = Map[UID, BookUserInfo]()
+    getAll.foreach(bookUserInfo => {
+      if(bookUserInfo.userId == userId) {
+        booksInfos += bookUserInfo.bookId -> bookUserInfo
+      }
+    })
+    booksInfos
+  }
 }

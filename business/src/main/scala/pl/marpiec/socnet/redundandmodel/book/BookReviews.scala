@@ -67,11 +67,11 @@ class BookReviews {
   }
 
   def getVotesCount:Int = {
-    votes.size
+    userVotes.size
   }
 
   def getVotesCountWithOneVoteChanged(userId:UID):Int = {
-    val votesCount = votes.size
+    val votesCount = userVotes.size
     val previousUserRatingOption = userVotes.get(userId)
     if(previousUserRatingOption.isDefined) {
       votesCount

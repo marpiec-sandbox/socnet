@@ -15,4 +15,6 @@ trait BookUserInfoDatabase {
 
   def getBooksOwnedBy(userId: UID): List[UID]
 
+  def getUserInfoForBooks(userId: UID, booksIds: List[UID]): Map[UID, BookUserInfo]
+
 }

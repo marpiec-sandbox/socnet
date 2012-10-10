@@ -75,4 +75,8 @@ class BookReviewsDatabaseMockImpl @Autowired()(dataStore: DataStore)
     }
     
   }
+
+  def getBooksReviewsForBooksIds(booksIds: List[UID]) = {
+    booksReviews.filterKeys(bookId => booksIds.contains(bookId))
+  }
 }

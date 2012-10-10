@@ -10,5 +10,6 @@ import pl.marpiec.socnet.redundandmodel.book.BookReviews
 trait BookReviewsDatabase {
 
   def getBookReviews(bookId: UID): Option[BookReviews]
+  def getBooksReviewsForBooksIds(booksIds: List[UID]):Map[UID, BookReviews]
 
 }
