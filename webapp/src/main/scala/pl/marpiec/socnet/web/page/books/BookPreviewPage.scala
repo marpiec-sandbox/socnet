@@ -3,7 +3,6 @@ package pl.marpiec.socnet.web.page.books
 import component.BookOwnershipPanel
 import scala.collection.JavaConversions._
 import bookPreviewPage.{BookReviewPreviewPanel, EditReviewFormPanel}
-import pl.marpiec.socnet.web.authorization.SecureWebPage
 import org.apache.wicket.request.mapper.parameter.PageParameters
 import pl.marpiec.util.{IdProtectionUtil, UID}
 import org.apache.wicket.spring.injection.annot.SpringBean
@@ -24,9 +23,10 @@ import org.apache.wicket.model.Model
 import pl.marpiec.socnet.redundandmodel.book.BookReviews
 import pl.marpiec.socnet.service.bookuserinfo.BookUserInfoCommand
 import pl.marpiec.socnet.readdatabase.{BookUserInfoDatabase, BookReviewsDatabase, BookDatabase}
-import pl.marpiec.socnet.web.application.{SocnetSession, SocnetRoles}
+import pl.marpiec.socnet.web.application.SocnetRoles
 import pl.marpiec.socnet.model.{BookUserInfo, Book}
 import pl.marpiec.cqrs.AggregatesUtil
+import pl.marpiec.socnet.web.authorization.{AuthorizeUser, SecureWebPage}
 
 /**
  * @author Marcin Pieciukiewicz
@@ -69,6 +69,9 @@ class BookPreviewPage(parameters: PageParameters) extends SecureWebPage(SocnetRo
 
   //build schema
   add(new BookOwnershipPanel("bookOwnership", bookId, bookUserInfo))
+
+  add(AuthorizeUser(new BookmarkablePageLink("yourBooksLink", classOf[YourBooksPage])))
+  add(AuthorizeUser(new BookmarkablePageLink("booksLink", classOf[BooksPage])))
 
   add(new Label("bookTitle", book.description.title))
   add(new Label("polishTitle", book.description.polishTitle))
@@ -131,7 +134,7 @@ class BookPreviewPage(parameters: PageParameters) extends SecureWebPage(SocnetRo
 
   })
 
-  def putProperLabelInEditReviewButton(button:AjaxLink[_], currentUserReviewOption:Option[BookReview]) {
+  def putProperLabelInEditReviewButton(button: AjaxLink[_], currentUserReviewOption: Option[BookReview]) {
 
     if (currentUserReviewOption.isDefined) {
       button.addOrReplace(new Label("label", "Zmień swoją recenzję książki"))
@@ -167,7 +170,7 @@ class BookPreviewPage(parameters: PageParameters) extends SecureWebPage(SocnetRo
     component
   }
 
-  def showEditReviewButton(currentUserReviewOption:Option[BookReview]): Component = {
+  def showEditReviewButton(currentUserReviewOption: Option[BookReview]): Component = {
     putProperLabelInEditReviewButton(editReviewLink, currentUserReviewOption)
     editReviewLink.setVisible(true)
     editReviewLink

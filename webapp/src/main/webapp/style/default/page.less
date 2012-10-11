@@ -94,6 +94,41 @@
      padding: 10px;
      margin: 0 0 30px;
      border: 1px solid #9EB5C6;
+
+     .buttons {
+
+         text-align: right;
+
+         .buttonHolder {
+             display: inline-block;
+             margin: 7px 11px 3px 0;
+         }
+
+     }
+
+     a.defaultButton {
+         background-color: #F9FDFF;
+         border: 1px solid #ddd;
+         display: table-cell;
+         font-size: 14px;
+         font-weight: bold;
+         height: 79px;
+         line-height: 21px;
+         padding: 5px 10px 6px;
+         text-align: right;
+         text-decoration: none;
+         vertical-align: bottom;
+         width: 88px;
+
+         &:hover {
+             background-color: #fbfaf3;
+         }
+
+         &:active {
+             background-color: #F5F5F5;
+         }
+
+     }
 }
 
 
@@ -135,40 +170,7 @@
             margin: 3px 8px;
         }
 
-        .buttons {
 
-            text-align: right;
-
-            .buttonHolder {
-                display: inline-block;
-                margin: 7px 11px 3px 0;
-            }
-
-        }
-
-        a.defaultButton {
-            background-color: #F9FDFF;
-            border: 1px solid #ddd;
-            display: table-cell;
-            font-size: 14px;
-            font-weight: bold;
-            height: 79px;
-            line-height: 21px;
-            padding: 5px 10px 6px;
-            text-align: right;
-            text-decoration: none;
-            vertical-align: bottom;
-            width: 88px;
-
-            &:hover {
-                background-color: #fbfaf3;
-            }
-
-            &:active {
-                background-color: #F5F5F5;
-            }
-
-        }
 
         .buttonHolder:first-child {
             margin-top: 20px;
@@ -181,7 +183,7 @@
     }
 
     .mainPageModule.topContainer {
-        margin: 10px 33px 0 15px;
+        margin-bottom: 20px;
         position: relative;
         height: 25px;
 
