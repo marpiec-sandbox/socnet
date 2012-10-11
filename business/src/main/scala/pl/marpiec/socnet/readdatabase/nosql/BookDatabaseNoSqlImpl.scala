@@ -35,7 +35,7 @@ class BookDatabaseNoSqlImpl @Autowired()(dataStore: DataStore)
 
   def getBooksByIds(booksIds: List[UID]) = {
     
-    val ids:Array[Long] = Array[Long](booksIds.size)
+    val ids:Array[Long] = new Array[Long](booksIds.size)
 
     for (i <- 0 until booksIds.size) {
       ids(i) = booksIds(i).uid
