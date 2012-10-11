@@ -3,16 +3,18 @@
 <body>
 <wicket:extend>
 
-    <div>Books page</div>
-
     <div wicket:id="findBook" />
 
-    <div>
-        <a wicket:id="yourBooksLink">Twoje książki</a>
-    </div>
+    <div class="booksLinksContainer">
+        <div class="buttons">
+            <div class="buttonHolder">
+                <a wicket:id="addBookLink" class="defaultButton">Dodaj nową książkę</a>
+            </div>
 
-    <div>
-        <a wicket:id="addBookLink">Dodaj nową książkę</a>
+            <div class="buttonHolder">
+                <a wicket:id="yourBooksLink" class="defaultButton">Twoje Książki</a>
+            </div>
+        </div>
     </div>
 
     <div class="bookList">

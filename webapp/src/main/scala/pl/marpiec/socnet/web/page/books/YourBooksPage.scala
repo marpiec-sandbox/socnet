@@ -8,7 +8,7 @@ import org.apache.wicket.markup.repeater.RepeatingView
 import org.apache.wicket.markup.html.list.AbstractItem
 import pl.marpiec.socnet.web.authorization.{AuthorizeUser, SecureWebPage}
 import yourBooksPage.BookPreviewWithOwnershipPanel
-import pl.marpiec.socnet.readdatabase.{BookUserInfoDatabase, BookReviewsDatabase, BookDatabase}
+import pl.marpiec.socnet.readdatabase.{BookUserInfoDatabase, BookDatabase}
 import pl.marpiec.socnet.model.BookUserInfo
 
 /**
@@ -18,7 +18,6 @@ import pl.marpiec.socnet.model.BookUserInfo
 class YourBooksPage extends SecureWebPage(SocnetRoles.USER) {
 
   @SpringBean private var bookDatabase: BookDatabase = _
-  @SpringBean private var bookReviewsDatabase: BookReviewsDatabase = _
   @SpringBean private var bookUserInfoDatabase: BookUserInfoDatabase = _
 
   val booksIds = bookUserInfoDatabase.getBooksOwnedBy(session.userId)
