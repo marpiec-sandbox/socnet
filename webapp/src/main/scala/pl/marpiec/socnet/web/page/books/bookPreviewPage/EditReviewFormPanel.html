@@ -2,9 +2,23 @@
 <html xmlns:wicket="http://wicket.apache.org">
 <wicket:panel>
 
+    <script type="text/javascript">
+
+        function showConfirmRemoveForm() {
+            jQuery(".reviewForm .reviewInnerForm").css({visibility:"hidden"})
+            jQuery(".removeReviewConfirmForm").show()
+        }
+
+        function hideConfirmRemoveForm() {
+            jQuery(".reviewForm .reviewInnerForm").css({visibility:"visible"})
+            jQuery(".removeReviewConfirmForm").hide()
+        }
+
+    </script>
+
     <div class="reviewForm">
 
-        <form wicket:id="reviewForm">
+        <form class="reviewInnerForm" wicket:id="reviewForm">
 
             <input type="hidden" wicket:id="sessionToken"/>
             <div><span wicket:id="warningMessage"></span></div>
@@ -27,9 +41,27 @@
                 </div>
             </div>
 
+            <a href="#" onclick="showConfirmRemoveForm();return false;">Usuń recenzję</a>
+
         </form>
 
-        <div wicket:id="removeReviewForm" class="element">removeReviewForm</div>
+        <div class="removeReviewConfirmForm hiddenByDefault">
+
+            <div class="removeReviewButtons">
+                <div class="removeReviewButtonContainer">
+                    <a onclick="hideConfirmRemoveForm();return false;">Anuluj</a>
+                </div>
+                <div class="removeReviewButtonContainer">
+                    <div wicket:id="removeReviewButton" class="element">removeReviewButton</div>
+                </div>
+            </div>
+
+
+
+
+        </div>
+
+
 
     </div>
 

@@ -29,7 +29,7 @@ class EditReviewFormPanel(id: String, book: Book, bookUserInfo: BookUserInfo, pa
 
   val currentUserId = getSession.asInstanceOf[SocnetSession].userId
 
-  add(new OneButtonAjaxForm("removeReviewForm", "Usuń recenzję", target => {
+  add(new OneButtonAjaxForm("removeReviewButton", "Usuń recenzję", target => {
 
     bookUserInfoCommand.removeBookReview(currentUserId, bookUserInfo.id, bookUserInfo.version)
 
