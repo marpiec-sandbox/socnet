@@ -16,7 +16,7 @@
     <properties>
         <scala.version>2.9.1</scala.version>
         <scalatest.version>1.7.1</scalatest.version>
-        <wicket.version>1.5.5</wicket.version>
+        <wicket.version>1.5.8</wicket.version>
         <org.springframework.version>3.0.5.RELEASE</org.springframework.version>
     </properties>
 
