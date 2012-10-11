@@ -53,16 +53,11 @@ class BookPreviewPage(parameters: PageParameters) extends SecureWebPage(SocnetRo
   @SpringBean private var bookUserInfoCommand: BookUserInfoCommand = _
 
   val thisPage = this
-
   val bookId = IdProtectionUtil.decrypt(parameters.get(BookPreviewPage.BOOK_ID_PARAM).toString)
-
   var editReviewLink: AjaxLink[_] = _
-
   val bookOption = bookDatabase.getBookById(bookId)
   val book = bookOption.getOrElse(throw new AbortWithHttpErrorCodeException(404))
-
   val bookReviews = bookReviewsDatabase.getBookReviews(bookId).getOrElse(new BookReviews)
-
   val bookUserInfo = bookUserInfoDatabase.getUserInfoByUserAndBook(session.userId, bookId).getOrElse(new BookUserInfo)
 
   //init data
@@ -106,12 +101,13 @@ class BookPreviewPage(parameters: PageParameters) extends SecureWebPage(SocnetRo
 
     setOutputMarkupId(true)
     setOutputMarkupPlaceholderTag(true)
-    setVisible(currentUserReviewOption.isEmpty)
+
+    putProperLabelInEditReviewButton(this, currentUserReviewOption)
 
     val thisButton = this
 
     def onClick(target: AjaxRequestTarget) {
-      val form = addEditReviewForm(book, None)
+      val form = addEditReviewForm(book)
       thisButton.setVisible(false)
 
       target.add(form)
@@ -135,6 +131,14 @@ class BookPreviewPage(parameters: PageParameters) extends SecureWebPage(SocnetRo
 
   })
 
+  def putProperLabelInEditReviewButton(button:AjaxLink[_], currentUserReviewOption:Option[BookReview]) {
+
+    if (currentUserReviewOption.isDefined) {
+      button.addOrReplace(new Label("label", "Zmień swoją recenzję książki"))
+    } else {
+      button.addOrReplace(new Label("label", "Napisz recenzję książki"))
+    }
+  }
 
   def addCurrentUserReview(currentUserReviewOption: Option[BookReview]): Component = {
 
@@ -157,17 +161,18 @@ class BookPreviewPage(parameters: PageParameters) extends SecureWebPage(SocnetRo
     component
   }
 
-  def addEditReviewForm(book: Book, currentUserReviewOption: Option[BookReview]): Component = {
+  def addEditReviewForm(book: Book): Component = {
     val component = new EditReviewFormPanel("editReviewForm", book, bookUserInfo, BookPreviewPage.this)
     addOrReplace(component)
     component
   }
 
-  def showEditReviewButton(): Component = {
-    val component = editReviewLink
+  def showEditReviewButton(currentUserReviewOption:Option[BookReview]): Component = {
+    putProperLabelInEditReviewButton(editReviewLink, currentUserReviewOption)
     editReviewLink.setVisible(true)
-    component
+    editReviewLink
   }
+
 
 }
 

@@ -5,7 +5,6 @@ import org.testng.annotations.Test
 import pl.marpiec.cqrs._
 import pl.marpiec.socnet.constant.Rating
 import org.joda.time.LocalDateTime
-import org.testng.Assert._
 import pl.marpiec.socnet.redundandmodel.book.BookReviews
 import pl.marpiec.socnet.model.book.BookDescription
 import pl.marpiec.util.UID
@@ -14,6 +13,7 @@ import pl.marpiec.socnet.readdatabase.{BookReviewsDatabase, BookUserInfoDatabase
 import pl.marpiec.socnet.service.bookuserinfo.input.BookOwnershipInput
 import pl.marpiec.socnet.readdatabase.mock.{BookReviewsDatabaseMockImpl, BookUserInfoDatabaseMockImpl, BookDatabaseMockImpl}
 import pl.marpiec.socnet.model.BookUserInfo
+import org.testng.Assert._
 
 /**
  * @author Marcin Pieciukiewicz
@@ -166,6 +166,21 @@ class BookServicesTest {
     assertEquals(review.description, "Dosc dobra ksiazka")
     assertEquals(review.rating, Rating.FOUR)
     assertEquals(review.userId, bookReviewerUserId)
+
+
+    /*
+     * Remove book review
+     */
+
+    bookUserInfoCommand.removeBookReview(bookReviewerUserId, reviewerBookUserInfo.id, reviewerBookUserInfo.version)
+
+    reviewerBookUserInfo = bookUserInfoDatabase.getUserInfoByUserAndBook(bookReviewerUserId, bookId).get
+
+    assertTrue(reviewerBookUserInfo.reviewOption.isEmpty)
+
+    bookReviews = bookReviewsDatabase.getBookReviews(bookId).get
+
+    assertTrue(bookReviews.userReviews.isEmpty)
 
 
     /*

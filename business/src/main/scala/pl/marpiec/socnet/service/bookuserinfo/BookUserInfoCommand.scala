@@ -16,6 +16,8 @@ trait BookUserInfoCommand {
 
   def addOrUpdateReview(userId: UID, bookId: UID, bookUserInfo: BookUserInfo, description: String, rating: Rating, review: LocalDateTime)
 
+  def removeBookReview(userId: UID, id: UID, version: Int)
+
   def addOrUpdateBookOwnership(userId: UID, bookId: UID, bookUserInfo: BookUserInfo, input: BookOwnershipInput)
 
 }

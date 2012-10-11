@@ -1,6 +1,6 @@
 package pl.marpiec.socnet.service.bookuserinfo
 
-import event.{CreateBookUserInfoEvent, AddOrUpdateBookOwnershipEvent, AddOrUpdateReviewBookEvent, VoteForBookEvent}
+import event._
 import input.BookOwnershipInput
 import org.springframework.stereotype.Service
 import pl.marpiec.util.UID
@@ -31,6 +31,11 @@ class BookUserInfoCommandImpl @Autowired()(val eventStore: EventStore, uidGenera
   def addOrUpdateReview(userId: UID, bookId: UID, bookUserInfo: BookUserInfo, description: String, rating: Rating, reviewTime: LocalDateTime) {
     createBookUserInfoIfRequired(userId, bookId, bookUserInfo)
     eventStore.addEvent(new EventRow(userId, bookUserInfo.id, bookUserInfo.version, new AddOrUpdateReviewBookEvent(userId, description, rating, reviewTime)))
+  }
+
+
+  def removeBookReview(userId: UID, id: UID, version: Int) {
+    eventStore.addEvent(new EventRow(userId, id, version, new RemoveBookReviewEvent))
   }
 
   def addOrUpdateBookOwnership(userId: UID, bookId: UID, bookUserInfo: BookUserInfo, bookOwnershipInput: BookOwnershipInput) {
