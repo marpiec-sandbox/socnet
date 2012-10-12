@@ -1,7 +1,7 @@
 package pl.marpiec.socnet.web.page.homePage
 
 import org.apache.wicket.markup.html.panel.Panel
-import people.PeopleDashboardPanel
+import people.FindPeopleFormPanel
 import pl.marpiec.socnet.web.authorization.AuthorizeUser
 import org.apache.wicket.spring.injection.annot.SpringBean
 import pl.marpiec.socnet.readdatabase.{UserDatabase, UserContactsDatabase}
@@ -54,7 +54,7 @@ class PeopleModule(id:String) extends Panel(id) {
 
   }
 
-  add(AuthorizeUser(new PeopleDashboardPanel("peopleDashboard")))
+  add(AuthorizeUser(new FindPeopleFormPanel("findPeopleFormPanel")))
 
 
 }

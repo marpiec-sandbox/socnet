@@ -9,9 +9,11 @@ import pl.marpiec.util.UID
 
 trait BookDatabase {
 
-  def getBookByTitle(title: String): Option[Book]
+
   def getBookById(id: UID): Option[Book]
   def getAllBooks: List[Book]
   def getBooksByIds(booksIds: List[UID]): List[Book]
+
+  def findBooksByQuery(query: String): List[Book]
 
 }

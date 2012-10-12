@@ -5,6 +5,7 @@ import pl.marpiec.socnet.model.Book
 import pl.marpiec.cqrs.{Aggregate, DataStore}
 import pl.marpiec.util.UID
 import pl.marpiec.socnet.readdatabase.BookDatabase
+import org.apache.commons.lang.StringUtils
 
 /**
  * @author Marcin Pieciukiewicz
@@ -14,16 +15,10 @@ import pl.marpiec.socnet.readdatabase.BookDatabase
 class BookDatabaseMockImpl @Autowired()(dataStore: DataStore)
   extends AbstractDatabase[Book](dataStore) with BookDatabase {
 
-  val TITLE_INDEX: String = "title"
 
   startListeningToDataStore(dataStore, classOf[Book])
 
-  addIndex(TITLE_INDEX, (aggregate: Aggregate) => {
-    val book = aggregate.asInstanceOf[Book]
-    book.description.title
-  });
-
-  def getBookByTitle(title: String): Option[Book] = getByIndex(TITLE_INDEX, title)
+  
 
   def getBookById(id: UID): Option[Book] = getById(id)
 
@@ -34,4 +29,23 @@ class BookDatabaseMockImpl @Autowired()(dataStore: DataStore)
       booksIds.contains(book.id)
     })
   }
+
+  def findBooksByQuery(query: String): List[Book] = {
+
+    val lowerCaseQuery = query.toLowerCase
+
+    getAllBooks.asInstanceOf[List[Book]].filter(book => {
+      if(StringUtils.containsIgnoreCase(book.description.title, lowerCaseQuery) ||
+        StringUtils.containsIgnoreCase(book.description.polishTitle, lowerCaseQuery) ||
+        StringUtils.containsIgnoreCase(book.description.description, lowerCaseQuery) ||
+        StringUtils.containsIgnoreCase(book.description.isbn, lowerCaseQuery)){
+        true
+      } else {
+        book.description.authors.exists(author => {
+          StringUtils.containsIgnoreCase(author, lowerCaseQuery)
+        })
+      }
+    })
+  }
+  
 }

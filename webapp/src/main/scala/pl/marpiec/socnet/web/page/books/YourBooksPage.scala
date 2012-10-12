@@ -1,6 +1,5 @@
 package pl.marpiec.socnet.web.page.books
 
-import booksPage.FindBookFormPanel
 import pl.marpiec.socnet.web.application.SocnetRoles
 import org.apache.wicket.spring.injection.annot.SpringBean
 import org.apache.wicket.markup.html.link.BookmarkablePageLink
@@ -10,6 +9,7 @@ import pl.marpiec.socnet.web.authorization.{AuthorizeUser, SecureWebPage}
 import yourBooksPage.BookPreviewWithOwnershipPanel
 import pl.marpiec.socnet.readdatabase.{BookUserInfoDatabase, BookDatabase}
 import pl.marpiec.socnet.model.BookUserInfo
+import pl.marpiec.socnet.web.component.book.FindBookFormPanel
 
 /**
  * @author Marcin Pieciukiewicz
@@ -27,7 +27,7 @@ class YourBooksPage extends SecureWebPage(SocnetRoles.USER) {
 
   add(AuthorizeUser(new BookmarkablePageLink("booksPageLink", classOf[BooksPage])))
 
-  add(new FindBookFormPanel("findBook"))
+  add(new FindBookFormPanel("findBookFormPanel"))
 
   add(new RepeatingView("book") {
 

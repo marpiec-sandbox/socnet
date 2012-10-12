@@ -8,6 +8,7 @@ import pl.marpiec.socnet.mongodb.DatabaseConnectorImpl
 import com.mongodb.QueryBuilder
 import pl.marpiec.socnet.model.Book
 import org.springframework.stereotype.Repository
+import org.apache.commons.lang.StringUtils
 
 /**
  * @author Marcin Pieciukiewicz
@@ -21,8 +22,23 @@ class BookDatabaseNoSqlImpl @Autowired()(dataStore: DataStore)
 
   startListeningToDataStore(dataStore, classOf[Book])
 
-  def getBookByTitle(title: String) = {
-    connector.findAggregateByQuery(QueryBuilder.start("title").is(title).get(), classOf[Book])
+  def findBooksByQuery(query: String) = {
+    //connector.findMultipleAggregatesByQuery(QueryBuilder.start("title").is(title).get(), classOf[Book])
+
+    val lowerCaseQuery = query.toLowerCase
+
+    getAllBooks.asInstanceOf[List[Book]].filter(book => {
+      if(StringUtils.containsIgnoreCase(book.description.title, lowerCaseQuery) ||
+        StringUtils.containsIgnoreCase(book.description.polishTitle, lowerCaseQuery) ||
+        StringUtils.containsIgnoreCase(book.description.description, lowerCaseQuery) ||
+        StringUtils.containsIgnoreCase(book.description.isbn, lowerCaseQuery)){
+        true
+      } else {
+        book.description.authors.exists(author => {
+          StringUtils.containsIgnoreCase(author, lowerCaseQuery)
+        })
+      }
+    })
   }
 
   def getBookById(id: UID) = connector.getAggregateById(id, classOf[Book])

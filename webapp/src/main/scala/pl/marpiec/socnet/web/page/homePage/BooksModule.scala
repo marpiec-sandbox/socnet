@@ -4,18 +4,17 @@ import org.apache.wicket.markup.html.panel.Panel
 import org.apache.wicket.markup.html.link.BookmarkablePageLink
 import pl.marpiec.socnet.web.authorization.AuthorizeUser
 import org.apache.wicket.spring.injection.annot.SpringBean
-import pl.marpiec.socnet.readdatabase.{BookDatabase, ArticleDatabase}
+import pl.marpiec.socnet.readdatabase.BookDatabase
 import org.apache.wicket.markup.repeater.RepeatingView
 import org.apache.wicket.markup.html.list.AbstractItem
-import org.apache.wicket.markup.repeater.RepeatingView._
-import pl.marpiec.socnet.web.component.book.{SimpleBookSummaryPreviewPanel, BookSummaryPreviewPanel}
 import pl.marpiec.socnet.web.page.books.{YourBooksPage, BooksPage}
+import pl.marpiec.socnet.web.component.book.{FindBookFormPanel, SimpleBookSummaryPreviewPanel}
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
-class BooksModule(id:String) extends Panel(id) {
+class BooksModule(id: String) extends Panel(id) {
 
   @SpringBean private var bookDatabase: BookDatabase = _
 
@@ -23,6 +22,8 @@ class BooksModule(id:String) extends Panel(id) {
 
   add(AuthorizeUser(new BookmarkablePageLink("yourBooksLink", classOf[YourBooksPage])))
   add(AuthorizeUser(new BookmarkablePageLink("booksLink", classOf[BooksPage])))
+
+  add(new FindBookFormPanel("findBookFormPanel"))
 
   add(new RepeatingView("book") {
 
