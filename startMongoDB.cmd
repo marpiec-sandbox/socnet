@@ -1,1 +1,1 @@
-start C:\Marcin\Coding\Srodowisko\mongodb-win32-i386-2.2.0\bin\mongod --dbpath C:\Marcin\Coding\Projekty\socnet\database\
+start %SOCNET_MONGODATABASE_BIN%mongod --dbpath %SOCNET_MONGODATABASE_LOCATION%

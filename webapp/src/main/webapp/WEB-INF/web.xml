@@ -12,32 +12,11 @@
         </param-value>
     </context-param>
 
-    <context-param>
-        <param-name>db.url</param-name>
-        <param-value>jdbc:h2:c:/mar/scala/projects/socnet/h2database/socnet</param-value>
-    </context-param>
-    <context-param>
-        <param-name>db.user</param-name>
-        <param-value>sa</param-value>
-    </context-param>
-    <context-param>
-        <param-name>db.password</param-name>
-        <param-value>sa</param-value>
-    </context-param>
-    <context-param>
-        <param-name>db.tcpServer</param-name>
-        <param-value>-tcpAllowOthers</param-value>
-    </context-param>
-
     <!-- Inicjalizacja kontekstu Springa -->
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
 
-    <!-- starter of h2 database -->
-    <listener>
-        <listener-class>org.h2.server.web.DbStarter</listener-class>
-    </listener>
 
 	<filter>
 		<filter-name>wicket.socnet</filter-name>
@@ -52,8 +31,6 @@
             <!-- Development mode causes that wicket tags are generated into final html -->
         </init-param>
 	</filter>
-
-
 
 
     <!-- H2 console -->
