@@ -75,7 +75,7 @@ class BookPreviewPage(parameters: PageParameters) extends SecureWebPage(SocnetRo
 
   add(new Label("bookTitle", book.description.title))
   add(new Label("polishTitle", book.description.polishTitle))
-  add(new Label("authors", book.description.authors.toString))
+  add(new Label("authors", book.description.getFormattedAuthorsString))
   add(new Label("isbn", book.description.isbn))
   add(new Label("description", book.description.description))
   val ratingLabel = addAndReturn(new Label("rating", bookReviews.getFormattedAverageRating).setOutputMarkupId(true))

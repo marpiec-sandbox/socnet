@@ -2,30 +2,41 @@
 <html xmlns:wicket="http://wicket.apache.org">
 <wicket:panel>
 
-    <div wicket:id="findBookFormPanel">findBookFormPanel</div>
+    <div class="booksModule">
 
-    <div>
-        <div>
-            Ostatnio dodane:
-        </div>
+        <div wicket:id="findBookFormPanel">findBookFormPanel</div>
 
-        <div class="bookList">
-            <div wicket:id="book" class="bookSummaryIterated">
+        <div class="recentBooks">
+            <div class="recentTitle">
+                Najwyżej oceniane:
+            </div>
+
+            <div wicket:id="bestBooks" class="bookSummaryIterated">
                 <div wicket:id="simpleBookSummaryPreview">bookSummaryPreview</div>
             </div>
         </div>
-    </div>
 
-    <div class="buttons">
-        <div class="buttonHolder">
-            <a wicket:id="booksLink" class="defaultButton">Wszystkie książki</a>
+        <div class="recentBooks">
+            <div class="recentTitle">
+                Ostatnio dodane:
+            </div>
+
+            <div wicket:id="recentBooks" class="bookSummaryIterated">
+                <div wicket:id="simpleBookSummaryPreview">bookSummaryPreview</div>
+            </div>
         </div>
 
-        <div class="buttonHolder">
-            <a wicket:id="yourBooksLink" class="defaultButton">Twoje Książki</a>
-        </div>
-    </div>
+        <div class="buttons">
+            <div class="buttonHolder">
+                <a wicket:id="booksLink" class="defaultButton">Wszystkie książki</a>
+            </div>
 
+            <div class="buttonHolder">
+                <a wicket:id="yourBooksLink" class="defaultButton">Twoje Książki</a>
+            </div>
+        </div>
+
+    </div>
 
 </wicket:panel>
 </html>

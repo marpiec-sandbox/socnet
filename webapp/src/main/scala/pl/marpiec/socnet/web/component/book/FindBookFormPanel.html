@@ -1,14 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <html xmlns:wicket="http://wicket.apache.org">
 <wicket:panel>
-    <div>
-        <div class="findBookTitle">Znajdź książkę</div>
+    <div class="findBookFormPanel">
         <form wicket:id="findBookForm">
-            <input wicket:id="query" type="text"/>
-            <input type="submit" value="szukaj"/>
+            <input wicket:id="query" type="text" class="findBookQueryInput"/>
+            <input type="submit" value="szukaj" class="findBookButton"/>
         </form>
-
     </div>
+
+    <script type="text/javascript">
+
+        var findBookQueryInputInitText = "Znajdź książkę";
+
+        var jQueryInput = jQuery(".findBookQueryInput")
+
+        jQueryInput.val(findBookQueryInputInitText);
+        jQueryInput.addClass("inputLabel")
+        jQueryInput.focus(function() {
+            if(jQuery(this).val() == findBookQueryInputInitText) {
+                jQuery(this).removeClass("inputLabel")
+                jQuery(this).val("")
+            }
+        })
+        jQueryInput.blur(function() {
+            if(jQuery(this).val() == "") {
+                jQuery(this).addClass("inputLabel")
+                jQuery(this).val(findBookQueryInputInitText)
+            }
+        })
+
+
+    </script>
 
 </wicket:panel>
 </html>

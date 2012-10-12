@@ -25,8 +25,16 @@ class BooksModule(id: String) extends Panel(id) {
 
   add(new FindBookFormPanel("findBookFormPanel"))
 
-  add(new RepeatingView("book") {
 
+  add(new RepeatingView("bestBooks") {
+    recentBooks.foreach(book => {
+      add(new AbstractItem(newChildId()) {
+        add(new SimpleBookSummaryPreviewPanel("simpleBookSummaryPreview", book))
+      })
+    })
+  })
+
+  add(new RepeatingView("recentBooks") {
     recentBooks.foreach(book => {
 
       add(new AbstractItem(newChildId()) {

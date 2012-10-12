@@ -13,7 +13,7 @@ import pl.marpiec.socnet.redundandmodel.book.BookReviews
 class BookSummaryPreviewPanel(id: String, book: Book, bookReviews: BookReviews) extends Panel(id) {
 
   add(BookPreviewPage.getLink(book).add(new Label("title", book.description.title)))
-  add(new Label("author", book.description.authors.toString))
+  add(new Label("author", book.description.getFormattedAuthorsString))
   add(new Label("rating", bookReviews.getFormattedAverageRating))
   add(new Label("votesCount", bookReviews.getVotesCount.toString))
 
