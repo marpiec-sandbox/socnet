@@ -1,5 +1,6 @@
 package pl.marpiec.socnet.model
 
+import booksuggestion.BookSuggestionResponse
 import pl.marpiec.cqrs.Aggregate
 import org.joda.time.LocalDateTime
 import pl.marpiec.util.{UID, BeanUtil}
@@ -7,6 +8,8 @@ import pl.marpiec.util.{UID, BeanUtil}
 /**
  * @author Marcin Pieciukiewicz
  */
+
+
 
 class BookSuggestion extends Aggregate(null, 0) {
 
@@ -21,6 +24,8 @@ class BookSuggestion extends Aggregate(null, 0) {
   var authors: List[String] = Nil
 
   var userComment: String = _
+  
+  var responseOption: Option[BookSuggestionResponse] = None
 
   def copy: Aggregate = {
     BeanUtil.copyProperties(new BookSuggestion, this)

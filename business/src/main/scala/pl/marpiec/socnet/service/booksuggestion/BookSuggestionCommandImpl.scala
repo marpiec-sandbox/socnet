@@ -1,6 +1,6 @@
 package pl.marpiec.socnet.service.booksuggestion
 
-import event.CreateBookSuggestionEvent
+import event._
 import org.springframework.stereotype.Service
 import org.springframework.beans.factory.annotation.Autowired
 import pl.marpiec.util.UID
@@ -22,4 +22,19 @@ class BookSuggestionCommandImpl @Autowired()(val eventStore: EventStore) extends
     eventStore.addEventForNewAggregate(newBookSuggestionId, new EventRow(userId, newBookSuggestionId, 0, createBookSuggestion))
   }
 
+  def acceptBookSuggestion(userId: UID, id: UID, version: Int, createdBookId: UID, responseTime: LocalDateTime) {
+    eventStore.addEvent(new EventRow(userId, id, version, new AcceptBookSuggestionEvent(createdBookId, responseTime)))
+  }
+
+  def bookAlreadyExistsForBookSuggestion(userId: UID, id: UID, version: Int, existingBookId: UID, responseTime: LocalDateTime) {
+    eventStore.addEvent(new EventRow(userId, id, version, new BookAlreadyExistedForSuggestionEvent(existingBookId, responseTime)))
+  }
+
+  def declineBookSuggestion(userId: UID, id: UID, version: Int, comment: String, responseTime: LocalDateTime) {
+    eventStore.addEvent(new EventRow(userId, id, version, new DeclineBookSuggestionEvent(comment, responseTime)))
+  }
+
+  def userHasSeenResponse(userId: UID, id: UID, version: Int) {
+    eventStore.addEvent(new EventRow(userId, id, version, new UserHasSeenSuggestionResponseEvent))
+  }
 }
