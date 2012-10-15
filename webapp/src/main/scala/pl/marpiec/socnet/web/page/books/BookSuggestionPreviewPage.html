@@ -6,26 +6,76 @@
     <div class="bookSuggestionPage">
 
 
+        <div class="booksLinksContainer">
 
-        <div wicket:id="creationTime" />
-        <div wicket:id="bookTitle" />
-        <div wicket:id="polishTitle" />
-        <div wicket:id="authors" />
-        <div wicket:id="isbn" />
-        <div wicket:id="description" />
-        <div wicket:id="userComment" />
+            <div wicket:id="findBookFormPanel">findBookFormPanel</div>
 
-        <form wicket:id="suggestionForm">
+            <div class="buttons">
+                <div class="buttonHolder">
+                    <a wicket:id="booksPageLink" class="defaultButton">Wszystkie książki</a>
+                </div>
+            </div>
 
-            <span class="warningMessage" wicket:id="warningMessage"></span>
-            <span class="bookTitle" wicket:id="bookTitle"></span>
-            <input type="hidden" wicket:id="sessionToken"/>
+            <div class="buttons">
+                <div class="buttonHolder">
+                    <a wicket:id="addBookLink" class="defaultButton">Dodaj nową książkę</a>
+                </div>
 
-            <button wicket:id="acceptButton">Zaakceptuj i stwórz książkę</button>
-            <button wicket:id="declineButton">Książka już istnieje</button>
-            <button wicket:id="alreadyExistsButton">Odrzuć sugestię</button>
-            <textarea wicket:id="description">description</textarea>
-        </form>
+                <div class="buttonHolder">
+                    <a wicket:id="yourBooksLink" class="defaultButton">Twoje Książki</a>
+                </div>
+            </div>
+
+            <div class="buttons">
+                <div class="buttonHolder">
+                    <a wicket:id="suggestBookLink" class="defaultButton">Zasugeruj książkę</a>
+                </div>
+                <div class="buttonHolder">
+                    <a wicket:id="yourBooksSuggestionsLink" class="defaultButton">Twoje sugestie książek</a>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="bookSuggestionPreview">
+            <div wicket:id="creationTime" class="creationTime"/>
+            <div wicket:id="bookTitle" class="bookTitle" />
+            <div wicket:id="polishTitle" class="polishTitle" />
+            <div wicket:id="authors" class="authors" />
+            <div>
+                ISBN: <span wicket:id="isbn" class="isbn" />
+            </div>
+
+            <div class="bookDescriptionTitle">Opis książki:</div>
+            <div wicket:id="description" class="description" />
+
+            <div class="userCommentTitle">Komentarz użytkownika:</div>
+            <div wicket:id="userComment" class="userComment" />
+        </div>
+
+        <div class="bookSuggestionForm">
+            <form wicket:id="suggestionForm">
+                <input type="hidden" wicket:id="sessionToken"/>
+                <span class="warningMessage" wicket:id="warningMessage"></span>
+                <div>
+                    Tytuł książki: <span class="bookTitle" wicket:id="bookTitle"></span>
+                </div>
+
+                <div>
+                    Dodatkowe informacje (identyfikator istniejacej książki lub komentarz):
+                    <textarea wicket:id="description">description</textarea>
+                </div>
+
+                <button wicket:id="acceptButton">Zaakceptuj i stwórz książkę</button>
+                <button wicket:id="declineButton">Książka już istnieje</button>
+                <button wicket:id="alreadyExistsButton">Odrzuć sugestię</button>
+
+            </form>
+        </div>
+
+
+
+
     </div>
 
 </wicket:extend>

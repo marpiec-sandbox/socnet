@@ -13,6 +13,7 @@ import pl.marpiec.socnet.web.wicket.SecureAjaxButton
 import org.apache.wicket.ajax.AjaxRequestTarget
 import pl.marpiec.socnet.web.component.wicket.form.OneButtonAjaxForm
 import pl.marpiec.socnet.service.booksuggestion.BookSuggestionCommand
+import org.apache.wicket.markup.html.panel.EmptyPanel
 
 /**
  * @author Marcin Pieciukiewicz
@@ -43,7 +44,7 @@ class YourBooksSuggestionsPage extends SecureWebPage(SocnetRoles.USER) {
             add(BookPreviewPage.getLink("bookPreviewLink", response.bookIdOption.get))
           } else if (response.declined) {
             add(new Label("status", "Książka nie zostanie dodana"))
-            add(new BookmarkablePageLink("bookPreviewLink", null).setVisible(false))
+            add(new EmptyPanel("bookPreviewLink"))
           } else if (response.alreadyExisted) {
             add(new Label("status", "Książka już istnieje"))
             add(BookPreviewPage.getLink("bookPreviewLink", response.bookIdOption.get))
@@ -51,6 +52,7 @@ class YourBooksSuggestionsPage extends SecureWebPage(SocnetRoles.USER) {
 
         } else {
           add(new Label("status", "Czeka na akceptacje"))
+          add(new EmptyPanel("bookPreviewLink"))
         }
 
         add(new OneButtonAjaxForm("removeButton", "Usuń z tej listy", target => {

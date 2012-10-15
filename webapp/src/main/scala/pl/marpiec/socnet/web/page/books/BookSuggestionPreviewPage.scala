@@ -7,7 +7,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean
 import pl.marpiec.socnet.readdatabase.{BookSuggestionDatabase, BookDatabase}
 import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException
 import org.apache.wicket.markup.html.basic.Label
-import pl.marpiec.socnet.web.authorization.SecureWebPage
 import pl.marpiec.socnet.web.application.SocnetRoles
 import pl.marpiec.util.{DateUtil, IdProtectionUtil, UID}
 import org.apache.wicket.model.CompoundPropertyModel
@@ -17,6 +16,8 @@ import pl.marpiec.socnet.service.booksuggestion.BookSuggestionCommand
 import org.joda.time.LocalDateTime
 import org.apache.wicket.markup.html.form.TextArea
 import org.apache.commons.lang.StringUtils
+import pl.marpiec.socnet.web.authorization.{AuthorizeUser, SecureWebPage}
+import pl.marpiec.socnet.web.component.book.FindBookFormPanel
 
 /**
  * @author Marcin Pieciukiewicz
@@ -43,6 +44,14 @@ class BookSuggestionPreviewPage(parameters: PageParameters) extends SecureWebPag
   val bookSuggestionId = IdProtectionUtil.decrypt(parameters.get(BookSuggestionPreviewPage.BOOK_SUGGESTION_ID_PARAM).toString)
   val bookSuggestionOption = bookSuggestionDatabase.getBookSuggestionById(bookSuggestionId)
   val bookSuggestion = bookSuggestionOption.getOrElse(throw new AbortWithHttpErrorCodeException(404))
+
+  add(new FindBookFormPanel("findBookFormPanel"))
+
+  add(AuthorizeUser(new BookmarkablePageLink("booksPageLink", classOf[BooksPage])))
+  add(AuthorizeUser(new BookmarkablePageLink("addBookLink", classOf[AddBookPage])))
+  add(AuthorizeUser(new BookmarkablePageLink("yourBooksLink", classOf[YourBooksPage])))
+  add(AuthorizeUser(new BookmarkablePageLink("suggestBookLink", classOf[SuggestBookPage])))
+  add(AuthorizeUser(new BookmarkablePageLink("yourBooksSuggestionsLink", classOf[YourBooksSuggestionsPage])))
 
   add(new Label("creationTime", DateUtil.printDateTime(bookSuggestion.creationTime)))
   add(new Label("bookTitle", bookSuggestion.title))

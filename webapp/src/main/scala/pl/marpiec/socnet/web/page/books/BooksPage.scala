@@ -33,10 +33,10 @@ class BooksPage(parameters: PageParameters) extends SecureWebPage(SocnetRoles.US
   val booksReviews = bookReviewsDatabase.getBooksReviewsForBooksIds(convertToIdsList(books))
 
   add(AuthorizeUser(new BookmarkablePageLink("yourBooksLink", classOf[YourBooksPage])))
-  add(AuthorizeTrustedUser(new BookmarkablePageLink("addBookLink", classOf[AddBookPage])))
-  add(AuthorizeTrustedUser(new BookmarkablePageLink("suggestBookLink", classOf[SuggestBookPage])))
-  add(AuthorizeTrustedUser(new BookmarkablePageLink("yourBooksSuggestionsLink", classOf[YourBooksSuggestionsPage])))
-  add(AuthorizeTrustedUser(new BookmarkablePageLink("booksSuggestionsListLink", classOf[BooksSuggestionsListPage])))
+  add(AuthorizeUser(new BookmarkablePageLink("addBookLink", classOf[AddBookPage])))
+  add(AuthorizeUser(new BookmarkablePageLink("suggestBookLink", classOf[SuggestBookPage])))
+  add(AuthorizeUser(new BookmarkablePageLink("yourBooksSuggestionsLink", classOf[YourBooksSuggestionsPage])))
+  add(AuthorizeUser(new BookmarkablePageLink("booksSuggestionsListLink", classOf[BooksSuggestionsListPage])))
 
 
   add(new FindBookFormPanel("findBookFormPanel"))
