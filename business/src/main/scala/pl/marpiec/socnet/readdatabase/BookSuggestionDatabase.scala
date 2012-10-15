@@ -8,5 +8,8 @@ import pl.marpiec.socnet.model.BookSuggestion
  */
 
 trait BookSuggestionDatabase {
+
   def getBookSuggestionById(id: UID): Option[BookSuggestion]
+
+  def getAllUnrespondedSuggestions: List[BookSuggestion]
 }

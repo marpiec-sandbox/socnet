@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:wicket="http://wicket.apache.org">
+<wicket:panel>
+
+
+    <form wicket:id="suggestBookForm" class="horizontalForm suggestBookForm">
+
+        <span class="warningMessage" wicket:id="warningMessage"></span>
+
+        <input type="hidden" wicket:id="sessionToken"/>
+
+        <div class="formRow">
+            <span class="label">Tytuł</span>
+            <span class="validatorMessage"></span>
+            <input type="text" wicket:id="title" class="requiredValidator stringValidator"
+                   alt="{min:3, max:200, msg:'Tytuł jest wymagany (minimum 3 litery)'}"/>
+        </div>
+
+        <div class="formRow">
+            <span class="label">Polski tytuł (jeżeli inny niż oryginalny)</span>
+            <span class="validatorMessage"></span>
+            <input type="text" wicket:id="polishTitle" />
+        </div>
+
+        <div class="formRow">
+            <span class="label">Autor (jeżeli więcej niż jeden, oddzieleni przecinkami)</span>
+            <span class="validatorMessage"></span>
+            <input type="text" wicket:id="authors" />
+        </div>
+
+
+        <div class="formRow">
+            <span class="label">Numer ISBN</span>
+            <span class="validatorMessage"></span>
+            <input type="text" wicket:id="isbn" class="requiredValidator stringValidator"
+                   alt="{min:2, max:50, msg:'Numer ISBN musi mieć przynajmniej 10 znaków'}"/>
+        </div>
+
+        <div class="formRow">
+            <span class="label">Opis</span>
+            <span class="validatorMessage"></span>
+            <textarea wicket:id="description"/>
+        </div>
+
+        <div class="formRow">
+            <span class="label">Komentarz</span>
+            <span class="validatorMessage"></span>
+            <textarea wicket:id="comment"/>
+        </div>
+
+
+        <div class="addBookActionButtons">
+            <input type="submit" wicket:id="submitButton" class="submitButton" value="zapisz"/>
+            <a href="#" wicket:id="cancelButton">anuluj</a>
+        </div>
+
+        <script type="text/javascript">
+            initForm(".suggestBookForm");
+            initValidation(".suggestBookForm", ".submitButton");
+        </script>
+    </form>
+
+</wicket:panel>
+</html>

@@ -12,7 +12,7 @@ import pl.marpiec.cqrs.{EventRow, EventStore}
  * @author Marcin Pieciukiewicz
  */
 
-@Service("bookCommand")
+@Service("bookSuggestionCommand")
 class BookSuggestionCommandImpl @Autowired()(val eventStore: EventStore) extends BookSuggestionCommand {
 
   def createBookSuggestion(userId: UID, bookDescription: BookDescription, userComment: String,

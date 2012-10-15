@@ -34,6 +34,9 @@ class BooksPage(parameters: PageParameters) extends SecureWebPage(SocnetRoles.US
 
   add(AuthorizeUser(new BookmarkablePageLink("yourBooksLink", classOf[YourBooksPage])))
   add(AuthorizeTrustedUser(new BookmarkablePageLink("addBookLink", classOf[AddBookPage])))
+  add(AuthorizeTrustedUser(new BookmarkablePageLink("suggestBookLink", classOf[SuggestBookPage])))
+  add(AuthorizeTrustedUser(new BookmarkablePageLink("booksSuggestionsListLink", classOf[BooksSuggestionsListPage])))
+
 
   add(new FindBookFormPanel("findBookFormPanel"))
 

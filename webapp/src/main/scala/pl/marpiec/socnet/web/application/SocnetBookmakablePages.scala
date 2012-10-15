@@ -49,6 +49,9 @@ object SocnetBookmakablePages {
     application.mountPage("technologies", classOf[UserTechnologiesPage])
 
     application.mountPage("books/${" + BooksPage.QUERY_PARAM + "}", classOf[BooksPage])
+    application.mountPage("suggest/book", classOf[SuggestBookPage])
+    application.mountPage("book/suggestion/${" + BookSuggestionPreviewPage.BOOK_SUGGESTION_ID_PARAM + "}", classOf[BookSuggestionPreviewPage])
+    application.mountPage("books/suggestions", classOf[BooksSuggestionsListPage])
     application.mountPage("add/book", classOf[AddBookPage])
     application.mountPage("book/${" + BookPreviewPage.BOOK_ID_PARAM + "}", classOf[BookPreviewPage])
     application.mountPage("your/books", classOf[YourBooksPage])
