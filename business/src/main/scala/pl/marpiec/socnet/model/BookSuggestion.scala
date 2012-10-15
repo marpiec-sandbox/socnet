@@ -28,6 +28,8 @@ class BookSuggestion extends Aggregate(null, 0) {
 
   var responseOption: Option[BookSuggestionResponse] = None
 
+  var removedFromUsersList = false
+
   def copy: Aggregate = {
     BeanUtil.copyProperties(new BookSuggestion, this)
   }

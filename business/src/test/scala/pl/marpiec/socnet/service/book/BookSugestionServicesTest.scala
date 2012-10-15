@@ -158,5 +158,15 @@ class BookSugestionServicesTest {
     assertTrue(response.userHasSeenResponse)
 
 
+    /**
+     * User removes the suggestion from list
+     */
+
+    bookSuggestionCommand.removeSuggestionFromUserList(bookSuggestionCreatorUserId, bookSuggestion.id, bookSuggestion.version)
+
+    bookSuggestion = bookSuggestionDatabase.getBookSuggestionById(bookSuggestionId).get
+
+    assertTrue(bookSuggestion.removedFromUsersList)
+
   }
 }

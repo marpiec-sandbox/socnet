@@ -18,8 +18,6 @@ class BookDatabaseMockImpl @Autowired()(dataStore: DataStore)
 
   startListeningToDataStore(dataStore, classOf[Book])
 
-  
-
   def getBookById(id: UID): Option[Book] = getById(id)
 
   def getAllBooks: List[Book] = getAll

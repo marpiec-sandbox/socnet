@@ -35,8 +35,8 @@ import pl.marpiec.socnet.web.authorization.{AuthorizeUser, SecureWebPage}
 object BookPreviewPage {
   val BOOK_ID_PARAM = "bookId"
 
-  def getLink(book: Book): BookmarkablePageLink[_] = {
-    new BookmarkablePageLink("bookPreviewLink", classOf[BookPreviewPage], getParametersForLink(book.id))
+  def getLink(componentId:String, bookId: UID): BookmarkablePageLink[_] = {
+    new BookmarkablePageLink(componentId, classOf[BookPreviewPage], getParametersForLink(bookId))
   }
 
   def getParametersForLink(bookId: UID): PageParameters = {

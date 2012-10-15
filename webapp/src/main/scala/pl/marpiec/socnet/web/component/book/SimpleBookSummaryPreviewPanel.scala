@@ -11,7 +11,7 @@ import org.apache.wicket.markup.html.basic.Label
 
 class SimpleBookSummaryPreviewPanel(id: String, book: Book) extends Panel(id) {
 
-  add(BookPreviewPage.getLink(book).add(new Label("title", book.description.title)))
+  add(BookPreviewPage.getLink("bookPreviewLink", book.id).add(new Label("title", book.description.title)))
   add(new Label("author", book.description.getFormattedAuthorsString))
 
 }

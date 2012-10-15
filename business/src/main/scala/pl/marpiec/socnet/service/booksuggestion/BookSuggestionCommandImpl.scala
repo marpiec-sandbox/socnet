@@ -37,4 +37,8 @@ class BookSuggestionCommandImpl @Autowired()(val eventStore: EventStore) extends
   def userHasSeenResponse(userId: UID, id: UID, version: Int) {
     eventStore.addEvent(new EventRow(userId, id, version, new UserHasSeenSuggestionResponseEvent))
   }
+
+  def removeSuggestionFromUserList(userId: UID, id: UID, version: Int) {
+    eventStore.addEvent(new EventRow(userId, id, version, new RemoveSuggestionFromUserListEvent))
+  }
 }

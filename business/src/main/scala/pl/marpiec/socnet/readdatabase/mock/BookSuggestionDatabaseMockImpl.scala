@@ -1,11 +1,11 @@
 package pl.marpiec.socnet.readdatabase.mock
 
 import org.springframework.beans.factory.annotation.Autowired
-import pl.marpiec.cqrs.DataStore
 import pl.marpiec.socnet.readdatabase.BookSuggestionDatabase
 import pl.marpiec.util.UID
-import pl.marpiec.socnet.model.BookSuggestion
 import org.springframework.stereotype.Repository
+import pl.marpiec.cqrs.{Aggregate, DataStore}
+import pl.marpiec.socnet.model.{UserProfile, BookSuggestion}
 
 /**
  * @author Marcin Pieciukiewicz
@@ -20,4 +20,8 @@ class BookSuggestionDatabaseMockImpl @Autowired()(dataStore: DataStore)
   def getBookSuggestionById(id: UID): Option[BookSuggestion] = getById(id)
 
   def getAllUnrespondedSuggestions = getAll.filter(suggestion => suggestion.responseOption.isEmpty)
+
+  def getBooksSuggestionsOfUser(userId: UID) = getAll.filter(suggestion => {
+    suggestion.userId == userId && !suggestion.removedFromUsersList
+  })
 }

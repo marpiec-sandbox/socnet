@@ -20,4 +20,6 @@ trait BookSuggestionCommand {
   def declineBookSuggestion(userId: UID, id: UID, version: Int, comment: String, responseTime: LocalDateTime)
 
   def userHasSeenResponse(userId: UID, id: UID, version: Int)
+
+  def removeSuggestionFromUserList(userId: UID, id: UID, version: Int)
 }

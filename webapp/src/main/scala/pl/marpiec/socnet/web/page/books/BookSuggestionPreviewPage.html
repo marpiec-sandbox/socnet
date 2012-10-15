@@ -5,6 +5,8 @@
 
     <div class="bookSuggestionPage">
 
+
+
         <div wicket:id="creationTime" />
         <div wicket:id="bookTitle" />
         <div wicket:id="polishTitle" />
@@ -13,6 +15,17 @@
         <div wicket:id="description" />
         <div wicket:id="userComment" />
 
+        <form wicket:id="suggestionForm">
+
+            <span class="warningMessage" wicket:id="warningMessage"></span>
+            <span class="bookTitle" wicket:id="bookTitle"></span>
+            <input type="hidden" wicket:id="sessionToken"/>
+
+            <button wicket:id="acceptButton">Zaakceptuj i stwórz książkę</button>
+            <button wicket:id="declineButton">Książka już istnieje</button>
+            <button wicket:id="alreadyExistsButton">Odrzuć sugestię</button>
+            <textarea wicket:id="description">description</textarea>
+        </form>
     </div>
 
 </wicket:extend>

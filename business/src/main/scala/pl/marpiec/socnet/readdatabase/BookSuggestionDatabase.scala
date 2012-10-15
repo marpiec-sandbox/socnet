@@ -12,4 +12,6 @@ trait BookSuggestionDatabase {
   def getBookSuggestionById(id: UID): Option[BookSuggestion]
 
   def getAllUnrespondedSuggestions: List[BookSuggestion]
+
+  def getBooksSuggestionsOfUser(userId: UID): List[BookSuggestion]
 }

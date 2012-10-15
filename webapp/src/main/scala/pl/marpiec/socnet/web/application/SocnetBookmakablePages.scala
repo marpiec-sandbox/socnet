@@ -52,6 +52,7 @@ object SocnetBookmakablePages {
     application.mountPage("suggest/book", classOf[SuggestBookPage])
     application.mountPage("book/suggestion/${" + BookSuggestionPreviewPage.BOOK_SUGGESTION_ID_PARAM + "}", classOf[BookSuggestionPreviewPage])
     application.mountPage("books/suggestions", classOf[BooksSuggestionsListPage])
+    application.mountPage("your/books/suggestions", classOf[YourBooksSuggestionsPage])
     application.mountPage("add/book", classOf[AddBookPage])
     application.mountPage("book/${" + BookPreviewPage.BOOK_ID_PARAM + "}", classOf[BookPreviewPage])
     application.mountPage("your/books", classOf[YourBooksPage])
