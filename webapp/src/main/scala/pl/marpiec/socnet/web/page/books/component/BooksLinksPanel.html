@@ -8,27 +8,37 @@
 
         <div class="buttons">
             <div class="buttonHolder">
-                <a wicket:id="booksSuggestionsListLink" class="defaultButton">Sugestie książek</a>
-            </div>
-            <div class="buttonHolder">
-                <a wicket:id="booksPageLink" class="defaultButton">Wszystkie książki</a>
-            </div>
-
-            <div class="buttonHolder">
                 <a wicket:id="suggestBookLink" class="defaultButton">Zasugeruj książkę</a>
             </div>
             <div class="buttonHolder">
                 <a wicket:id="yourBooksSuggestionsLink" class="defaultButton">Twoje sugestie książek</a>
             </div>
 
+
             <div class="buttonHolder">
-                <a wicket:id="addBookLink" class="defaultButton">Dodaj nową książkę</a>
+                <a wicket:id="booksPageLink" class="defaultButton">Wszystkie książki</a>
             </div>
 
             <div class="buttonHolder">
                 <a wicket:id="yourBooksLink" class="defaultButton">Twoje Książki</a>
             </div>
         </div>
+
+        <wicket:enclosure child="booksSuggestionsListLink">
+            <div class="buttons">
+                <div>
+                    Dodawanie książek
+                </div>
+                <div class="buttonHolder">
+                    <a wicket:id="booksSuggestionsListLink" class="defaultButton">Sugestie książek</a>
+                </div>
+
+                <div class="buttonHolder">
+                    <a wicket:id="addBookLink" class="defaultButton">Dodaj nową książkę</a>
+                </div>
+            </div>
+        </wicket:enclosure>
+
     </div>
 
 </wicket:panel>

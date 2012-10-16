@@ -17,7 +17,8 @@ class BooksLinksPanel(id:String, links:List[Int]) extends Panel(id) {
   add(AuthorizeUser(new BookmarkablePageLink("booksPageLink", classOf[BooksPage])).setVisible(links.contains(BooksLinks.ALL_BOOKS)))
   add(AuthorizeUser(new BookmarkablePageLink("yourBooksLink", classOf[YourBooksPage])).setVisible(links.contains(BooksLinks.YOUR_BOOKS)))
   add(AuthorizeUser(new BookmarkablePageLink("addBookLink", classOf[AddBookPage])).setVisible(links.contains(BooksLinks.ADD_BOOK)))
-  add(AuthorizeUser(new BookmarkablePageLink("suggestBookLink", classOf[SuggestBookPage])).setVisible(links.contains(BooksLinks.ADD_BOOK_SUGGESTION)))
   add(AuthorizeUser(new BookmarkablePageLink("yourBooksSuggestionsLink", classOf[YourBooksSuggestionsPage])).setVisible(links.contains(BooksLinks.YOUR_SUGGESTIONS)))
+
+  add(AuthorizeUser(new BookmarkablePageLink("suggestBookLink", classOf[SuggestBookPage])).setVisible(links.contains(BooksLinks.ALL_SUGGESTIONS)))
   add(AuthorizeUser(new BookmarkablePageLink("booksSuggestionsListLink", classOf[BooksSuggestionsListPage])).setVisible(links.contains(BooksLinks.ALL_SUGGESTIONS)))
 }
