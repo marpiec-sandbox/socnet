@@ -1,5 +1,6 @@
 package pl.marpiec.socnet.web.page.books
 
+import component.{BooksLinks, BooksLinksPanel}
 import pl.marpiec.socnet.web.application.SocnetRoles
 import org.apache.wicket.markup.html.link.BookmarkablePageLink
 import org.apache.wicket.spring.injection.annot.SpringBean
@@ -32,14 +33,7 @@ class BooksPage(parameters: PageParameters) extends SecureWebPage(SocnetRoles.US
   val books = findBooksByQuery(query)
   val booksReviews = bookReviewsDatabase.getBooksReviewsForBooksIds(convertToIdsList(books))
 
-  add(AuthorizeUser(new BookmarkablePageLink("yourBooksLink", classOf[YourBooksPage])))
-  add(AuthorizeUser(new BookmarkablePageLink("addBookLink", classOf[AddBookPage])))
-  add(AuthorizeUser(new BookmarkablePageLink("suggestBookLink", classOf[SuggestBookPage])))
-  add(AuthorizeUser(new BookmarkablePageLink("yourBooksSuggestionsLink", classOf[YourBooksSuggestionsPage])))
-  add(AuthorizeUser(new BookmarkablePageLink("booksSuggestionsListLink", classOf[BooksSuggestionsListPage])))
-
-
-  add(new FindBookFormPanel("findBookFormPanel"))
+  add(new BooksLinksPanel("booksLinksPanel", BooksLinks.ALL_BOOKS_LINKS))
 
   add(new RepeatingView("book") {
 

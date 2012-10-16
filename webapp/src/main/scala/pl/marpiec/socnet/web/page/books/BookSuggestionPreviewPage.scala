@@ -1,6 +1,7 @@
 package pl.marpiec.socnet.web.page.books
 
 import bookSuggestionPreviewPage.model.SuggestionFormModel
+import component.{BooksLinks, BooksLinksPanel}
 import org.apache.wicket.markup.html.link.BookmarkablePageLink
 import org.apache.wicket.request.mapper.parameter.PageParameters
 import org.apache.wicket.spring.injection.annot.SpringBean
@@ -45,13 +46,7 @@ class BookSuggestionPreviewPage(parameters: PageParameters) extends SecureWebPag
   val bookSuggestionOption = bookSuggestionDatabase.getBookSuggestionById(bookSuggestionId)
   val bookSuggestion = bookSuggestionOption.getOrElse(throw new AbortWithHttpErrorCodeException(404))
 
-  add(new FindBookFormPanel("findBookFormPanel"))
-
-  add(AuthorizeUser(new BookmarkablePageLink("booksPageLink", classOf[BooksPage])))
-  add(AuthorizeUser(new BookmarkablePageLink("addBookLink", classOf[AddBookPage])))
-  add(AuthorizeUser(new BookmarkablePageLink("yourBooksLink", classOf[YourBooksPage])))
-  add(AuthorizeUser(new BookmarkablePageLink("suggestBookLink", classOf[SuggestBookPage])))
-  add(AuthorizeUser(new BookmarkablePageLink("yourBooksSuggestionsLink", classOf[YourBooksSuggestionsPage])))
+  add(new BooksLinksPanel("booksLinksPanel", BooksLinks.BOOK_SUGGESTION_PREVIEW_LINKS))
 
   add(new Label("creationTime", DateUtil.printDateTime(bookSuggestion.creationTime)))
   add(new Label("bookTitle", bookSuggestion.title))

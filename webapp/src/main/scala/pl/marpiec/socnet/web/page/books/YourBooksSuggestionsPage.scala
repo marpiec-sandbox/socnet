@@ -1,5 +1,6 @@
 package pl.marpiec.socnet.web.page.books
 
+import component.{BooksLinks, BooksLinksPanel}
 import pl.marpiec.socnet.web.authorization.SecureWebPage
 import pl.marpiec.socnet.web.application.SocnetRoles
 import org.apache.wicket.spring.injection.annot.SpringBean
@@ -25,6 +26,8 @@ class YourBooksSuggestionsPage extends SecureWebPage(SocnetRoles.USER) {
   @SpringBean private var bookSuggestionCommand: BookSuggestionCommand = _
 
   val suggestions: List[BookSuggestion] = bookSuggestionDatabase.getBooksSuggestionsOfUser(session.userId)
+
+  add(new BooksLinksPanel("booksLinksPanel", BooksLinks.YOUR_SUGGESTIONS_LINKS))
 
   add(new RepeatingView("booksSuggestions") {
 

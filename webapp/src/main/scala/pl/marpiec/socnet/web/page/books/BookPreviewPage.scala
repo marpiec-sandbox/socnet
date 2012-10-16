@@ -1,6 +1,6 @@
 package pl.marpiec.socnet.web.page.books
 
-import component.BookOwnershipPanel
+import component.{BooksLinks, BooksLinksPanel, BookOwnershipPanel}
 import scala.collection.JavaConversions._
 import bookPreviewPage.{BookReviewPreviewPanel, EditReviewFormPanel}
 import org.apache.wicket.request.mapper.parameter.PageParameters
@@ -70,8 +70,8 @@ class BookPreviewPage(parameters: PageParameters) extends SecureWebPage(SocnetRo
   //build schema
   add(new BookOwnershipPanel("bookOwnership", bookId, bookUserInfo))
 
-  add(AuthorizeUser(new BookmarkablePageLink("yourBooksLink", classOf[YourBooksPage])))
-  add(AuthorizeUser(new BookmarkablePageLink("booksLink", classOf[BooksPage])))
+
+  add(new BooksLinksPanel("booksLinksPanel", BooksLinks.BOOK_PREVIEW_LINKS))
 
   add(new Label("bookTitle", book.description.title))
   add(new Label("polishTitle", book.description.polishTitle))
