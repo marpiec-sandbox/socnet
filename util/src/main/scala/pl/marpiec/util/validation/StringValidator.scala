@@ -12,13 +12,17 @@ object StringValidator {
 
   val requiredMessage = "That value is required"
 
-
-  def validate(result: ValidationResult, value: String, minLength: Int, maxLength: Int, errorMessage: String) {
+  def validate(result: ValidationResult, value: String, minLength: Int, maxLength: Int,
+               requiredMessageAlt:String, errorMessage: String) {
     if (StringUtils.isBlank(value)) {
-      result.addError(requiredMessage)
+      result.addError(requiredMessageAlt)
     } else if (isNotValid(value, minLength, maxLength)) {
       result.addError(errorMessage)
     }
+  }
+
+  def validate(result: ValidationResult, value: String, minLength: Int, maxLength: Int, errorMessage: String) {
+    validate(result, value, minLength, maxLength, requiredMessage, errorMessage)
   }
 
   def isNotValid(value: String, minLength: Int, maxLength: Int): Boolean = {

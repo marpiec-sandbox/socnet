@@ -33,13 +33,14 @@
             <span class="label">Numer ISBN</span>
             <span class="validatorMessage"></span>
             <input type="text" wicket:id="isbn" class="requiredValidator stringValidator"
-                   alt="{min:2, max:50, msg:'Numer ISBN musi mieć przynajmniej 10 znaków'}"/>
+                   alt="{min:10, max:20, msg:'Numer ISBN musi mieć przynajmniej 10 znaków'}"/>
         </div>
 
         <div class="formRow">
             <span class="label">Opis</span>
             <span class="validatorMessage"></span>
-            <textarea wicket:id="description"/>
+            <textarea wicket:id="description" class="requiredValidator stringValidator"
+                      alt="{min:100, max:10000, msg:'Opis musi mieć przynajmniej 100 znaków'}"/>
         </div>
 
         <div class="formRow">

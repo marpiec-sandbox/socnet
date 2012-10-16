@@ -1,6 +1,6 @@
 package pl.marpiec.socnet.web.page.books.suggestBookPage
 
-import model.SuggestBookFormModel
+import model.{SuggestBookFormModelValidator, SuggestBookFormModel}
 import org.apache.wicket.markup.html.panel.Panel
 import org.apache.wicket.model.CompoundPropertyModel
 import org.apache.wicket.markup.html.basic.Label
@@ -13,7 +13,9 @@ import pl.marpiec.socnet.web.application.SocnetSession
 import pl.marpiec.socnet.model.book.BookDescription
 import org.joda.time.LocalDateTime
 import pl.marpiec.socnet.service.booksuggestion.BookSuggestionCommand
-import pl.marpiec.socnet.web.page.books.{BookSuggestionPreviewPage, BookPreviewPage, BooksPage}
+import pl.marpiec.socnet.web.page.books.{BookSuggestionPreviewPage, BooksPage}
+import org.apache.commons.lang.StringUtils
+import org.apache.wicket.Component
 
 /**
  * @author Marcin Pieciukiewicz
@@ -25,12 +27,16 @@ class SuggestBookForm(id: String) extends Panel(id) {
   @SpringBean private var uidGenerator: UidGenerator = _
 
   add(new SecureForm[SuggestBookFormModel]("suggestBookForm") {
+
+    var warningMessageLabel:Component = _
+
     def initialize {
       setModel(new CompoundPropertyModel[SuggestBookFormModel](new SuggestBookFormModel))
     }
 
     def buildSchema {
-      add(new Label("warningMessage"))
+      warningMessageLabel = new Label("warningMessage").setOutputMarkupId(true)
+      add(warningMessageLabel)
       add(new TextField[String]("title"))
       add(new TextField[String]("polishTitle"))
       add(new TextField[String]("authors"))
@@ -55,22 +61,32 @@ class SuggestBookForm(id: String) extends Panel(id) {
 
         override def onSecureSubmit(target: AjaxRequestTarget, formModel: SuggestBookFormModel) {
 
-          //TODO add validation
+          val validationResult = SuggestBookFormModelValidator.validate(formModel)
 
-          val newBookSuggestionId = uidGenerator.nextUid
+          if (validationResult.isValid) {
 
-          val bookDescription = new BookDescription
-          bookDescription.title = formModel.title
-          bookDescription.polishTitle = formModel.polishTitle
-          bookDescription.isbn = formModel.isbn
-          bookDescription.description = formModel.description
-          bookDescription.authors ::= formModel.authors //TODO change to list
+            val newBookSuggestionId = uidGenerator.nextUid
 
-          val currentUserId = getSession.asInstanceOf[SocnetSession].userId
-          bookSuggestionCommand.createBookSuggestion(currentUserId, bookDescription, formModel.comment, new LocalDateTime, newBookSuggestionId)
+            val bookDescription = new BookDescription
+            bookDescription.title = formModel.title
+            bookDescription.polishTitle = formModel.polishTitle
+            bookDescription.isbn = formModel.isbn
+            bookDescription.description = formModel.description
 
-          setResponsePage(classOf[BookSuggestionPreviewPage], BookSuggestionPreviewPage.getParametersForLink(newBookSuggestionId))
+            formModel.authors.split("""\s+,\s+""").foreach(author => {
+              if (StringUtils.isNotBlank(author)) {
+                bookDescription.authors ::= author
+              }
+            })
 
+            val currentUserId = getSession.asInstanceOf[SocnetSession].userId
+            bookSuggestionCommand.createBookSuggestion(currentUserId, bookDescription, formModel.comment, new LocalDateTime, newBookSuggestionId)
+
+            setResponsePage(classOf[BookSuggestionPreviewPage], BookSuggestionPreviewPage.getParametersForLink(newBookSuggestionId))
+          } else {
+            formModel.warningMessage = validationResult.errorsAsFormattedString
+            target.add(warningMessageLabel)
+          }
         }
       })
     }

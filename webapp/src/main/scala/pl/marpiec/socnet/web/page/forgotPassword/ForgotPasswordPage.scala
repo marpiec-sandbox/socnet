@@ -43,7 +43,7 @@ class ForgotPasswordPage extends SimpleTemplatePage {
         setResponsePage(classOf[ConfirmForgotPasswordPage])
 
       } else {
-        warningMessage = validationResult.errors.toString
+        warningMessage = validationResult.errorsAsFormattedString
       }
 
     }
