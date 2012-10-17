@@ -26,7 +26,7 @@ object AddBookPage {
   }
 }
 
-class AddBookPage(parameters: PageParameters) extends SecureWebPage(SocnetRoles.TRUSTED_USER) {
+class AddBookPage(parameters: PageParameters) extends SecureWebPage(SocnetRoles.BOOK_EDITOR) {
 
   @SpringBean private var bookDatabase: BookDatabase = _
 

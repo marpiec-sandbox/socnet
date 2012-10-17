@@ -25,7 +25,7 @@ import pl.marpiec.socnet.readdatabase.{BookUserInfoDatabase, BookReviewsDatabase
 import pl.marpiec.socnet.constant.{SocnetRoles, Rating}
 import pl.marpiec.socnet.model.{BookUserInfo, Book}
 import pl.marpiec.cqrs.AggregatesUtil
-import pl.marpiec.socnet.web.authorization.SecureWebPage
+import pl.marpiec.socnet.web.authorization.{AuthorizeBookEditor, SecureWebPage}
 
 /**
  * @author Marcin Pieciukiewicz
@@ -72,7 +72,7 @@ class BookPreviewPage(parameters: PageParameters) extends SecureWebPage(SocnetRo
 
   add(new BooksLinksPanel("booksLinksPanel", BooksLinks.BOOK_PREVIEW_LINKS))
 
-  add(AddBookPage.getLinkWithBookId("editBookDesription", bookId))
+  add(AuthorizeBookEditor(AddBookPage.getLinkWithBookId("editBookDesription", bookId)))
 
   add(new Label("bookTitle", book.description.title))
   add(new Label("polishTitle", book.description.polishTitle))

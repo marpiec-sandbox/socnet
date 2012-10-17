@@ -9,7 +9,7 @@ import suggestBookPage.SuggestBookForm
  * @author Marcin Pieciukiewicz
  */
 
-class SuggestBookPage extends SecureWebPage(SocnetRoles.TRUSTED_USER) {
+class SuggestBookPage extends SecureWebPage(SocnetRoles.USER) {
 
   add(new BooksLinksPanel("booksLinksPanel", BooksLinks.ADD_BOOK_SUGGESTION_LINKS))
   add(new SuggestBookForm("suggestBookForm"))

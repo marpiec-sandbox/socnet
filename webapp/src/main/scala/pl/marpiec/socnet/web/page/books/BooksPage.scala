@@ -2,18 +2,17 @@ package pl.marpiec.socnet.web.page.books
 
 import component.{BooksLinks, BooksLinksPanel}
 import pl.marpiec.socnet.constant.SocnetRoles
-import org.apache.wicket.markup.html.link.BookmarkablePageLink
 import org.apache.wicket.spring.injection.annot.SpringBean
 import org.apache.wicket.markup.repeater.RepeatingView
 import org.apache.wicket.markup.html.list.AbstractItem
-import pl.marpiec.socnet.web.authorization.{AuthorizeUser, AuthorizeTrustedUser, SecureWebPage}
+import pl.marpiec.socnet.web.authorization.SecureWebPage
 import pl.marpiec.socnet.readdatabase.{BookReviewsDatabase, BookDatabase}
 import pl.marpiec.socnet.redundandmodel.book.BookReviews
 import pl.marpiec.util.UID
 import pl.marpiec.socnet.model.Book
 import org.apache.wicket.request.mapper.parameter.PageParameters
 import org.apache.commons.lang.StringUtils
-import pl.marpiec.socnet.web.component.book.{FindBookFormPanel, BookSummaryPreviewPanel}
+import pl.marpiec.socnet.web.component.book.BookSummaryPreviewPanel
 
 /**
  * @author Marcin Pieciukiewicz
@@ -47,13 +46,13 @@ class BooksPage(parameters: PageParameters) extends SecureWebPage(SocnetRoles.US
   })
 
 
-  private def convertToIdsList(books: List[Book]):List[UID] = {
+  private def convertToIdsList(books: List[Book]): List[UID] = {
     books.map(book => book.id)
   }
-  
-  private def findBooksByQuery(query: String):List[Book] = {
-    
-    if(StringUtils.isBlank(query)) {
+
+  private def findBooksByQuery(query: String): List[Book] = {
+
+    if (StringUtils.isBlank(query)) {
       bookDatabase.getAllBooks
     } else {
       bookDatabase.findBooksByQuery(query)
