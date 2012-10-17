@@ -14,19 +14,35 @@ import pl.marpiec.socnet.web.application.SocnetSession
 import pl.marpiec.socnet.model.book.BookDescription
 import org.joda.time.LocalDateTime
 import pl.marpiec.socnet.web.page.books.{BookPreviewPage, BooksPage}
+import pl.marpiec.socnet.model.Book
+import pl.marpiec.util.UID
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
-class AddBookForm(id: String) extends Panel(id) {
+class AddBookForm(id: String, bookOption: Option[Book]) extends Panel(id) {
 
   @SpringBean private var bookCommand: BookCommand = _
   @SpringBean private var uidGenerator: UidGenerator = _
+  
+  val currentUserId = getSession.asInstanceOf[SocnetSession].userId
 
   add(new SecureForm[AddBookFormModel]("addBookForm") {
     def initialize {
-      setModel(new CompoundPropertyModel[AddBookFormModel](new AddBookFormModel))
+      val model = new AddBookFormModel
+
+      if (bookOption.isDefined) {
+        val book = bookOption.get
+
+        model.title = book.description.title
+        model.polishTitle = book.description.polishTitle
+        model.authors = book.description.getFormattedAuthorsString
+        model.isbn = book.description.isbn
+        model.description = book.description.description
+      }
+
+      setModel(new CompoundPropertyModel[AddBookFormModel](model))
     }
 
     def buildSchema {
@@ -56,19 +72,29 @@ class AddBookForm(id: String) extends Panel(id) {
 
           //TODO add validation
 
-        val newBookId = uidGenerator.nextUid
-
-        val bookDescription = new BookDescription
-        bookDescription.title = formModel.title
-        bookDescription.polishTitle = formModel.polishTitle
-        bookDescription.isbn = formModel.isbn
-        bookDescription.description = formModel.description
-        bookDescription.authors ::= formModel.authors //TODO change to list
-
-        bookCommand.createBook(getSession.asInstanceOf[SocnetSession].userId, bookDescription, new LocalDateTime, newBookId)
 
 
-        setResponsePage(classOf[BookPreviewPage], BookPreviewPage.getParametersForLink(newBookId))
+          val bookDescription = new BookDescription
+          bookDescription.title = formModel.title
+          bookDescription.polishTitle = formModel.polishTitle
+          bookDescription.isbn = formModel.isbn
+          bookDescription.description = formModel.description
+          bookDescription.authors ::= formModel.authors //TODO change to list
+
+          var bookId:UID = null
+          if(bookOption.isDefined) {
+            val book = bookOption.get
+            bookCommand.changeBookDescription(currentUserId, book.id, book.version, bookDescription)
+            bookId = book.id
+          } else {
+            bookId = uidGenerator.nextUid
+            bookCommand.createBook(currentUserId, bookDescription, new LocalDateTime, bookId)
+          }
+
+          setResponsePage(classOf[BookPreviewPage], BookPreviewPage.getParametersForLink(bookId))
+
+
+
 
           /*
         val validationResult = UserSummaryFormModelValidator.validate(formModel)
@@ -86,7 +112,6 @@ class AddBookForm(id: String) extends Panel(id) {
       })
     }
   })
-
 
 
 }

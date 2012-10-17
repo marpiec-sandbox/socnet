@@ -73,6 +73,8 @@ class BookPreviewPage(parameters: PageParameters) extends SecureWebPage(SocnetRo
 
   add(new BooksLinksPanel("booksLinksPanel", BooksLinks.BOOK_PREVIEW_LINKS))
 
+  add(AddBookPage.getLinkWithBookId("editBookDesription", bookId))
+
   add(new Label("bookTitle", book.description.title))
   add(new Label("polishTitle", book.description.polishTitle))
   add(new Label("authors", book.description.getFormattedAuthorsString))
