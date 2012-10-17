@@ -2,7 +2,7 @@ package pl.marpiec.socnet.web.page.books
 
 import component.{BooksLinks, BooksLinksPanel}
 import pl.marpiec.socnet.web.authorization.SecureWebPage
-import pl.marpiec.socnet.web.application.SocnetRoles
+import pl.marpiec.socnet.constant.SocnetRoles
 import suggestBookPage.SuggestBookForm
 
 /**

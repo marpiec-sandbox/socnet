@@ -3,7 +3,7 @@ package pl.marpiec.socnet.web.page.books
 import addBookPage.AddBookForm
 import component.{BooksLinks, BooksLinksPanel}
 import pl.marpiec.socnet.web.authorization.SecureWebPage
-import pl.marpiec.socnet.web.application.SocnetRoles
+import pl.marpiec.socnet.constant.SocnetRoles
 import org.apache.wicket.markup.html.link.BookmarkablePageLink
 import org.apache.wicket.request.mapper.parameter.PageParameters
 import pl.marpiec.util.{IdProtectionUtil, UID}

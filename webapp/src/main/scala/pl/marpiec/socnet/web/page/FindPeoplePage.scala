@@ -1,6 +1,6 @@
 package pl.marpiec.socnet.web.page
 
-import pl.marpiec.socnet.web.application.SocnetRoles
+import pl.marpiec.socnet.constant.SocnetRoles
 import org.apache.wicket.request.mapper.parameter.PageParameters
 import org.apache.wicket.spring.injection.annot.SpringBean
 import pl.marpiec.socnet.readdatabase.{UserProfileDatabase, UserDatabase}

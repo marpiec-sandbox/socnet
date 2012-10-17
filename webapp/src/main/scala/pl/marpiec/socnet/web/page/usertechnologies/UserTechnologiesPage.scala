@@ -3,7 +3,7 @@ package pl.marpiec.socnet.web.page.usertechnologies
 import scala.collection.JavaConversions._
 import model.AddTechnologyFormModel
 import pl.marpiec.socnet.web.authorization.SecureWebPage
-import pl.marpiec.socnet.web.application.SocnetRoles
+import pl.marpiec.socnet.constant.{SocnetRoles, TechnologyKnowledgeLevel}
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.markup.html.WebMarkupContainer
 import org.apache.wicket.spring.injection.annot.SpringBean
@@ -16,7 +16,6 @@ import pl.marpiec.socnet.web.component.wicket.form.{OneButtonAjaxForm, StandardA
 import org.apache.commons.lang.StringUtils
 import pl.marpiec.socnet.model.ProgrammerProfile
 import org.apache.wicket.Component
-import pl.marpiec.socnet.constant.TechnologyKnowledgeLevel
 import org.apache.wicket.model.CompoundPropertyModel
 import pl.marpiec.socnet.model.programmerprofile.KnownTechnology
 import userTechnologiesPage.TechnologySummaryPanel
@@ -126,7 +125,7 @@ class UserTechnologiesPage extends SecureWebPage(SocnetRoles.USER) {
         val technologiesNamesAlphabetic = loadedTechnologiesMap.keySet.toList.sorted(new Ordering[String] {
           def compare(x: String, y: String) = {
             val comparisonResult = x.toLowerCase.compareTo(y.toLowerCase)
-            if(comparisonResult == 0) {
+            if (comparisonResult == 0) {
               x.compareTo(y)
             } else {
               comparisonResult
@@ -134,7 +133,7 @@ class UserTechnologiesPage extends SecureWebPage(SocnetRoles.USER) {
           }
         })
 
-        for(technologyName: String <- technologiesNamesAlphabetic) {
+        for (technologyName: String <- technologiesNamesAlphabetic) {
           val technology = loadedTechnologiesMap(technologyName)
 
           add(new AbstractItem(newChildId()) {

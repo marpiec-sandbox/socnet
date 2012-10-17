@@ -4,7 +4,7 @@ import org.apache.wicket.model.Model
 import org.apache.wicket.markup.html.basic.Label
 import pl.marpiec.socnet.model.User
 import pl.marpiec.socnet.web.authorization.SecureWebPage
-import pl.marpiec.socnet.web.application.SocnetRoles
+import pl.marpiec.socnet.constant.SocnetRoles
 import pl.marpiec.socnet.service.article.ArticleCommand
 import org.apache.wicket.spring.injection.annot.SpringBean
 import org.apache.wicket.markup.html.form.{TextArea, Button}

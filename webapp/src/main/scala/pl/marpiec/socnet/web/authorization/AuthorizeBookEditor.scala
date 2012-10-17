@@ -6,4 +6,4 @@ import pl.marpiec.socnet.constant.SocnetRoles
  * @author Marcin Pieciukiewicz
  */
 
-object AuthorizeTrustedUser extends Authorize(SocnetRoles.TRUSTED_USER)
+object AuthorizeBookEditor extends Authorize(SocnetRoles.BOOK_EDITOR)

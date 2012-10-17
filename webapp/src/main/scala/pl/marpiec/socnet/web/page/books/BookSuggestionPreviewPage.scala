@@ -8,7 +8,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean
 import pl.marpiec.socnet.readdatabase.{BookSuggestionDatabase, BookDatabase}
 import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException
 import org.apache.wicket.markup.html.basic.Label
-import pl.marpiec.socnet.web.application.SocnetRoles
+import pl.marpiec.socnet.constant.SocnetRoles
 import pl.marpiec.util.{DateUtil, IdProtectionUtil, UID}
 import org.apache.wicket.model.CompoundPropertyModel
 import pl.marpiec.socnet.web.wicket.{SecureAjaxButton, SecureForm}
@@ -17,8 +17,7 @@ import pl.marpiec.socnet.service.booksuggestion.BookSuggestionCommand
 import org.joda.time.LocalDateTime
 import org.apache.wicket.markup.html.form.TextArea
 import org.apache.commons.lang.StringUtils
-import pl.marpiec.socnet.web.authorization.{AuthorizeUser, SecureWebPage}
-import pl.marpiec.socnet.web.component.book.FindBookFormPanel
+import pl.marpiec.socnet.web.authorization.SecureWebPage
 
 /**
  * @author Marcin Pieciukiewicz

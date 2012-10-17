@@ -2,7 +2,7 @@ package pl.marpiec.socnet.web.page.conversation
 
 import model.StartConversationFormModel
 import pl.marpiec.socnet.web.authorization.SecureWebPage
-import pl.marpiec.socnet.web.application.SocnetRoles
+import pl.marpiec.socnet.constant.SocnetRoles
 import org.apache.wicket.request.mapper.parameter.PageParameters
 import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.spring.injection.annot.SpringBean

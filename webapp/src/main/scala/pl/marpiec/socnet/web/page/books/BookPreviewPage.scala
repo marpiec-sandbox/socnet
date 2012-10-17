@@ -18,15 +18,14 @@ import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.ajax.markup.html.AjaxLink
 import org.apache.wicket.markup.html.form.{ChoiceRenderer, DropDownChoice}
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior
-import pl.marpiec.socnet.constant.Rating
 import org.apache.wicket.model.Model
 import pl.marpiec.socnet.redundandmodel.book.BookReviews
 import pl.marpiec.socnet.service.bookuserinfo.BookUserInfoCommand
 import pl.marpiec.socnet.readdatabase.{BookUserInfoDatabase, BookReviewsDatabase, BookDatabase}
-import pl.marpiec.socnet.web.application.SocnetRoles
+import pl.marpiec.socnet.constant.{SocnetRoles, Rating}
 import pl.marpiec.socnet.model.{BookUserInfo, Book}
 import pl.marpiec.cqrs.AggregatesUtil
-import pl.marpiec.socnet.web.authorization.{AuthorizeUser, SecureWebPage}
+import pl.marpiec.socnet.web.authorization.SecureWebPage
 
 /**
  * @author Marcin Pieciukiewicz

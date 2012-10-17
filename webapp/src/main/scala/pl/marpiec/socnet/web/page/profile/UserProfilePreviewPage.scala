@@ -11,7 +11,7 @@ import pl.marpiec.socnet.readdatabase.{UserDatabase, UserProfileDatabase}
 import org.apache.wicket.spring.injection.annot.SpringBean
 import org.apache.wicket.markup.html.link.BookmarkablePageLink
 import pl.marpiec.socnet.model.{User, UserProfile}
-import pl.marpiec.socnet.web.application.SocnetRoles
+import pl.marpiec.socnet.constant.SocnetRoles
 import pl.marpiec.socnet.model.UserContacts
 import pl.marpiec.socnet.readdatabase.UserContactsDatabase
 import pl.marpiec.socnet.web.component.conversation.StartConversationPanel
@@ -39,8 +39,8 @@ class UserProfilePreviewPage(parameters: PageParameters) extends SecureWebPage(S
   val userProfile = userProfileDatabase.getUserProfileByUserId(userId).getOrElse(new UserProfile)
 
 
-  val loggedInUserContacts:UserContacts = userContactsDatabase.getUserContactsByUserId(session.userId).getOrElse(new UserContacts)
-  val userContacts:UserContacts = userContactsDatabase.getUserContactsByUserId(userId).getOrElse(new UserContacts)
+  val loggedInUserContacts: UserContacts = userContactsDatabase.getUserContactsByUserId(session.userId).getOrElse(new UserContacts)
+  val userContacts: UserContacts = userContactsDatabase.getUserContactsByUserId(userId).getOrElse(new UserContacts)
 
   //schema
   add(new UserPreviewPanel("userPreviewPanel", user));

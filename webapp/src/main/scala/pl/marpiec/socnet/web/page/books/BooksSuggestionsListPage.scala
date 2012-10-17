@@ -2,16 +2,13 @@ package pl.marpiec.socnet.web.page.books
 
 import component.{BooksLinks, BooksLinksPanel}
 import pl.marpiec.socnet.web.authorization.SecureWebPage
-import pl.marpiec.socnet.web.application.SocnetRoles
+import pl.marpiec.socnet.constant.SocnetRoles
 import org.apache.wicket.spring.injection.annot.SpringBean
 import org.apache.wicket.markup.repeater.RepeatingView
-import pl.marpiec.socnet.redundandmodel.book.BookReviews
 import org.apache.wicket.markup.html.list.AbstractItem
-import org.apache.wicket.markup.repeater.RepeatingView._
-import pl.marpiec.socnet.web.component.book.BookSummaryPreviewPanel
 import org.apache.wicket.markup.html.basic.Label
 import pl.marpiec.socnet.readdatabase.{UserDatabase, BookSuggestionDatabase}
-import pl.marpiec.socnet.model.{User, BookSuggestion}
+import pl.marpiec.socnet.model.BookSuggestion
 import pl.marpiec.socnet.web.page.profile.UserProfilePreviewPage
 
 /**
@@ -23,7 +20,7 @@ class BooksSuggestionsListPage extends SecureWebPage(SocnetRoles.USER) {
   @SpringBean private var bookSuggestionDatabase: BookSuggestionDatabase = _
   @SpringBean private var userDatabase: UserDatabase = _
 
-  val suggestions:List[BookSuggestion] = bookSuggestionDatabase.getAllUnrespondedSuggestions
+  val suggestions: List[BookSuggestion] = bookSuggestionDatabase.getAllUnrespondedSuggestions
 
   val users = userDatabase.getUsersByIds(suggestions.map(suggestion => suggestion.userId))
 
@@ -42,5 +39,5 @@ class BooksSuggestionsListPage extends SecureWebPage(SocnetRoles.USER) {
       })
     })
   })
-  
+
 }

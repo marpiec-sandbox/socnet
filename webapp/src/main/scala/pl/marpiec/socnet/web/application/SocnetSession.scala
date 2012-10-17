@@ -8,6 +8,7 @@ import org.apache.commons.lang.RandomStringUtils
 import pl.marpiec.util.UID
 import pl.marpiec.socnet.service.user.UserQuery
 import pl.marpiec.socnet.model.User
+import pl.marpiec.socnet.constant.SocnetRoles
 
 /**
  * Session class.

@@ -2,16 +2,13 @@ package pl.marpiec.socnet.web.page.books
 
 import component.{BooksLinks, BooksLinksPanel}
 import pl.marpiec.socnet.web.authorization.SecureWebPage
-import pl.marpiec.socnet.web.application.SocnetRoles
+import pl.marpiec.socnet.constant.SocnetRoles
 import org.apache.wicket.spring.injection.annot.SpringBean
 import org.apache.wicket.markup.repeater.RepeatingView
 import org.apache.wicket.markup.html.list.AbstractItem
 import org.apache.wicket.markup.html.basic.Label
-import pl.marpiec.socnet.readdatabase.{UserDatabase, BookSuggestionDatabase}
+import pl.marpiec.socnet.readdatabase.BookSuggestionDatabase
 import pl.marpiec.socnet.model.BookSuggestion
-import org.apache.wicket.markup.html.link.BookmarkablePageLink
-import pl.marpiec.socnet.web.wicket.SecureAjaxButton
-import org.apache.wicket.ajax.AjaxRequestTarget
 import pl.marpiec.socnet.web.component.wicket.form.OneButtonAjaxForm
 import pl.marpiec.socnet.service.booksuggestion.BookSuggestionCommand
 import org.apache.wicket.markup.html.panel.EmptyPanel

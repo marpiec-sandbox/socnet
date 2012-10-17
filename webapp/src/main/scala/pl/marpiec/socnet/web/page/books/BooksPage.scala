@@ -1,7 +1,7 @@
 package pl.marpiec.socnet.web.page.books
 
 import component.{BooksLinks, BooksLinksPanel}
-import pl.marpiec.socnet.web.application.SocnetRoles
+import pl.marpiec.socnet.constant.SocnetRoles
 import org.apache.wicket.markup.html.link.BookmarkablePageLink
 import org.apache.wicket.spring.injection.annot.SpringBean
 import org.apache.wicket.markup.repeater.RepeatingView

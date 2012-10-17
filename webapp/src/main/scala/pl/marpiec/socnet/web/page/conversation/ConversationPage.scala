@@ -3,7 +3,7 @@ package pl.marpiec.socnet.web.page.conversation
 import model.ReplyConversationFormModel
 import org.apache.wicket.request.mapper.parameter.PageParameters
 import pl.marpiec.socnet.web.authorization.SecureWebPage
-import pl.marpiec.socnet.web.application.SocnetRoles
+import pl.marpiec.socnet.constant.SocnetRoles
 import org.apache.wicket.spring.injection.annot.SpringBean
 import pl.marpiec.socnet.service.conversation.ConversationCommand
 import pl.marpiec.util.UID
@@ -114,7 +114,7 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
     }
 
     def onSecureCancel(target: AjaxRequestTarget, formModel: ReplyConversationFormModel) {
-       //ignore, javascript will handle this
+      //ignore, javascript will handle this
     }
   })
 

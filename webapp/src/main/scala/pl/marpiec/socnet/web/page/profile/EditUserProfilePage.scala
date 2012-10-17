@@ -2,10 +2,9 @@ package pl.marpiec.socnet.web.page.profile
 
 import editUserProfilePage._
 import pl.marpiec.socnet.readdatabase.UserProfileDatabase
-import pl.marpiec.socnet.model.UserProfile
 import pl.marpiec.socnet.service.userprofile.UserProfileCommand
 import pl.marpiec.socnet.web.authorization.SecureWebPage
-import pl.marpiec.socnet.web.application.SocnetRoles
+import pl.marpiec.socnet.constant.SocnetRoles
 import org.apache.wicket.spring.injection.annot.SpringBean
 import pl.marpiec.cqrs.UidGenerator
 

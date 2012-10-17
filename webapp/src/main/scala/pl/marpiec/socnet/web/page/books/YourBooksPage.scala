@@ -1,16 +1,14 @@
 package pl.marpiec.socnet.web.page.books
 
 import component.{BooksLinks, BooksLinksPanel}
-import pl.marpiec.socnet.web.application.SocnetRoles
+import pl.marpiec.socnet.constant.SocnetRoles
 import org.apache.wicket.spring.injection.annot.SpringBean
-import org.apache.wicket.markup.html.link.BookmarkablePageLink
 import org.apache.wicket.markup.repeater.RepeatingView
 import org.apache.wicket.markup.html.list.AbstractItem
-import pl.marpiec.socnet.web.authorization.{AuthorizeUser, SecureWebPage}
+import pl.marpiec.socnet.web.authorization.SecureWebPage
 import yourBooksPage.BookPreviewWithOwnershipPanel
 import pl.marpiec.socnet.readdatabase.{BookUserInfoDatabase, BookDatabase}
 import pl.marpiec.socnet.model.BookUserInfo
-import pl.marpiec.socnet.web.component.book.FindBookFormPanel
 
 /**
  * @author Marcin Pieciukiewicz
