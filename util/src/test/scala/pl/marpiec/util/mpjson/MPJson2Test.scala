@@ -39,6 +39,8 @@ class CollectionsDataObject {
   var longsList: List[Long] = _
   var emptyList: List[String] = _
   var emptyArray: Array[Long] = Array()
+  @FirstSubType(classOf[Long])
+  var longsSet: Set[Long] = _
 }
 
 @Test
@@ -141,6 +143,7 @@ class JsonSerializerTest {
     cdo.stringsList = List[String]("a", "b", "c")
     cdo.longsList = List[Long](5, 10, 20)
     cdo.emptyList = List[String]()
+    cdo.longsSet = Set[Long](1, 11, 111)
 
     val simpleJson = MPJson.serialize(cdo)
     val dataObject = MPJson.deserialize(simpleJson, classOf[CollectionsDataObject])
@@ -158,6 +161,9 @@ class JsonSerializerTest {
 
     assertEquals(deserializedObject.emptyList.size, cdo.emptyList.size)
     assertEquals(deserializedObject.emptyArray.size, cdo.emptyArray.size)
+
+    assertEquals(deserializedObject.longsSet.size, cdo.longsSet.size)
+    assertEquals(deserializedObject.longsSet, cdo.longsSet)
 
   }
 

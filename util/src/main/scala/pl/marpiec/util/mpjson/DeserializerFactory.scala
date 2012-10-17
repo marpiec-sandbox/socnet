@@ -42,6 +42,8 @@ object DeserializerFactory {
       return ArrayDeserializer
     } else if (clazz.equals(classOf[List[_]])) {
       return ListDeserializer
+    } else if (clazz.equals(classOf[Set[_]])) {
+      return SetDeserializer
     } else if (clazz.equals(classOf[Tuple2[_,_]])) {
       return Tuple2Deserializer
     } else if (clazz.equals(classOf[Option[_]])) {

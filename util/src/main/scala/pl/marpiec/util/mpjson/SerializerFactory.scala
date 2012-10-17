@@ -33,10 +33,12 @@ object SerializerFactory {
       return SimpleToStringSerializer
     } else if (obj.isInstanceOf[Float]) {
       return SimpleToStringSerializer
-    }  else if (obj.asInstanceOf[AnyRef].getClass.isArray) {
+    } else if (obj.asInstanceOf[AnyRef].getClass.isArray) {
       return ArraySerializer
     } else if (obj.isInstanceOf[Seq[_]]) {
       return SeqSerializer
+    } else if (obj.isInstanceOf[Set[_]]) {
+      return SetSerializer
     } else if (obj.isInstanceOf[Tuple2[_, _]]) {
       return Tuple2Serializer
     } else if (obj.isInstanceOf[Option[_]]) {
