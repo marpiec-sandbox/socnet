@@ -6,7 +6,6 @@ package pl.marpiec.socnet.constant
 
 object SocnetRoles {
   val USER = "user"
-  var TRUSTED_USER = "trustedUser"
   val ARTICLE_AUTHOR = "articleAuthor"
   val BOOK_EDITOR = "bookEditor"
 
