@@ -8,14 +8,14 @@ import org.apache.commons.lang.RandomStringUtils
 import pl.marpiec.util.UID
 import pl.marpiec.socnet.service.user.UserQuery
 import pl.marpiec.socnet.model.User
-import pl.marpiec.socnet.constant.SocnetRoles
+import pl.marpiec.socnet.readdatabase.UserRolesDatabase
 
 /**
  * Session class.
  * @author Marcin Pieciukiewicz
  */
 
-class SocnetSession(request: Request, val userQuery: UserQuery) extends AuthenticatedWebSession(request) {
+class SocnetSession(request: Request, val userQuery: UserQuery, val userRolesDatabase: UserRolesDatabase) extends AuthenticatedWebSession(request) {
 
   val SESSION_TOKEN_LENGTH = 32
 
@@ -46,13 +46,17 @@ class SocnetSession(request: Request, val userQuery: UserQuery) extends Authenti
   private def initSessionData(registeredUser: User) {
 
     this.user = registeredUser
-
     this.sessionToken = RandomStringUtils.randomAlphanumeric(SESSION_TOKEN_LENGTH)
 
+    val userRolesOption = userRolesDatabase.getRolesByUserId(registeredUser.id)
+
     roles.clear
-    roles.add(SocnetRoles.USER)
-    roles.add(SocnetRoles.TRUSTED_USER)
-    roles.add(SocnetRoles.ARTICLE_AUTHOR)
+
+    if (userRolesOption.isDefined) {
+      userRolesOption.get.roles.foreach(role => {
+        roles.add(role)
+      })
+    }
 
   }
 

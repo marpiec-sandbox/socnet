@@ -7,6 +7,7 @@ import pl.marpiec.socnet.service.userprofile.UserProfileCommand
 import pl.marpiec.socnet.service.usercontacts.UserContactsCommand
 import pl.marpiec.cqrs.UidGenerator
 import pl.marpiec.socnet.service.programmerprofile.ProgrammerProfileCommand
+import pl.marpiec.socnet.service.userroles.UserRolesCommand
 
 /**
  * @author Marcin Pieciukiewicz
@@ -17,6 +18,8 @@ class UserRegistrationCommandImpl extends UserRegistrationCommand {
 
   @Autowired
   var userProfileCommand: UserProfileCommand = _
+  @Autowired
+  var userRolesCommand: UserRolesCommand = _
   @Autowired
   var userContactsCommand: UserContactsCommand = _
   @Autowired
@@ -29,6 +32,7 @@ class UserRegistrationCommandImpl extends UserRegistrationCommand {
   def triggerUserRegistrationProcess(trigger: String): UID = {
     val userId = userCommand.triggerUserRegistration(trigger)
 
+    userRolesCommand.createUserRoles(userId, userId, uidGenerator.nextUid)
     userProfileCommand.createUserProfile(userId, userId, uidGenerator.nextUid)
     userContactsCommand.createUserContacts(userId, userId, uidGenerator.nextUid)
     programmerProfileCommand.createProgrammerProfile(userId, userId, uidGenerator.nextUid)
