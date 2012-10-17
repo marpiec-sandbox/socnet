@@ -24,11 +24,14 @@
             </div>
         </div>
 
-        <wicket:enclosure child="booksSuggestionsListLink">
+    </div>
+
+    <wicket:enclosure child="booksSuggestionsListLink">
+        <div class="booksLinksContainer">
+            <div class="standardContainerTitle">
+                Dodawanie książek
+            </div>
             <div class="buttons">
-                <div>
-                    Dodawanie książek
-                </div>
                 <div class="buttonHolder">
                     <a wicket:id="booksSuggestionsListLink" class="defaultButton">Sugestie książek</a>
                 </div>
@@ -37,9 +40,8 @@
                     <a wicket:id="addBookLink" class="defaultButton">Dodaj nową książkę</a>
                 </div>
             </div>
-        </wicket:enclosure>
-
-    </div>
+        </div>
+    </wicket:enclosure>
 
 </wicket:panel>
 </html>
