@@ -16,6 +16,7 @@ import pl.marpiec.socnet.service.bookuserinfo.BookUserInfoCommand
 import pl.marpiec.socnet.model.{BookUserInfo, Book}
 import pl.marpiec.cqrs.AggregatesUtil
 import pl.marpiec.socnet.web.component.wicket.form.{OneButtonAjaxForm, StandardAjaxSecureForm}
+import org.apache.wicket.markup.html.WebMarkupContainer
 
 /**
  * @author Marcin Pieciukiewicz
@@ -69,6 +70,7 @@ class EditReviewFormPanel(id: String, book: Book, bookUserInfo: BookUserInfo, pa
       add(new TextArea[String]("reviewText"))
       add(new DropDownChoice[Rating]("rating", Rating.values, new ChoiceRenderer[Rating]("translation")))
 
+      add(new WebMarkupContainer("removeReviewHolder").setVisible(bookUserInfo.reviewOption.isDefined))
     }
 
     def onSecureSubmit(target: AjaxRequestTarget, formModel: EditReviewFormModel) {

@@ -19,7 +19,7 @@ class BooksLinksPanel(id:String, links:List[Int]) extends Panel(id) {
 
   add(AuthorizeUser(new BookmarkablePageLink("yourBooksSuggestionsLink", classOf[YourBooksSuggestionsPage])).setVisible(links.contains(BooksLinks.YOUR_SUGGESTIONS)))
 
-  add(AuthorizeUser(new BookmarkablePageLink("suggestBookLink", classOf[SuggestBookPage])).setVisible(links.contains(BooksLinks.ALL_SUGGESTIONS)))
+  add(AuthorizeUser(new BookmarkablePageLink("suggestBookLink", classOf[SuggestBookPage])).setVisible(links.contains(BooksLinks.YOUR_SUGGESTIONS)))
 
 
   add(new EmptyPanel("addBookVisibilitySwitch").setVisible(bookEditionSuggestionVisible))

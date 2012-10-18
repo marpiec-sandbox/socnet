@@ -7,18 +7,17 @@
         <div wicket:id="findBookFormPanel">findBookFormPanel</div>
 
         <div class="buttons">
-
-
-
-            <div class="buttonHolder">
-                <a wicket:id="booksPageLink" class="defaultButton">Książki</a>
-            </div>
-
-            <div class="buttonHolder">
-                <a wicket:id="yourBooksLink" class="defaultButton">Twoje Książki</a>
-            </div>
+            <wicket:enclosure child="booksPageLink">
+                <div class="buttonHolder">
+                    <a wicket:id="booksPageLink" class="defaultButton">Książki</a>
+                </div>
+            </wicket:enclosure>
+            <wicket:enclosure child="yourBooksLink">
+                <div class="buttonHolder">
+                    <a wicket:id="yourBooksLink" class="defaultButton">Twoje Książki</a>
+                </div>
+            </wicket:enclosure>
         </div>
-
     </div>
 
 
@@ -31,22 +30,30 @@
             </div>
 
             <div class="buttons">
-                <div class="buttonHolder">
-                    <a wicket:id="suggestBookLink" class="defaultButton">Zasugeruj książkę</a>
-                </div>
-                <div class="buttonHolder">
-                    <a wicket:id="yourBooksSuggestionsLink" class="defaultButton">Twoje sugestie książek</a>
-                </div>
+                <wicket:enclosure child="suggestBookLink">
+                    <div class="buttonHolder">
+                        <a wicket:id="suggestBookLink" class="defaultButton">Zasugeruj książkę</a>
+                    </div>
+                </wicket:enclosure>
+                <wicket:enclosure child="yourBooksSuggestionsLink">
+                    <div class="buttonHolder">
+                        <a wicket:id="yourBooksSuggestionsLink" class="defaultButton">Twoje sugestie książek</a>
+                    </div>
+                </wicket:enclosure>
             </div>
             <wicket:enclosure child="booksSuggestionsListLink">
                 <div class="buttons">
-                    <div class="buttonHolder">
-                        <a wicket:id="addBookLink" class="defaultButton">Dodaj nową książkę</a>
-                    </div>
+                    <wicket:enclosure child="addBookLink">
+                        <div class="buttonHolder">
+                            <a wicket:id="addBookLink" class="defaultButton">Dodaj nową książkę</a>
+                        </div>
+                    </wicket:enclosure>
 
-                    <div class="buttonHolder">
-                        <a wicket:id="booksSuggestionsListLink" class="defaultButton">Sugestie książek</a>
-                    </div>
+                    <wicket:enclosure child="booksSuggestionsListLink">
+                        <div class="buttonHolder">
+                            <a wicket:id="booksSuggestionsListLink" class="defaultButton">Sugestie książek</a>
+                        </div>
+                    </wicket:enclosure>
                 </div>
             </wicket:enclosure>
         </div>

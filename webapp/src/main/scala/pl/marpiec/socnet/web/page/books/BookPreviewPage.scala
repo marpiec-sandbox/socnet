@@ -138,9 +138,9 @@ class BookPreviewPage(parameters: PageParameters) extends SecureWebPage(SocnetRo
   def putProperLabelInEditReviewButton(button: AjaxLink[_], currentUserReviewOption: Option[BookReview]) {
 
     if (currentUserReviewOption.isDefined) {
-      button.addOrReplace(new Label("label", "Zmień swoją recenzję książki"))
+      button.addOrReplace(new Label("label", "Zmień swoją recenzję"))
     } else {
-      button.addOrReplace(new Label("label", "Napisz recenzję książki"))
+      button.addOrReplace(new Label("label", "Napisz recenzję"))
     }
   }
 

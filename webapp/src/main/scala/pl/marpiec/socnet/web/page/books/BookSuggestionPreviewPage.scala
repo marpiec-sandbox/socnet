@@ -17,7 +17,8 @@ import pl.marpiec.socnet.service.booksuggestion.BookSuggestionCommand
 import org.joda.time.LocalDateTime
 import org.apache.wicket.markup.html.form.TextArea
 import org.apache.commons.lang.StringUtils
-import pl.marpiec.socnet.web.authorization.SecureWebPage
+import pl.marpiec.socnet.web.authorization.{AuthorizeBookEditor, SecureWebPage}
+import org.apache.wicket.markup.html.WebMarkupContainer
 
 /**
  * @author Marcin Pieciukiewicz
@@ -53,9 +54,14 @@ class BookSuggestionPreviewPage(parameters: PageParameters) extends SecureWebPag
   add(new Label("authors", bookSuggestion.getFormattedAuthorsString))
   add(new Label("isbn", bookSuggestion.isbn))
   add(new Label("description", bookSuggestion.description))
-  add(new Label("userComment", bookSuggestion.userComment))
+  add(new Label("userComment", bookSuggestion.userComment).setVisible(StringUtils.isNotBlank(bookSuggestion.userComment)))
 
-  add(new SecureForm[SuggestionFormModel]("suggestionForm") {
+  add(new WebMarkupContainer("suggestionWaits").setVisible(bookSuggestion.responseOption.isEmpty))
+  add(new WebMarkupContainer("suggestionAccepted").setVisible(bookSuggestion.responseOption.isDefined && bookSuggestion.responseOption.get.accepted))
+  add(new WebMarkupContainer("suggestionBookExisted").setVisible(bookSuggestion.responseOption.isDefined && bookSuggestion.responseOption.get.alreadyExisted))
+  add(new WebMarkupContainer("suggestionDeclined").setVisible(bookSuggestion.responseOption.isDefined && bookSuggestion.responseOption.get.declined))
+
+  add(AuthorizeBookEditor(new SecureForm[SuggestionFormModel]("suggestionForm") {
 
     setVisible(bookSuggestion.responseOption.isEmpty)
 
@@ -93,12 +99,12 @@ class BookSuggestionPreviewPage(parameters: PageParameters) extends SecureWebPag
               setResponsePage(classOf[BooksSuggestionsListPage])
             } else {
               formModel.bookTitle = bookOption.get.description.title
-              formModel.warningMessage = "Tytu? podanej ksi??ki:"
+              formModel.warningMessage = "Czy podany tytuł książki zgadza się z sugestią?"
               target.add(warningMessageLabel)
               target.add(bookTitleLabel)
             }
           } else {
-            formModel.warningMessage = "Nieprawid?owy identyfikator ksi??ki"
+            formModel.warningMessage = "Nieprawidłowy identyfikator książki"
             target.add(warningMessageLabel)
           }
 
@@ -139,5 +145,5 @@ class BookSuggestionPreviewPage(parameters: PageParameters) extends SecureWebPag
       })
     }
 
-  })
+  }))
 }
