@@ -1,7 +1,7 @@
 package pl.marpiec.socnet.readdatabase.mock
 
 import org.springframework.beans.factory.annotation.Autowired
-import pl.marpiec.socnet.redundandmodel.book.BookReviews
+import pl.marpiec.socnet.redundandmodel.book.{BestBooks, BookSimpleRating, BookReviews}
 import pl.marpiec.socnet.readdatabase.BookReviewsDatabase
 import pl.marpiec.util.UID
 import pl.marpiec.socnet.model.BookUserInfo
@@ -17,6 +17,8 @@ class BookReviewsDatabaseMockImpl @Autowired()(dataStore: DataStore)
   extends DataStoreListener[BookUserInfo] with BookReviewsDatabase {
 
   var booksReviews = Map[UID, BookReviews]()
+  val bestBooks = new BestBooks
+
 
   startListeningToDataStore(dataStore, classOf[BookUserInfo])
 
@@ -35,7 +37,9 @@ class BookReviewsDatabaseMockImpl @Autowired()(dataStore: DataStore)
     })
     
     updateBookReviews(bookUserInfo, bookReviews)
+    updateBestBooks(bookUserInfo, bookReviews) //must be before updating user votes
     updateUserVotes(bookUserInfo, bookReviews)
+
 
   }
 
@@ -76,7 +80,26 @@ class BookReviewsDatabaseMockImpl @Autowired()(dataStore: DataStore)
     
   }
 
+  private def updateBestBooks(bookUserInfo: BookUserInfo, bookReviews: BookReviews) {
+    val previousVoteOption = bookReviews.userVotes.get(bookUserInfo.userId)
+    if (previousVoteOption.isDefined) {
+      if (bookUserInfo.voteOption.isDefined) {
+        bestBooks.changeVote(bookUserInfo.bookId, bookUserInfo.voteOption.get, previousVoteOption.get)
+      } else {
+        bestBooks.removeVote(bookUserInfo.bookId, previousVoteOption.get)
+      }
+    } else {
+      if (bookUserInfo.voteOption.isDefined) {
+        bestBooks.addVote(bookUserInfo.bookId, bookUserInfo.voteOption.get)
+      }
+    }
+  }
+
   def getBooksReviewsForBooksIds(booksIds: List[UID]) = {
     booksReviews.filterKeys(bookId => booksIds.contains(bookId))
+  }
+
+  def getBestBooks(count: Int):List[BookSimpleRating] = {
+    bestBooks.getBestBooks(count)
   }
 }

@@ -3,48 +3,41 @@ package pl.marpiec.socnet.redundandmodel.book
 import pl.marpiec.util.UID
 import pl.marpiec.socnet.constant.Rating
 
-/**
- * @author Marcin Pieciukiewicz
- */
 
-class BookSimpleRating {
-  var bookId: UID = _
-  var ratingSum: Int = 0
-  var votesCount: Int = 0
-
-  def copy:BookSimpleRating = {
-    val rating = new BookSimpleRating
-    rating.ratingSum = this.ratingSum
-    rating.votesCount = this.votesCount
-    rating.bookId = this.bookId
-    rating
-  }
-
-  def averageRating = {
-    if (votesCount==0) {
-      0.0
-    } else {
-      ratingSum.toDouble / votesCount.toDouble
-    }
-  }
-}
 
 class BestBooks {
 
+  val ZERO_BOOK_RATING = new BookSimpleRating(new UID(0), 0, 0)
   var booksRatings: Map[UID, BookSimpleRating] = Map[UID, BookSimpleRating]()
   var bestBooks: List[BookSimpleRating] = List[BookSimpleRating]()
 
   def addVote(bookId: UID, rating: Rating) {
-    val bookRating = getNewBookRatingCopy(bookId)
-    bookRating.votesCount += 1
-    bookRating.ratingSum += rating.numericValue
-    putBookRatingInMapAndList(bookRating)
+    val oldBookRating = getNewBookRatingCopy(bookId)
+
+    val newBookRating = new BookSimpleRating(bookId,
+      oldBookRating.ratingSum + rating.numericValue, oldBookRating.votesCount + 1)
+
+    putBookRatingInMapAndList(newBookRating)
   }
 
   def changeVote(bookId: UID, rating: Rating, previousRating: Rating) {
-    val bookRating = getNewBookRatingCopy(bookId)
-    bookRating.ratingSum += (rating.numericValue - previousRating.numericValue)
-    putBookRatingInMapAndList(bookRating)
+    val oldBookRating = getNewBookRatingCopy(bookId)
+
+    val newBookRating = new BookSimpleRating(bookId,
+      oldBookRating.ratingSum + rating.numericValue - previousRating.numericValue,
+      oldBookRating.votesCount)
+
+    putBookRatingInMapAndList(newBookRating)
+  }
+
+  def removeVote(bookId: UID, rating: Rating) {
+    val oldBookRating = getNewBookRatingCopy(bookId)
+
+    val newBookRating = new BookSimpleRating(bookId,
+      oldBookRating.ratingSum - rating.numericValue,
+      oldBookRating.votesCount - 1)
+
+    putBookRatingInMapAndList(newBookRating)
   }
 
   def putBookRatingInMapAndList(bookRating:BookSimpleRating) {
@@ -52,12 +45,19 @@ class BestBooks {
     val filtered = bestBooks.filterNot(rating => rating.bookId == bookRating.bookId)
     var resultList = List[BookSimpleRating]()
     var added = false
-    filtered.foreach(rating => {
-      if (rating.averageRating < bookRating.averageRating && !added) {
-        resultList ::= bookRating
-      }
-      resultList ::= rating
-    })
+
+    if (filtered.isEmpty) {
+      resultList ::= bookRating
+    } else {
+      filtered.foreach(rating => {
+        if (rating.averageRating < bookRating.averageRating && !added) {
+          resultList ::= bookRating
+          added = true
+        }
+        resultList ::= rating
+      })
+    }
+    bestBooks = resultList
   }
 
   def getBestBooks(count:Int):List[BookSimpleRating] = {
@@ -67,17 +67,16 @@ class BestBooks {
   private def getNewBookRatingCopy(bookId: UID): BookSimpleRating = {
     val bookRatingOption = booksRatings.get(bookId)
     if (bookRatingOption.isDefined) {
-      bookRatingOption.get.copy
+      bookRatingOption.get
     } else {
-      val rating = new BookSimpleRating
-      rating.bookId = bookId
-      rating
+      ZERO_BOOK_RATING
     }
   }
 
   def copy:BestBooks = {
     val bestBooks = new BestBooks
     bestBooks.booksRatings = this.booksRatings
+    bestBooks.bestBooks = this.bestBooks
     bestBooks
   }
 }

@@ -110,6 +110,13 @@ class BookServicesTest {
 
     assertEquals(creatorBookUserInfo.voteOption.get, Rating.FOUR)
 
+    val bestBooks = bookReviewsDatabase.getBestBooks(5)
+
+    assertEquals(bestBooks.size, 1)
+    assertEquals(bestBooks.head.bookId, bookId)
+    assertEquals(bestBooks.head.votesCount, 1)
+    assertEquals(bestBooks.head.averageRating, 4.0, 0.1)
+
 
     /*
      * Create book review
