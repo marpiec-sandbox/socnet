@@ -79,19 +79,33 @@
         .buttons {
             float: right;
             .buttonHolder {
-                display: inline-block;
+                display: block;
+                margin-bottom: 15px;
             }
 
+            .ratingHolder {
+                text-align: center;
+                left: -1px;
+                position: relative;
+
+                .ratingTitle {
+                   font-weight: bold;
+                   color: @mainThemeFontColor;
+                }
+                .rating {
+                    margin-bottom: 6px;
+                    margin-left: 7px;
+                    margin-top: 5px;
+                }
+                .ratingVotes {
+                    font-size: @smallFontSize;
+                }
+            }
+
+
+
         }
 
-        .ratings {
-           .rating {
-              display: inline-block;
-              margin-top: 7px;
-              position: relative;
-              top: 3px;
-           }
-        }
    }
 
 

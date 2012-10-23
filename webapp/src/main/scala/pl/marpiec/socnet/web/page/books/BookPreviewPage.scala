@@ -35,7 +35,7 @@ import pl.marpiec.socnet.web.component.simplecomponent.RatingStarsPanel
 object BookPreviewPage {
   val BOOK_ID_PARAM = "bookId"
 
-  def getLink(componentId:String, bookId: UID): BookmarkablePageLink[_] = {
+  def getLink(componentId: String, bookId: UID): BookmarkablePageLink[_] = {
     new BookmarkablePageLink(componentId, classOf[BookPreviewPage], getParametersForLink(bookId))
   }
 
@@ -82,22 +82,30 @@ class BookPreviewPage(parameters: PageParameters) extends SecureWebPage(SocnetRo
   add(new Label("description", book.description.description))
   var ratingPanel = addAndReturn(new RatingStarsPanel("rating", bookReviews.getAverageRating).setOutputMarkupId(true))
   val votesCountLabel = addAndReturn(new Label("votesCount", bookReviews.getVotesCount.toString).setOutputMarkupId(true))
+  var votesLabel = addAndReturn(new Label("votesLabel", labelBasedOnVotesCount(bookReviews.getVotesCount)).setOutputMarkupId(true))
 
   add(new DropDownChoice[Rating]("userBookRating",
     new Model[Rating](previousUserBookRatingOption.getOrElse(null)), Rating.values,
     new ChoiceRenderer[Rating]("translation")).add(new AjaxFormComponentUpdatingBehavior("onchange") {
     def onUpdate(target: AjaxRequestTarget) {
       val rating = this.getFormComponent.getModel.getObject.asInstanceOf[Rating]
+      val ratingOption = Option(rating)
+      
+      if(ratingOption.isDefined) {
+        bookUserInfoCommand.voteForBook(session.userId, bookId, bookUserInfo, rating)
+      } else {
+        bookUserInfoCommand.cancelVoteForBook(session.userId, bookId, bookUserInfo)
+      }
 
-
-      bookUserInfoCommand.voteForBook(session.userId, bookId, bookUserInfo, rating)
       AggregatesUtil.incrementVersion(bookUserInfo)
 
-      ratingPanel = replaceAndReturn(new RatingStarsPanel("rating", bookReviews.getAverageRatingWithOneVoteChanged(session.userId, rating)).setOutputMarkupId(true))
-      votesCountLabel.setDefaultModelObject(bookReviews.getVotesCountWithOneVoteChanged(session.userId))
+      ratingPanel = replaceAndReturn(new RatingStarsPanel("rating", bookReviews.getAverageRatingWithOneVoteChanged(session.userId, ratingOption)).setOutputMarkupId(true))
+      votesCountLabel.setDefaultModelObject(bookReviews.getVotesCountWithOneVoteChanged(session.userId, ratingOption))
+      votesLabel.setDefaultModelObject(labelBasedOnVotesCount(bookReviews.getVotesCount))
 
       target.add(ratingPanel)
       target.add(votesCountLabel)
+      target.add(votesLabel)
     }
   }))
 
@@ -178,6 +186,15 @@ class BookPreviewPage(parameters: PageParameters) extends SecureWebPage(SocnetRo
     editReviewLink
   }
 
+  def labelBasedOnVotesCount(votesCount: Int): String = {
+    if (votesCount == 1) {
+      "głos"
+    } else if (votesCount >= 2 && votesCount <= 4) {
+      "głosy"
+    } else {
+      "głosów"
+    }
+  }
 
 }
 

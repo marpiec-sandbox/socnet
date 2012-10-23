@@ -12,6 +12,19 @@
             <div class="buttons">
 
                 <div class="buttonHolder">
+                    <div class="ratingHolder">
+                        <div class="ratingTitle">Ocena książki</div>
+                        <div wicket:id="rating" class="rating">rating</div>
+                        <div class="ratingVotes">
+                            <span wicket:id="votesCount">votesCount</span>
+                            <span wicket:id="votesLabel">votesLabel</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="buttonHolder">
                     <a wicket:id="showEditReviewFormButton" class="defaultButton showWriteReviewButton">
                         <span wicket:id="label">label</span>
                     </a>
@@ -34,10 +47,7 @@
                     Twoja ocena książki:
                     <select wicket:id="userBookRating" />
                 </div>
-                <div>
-                    Średnia ocena książki: <div wicket:id="rating" class="rating">rating</div>,
-                    (głosów: <span wicket:id="votesCount">votesCount</span>)
-                </div>
+
             </div>
 
 

@@ -110,13 +110,26 @@ class BookServicesTest {
 
     assertEquals(creatorBookUserInfo.voteOption.get, Rating.FOUR)
 
-    val bestBooks = bookReviewsDatabase.getBestBooks(5)
+    val bestBooks = bookReviewsDatabase.getBestBooks(5) // 5 is some maximum count of books we want to retrive
 
     assertEquals(bestBooks.size, 1)
     assertEquals(bestBooks.head.bookId, bookId)
     assertEquals(bestBooks.head.votesCount, 1)
     assertEquals(bestBooks.head.averageRating, 4.0, 0.1)
 
+    bookUserInfoCommand.cancelVoteForBook(bookCreatorUserId, bookId, creatorBookUserInfo)
+
+    bookReviews = bookReviewsDatabase.getBookReviews(bookId).get
+
+    assertEquals(bookReviews.votes(Rating.ONE), 0)
+    assertEquals(bookReviews.votes(Rating.TWO), 0)
+    assertEquals(bookReviews.votes(Rating.THREE), 0)
+    assertEquals(bookReviews.votes(Rating.FOUR), 0)
+    assertEquals(bookReviews.votes(Rating.FIVE), 0)
+
+    creatorBookUserInfo = bookUserInfoDatabase.getUserInfoByUserAndBook(bookCreatorUserId, bookId).get
+
+    assertTrue(creatorBookUserInfo.voteOption.isEmpty)
 
     /*
      * Create book review

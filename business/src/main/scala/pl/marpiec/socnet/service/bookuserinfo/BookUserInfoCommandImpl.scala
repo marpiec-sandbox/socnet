@@ -23,9 +23,14 @@ class BookUserInfoCommandImpl @Autowired()(val eventStore: EventStore, uidGenera
   }
 
   def voteForBook(userId: UID, bookId: UID, bookUserInfo: BookUserInfo, rating: Rating) {
-
     createBookUserInfoIfRequired(userId, bookId, bookUserInfo)
     eventStore.addEvent(new EventRow(userId, bookUserInfo.id, bookUserInfo.version, new VoteForBookEvent(userId, rating)))
+  }
+
+  def cancelVoteForBook(userId: UID, bookId: UID, bookUserInfo: BookUserInfo) {
+
+    createBookUserInfoIfRequired(userId, bookId, bookUserInfo)
+    eventStore.addEvent(new EventRow(userId, bookUserInfo.id, bookUserInfo.version, new CancelVoteForBookEvent(userId)))
   }
 
   def addOrUpdateReview(userId: UID, bookId: UID, bookUserInfo: BookUserInfo, description: String, rating: Rating, reviewTime: LocalDateTime) {

@@ -12,7 +12,6 @@ import pl.marpiec.util.UID
 class BookReviews {
 
 
-
   var userReviews: List[BookReview] = Nil
   @SecondSubType(classOf[Int])
   var votes: Map[Rating, Int] = Map() + (Rating.ONE -> 0) +
@@ -24,15 +23,22 @@ class BookReviews {
   var userVotes: Map[UID, Rating] = Map()
 
 
-  def getAverageRatingWithOneVoteChanged(userId:UID, rating: Rating) = {
+  def getAverageRatingWithOneVoteChanged(userId: UID, ratingOption: Option[Rating]) = {
     var (sum, votesCount) = calculateVotesSum
     val previousUserRatingOption = userVotes.get(userId)
-    if(previousUserRatingOption.isDefined) {
+    if (previousUserRatingOption.isDefined) {
       sum -= previousUserRatingOption.get.numericValue
-      sum += rating.numericValue
+      if (ratingOption.isDefined) {
+        sum += ratingOption.get.numericValue
+      } else {
+        votesCount -= 1
+      }
     } else {
-      votesCount += 1
-      sum += rating.numericValue
+      if (ratingOption.isDefined) {
+        votesCount += 1
+        sum += ratingOption.get.numericValue
+      }
+
     }
     sum.toDouble / votesCount.toDouble
   }
@@ -62,21 +68,26 @@ class BookReviews {
     "%1.1f".format(getAverageRating)
   }
 
-  def getFormattedAverageRatingWithOneVoteChanged(userId:UID, rating: Rating): String = {
-    "%1.1f".format(getAverageRatingWithOneVoteChanged(userId, rating))
-  }
-
-  def getVotesCount:Int = {
+  def getVotesCount: Int = {
     userVotes.size
   }
 
-  def getVotesCountWithOneVoteChanged(userId:UID):Int = {
+  def getVotesCountWithOneVoteChanged(userId: UID, ratingOption: Option[Rating]): Int = {
     val votesCount = userVotes.size
     val previousUserRatingOption = userVotes.get(userId)
-    if(previousUserRatingOption.isDefined) {
-      votesCount
+    if (previousUserRatingOption.isDefined) {
+      if (ratingOption.isDefined) {
+        votesCount
+      } else {
+        votesCount - 1
+      }
+
     } else {
-      votesCount + 1
+      if (ratingOption.isDefined) {
+        votesCount + 1
+      } else {
+        votesCount
+      }
     }
   }
 

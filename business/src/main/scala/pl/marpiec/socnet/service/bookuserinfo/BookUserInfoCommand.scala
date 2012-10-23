@@ -14,6 +14,8 @@ trait BookUserInfoCommand {
 
   def voteForBook(userId: UID, bookId: UID, bookUserInfo: BookUserInfo, rating: Rating)
 
+  def cancelVoteForBook(userId: UID, bookId: UID, bookUserInfo: BookUserInfo)
+
   def addOrUpdateReview(userId: UID, bookId: UID, bookUserInfo: BookUserInfo, description: String, rating: Rating, review: LocalDateTime)
 
   def removeBookReview(userId: UID, id: UID, version: Int)
