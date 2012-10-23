@@ -37,7 +37,7 @@ class BookReviews {
     sum.toDouble / votesCount.toDouble
   }
 
-  private def getAverageRating: Double = {
+  def getAverageRating: Double = {
     var (sum, votesCount) = calculateVotesSum
     if (votesCount == 0) {
       0.0

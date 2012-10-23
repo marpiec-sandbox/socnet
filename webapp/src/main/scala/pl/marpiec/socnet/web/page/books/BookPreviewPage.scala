@@ -26,6 +26,7 @@ import pl.marpiec.socnet.constant.{SocnetRoles, Rating}
 import pl.marpiec.socnet.model.{BookUserInfo, Book}
 import pl.marpiec.cqrs.AggregatesUtil
 import pl.marpiec.socnet.web.authorization.{AuthorizeBookEditor, SecureWebPage}
+import pl.marpiec.socnet.web.component.simplecomponent.RatingStarsPanel
 
 /**
  * @author Marcin Pieciukiewicz
@@ -79,7 +80,7 @@ class BookPreviewPage(parameters: PageParameters) extends SecureWebPage(SocnetRo
   add(new Label("authors", book.description.getFormattedAuthorsString))
   add(new Label("isbn", book.description.isbn))
   add(new Label("description", book.description.description))
-  val ratingLabel = addAndReturn(new Label("rating", bookReviews.getFormattedAverageRating).setOutputMarkupId(true))
+  var ratingPanel = addAndReturn(new RatingStarsPanel("rating", bookReviews.getAverageRating).setOutputMarkupId(true))
   val votesCountLabel = addAndReturn(new Label("votesCount", bookReviews.getVotesCount.toString).setOutputMarkupId(true))
 
   add(new DropDownChoice[Rating]("userBookRating",
@@ -92,10 +93,10 @@ class BookPreviewPage(parameters: PageParameters) extends SecureWebPage(SocnetRo
       bookUserInfoCommand.voteForBook(session.userId, bookId, bookUserInfo, rating)
       AggregatesUtil.incrementVersion(bookUserInfo)
 
-      ratingLabel.setDefaultModelObject(bookReviews.getFormattedAverageRatingWithOneVoteChanged(session.userId, rating))
+      ratingPanel = replaceAndReturn(new RatingStarsPanel("rating", bookReviews.getAverageRatingWithOneVoteChanged(session.userId, rating)).setOutputMarkupId(true))
       votesCountLabel.setDefaultModelObject(bookReviews.getVotesCountWithOneVoteChanged(session.userId))
 
-      target.add(ratingLabel)
+      target.add(ratingPanel)
       target.add(votesCountLabel)
     }
   }))

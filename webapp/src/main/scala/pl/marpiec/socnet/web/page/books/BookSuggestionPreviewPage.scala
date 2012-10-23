@@ -9,7 +9,7 @@ import pl.marpiec.socnet.readdatabase.{BookSuggestionDatabase, BookDatabase}
 import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException
 import org.apache.wicket.markup.html.basic.Label
 import pl.marpiec.socnet.constant.SocnetRoles
-import pl.marpiec.util.{DateUtil, IdProtectionUtil, UID}
+import pl.marpiec.util.{StringFormattingUtil, IdProtectionUtil, UID}
 import org.apache.wicket.model.CompoundPropertyModel
 import pl.marpiec.socnet.web.wicket.{SecureAjaxButton, SecureForm}
 import org.apache.wicket.ajax.AjaxRequestTarget
@@ -48,7 +48,7 @@ class BookSuggestionPreviewPage(parameters: PageParameters) extends SecureWebPag
 
   add(new BooksLinksPanel("booksLinksPanel", BooksLinks.BOOK_SUGGESTION_PREVIEW_LINKS))
 
-  add(new Label("creationTime", DateUtil.printDateTime(bookSuggestion.creationTime)))
+  add(new Label("creationTime", StringFormattingUtil.printDateTime(bookSuggestion.creationTime)))
   add(new Label("bookTitle", bookSuggestion.title))
   add(new Label("polishTitle", bookSuggestion.polishTitle))
   add(new Label("authors", bookSuggestion.getFormattedAuthorsString))

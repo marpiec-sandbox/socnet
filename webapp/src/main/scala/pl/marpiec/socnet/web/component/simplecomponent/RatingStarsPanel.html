@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:wicket="http://wicket.apache.org">
+<wicket:panel>
+
+   <div class="ratingStarsHolder">
+       <div wicket:id="rating" class="hiddenRating"></div>
+       <div class="starsDark">
+           <div class="star"></div>
+           <div class="star"></div>
+           <div class="star"></div>
+           <div class="star"></div>
+           <div class="star"></div>
+       </div>
+       <div class="starsGlowing">
+           <div class="starsHolder">
+               <div class="star"></div>
+               <div class="star"></div>
+               <div class="star"></div>
+               <div class="star"></div>
+               <div class="star"></div>
+           </div>
+       </div>
+   </div>
+
+    <script type="text/javascript">
+        function showRatingStars() {
+
+            jQuery(".ratingStarsHolder").each(function() {
+                var jqThis = jQuery(this);
+                var rating = jqThis.find(".hiddenRating").html()
+                jqThis.find(".starsGlowing").css({width:parseInt(rating*20)+"%"})
+            })
+        }
+        showRatingStars();
+    </script>
+
+</wicket:panel>
+</html>

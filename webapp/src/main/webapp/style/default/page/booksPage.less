@@ -83,6 +83,15 @@
             }
 
         }
+
+        .ratings {
+           .rating {
+              display: inline-block;
+              margin-top: 7px;
+              position: relative;
+              top: 3px;
+           }
+        }
    }
 
 
@@ -199,12 +208,19 @@
             .reviewAuthor {
                border-bottom: 1px solid #444444;
                margin-bottom: 10px;
-               padding-bottom: 5px;
-               width: 50%;
+               padding-bottom: 3px;
+               width: 70%;
             }
 
             .bookRating {
                 float: right;
+                position: relative;
+                top: -4px;
+                .reviewRating {
+                    display: inline-block;
+                    position: relative;
+                    top: 3px;
+                }
             }
        }
 
@@ -239,8 +255,8 @@
  .simpleBookSummaryPreview {
     .icon {
         float:left;
-        width: 29px;
-        height: 29px;
+        width: 37px;
+        height: 50px;
         margin-right: 10px;
         margin-top: 2px;
         background-color: white;

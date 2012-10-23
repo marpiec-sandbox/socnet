@@ -8,7 +8,7 @@ import org.apache.wicket.markup.html.list.AbstractItem
 import org.apache.wicket.markup.html.link.BookmarkablePageLink
 import pl.marpiec.socnet.web.page.conversation.ConversationPage
 import org.apache.wicket.request.mapper.parameter.PageParameters
-import pl.marpiec.util.{UID, DateUtil}
+import pl.marpiec.util.{UID, StringFormattingUtil}
 import pl.marpiec.socnet.model.{ConversationInfo, Conversation}
 
 /**
@@ -20,9 +20,9 @@ class ConversationSummaryPanel(id: String, val conversation: Conversation, users
 
 
   add(createLinkToConversation.add(new Label("conversationTitle", conversation.title)))
-  add(new Label("creationTime", DateUtil.printDateTime(conversation.messages.last.sentTime)))
+  add(new Label("creationTime", StringFormattingUtil.printDateTime(conversation.messages.last.sentTime)))
   add(new Label("lastMessageUsername", getUserById(conversation.messages.head.authorUserId).fullName))
-  add(new Label("lastMessageTime", DateUtil.printDateTime(conversation.messages.head.sentTime)))
+  add(new Label("lastMessageTime", StringFormattingUtil.printDateTime(conversation.messages.head.sentTime)))
   add(new Label("unreadMessagesCount", conversation.calculateUnreadMessagesCount(conversationInfoOption).toString))
 
 

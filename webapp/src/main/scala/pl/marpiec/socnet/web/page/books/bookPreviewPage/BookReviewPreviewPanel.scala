@@ -7,6 +7,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean
 import pl.marpiec.socnet.readdatabase.UserDatabase
 import org.apache.wicket.markup.html.panel.{EmptyPanel, Panel}
 import org.apache.wicket.markup.html.WebMarkupContainer
+import pl.marpiec.socnet.web.component.simplecomponent.RatingStarsPanel
 
 /**
  * @author Marcin Pieciukiewicz
@@ -19,7 +20,7 @@ class BookReviewPreviewPanel(id: String, review: BookReview, authorIsCurrentUser
   val userOption = userDatabase.getUserById(review.userId)
 
   add(new Label("reviewText", review.description))
-  add(new Label("reviewRating", review.rating.numericValue.toString))
+  add(new RatingStarsPanel("reviewRating", review.rating.numericValue.toDouble))
 
   if (authorIsCurrentUser) {
     add(new WebMarkupContainer("profileLink").add(new EmptyPanel("userName")))

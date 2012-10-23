@@ -61,7 +61,12 @@ class SimpleTemplatePage extends WebPage {
   protected def setSubTitle(title: String) {
     titleLabelModel.setObject("Socnet " + title)
   }
-  
+
+  protected def replaceAndReturn(component:Component):Component = {
+    replace(component)
+    component
+  }
+
   protected def addAndReturn(component:Component):Component = {
     add(component)
     component

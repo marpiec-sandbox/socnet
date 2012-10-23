@@ -10,6 +10,7 @@ import org.apache.wicket.markup.html.list.AbstractItem
 import pl.marpiec.socnet.web.page.books.{YourBooksPage, BooksPage}
 import pl.marpiec.socnet.web.component.book.{FindBookFormPanel, SimpleBookSummaryPreviewPanel}
 import org.apache.wicket.markup.html.basic.Label
+import pl.marpiec.socnet.web.component.simplecomponent.RatingStarsPanel
 
 /**
  * @author Marcin Pieciukiewicz
@@ -36,7 +37,7 @@ class BooksModule(id: String) extends Panel(id) {
     bestBooksSimpleInfo.foreach(bookSimpleInfo => {
       add(new AbstractItem(newChildId()) {
         add(new SimpleBookSummaryPreviewPanel("simpleBookSummaryPreview", bestBooks.find(book => book.id == bookSimpleInfo.bookId).get))
-        add(new Label("rating", bookSimpleInfo.averageRating.toString))
+        add(new RatingStarsPanel("rating", bookSimpleInfo.averageRating))
       })
     })
   })
