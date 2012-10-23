@@ -32,12 +32,11 @@ class BooksModule(id: String) extends Panel(id) {
 
   add(new FindBookFormPanel("findBookFormPanel"))
 
-
   add(new RepeatingView("bestBooks") {
-    bestBooks.foreach(book => {
+    bestBooksSimpleInfo.foreach(bookSimpleInfo => {
       add(new AbstractItem(newChildId()) {
-        add(new SimpleBookSummaryPreviewPanel("simpleBookSummaryPreview", book))
-        add(new Label("rating", bestBooksSimpleInfo.find(rating => rating.bookId == book.id).get.averageRating.toString))
+        add(new SimpleBookSummaryPreviewPanel("simpleBookSummaryPreview", bestBooks.find(book => book.id == bookSimpleInfo.bookId).get))
+        add(new Label("rating", bookSimpleInfo.averageRating.toString))
       })
     })
   })
