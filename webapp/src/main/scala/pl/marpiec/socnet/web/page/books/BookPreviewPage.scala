@@ -1,6 +1,6 @@
 package pl.marpiec.socnet.web.page.books
 
-import bookPreviewPage.{VoteForBookPanel, BookReviewPreviewPanel, EditReviewFormPanel}
+import bookPreviewPage.{BookRatingPreviewPanel, VoteForBookPanel, BookReviewPreviewPanel, EditReviewFormPanel}
 import component.{BooksLinks, BooksLinksPanel, BookOwnershipPanel}
 import org.apache.wicket.request.mapper.parameter.PageParameters
 import pl.marpiec.util.{IdProtectionUtil, UID}
@@ -20,7 +20,6 @@ import pl.marpiec.socnet.readdatabase.{BookUserInfoDatabase, BookReviewsDatabase
 import pl.marpiec.socnet.constant.{SocnetRoles, Rating}
 import pl.marpiec.socnet.model.{BookUserInfo, Book}
 import pl.marpiec.socnet.web.authorization.{AuthorizeBookEditor, SecureWebPage}
-import pl.marpiec.socnet.web.component.simplecomponent.RatingStarsPanel
 
 /**
  * @author Marcin Pieciukiewicz
@@ -44,15 +43,20 @@ class BookPreviewPage(parameters: PageParameters) extends SecureWebPage(SocnetRo
   @SpringBean private var bookReviewsDatabase: BookReviewsDatabase = _
   @SpringBean private var bookUserInfoDatabase: BookUserInfoDatabase = _
 
+  val BOOK_RATING_PREVIEW_PANEL_ID = "bookRatingPreview"
+  val CURRENT_USER_REVIEW_PANEL_ID = "currentUserBookReview"
+
   val thisPage = this
+
+  //init data
+
   val bookId = IdProtectionUtil.decrypt(parameters.get(BookPreviewPage.BOOK_ID_PARAM).toString)
-  var editReviewLink: AjaxLink[_] = _
+
   val bookOption = bookDatabase.getBookById(bookId)
   val book = bookOption.getOrElse(throw new AbortWithHttpErrorCodeException(404))
   val bookReviews = bookReviewsDatabase.getBookReviews(bookId).getOrElse(new BookReviews)
   val bookUserInfo = bookUserInfoDatabase.getUserInfoByUserAndBook(session.userId, bookId).getOrElse(new BookUserInfo)
 
-  //init data
   val (notCurrentUserReviews, currentUserReviews) = bookReviews.userReviews.partition(bookReview => {
     bookReview.userId != session.userId
   })
@@ -60,26 +64,20 @@ class BookPreviewPage(parameters: PageParameters) extends SecureWebPage(SocnetRo
   val previousUserBookRatingOption = bookReviews.getUserRating(session.userId)
 
   //build schema
+
   add(new BookOwnershipPanel("bookOwnership", bookId, bookUserInfo))
-
-
   add(new BooksLinksPanel("booksLinksPanel", BooksLinks.BOOK_PREVIEW_LINKS))
-
   add(AuthorizeBookEditor(AddBookPage.getLinkWithBookId("editBookDesription", bookId)))
-
   add(new Label("bookTitle", book.description.title))
   add(new Label("polishTitle", book.description.polishTitle))
   add(new Label("authors", book.description.getFormattedAuthorsString))
   add(new Label("isbn", book.description.isbn))
   add(new Label("description", book.description.description))
-  var ratingPanel = addAndReturn(new RatingStarsPanel("rating", bookReviews.getAverageRating).setOutputMarkupId(true))
-  val votesCountLabel = addAndReturn(new Label("votesCount", bookReviews.getVotesCount.toString).setOutputMarkupId(true))
-  var votesLabel = addAndReturn(new Label("votesLabel", labelBasedOnVotesCount(bookReviews.getVotesCount)).setOutputMarkupId(true))
-
+  add(new BookRatingPreviewPanel(BOOK_RATING_PREVIEW_PANEL_ID, bookReviews.getAverageRating, bookReviews.getVotesCount))
   add(new VoteForBookPanel("voteForBook", this, bookUserInfo, previousUserBookRatingOption))
-  
 
-  editReviewLink = addAndReturn(new AjaxLink("showEditReviewFormButton") {
+
+  val editReviewLink = addAndReturn(new AjaxLink("showEditReviewFormButton") {
     val thisButton = this
     setOutputMarkupId(true)
     setOutputMarkupPlaceholderTag(true)
@@ -100,17 +98,14 @@ class BookPreviewPage(parameters: PageParameters) extends SecureWebPage(SocnetRo
   addCurrentUserReview(currentUserReviewOption)
 
   add(new RepeatingView("bookReviews") {
-
     notCurrentUserReviews.foreach(bookReview => {
       add(new AbstractItem(newChildId()) {
         add(new BookReviewPreviewPanel("bookReview", bookReview, false))
       })
     })
-
   })
 
   def putProperLabelInEditReviewButton(button: AjaxLink[_], currentUserReviewOption: Option[BookReview]) {
-
     if (currentUserReviewOption.isDefined) {
       button.addOrReplace(new Label("label", "Zmień swoją recenzję"))
     } else {
@@ -119,16 +114,11 @@ class BookPreviewPage(parameters: PageParameters) extends SecureWebPage(SocnetRo
   }
 
   def addCurrentUserReview(currentUserReviewOption: Option[BookReview]): Component = {
-
-    val CURRENT_USER_REVIEW_PANEL_ID = "currentUserBookReview"
-
-    var panel: Component = null
-    if (currentUserReviewOption.isDefined) {
-      panel = new BookReviewPreviewPanel(CURRENT_USER_REVIEW_PANEL_ID, currentUserReviewOption.get, true).setOutputMarkupId(true)
+    val panel = if (currentUserReviewOption.isDefined) {
+      new BookReviewPreviewPanel(CURRENT_USER_REVIEW_PANEL_ID, currentUserReviewOption.get, true).setOutputMarkupId(true)
     } else {
-      panel = new EmptyPanel(CURRENT_USER_REVIEW_PANEL_ID).setOutputMarkupId(true)
+      new EmptyPanel(CURRENT_USER_REVIEW_PANEL_ID).setOutputMarkupId(true)
     }
-
     addOrReplace(panel)
     panel
   }
@@ -151,24 +141,14 @@ class BookPreviewPage(parameters: PageParameters) extends SecureWebPage(SocnetRo
     editReviewLink
   }
 
-  def labelBasedOnVotesCount(votesCount: Int): String = {
-    if (votesCount == 1) {
-      "głos"
-    } else if (votesCount >= 2 && votesCount <= 4) {
-      "głosy"
-    } else {
-      "głosów"
-    }
-  }
 
-  def updateBookAvarageRating(target: AjaxRequestTarget, ratingOption: Option[Rating]) {
-    ratingPanel = replaceAndReturn(new RatingStarsPanel("rating", bookReviews.getAverageRatingWithOneVoteChanged(session.userId, ratingOption)).setOutputMarkupId(true))
-    votesCountLabel.setDefaultModelObject(bookReviews.getVotesCountWithOneVoteChanged(session.userId, ratingOption))
-    votesLabel.setDefaultModelObject(labelBasedOnVotesCount(bookReviews.getVotesCount))
+  def updateBookAverageRating(target: AjaxRequestTarget, ratingOption: Option[Rating]) {
 
-    target.add(ratingPanel)
-    target.add(votesCountLabel)
-    target.add(votesLabel)
+    val bookRatingPreview = replaceAndReturn(new BookRatingPreviewPanel(BOOK_RATING_PREVIEW_PANEL_ID,
+      bookReviews.getAverageRatingWithOneVoteChanged(session.userId, ratingOption),
+      bookReviews.getVotesCountWithOneVoteChanged(session.userId, ratingOption)))
+
+    target.add(bookRatingPreview)
   }
 
 }

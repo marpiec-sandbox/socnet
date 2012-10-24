@@ -42,7 +42,7 @@ class VoteForBookPanel(id: String,
 
       AggregatesUtil.incrementVersion(bookUserInfo)
 
-      parentPage.updateBookAvarageRating(target, ratingOption)
+      parentPage.updateBookAverageRating(target, ratingOption)
     }
   }))
 
