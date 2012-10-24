@@ -3,10 +3,17 @@
 <wicket:panel>
 
     <div class="ratings">
-        <div>
-            Twoja ocena książki:
+
+
+        <form wicket:id="voteForBookForm">
+            <input type="hidden" wicket:id="sessionToken"/>
+            <span wicket:id="warningMessage"></span>
+            <span>Twoja ocena książki:</span>
             <select wicket:id="userBookRating" />
-        </div>
+            <div wicket:id="submitButton" class="buttonContainer">
+                <button>Zagłosuj</button>
+            </div>
+        </form>
 
     </div>
 
