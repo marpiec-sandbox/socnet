@@ -42,13 +42,4 @@ class BooksModule(id: String) extends Panel(id) {
     })
   })
 
-  add(new RepeatingView("recentBooks") {
-    recentBooks.foreach(book => {
-
-      add(new AbstractItem(newChildId()) {
-        add(new SimpleBookSummaryPreviewPanel("simpleBookSummaryPreview", book))
-      })
-    })
-  })
-
 }
