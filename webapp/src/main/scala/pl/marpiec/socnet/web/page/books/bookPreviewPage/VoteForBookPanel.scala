@@ -14,6 +14,7 @@ import pl.marpiec.socnet.web.page.books.BookPreviewPage
 import pl.marpiec.socnet.web.component.wicket.form.StandardAjaxSecureForm
 import org.apache.wicket.model.CompoundPropertyModel
 import org.apache.wicket.markup.html.form.{ChoiceRenderer, DropDownChoice}
+import pl.marpiec.socnet.web.component.simplecomponent.RatingStarsInputPanel
 
 /**
  * @author Marcin Pieciukiewicz
@@ -33,10 +34,15 @@ class VoteForBookPanel(id: String,
 
     def initialize = {
       standardCancelButton = false
-      setModel(new CompoundPropertyModel[VoteForBookFormModel](new VoteForBookFormModel))
+      val model = new VoteForBookFormModel
+      if(previousUserBookRatingOption.isDefined) {
+        model.userBookRating = previousUserBookRatingOption.get
+      }
+      setModel(new CompoundPropertyModel[VoteForBookFormModel](model))
     }
 
     def buildSchema = {
+      add(new RatingStarsInputPanel("ratingStarsInput", "userBookRatingInput"))
       add(new DropDownChoice[Rating]("userBookRating", Rating.values, new ChoiceRenderer[Rating]("translation")))
     }
 

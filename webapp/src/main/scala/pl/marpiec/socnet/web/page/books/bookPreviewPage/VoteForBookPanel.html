@@ -3,19 +3,32 @@
 <wicket:panel>
 
     <div class="ratings">
-
-
         <form wicket:id="voteForBookForm">
             <input type="hidden" wicket:id="sessionToken"/>
             <span wicket:id="warningMessage"></span>
-            <span>Twoja ocena książki:</span>
-            <select wicket:id="userBookRating" />
-            <div wicket:id="submitButton" class="buttonContainer">
-                <button>Zagłosuj</button>
+            <span class="voteLabel">Twoja ocena książki:</span>
+            <div wicket:id="ratingStarsInput" class="ratingStarsInput"></div>
+            <select wicket:id="userBookRating" class="userBookRatingInput" onchange="showVoteSubmitButton()"/>
+            <div wicket:id="submitButton" class="buttonContainer buttonHidden">
+                <button onclick="hideVoteSubmitButton()">Zagłosuj</button>
             </div>
         </form>
-
     </div>
 
+    <script type="text/javascript">
+        
+        function showVoteSubmitButton() {
+            jQuery(".buttonContainer").removeClass("buttonHidden")
+        }
+
+        function hideVoteSubmitButton() {
+            jQuery(".buttonContainer").addClass("buttonHidden")
+        }
+
+        ratingStarsInitOutput();
+        
+    </script>
+    
+    
 </wicket:panel>
 </html>
