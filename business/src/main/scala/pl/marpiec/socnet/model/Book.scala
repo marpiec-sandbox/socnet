@@ -20,11 +20,11 @@ class Book extends Aggregate(null, 0) {
 
   def createIndex():List[String] = {
     var index = List[String]()
-    index ++= description.getFormattedAuthorsString.split("[\\s\\,]+")
-    index ++= description.title.split("[\\s\\,]+")
-    index ++= description.polishTitle.split("[\\s\\,]+")
-    index ++= description.description.split("[\\s\\,]+")
-    index ::= description.isbn
+    index ++= SearchUtils.queryToWordsList(description.getFormattedAuthorsString)
+    index ++= SearchUtils.queryToWordsList(description.title)
+    index ++= SearchUtils.queryToWordsList(description.polishTitle)
+    index ++= SearchUtils.queryToWordsList(description.description)
+    index ++= SearchUtils.queryToWordsList(description.isbn)
     SearchUtils.prepareIndex(index)
   }
 
