@@ -1,8 +1,7 @@
 package pl.marpiec.socnet.web.page.books
 
+import bookPreviewPage.{VoteForBookPanel, BookReviewPreviewPanel, EditReviewFormPanel}
 import component.{BooksLinks, BooksLinksPanel, BookOwnershipPanel}
-import scala.collection.JavaConversions._
-import bookPreviewPage.{BookReviewPreviewPanel, EditReviewFormPanel}
 import org.apache.wicket.request.mapper.parameter.PageParameters
 import pl.marpiec.util.{IdProtectionUtil, UID}
 import org.apache.wicket.spring.injection.annot.SpringBean
@@ -16,15 +15,10 @@ import org.apache.wicket.markup.html.panel.EmptyPanel
 import org.apache.wicket.Component
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.ajax.markup.html.AjaxLink
-import org.apache.wicket.markup.html.form.{ChoiceRenderer, DropDownChoice}
-import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior
-import org.apache.wicket.model.Model
 import pl.marpiec.socnet.redundandmodel.book.BookReviews
-import pl.marpiec.socnet.service.bookuserinfo.BookUserInfoCommand
 import pl.marpiec.socnet.readdatabase.{BookUserInfoDatabase, BookReviewsDatabase, BookDatabase}
 import pl.marpiec.socnet.constant.{SocnetRoles, Rating}
 import pl.marpiec.socnet.model.{BookUserInfo, Book}
-import pl.marpiec.cqrs.AggregatesUtil
 import pl.marpiec.socnet.web.authorization.{AuthorizeBookEditor, SecureWebPage}
 import pl.marpiec.socnet.web.component.simplecomponent.RatingStarsPanel
 
@@ -49,8 +43,6 @@ class BookPreviewPage(parameters: PageParameters) extends SecureWebPage(SocnetRo
   @SpringBean private var bookDatabase: BookDatabase = _
   @SpringBean private var bookReviewsDatabase: BookReviewsDatabase = _
   @SpringBean private var bookUserInfoDatabase: BookUserInfoDatabase = _
-
-  @SpringBean private var bookUserInfoCommand: BookUserInfoCommand = _
 
   val thisPage = this
   val bookId = IdProtectionUtil.decrypt(parameters.get(BookPreviewPage.BOOK_ID_PARAM).toString)
@@ -84,40 +76,15 @@ class BookPreviewPage(parameters: PageParameters) extends SecureWebPage(SocnetRo
   val votesCountLabel = addAndReturn(new Label("votesCount", bookReviews.getVotesCount.toString).setOutputMarkupId(true))
   var votesLabel = addAndReturn(new Label("votesLabel", labelBasedOnVotesCount(bookReviews.getVotesCount)).setOutputMarkupId(true))
 
-  add(new DropDownChoice[Rating]("userBookRating",
-    new Model[Rating](previousUserBookRatingOption.getOrElse(null)), Rating.values,
-    new ChoiceRenderer[Rating]("translation")).add(new AjaxFormComponentUpdatingBehavior("onchange") {
-    def onUpdate(target: AjaxRequestTarget) {
-      val rating = this.getFormComponent.getModel.getObject.asInstanceOf[Rating]
-      val ratingOption = Option(rating)
-      
-      if(ratingOption.isDefined) {
-        bookUserInfoCommand.voteForBook(session.userId, bookId, bookUserInfo, rating)
-      } else {
-        bookUserInfoCommand.cancelVoteForBook(session.userId, bookId, bookUserInfo)
-      }
-
-      AggregatesUtil.incrementVersion(bookUserInfo)
-
-      ratingPanel = replaceAndReturn(new RatingStarsPanel("rating", bookReviews.getAverageRatingWithOneVoteChanged(session.userId, ratingOption)).setOutputMarkupId(true))
-      votesCountLabel.setDefaultModelObject(bookReviews.getVotesCountWithOneVoteChanged(session.userId, ratingOption))
-      votesLabel.setDefaultModelObject(labelBasedOnVotesCount(bookReviews.getVotesCount))
-
-      target.add(ratingPanel)
-      target.add(votesCountLabel)
-      target.add(votesLabel)
-    }
-  }))
-
+  add(new VoteForBookPanel("voteForBook", this, bookUserInfo, previousUserBookRatingOption))
+  
 
   editReviewLink = addAndReturn(new AjaxLink("showEditReviewFormButton") {
-
+    val thisButton = this
     setOutputMarkupId(true)
     setOutputMarkupPlaceholderTag(true)
 
     putProperLabelInEditReviewButton(this, currentUserReviewOption)
-
-    val thisButton = this
 
     def onClick(target: AjaxRequestTarget) {
       val form = addEditReviewForm(book)
@@ -130,8 +97,6 @@ class BookPreviewPage(parameters: PageParameters) extends SecureWebPage(SocnetRo
   }).asInstanceOf[AjaxLink[_]]
 
   addEditReviewFormPlaceholder()
-
-
   addCurrentUserReview(currentUserReviewOption)
 
   add(new RepeatingView("bookReviews") {
@@ -194,6 +159,16 @@ class BookPreviewPage(parameters: PageParameters) extends SecureWebPage(SocnetRo
     } else {
       "głosów"
     }
+  }
+
+  def updateBookAvarageRating(target: AjaxRequestTarget, ratingOption: Option[Rating]) {
+    ratingPanel = replaceAndReturn(new RatingStarsPanel("rating", bookReviews.getAverageRatingWithOneVoteChanged(session.userId, ratingOption)).setOutputMarkupId(true))
+    votesCountLabel.setDefaultModelObject(bookReviews.getVotesCountWithOneVoteChanged(session.userId, ratingOption))
+    votesLabel.setDefaultModelObject(labelBasedOnVotesCount(bookReviews.getVotesCount))
+
+    target.add(ratingPanel)
+    target.add(votesCountLabel)
+    target.add(votesLabel)
   }
 
 }
