@@ -2,13 +2,13 @@ package pl.marpiec.socnet.readdatabase.nosql
 
 import org.springframework.beans.factory.annotation.Autowired
 import pl.marpiec.socnet.readdatabase.BookDatabase
-import pl.marpiec.cqrs.{Aggregate, DataStoreListener, DataStore}
-import pl.marpiec.util.UID
-import pl.marpiec.socnet.mongodb.DatabaseConnectorImpl
+import pl.marpiec.cqrs.{DataStoreListener, DataStore}
 import com.mongodb.QueryBuilder
 import pl.marpiec.socnet.model.Book
 import org.springframework.stereotype.Repository
-import org.apache.commons.lang.StringUtils
+import pl.marpiec.socnet.mongodb.{DatabaseTextIndexConnectorImpl, DatabaseConnectorImpl}
+import pl.marpiec.socnet.mongodb.model.TextIndex
+import pl.marpiec.util.{SearchUtils, UID}
 
 /**
  * @author Marcin Pieciukiewicz
@@ -19,26 +19,17 @@ class BookDatabaseNoSqlImpl @Autowired()(dataStore: DataStore)
   extends DataStoreListener[Book] with BookDatabase {
 
   val connector = new DatabaseConnectorImpl("books")
+  val connectorBooksIndex = new DatabaseTextIndexConnectorImpl("booksIndex")
 
   startListeningToDataStore(dataStore, classOf[Book])
 
   def findBooksByQuery(query: String) = {
     //connector.findMultipleAggregatesByQuery(QueryBuilder.start("title").is(title).get(), classOf[Book])
 
-    val lowerCaseQuery = query.toLowerCase
+    val booksIds = connectorBooksIndex.getIdentifierByQuery(SearchUtils.queryToWordsList(query))
 
-    getAllBooks.asInstanceOf[List[Book]].filter(book => {
-      if(StringUtils.containsIgnoreCase(book.description.title, lowerCaseQuery) ||
-        StringUtils.containsIgnoreCase(book.description.polishTitle, lowerCaseQuery) ||
-        StringUtils.containsIgnoreCase(book.description.description, lowerCaseQuery) ||
-        StringUtils.containsIgnoreCase(book.description.isbn, lowerCaseQuery)){
-        true
-      } else {
-        book.description.authors.exists(author => {
-          StringUtils.containsIgnoreCase(author, lowerCaseQuery)
-        })
-      }
-    })
+    getBooksByIds(booksIds)
+
   }
 
   def getBookById(id: UID) = connector.getAggregateById(id, classOf[Book])
@@ -47,11 +38,12 @@ class BookDatabaseNoSqlImpl @Autowired()(dataStore: DataStore)
 
   def onEntityChanged(book: Book) {
     connector.insertAggregate(book)
+    connectorBooksIndex.addIndex(new TextIndex(book.id, book.createIndex))
   }
 
   def getBooksByIds(booksIds: List[UID]) = {
-    
-    val ids:Array[Long] = new Array[Long](booksIds.size)
+
+    val ids: Array[Long] = new Array[Long](booksIds.size)
 
     for (i <- 0 until booksIds.size) {
       ids(i) = booksIds(i).uid
