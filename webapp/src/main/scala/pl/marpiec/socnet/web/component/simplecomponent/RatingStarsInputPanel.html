@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:wicket="http://wicket.apache.org">
+<wicket:panel>
+
+    <div wicket:id="ratingStarsInputHolder" class="ratingStarsInputHolder" alt="inputUniqueClass">
+        <div class="stars" onmouseout="ratingStarsHighlightSelectedLevel(this)" >
+            <a class="star" onclick="return ratingStarsLevelClicked(this, 1)" onmouseover="ratingStarsHighlightLevels(this, 1)" onfocus="ratingStarsHighlightLevels(this, 1)" onblur="ratingStarsHighlightSelectedLevel(this)"><div class="starIcon"></div></a>
+            <a class="star" onclick="return ratingStarsLevelClicked(this, 2)" onmouseover="ratingStarsHighlightLevels(this, 2)" onfocus="ratingStarsHighlightLevels(this, 2)" onblur="ratingStarsHighlightSelectedLevel(this)"><div class="starIcon"></div></a>
+            <a class="star" onclick="return ratingStarsLevelClicked(this, 3)" onmouseover="ratingStarsHighlightLevels(this, 3)" onfocus="ratingStarsHighlightLevels(this, 3)" onblur="ratingStarsHighlightSelectedLevel(this)"><div class="starIcon"></div></a>
+            <a class="star" onclick="return ratingStarsLevelClicked(this, 4)" onmouseover="ratingStarsHighlightLevels(this, 4)" onfocus="ratingStarsHighlightLevels(this, 4)" onblur="ratingStarsHighlightSelectedLevel(this)"><div class="starIcon"></div></a>
+            <a class="star" onclick="return ratingStarsLevelClicked(this, 5)" onmouseover="ratingStarsHighlightLevels(this, 5)" onfocus="ratingStarsHighlightLevels(this, 5)" onblur="ratingStarsHighlightSelectedLevel(this)"><div class="starIcon"></div></a>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        function ratingStarsLevelClicked(element, level) {
+            var inputIdentifier = ratingStarsFindInputIdentifier(element);
+            var jqInput = ratingStarsGetInput(inputIdentifier);
+            jqInput.val(level - 1);
+            jqInput.change();
+            return false;
+        }
+
+        function ratingStarsHighlightLevels(element, level) {
+            var jqInputHolder = ratingStarsGetInputHolder(element);
+
+            var counter = 0;
+            jqInputHolder.find(".star").each(function() {
+                if (counter < level) {
+                    jQuery(this).addClass("highlighted")
+                } else {
+                    jQuery(this).removeClass("highlighted")
+                }
+                counter++;
+            })
+
+        }
+
+        function ratingStarsHighlightSelectedLevel(element) {
+            var inputIdentifier = ratingStarsFindInputIdentifier(element);
+            var jqInput = ratingStarsGetInput(inputIdentifier);
+            var currentLevel = parseInt(jqInput.val());
+
+            ratingStarsHighlightLevels(element, currentLevel + 1);
+
+        }
+
+        function ratingStarsGetInputHolder(element) {
+            return jQuery(element).parents(".ratingStarsInputHolder");
+        }
+
+        function ratingStarsFindInputIdentifier(element) {
+            return ratingStarsGetInputHolder(element).attr("alt")
+        }
+
+        function ratingStarsGetInput(inputClassIdentifier) {
+            return jQuery("."+inputClassIdentifier)
+        }
+
+        function ratingStarsInitOutput() {
+            jQuery(".ratingStarsInputHolder").each(function() {
+                var jqThis = jQuery(this);
+                if(jqThis.data("initiated") != "true") {
+
+                    var inputClassIdentifier = jqThis.attr("alt");
+                    var input = jQuery("."+inputClassIdentifier);
+                    var currentLevel = parseInt(input.val());
+                    if(currentLevel >= 0 && currentLevel <= 4) {
+                        ratingStarsHighlightLevels(jqThis.find(".star").first(), currentLevel + 1);
+                    }
+
+                    jqThis.data("initiated", "true")
+                }
+            })
+        }
+
+
+
+
+
+    </script>
+
+</wicket:panel>
+</html>
