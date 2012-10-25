@@ -56,6 +56,8 @@ class UserTechnologiesPage extends SecureWebPage(SocnetRoles.USER) {
   }).setVisible(false).setOutputMarkupId(true).setOutputMarkupPlaceholderTag(true))
 
 
+
+
   add(new StandardAjaxSecureForm[AddTechnologyFormModel]("addTechnologyForm") {
 
     val thisForm = this
@@ -85,7 +87,10 @@ class UserTechnologiesPage extends SecureWebPage(SocnetRoles.USER) {
       val technologyName = formModel.technologyName
       val level = formModel.knowledgeLevel
 
-      if (validateAddTechnologyForm(technologyName, level)) {
+      if (technologyAlreadyExists(technologyName)) {
+        formModel.warningMessage = "Ta technologia znajduje już się na liście"
+        target.add(this.warningMessageLabel)
+      } else if (validateAddTechnologyForm(technologyName, level)) {
         val technology = KnownTechnology(technologyName, TechnologyKnowledgeLevel.getByValue(level.value))
         addedOrChangedTechnologies ::= technology
 
@@ -104,7 +109,7 @@ class UserTechnologiesPage extends SecureWebPage(SocnetRoles.USER) {
         }
 
       } else {
-        formModel.warningMessage = "Nalezy podac nazwe technologii i poziom jej znajomosci"
+        formModel.warningMessage = "Należy podać nazwę technologii i poziom jej znajomości"
         target.add(this.warningMessageLabel)
       }
     }
@@ -115,7 +120,16 @@ class UserTechnologiesPage extends SecureWebPage(SocnetRoles.USER) {
   })
 
 
+
+
   //methods
+
+  private def technologyAlreadyExists(technologyName: String): Boolean = {
+    val lowercaseName = technologyName.toLowerCase
+    StringUtils.isNotBlank(technologyName) && loadedTechnologiesMap.exists(b => {
+      b._1.toLowerCase == lowercaseName
+    })
+  }
 
   private def getProgrammerProfileOrThrow404: ProgrammerProfile = {
     programmerProfileDatabase.getProgrammerProfileByUserId(session.userId).
