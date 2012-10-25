@@ -1,0 +1,28 @@
+div.wicket-aa {
+    background-color: white;
+    border-width: 1px;
+    border-color: #cccccc;
+    border-style: solid;
+    padding: 2px;
+    margin: 1px 0 0 0;
+    text-align:left;
+
+    ul {
+        list-style:none;
+        padding: 2px;
+        margin:0;    
+        
+        li {
+            cursor: pointer;
+            padding: 4px 2px;
+            span.matched {
+                color: @mainThemeFontColor;
+                font-weight: bold;
+            }
+        }
+
+        li.selected {
+            background-color: @defaultInputBorderColor;
+        }
+    }
+}

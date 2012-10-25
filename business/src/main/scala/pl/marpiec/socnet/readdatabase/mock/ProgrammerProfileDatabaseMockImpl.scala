@@ -35,15 +35,6 @@ class ProgrammerProfileDatabaseMockImpl @Autowired()(dataStore: DataStore)
   def getMostLikedTechnologies(count: Int) = bestTechnologies.mostPopularTechnologies.take(count)
 
   def getMostPopularTechnologiesMatching(query: String, count: Int):List[String] = {
-
-    val lowerCaseQuery = query.toLowerCase
-    var suggestionList = List[String]()
-    
-    bestTechnologies.mostPopularTechnologies.foreach(simpleRating => {
-       if(suggestionList.size < count && simpleRating.technologyName.toLowerCase.contains(lowerCaseQuery)) {
-         suggestionList ::= simpleRating.technologyName
-       }
-    })
-    suggestionList
+    bestTechnologies.getMostPopularTechnologiesMatching(query, count)
   }
 }
