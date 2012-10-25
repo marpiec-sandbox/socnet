@@ -27,8 +27,9 @@
 
             jQuery(".ratingStarsHolder").each(function() {
                 var jqThis = jQuery(this);
-                var rating = jqThis.find(".hiddenRating").html()
-                jqThis.find(".starsGlowing").css({width:parseInt(rating*20)+"%"})
+                var rating = jqThis.find(".hiddenRating").html();
+                jqThis.find(".starsGlowing").css({width:parseInt(rating*20)+"%"});
+                jqThis.attr("title",rating)
             })
         }
         showRatingStars();
