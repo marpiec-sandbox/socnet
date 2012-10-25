@@ -20,6 +20,8 @@ import org.apache.wicket.model.CompoundPropertyModel
 import pl.marpiec.socnet.model.programmerprofile.KnownTechnology
 import userTechnologiesPage.TechnologySummaryPanel
 import pl.marpiec.socnet.web.component.wicket.recursiveList.RecursiveList
+import org.apache.wicket.extensions.ajax.markup.html.autocomplete.AutoCompleteTextField
+import pl.marpiec.socnet.web.component.wicket.autocomplete.BoldingAutoCompleteRenderer
 
 /**
  * @author Marcin Pieciukiewicz
@@ -64,7 +66,16 @@ class UserTechnologiesPage extends SecureWebPage(SocnetRoles.USER) {
     }
 
     def buildSchema = {
-      add(new TextField[String]("technologyName"))
+
+      add(new AutoCompleteTextField[String]("technologyName", BoldingAutoCompleteRenderer.INSTANCE) {
+        def getChoices(input: String) = {
+          val choices = programmerProfileDatabase.getMostPopularTechnologiesMatching(input.trim, 20)
+          val javaList:java.util.List[String] = choices
+          javaList.iterator()
+        }
+      })
+
+
       add(new DropDownChoice[TechnologyKnowledgeLevel]("knowledgeLevel", TechnologyKnowledgeLevel.values,
         new ChoiceRenderer[TechnologyKnowledgeLevel]("translation")))
     }
