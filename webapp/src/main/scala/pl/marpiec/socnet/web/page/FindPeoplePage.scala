@@ -11,8 +11,8 @@ import org.apache.wicket.markup.html.WebMarkupContainer
 import pl.marpiec.socnet.readdatabase.UserContactsDatabase
 import pl.marpiec.socnet.model.UserContacts
 import profile.UserProfilePreviewPage
-import pl.marpiec.socnet.web.component.contacts.{PersonContactLevelPanel, PersonContactInvitationPanel}
 import pl.marpiec.socnet.web.authorization.{AuthorizeUser, SecureWebPage}
+import pl.marpiec.socnet.web.component.contacts.PersonContactPanel
 
 /**
  * @author Marcin Pieciukiewicz
@@ -56,9 +56,7 @@ class FindPeoplePage(parameters: PageParameters) extends SecureWebPage(SocnetRol
         }
 
 
-        add(AuthorizeUser(new PersonContactLevelPanel("personContactLevelPanel", user.id, userContacts, session.userId, loggedInUserContacts)))
-        add(AuthorizeUser(new PersonContactInvitationPanel("personContactInfo", user.id, loggedInUserContacts)))
-
+        add(AuthorizeUser(new PersonContactPanel("personContactPanel", user.id, userContacts, loggedInUserContacts)))
 
 
       })

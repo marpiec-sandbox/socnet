@@ -3,10 +3,24 @@
 <wicket:panel>
 
     <div class="contactsList">
-        <div>Lista znajomych osób</div>
+        <div class="contactsListTitle">Lista znajomych osób</div>
 
         <div wicket:id="contact">
             <div wicket:id="userSummaryPreview">userSummaryPreview</div>
+        </div>
+
+        <div class="buttons">
+            <wicket:enclosure child="yourContactsLink">
+                <div class="buttonHolder">
+                    <a wicket:id="yourContactsLink" class="defaultButton">Twoi znajomi</a>
+                </div>
+            </wicket:enclosure>
+
+            <wicket:enclosure child="userContactsPreviewLink">
+                <div class="buttonHolder">
+                    <a wicket:id="userContactsPreviewLink" class="defaultButton">Wszyscy znajomi</a>
+                </div>
+            </wicket:enclosure>
         </div>
     </div>
 

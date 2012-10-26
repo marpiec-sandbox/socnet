@@ -3,10 +3,12 @@ package pl.marpiec.socnet.web.page.profile
 import editUserProfilePage._
 import pl.marpiec.socnet.readdatabase.UserProfileDatabase
 import pl.marpiec.socnet.service.userprofile.UserProfileCommand
-import pl.marpiec.socnet.web.authorization.SecureWebPage
 import pl.marpiec.socnet.constant.SocnetRoles
 import org.apache.wicket.spring.injection.annot.SpringBean
 import pl.marpiec.cqrs.UidGenerator
+import org.apache.wicket.markup.html.link.BookmarkablePageLink
+import pl.marpiec.socnet.web.page.usertechnologies.UserTechnologiesPage
+import pl.marpiec.socnet.web.authorization.{AuthorizeUser, SecureWebPage}
 
 
 /**
@@ -27,6 +29,10 @@ class EditUserProfilePage extends SecureWebPage(SocnetRoles.USER) {
 
 
   //schema
+  
+  add(UserProfilePreviewPage.getLink(session.user))
+  add(AuthorizeUser(new BookmarkablePageLink("technologiesLink", classOf[UserTechnologiesPage])))
+  
   add(new UserSummaryPanel("userSummaryPanel", session.user));
   add(new PersonalSummaryPanel("personalSummaryPanel", session.user, userProfile));
   add(new JobExperienceListPanel("jobExperienceListPanel", session.user, userProfile, userProfile.jobExperience))

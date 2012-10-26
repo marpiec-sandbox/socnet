@@ -14,11 +14,11 @@ import pl.marpiec.socnet.model.{User, UserProfile}
 import pl.marpiec.socnet.constant.SocnetRoles
 import pl.marpiec.socnet.model.UserContacts
 import pl.marpiec.socnet.readdatabase.UserContactsDatabase
-import pl.marpiec.socnet.web.component.conversation.StartConversationPanel
 import pl.marpiec.socnet.web.page.profile.userProfilePreviewPage._
 import pl.marpiec.socnet.web.authorization.{AuthorizeUser, SecureWebPage}
-import pl.marpiec.socnet.web.component.contacts.{PersonContactLevelPanel, PersonContactInvitationPanel}
 import pl.marpiec.socnet.web.component.usertechnologies.UserTechnologiesPreviewPanel
+import pl.marpiec.socnet.web.page.usertechnologies.UserTechnologiesPage
+import pl.marpiec.socnet.web.component.contacts.PersonContactPanel
 
 /**
  * @author Marcin Pieciukiewicz
@@ -43,7 +43,13 @@ class UserProfilePreviewPage(parameters: PageParameters) extends SecureWebPage(S
   val loggedInUserContacts: UserContacts = userContactsDatabase.getUserContactsByUserId(session.userId).getOrElse(new UserContacts)
   val userContacts: UserContacts = userContactsDatabase.getUserContactsByUserId(userId).getOrElse(new UserContacts)
 
+  val itsCurrentserProfile = user.id == session.userId
+
   //schema
+
+  add(AuthorizeUser(new BookmarkablePageLink("editProfileLink", classOf[EditUserProfilePage])).setVisible(itsCurrentserProfile))
+  add(AuthorizeUser(new BookmarkablePageLink("technologiesLink", classOf[UserTechnologiesPage]).setVisible(itsCurrentserProfile)))
+
   add(new UserPreviewPanel("userPreviewPanel", user));
   add(new PersonalSummaryPreviewPanel("personalSummaryPreview", userProfile));
 
@@ -51,11 +57,9 @@ class UserProfilePreviewPage(parameters: PageParameters) extends SecureWebPage(S
   addEducationList(userProfile.education)
   addAdditionalInfoList(userProfile.additionalInfo)
 
-  add(AuthorizeUser(new PersonContactInvitationPanel("personContactInfo", user.id, loggedInUserContacts)))
-  add(AuthorizeUser(new StartConversationPanel("startConversationPanel", user.id).setVisible(user.id != session.userId)))
-  add(AuthorizeUser(new PersonContactLevelPanel("personContactLevelPanel", user.id, userContacts, session.userId, loggedInUserContacts)))
+  add(AuthorizeUser(new PersonContactPanel("personContactPanel", user.id, loggedInUserContacts, loggedInUserContacts)))
 
-  add(new UserContactsPreviewPanel("userContactsPreviewPanel", userContacts, loggedInUserContacts))
+  add(new UserContactsPreviewPanel("userContactsPreviewPanel", userContacts, loggedInUserContacts, itsCurrentserProfile))
 
   add(new UserTechnologiesPreviewPanel("knownTechnologies", user.id))
 

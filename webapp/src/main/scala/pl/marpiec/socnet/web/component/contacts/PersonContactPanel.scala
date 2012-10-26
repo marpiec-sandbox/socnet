@@ -1,28 +1,32 @@
 package pl.marpiec.socnet.web.component.contacts
 
 import model.InviteUserFormModel
+import pl.marpiec.util.UID
+import pl.marpiec.socnet.model.UserContacts
+import org.apache.wicket.spring.injection.annot.SpringBean
+import pl.marpiec.socnet.service.usercontacts.UserContactsCommand
+import pl.marpiec.cqrs.UidGenerator
+import pl.marpiec.socnet.web.application.SocnetSession
 import org.apache.wicket.markup.html.panel.{Fragment, Panel}
+import org.apache.wicket.Component
 import org.apache.wicket.ajax.markup.html.AjaxLink
 import org.apache.wicket.ajax.AjaxRequestTarget
-import org.apache.wicket.Component
+import pl.marpiec.socnet.web.component.wicket.form.StandardAjaxSecureForm
 import org.apache.wicket.model.CompoundPropertyModel
 import org.apache.wicket.markup.html.form.TextArea
 import org.apache.commons.lang.StringUtils
-import org.apache.wicket.spring.injection.annot.SpringBean
-import pl.marpiec.socnet.service.usercontacts.UserContactsCommand
-import pl.marpiec.socnet.web.application.SocnetSession
-import pl.marpiec.util.UID
-import pl.marpiec.cqrs.UidGenerator
-import pl.marpiec.socnet.web.component.wicket.form.StandardAjaxSecureForm
-import pl.marpiec.socnet.model.UserContacts
 import pl.marpiec.socnet.web.wicket.SecureFormModel
 import pl.marpiec.socnet.model.usercontacts.Invitation
+import org.apache.wicket.markup.html.basic.Label
+import org.apache.wicket.markup.html.link.BookmarkablePageLink
+import pl.marpiec.socnet.web.page.conversation.StartConversationPage
+import org.apache.wicket.request.mapper.parameter.PageParameters
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
-class PersonContactInvitationPanel(id: String, userId: UID, userContacts: UserContacts) extends Panel(id) {
+class PersonContactPanel(id: String, userId: UID, userContacts: UserContacts, loggedInUserContacts: UserContacts) extends Panel(id) {
 
   @SpringBean private var userContactsCommand: UserContactsCommand = _
   @SpringBean private var uidGenerator: UidGenerator = _
@@ -34,6 +38,33 @@ class PersonContactInvitationPanel(id: String, userId: UID, userContacts: UserCo
   val currentUser = getSession.asInstanceOf[SocnetSession].user
 
   setOutputMarkupId(true)
+
+  add(new BookmarkablePageLink("newConversationLink", classOf[StartConversationPage],
+    new PageParameters().add(StartConversationPage.USER_ID_PARAM, userId.uid)))
+
+  if (getSession.asInstanceOf[SocnetSession].userId == userId) {
+    add(new Label("contactLevel", "To ty"))
+  } else if (loggedInUserContacts.contactByUserId(userId).isDefined) {
+    add(new Label("contactLevel", "Twoj kontakt"))
+  } else if (usersHaveCommonContact) {
+    add(new Label("contactLevel", "Wspolni znajomi"))
+  } else {
+    add(new Label("contactLevel", "Nieznajomy"))
+  }
+
+  private def usersHaveCommonContact(): Boolean = {
+
+    var haveCommonContacts = false;
+
+    userContacts.contacts.foreach(contact => {
+      loggedInUserContacts.contacts.foreach(loggedInUserContact => {
+        haveCommonContacts = haveCommonContacts || contact.contactUserId == loggedInUserContact.contactUserId
+      })
+    })
+
+    haveCommonContacts
+  }
+
 
   if (userContacts.userId == userId) {
     addOrReplaceYourself
@@ -49,7 +80,7 @@ class PersonContactInvitationPanel(id: String, userId: UID, userContacts: UserCo
 
 
   def addOrReplaceInviteContact {
-    addOrReplace(new Fragment("contactStatus", "inviteContact", PersonContactInvitationPanel.this) {
+    addOrReplace(new Fragment("contactStatus", "inviteContact", PersonContactPanel.this) {
 
       val inviteLink: Component = new AjaxLink("inviteLink") {
         setOutputMarkupPlaceholderTag(true)
@@ -57,7 +88,7 @@ class PersonContactInvitationPanel(id: String, userId: UID, userContacts: UserCo
         def onClick(target: AjaxRequestTarget) {
           inviteLink.setVisible(false)
           inviteForm.setVisible(true)
-          target.add(PersonContactInvitationPanel.this)
+          target.add(PersonContactPanel.this)
         }
       }
       add(inviteLink)
@@ -94,7 +125,7 @@ class PersonContactInvitationPanel(id: String, userId: UID, userContacts: UserCo
           } else {
             formModel.warningMessage = "Wiadomosc nie moze byc pusta"
           }
-          target.add(PersonContactInvitationPanel.this)
+          target.add(PersonContactPanel.this)
         }
 
         def onSecureCancel(target: AjaxRequestTarget, formModel: InviteUserFormModel) {
@@ -102,7 +133,7 @@ class PersonContactInvitationPanel(id: String, userId: UID, userContacts: UserCo
           formModel.warningMessage = ""
           inviteLink.setVisible(true)
           inviteForm.setVisible(false)
-          target.add(PersonContactInvitationPanel.this)
+          target.add(PersonContactPanel.this)
         }
 
       }
@@ -114,7 +145,7 @@ class PersonContactInvitationPanel(id: String, userId: UID, userContacts: UserCo
   def addOrReplaceInvitationReceived {
     val invitationReceived = invitationReceivedOption.get
 
-    addOrReplace(new Fragment("contactStatus", "invitationReceived", PersonContactInvitationPanel.this) {
+    addOrReplace(new Fragment("contactStatus", "invitationReceived", PersonContactPanel.this) {
 
       add(new StandardAjaxSecureForm[SecureFormModel]("replyForInvitationForm") {
         def initialize {
@@ -128,7 +159,7 @@ class PersonContactInvitationPanel(id: String, userId: UID, userContacts: UserCo
 
           addOrReplaceUserIsContact
 
-          target.add(PersonContactInvitationPanel.this)
+          target.add(PersonContactPanel.this)
         }
 
         def onSecureCancel(target: AjaxRequestTarget, formModel: SecureFormModel) {
@@ -136,7 +167,7 @@ class PersonContactInvitationPanel(id: String, userId: UID, userContacts: UserCo
 
           addOrReplaceInviteContact
 
-          target.add(PersonContactInvitationPanel.this)
+          target.add(PersonContactPanel.this)
         }
       })
 
@@ -145,15 +176,15 @@ class PersonContactInvitationPanel(id: String, userId: UID, userContacts: UserCo
   }
 
   def addOrReplaceInvitationSent {
-    addOrReplace(new Fragment("contactStatus", "invitationSent", PersonContactInvitationPanel.this))
+    addOrReplace(new Fragment("contactStatus", "invitationSent", PersonContactPanel.this))
   }
 
   def addOrReplaceUserIsContact {
-    addOrReplace(new Fragment("contactStatus", "userIsContact", PersonContactInvitationPanel.this))
+    addOrReplace(new Fragment("contactStatus", "userIsContact", PersonContactPanel.this))
   }
 
   def addOrReplaceYourself {
-    addOrReplace(new Fragment("contactStatus", "yourself", PersonContactInvitationPanel.this))
+    addOrReplace(new Fragment("contactStatus", "yourself", PersonContactPanel.this))
   }
 
   private def isInvitationReceivedAndWaitingForAcceptance(invitationReceivedOption: Option[Invitation]): Boolean = {
