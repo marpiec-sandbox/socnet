@@ -8,12 +8,12 @@ import org.apache.wicket.markup.ComponentTag
  * @author Marcin Pieciukiewicz
  */
 
-class RatingStarsInputPanel(id:String, inputCssClass:String) extends Panel(id) {
+class RatingStarsInputPanel(id:String, inputCssClass:String, parentCssClass:String) extends Panel(id) {
   
   add(new WebMarkupContainer("ratingStarsInputHolder") {
     override def onComponentTag(tag: ComponentTag) {
       super.onComponentTag(tag)
-      tag.put("alt", inputCssClass)
+      tag.put("alt", "{input:'"+inputCssClass+"',parent:'"+parentCssClass+"'}")
     }
   })
 

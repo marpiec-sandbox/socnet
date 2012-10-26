@@ -2,7 +2,7 @@
 <html xmlns:wicket="http://wicket.apache.org">
 <wicket:panel>
 
-    <div wicket:id="ratingStarsInputHolder" class="ratingStarsInputHolder" alt="inputUniqueClass">
+    <div wicket:id="ratingStarsInputHolder" class="ratingStarsInputHolder" alt="inputClassAndParentJSON">
         <div class="stars" onmouseout="ratingStarsHighlightSelectedLevel(this)" >
             <a class="star" title="1" onclick="return ratingStarsLevelClicked(this, 1)" onmouseover="ratingStarsHighlightLevels(this, 1)" onfocus="ratingStarsHighlightLevels(this, 1)" onblur="ratingStarsHighlightSelectedLevel(this)"><div class="starIcon"></div></a>
             <a class="star" title="2" onclick="return ratingStarsLevelClicked(this, 2)" onmouseover="ratingStarsHighlightLevels(this, 2)" onfocus="ratingStarsHighlightLevels(this, 2)" onblur="ratingStarsHighlightSelectedLevel(this)"><div class="starIcon"></div></a>
@@ -15,9 +15,12 @@
     <script type="text/javascript">
         function ratingStarsLevelClicked(element, level) {
             var inputIdentifier = ratingStarsFindInputIdentifier(element);
-            var jqInput = ratingStarsGetInput(inputIdentifier);
+            var parentIdentifier = ratingStarsFindParentIdentifier(element);
+            var jqInput = ratingStarsGetInput(element, inputIdentifier, parentIdentifier);
             jqInput.val(level - 1);
+            jqInput.click();
             jqInput.change();
+            jqInput.blur();
             return false;
         }
 
@@ -38,7 +41,8 @@
 
         function ratingStarsHighlightSelectedLevel(element) {
             var inputIdentifier = ratingStarsFindInputIdentifier(element);
-            var jqInput = ratingStarsGetInput(inputIdentifier);
+            var parentIdentifier = ratingStarsFindParentIdentifier(element);
+            var jqInput = ratingStarsGetInput(element, inputIdentifier, parentIdentifier);
             var currentLevel = parseInt(jqInput.val());
 
             ratingStarsHighlightLevels(element, currentLevel + 1);
@@ -50,11 +54,15 @@
         }
 
         function ratingStarsFindInputIdentifier(element) {
-            return ratingStarsGetInputHolder(element).attr("alt")
+            return eval('('+ratingStarsGetInputHolder(element).attr("alt")+')').input
         }
 
-        function ratingStarsGetInput(inputClassIdentifier) {
-            return jQuery("."+inputClassIdentifier)
+        function ratingStarsFindParentIdentifier(element) {
+            return eval('('+ratingStarsGetInputHolder(element).attr("alt")+')').parent
+        }
+
+        function ratingStarsGetInput(element, inputClassIdentifier, parentIdentifier) {
+            return jQuery(element).parents("."+parentIdentifier).find("."+inputClassIdentifier)
         }
 
         function ratingStarsInitOutput() {
@@ -62,8 +70,9 @@
                 var jqThis = jQuery(this);
                 if(jqThis.data("initiated") != "true") {
 
-                    var inputClassIdentifier = jqThis.attr("alt");
-                    var input = jQuery("."+inputClassIdentifier);
+                    var inputClassIdentifier = eval('('+jqThis.attr("alt")+')').input;
+                    var parentClassIdentifier = eval('('+jqThis.attr("alt")+')').parent;
+                    var input = jqThis.parents("."+parentClassIdentifier).find("."+inputClassIdentifier);
                     var currentLevel = parseInt(input.val());
                     if(currentLevel >= 0 && currentLevel <= 4) {
                         ratingStarsHighlightLevels(jqThis.find(".star").first(), currentLevel + 1);

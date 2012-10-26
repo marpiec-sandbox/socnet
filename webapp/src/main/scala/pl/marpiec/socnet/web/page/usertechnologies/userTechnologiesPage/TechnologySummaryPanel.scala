@@ -12,6 +12,7 @@ import pl.marpiec.socnet.web.component.wicket.form.OneButtonAjaxForm
 import pl.marpiec.socnet.model.programmerprofile.KnownTechnology
 import org.apache.wicket.{Component, AttributeModifier}
 import pl.marpiec.socnet.web.page.usertechnologies.UserTechnologiesPage
+import pl.marpiec.socnet.web.component.simplecomponent.RatingStarsInputPanel
 
 /**
  * @author Marcin Pieciukiewicz
@@ -26,6 +27,8 @@ class TechnologySummaryPanel(id: String, technologyName: String, knownTechnology
   add(new Label("name", technologyName))
   add(new Label("level", knownTechnology.knowledgeLevel.value.toString))
 
+
+  add(new RatingStarsInputPanel("knowledgeLevelStarsInput", "knowledgeLevel", "mainElement"))
 
   add(new DropDownChoice[TechnologyKnowledgeLevel]("knowledgeLevel",
     new Model[TechnologyKnowledgeLevel](knownTechnology.knowledgeLevel),

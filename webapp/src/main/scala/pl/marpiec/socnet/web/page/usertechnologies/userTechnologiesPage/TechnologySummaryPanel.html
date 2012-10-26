@@ -8,7 +8,7 @@
             <span wicket:id="level" class="level">level</span>
         </a>
 
-        <a href="#" onclick="onTechnologyClicked(this); return false;" class="closeButton invisibleByDefault"></a>
+        <a href="#" onclick="onTechnologyClicked(this); return false;" class="closeButton"></a>
 
         <div class="editTechnologyPanel hiddenByDefault">
 
@@ -16,9 +16,11 @@
                 <div>
                     Poziom znajomości:
                 </div>
-                <div>
-                    <select wicket:id="knowledgeLevel" class="knowledgeLevel" onclick="markTechnologyAsChanged(this);writeCorerectKnowledgeLevelValue(this)"
-                            onblur="markTechnologyAsChanged(selectElement);writeCorerectKnowledgeLevelValue(this)"/>
+                <div class="levelInput">
+                    <div wicket:id="knowledgeLevelStarsInput" class="ratingStarsInput"></div>
+                    <select wicket:id="knowledgeLevel" class="knowledgeLevel"
+                            onclick="markTechnologyAsChanged(this);writeCorrectKnowledgeLevelValue(this)"
+                            onblur="markTechnologyAsChanged(this);writeCorrectKnowledgeLevelValue(this)"/>
                 </div>
             </div>
             <div class="mainElement">
@@ -27,7 +29,7 @@
                 </div>
                 <div>
                     <select wicket:id="technologyLikeLevel" onclick="markTechnologyAsChanged(this)"
-                            onblur="markTechnologyAsChanged(selectElement)"/>
+                            onblur="markTechnologyAsChanged(this)"/>
                 </div>
             </div>
             <div class="mainElement">
@@ -36,7 +38,7 @@
                 </div>
                 <div>
                     <select wicket:id="technologyCurrentUsage" onclick="markTechnologyAsChanged(this)"
-                            onblur="markTechnologyAsChanged(selectElement)"/>
+                            onblur="markTechnologyAsChanged(this)"/>
                 </div>
             </div>
             <div class="actionButtons mainElement">

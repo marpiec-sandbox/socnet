@@ -42,7 +42,7 @@ class VoteForBookPanel(id: String,
     }
 
     def buildSchema = {
-      add(new RatingStarsInputPanel("ratingStarsInput", "userBookRatingInput"))
+      add(new RatingStarsInputPanel("ratingStarsInput", "userBookRatingInput", "ratings"))
       add(new DropDownChoice[Rating]("userBookRating", Rating.values, new ChoiceRenderer[Rating]("translation")))
     }
 

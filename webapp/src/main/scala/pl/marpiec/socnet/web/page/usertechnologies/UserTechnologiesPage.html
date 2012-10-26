@@ -149,7 +149,12 @@
             jqSelect.data("originalValue", jqSelect.val())
         }
 
-        function writeCorerectKnowledgeLevelValue(selectElement) {
+        function initTechnologyOriginalValues() {
+            var jqSelect = jQuery(".technologySummary select")
+            jqSelect.data("originalValue", jqSelect.val())
+        }
+
+        function writeCorrectKnowledgeLevelValue(selectElement) {
             var jqSelect = jQuery(selectElement);
             var summary = jqSelect.parents(".technologySummary");
             var currentLevel = jqSelect.val()*1 + 1;
@@ -247,6 +252,13 @@
 
 
     </div>
+
+
+    <script type="text/javascript">
+        initTechnologyOriginalValues();
+        ratingStarsInitOutput(); // tej metody moze nie być!!!
+    </script>
+
 </wicket:extend>
 </body>
 </html>
