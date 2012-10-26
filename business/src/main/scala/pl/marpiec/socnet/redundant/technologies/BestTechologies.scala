@@ -2,6 +2,7 @@ package pl.marpiec.socnet.redundant.technologies
 
 import pl.marpiec.socnet.model.ProgrammerProfile
 import pl.marpiec.socnet.model.programmerprofile.KnownTechnology
+import pl.marpiec.util.StringFormattingUtil
 
 /**
  * @author Marcin Pieciukiewicz
@@ -50,11 +51,11 @@ class BestTechologies {
 
   def getMostPopularTechnologiesMatching(query: String, count: Int):List[String] = {
 
-    val lowerCaseQuery = query.toLowerCase
+    val lowerCaseQuery = StringFormattingUtil.toLowerCase(query)
     var suggestionList = List[String]()
 
     mostPopularTechnologies.foreach(simpleRating => {
-      if(suggestionList.size < count && simpleRating.technologyName.toLowerCase.contains(lowerCaseQuery)) {
+      if(suggestionList.size < count && StringFormattingUtil.toLowerCase(simpleRating.technologyName).contains(lowerCaseQuery)) {
         suggestionList ::= simpleRating.technologyName
       }
     })

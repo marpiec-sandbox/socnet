@@ -14,7 +14,7 @@ object SearchUtils {
     var properSet = Set[String]()
     index.foreach(word => {
       if(word.length() >= 3) {
-        properSet += removeUnnecessaryChars(removePolishCharsFromLowercaseWord(word.toLowerCase))
+        properSet += removeUnnecessaryChars(removePolishCharsFromLowercaseWord(StringFormattingUtil.toLowerCase(word)))
       }
     })
     properSet.toList

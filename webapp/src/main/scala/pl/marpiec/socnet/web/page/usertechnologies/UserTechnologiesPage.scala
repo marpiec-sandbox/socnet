@@ -22,7 +22,7 @@ import userTechnologiesPage.TechnologySummaryPanel
 import pl.marpiec.socnet.web.component.wicket.recursiveList.RecursiveList
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.AutoCompleteTextField
 import pl.marpiec.socnet.web.component.wicket.autocomplete.BoldingAutoCompleteRenderer
-import pl.marpiec.util.OrderingUtil
+import pl.marpiec.util.{StringFormattingUtil, OrderingUtil}
 
 /**
  * @author Marcin Pieciukiewicz
@@ -126,9 +126,9 @@ class UserTechnologiesPage extends SecureWebPage(SocnetRoles.USER) {
   //methods
 
   private def technologyAlreadyExists(technologyName: String): Boolean = {
-    val lowercaseName = technologyName.toLowerCase
+    val lowercaseName = StringFormattingUtil.toLowerCase(technologyName)
     StringUtils.isNotBlank(technologyName) && loadedTechnologiesMap.exists(b => {
-      b._1.toLowerCase == lowercaseName
+      StringFormattingUtil.toLowerCase(b._1) == lowercaseName
     })
   }
 

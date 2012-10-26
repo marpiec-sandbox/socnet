@@ -1,12 +1,15 @@
 package pl.marpiec.util
 
 import org.joda.time.LocalDateTime
+import java.util.Locale
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
 object StringFormattingUtil {
+  
+  val LOCALE = new Locale("pl", "pl_PL")
 
   def printDateTime(date: LocalDateTime) = date.toString("yyyy-MM-dd HH:mm")
 
@@ -16,5 +19,5 @@ object StringFormattingUtil {
 
   def printSimpleDoubleForJavascript(value: Double) = "%1.2f".format(value).replace(",", ".")
 
-
+  def toLowerCase(str: String) = str.toLowerCase(LOCALE)
 }

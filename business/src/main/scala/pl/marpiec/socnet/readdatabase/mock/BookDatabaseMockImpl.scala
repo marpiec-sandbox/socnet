@@ -3,9 +3,9 @@ package pl.marpiec.socnet.readdatabase.mock
 import org.springframework.beans.factory.annotation.Autowired
 import pl.marpiec.socnet.model.Book
 import pl.marpiec.cqrs.{Aggregate, DataStore}
-import pl.marpiec.util.UID
 import pl.marpiec.socnet.readdatabase.BookDatabase
 import org.apache.commons.lang.StringUtils
+import pl.marpiec.util.{StringFormattingUtil, UID}
 
 /**
  * @author Marcin Pieciukiewicz
@@ -30,7 +30,7 @@ class BookDatabaseMockImpl @Autowired()(dataStore: DataStore)
 
   def findBooksByQuery(query: String): List[Book] = {
 
-    val lowerCaseQuery = query.toLowerCase
+    val lowerCaseQuery = StringFormattingUtil.toLowerCase(query)
 
     getAllBooks.asInstanceOf[List[Book]].filter(book => {
       if(StringUtils.containsIgnoreCase(book.description.title, lowerCaseQuery) ||

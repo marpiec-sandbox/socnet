@@ -3,6 +3,7 @@ package pl.marpiec.socnet.web.component.wicket.autocomplete
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.AbstractAutoCompleteTextRenderer
 import org.apache.wicket.request.Response
 import org.apache.wicket.util.string.Strings
+import pl.marpiec.util.StringFormattingUtil
 
 /**
  * Implementation based on standard Wicket StringAutoCompleteRenderer
@@ -20,7 +21,7 @@ class BoldingAutoCompleteRenderer extends AbstractAutoCompleteTextRenderer[Strin
     val trimmedCriteria = criteria.trim()
     val textValue = Strings.escapeMarkup(obj).toString
     
-    val indexStart = textValue.toLowerCase.indexOf(trimmedCriteria.toLowerCase)
+    val indexStart = StringFormattingUtil.toLowerCase(textValue).indexOf(StringFormattingUtil.toLowerCase(trimmedCriteria))
     if (indexStart >= 0) {
 
       val indexEnd = indexStart + trimmedCriteria.length()
