@@ -37,10 +37,12 @@ class PersonContactPanel(id: String, userId: UID, userContacts: UserContacts, lo
 
   val currentUser = getSession.asInstanceOf[SocnetSession].user
 
+  val itsCurrentUser = userId == currentUser.id
+
   setOutputMarkupId(true)
 
   add(new BookmarkablePageLink("newConversationLink", classOf[StartConversationPage],
-    new PageParameters().add(StartConversationPage.USER_ID_PARAM, userId.uid)))
+    new PageParameters().add(StartConversationPage.USER_ID_PARAM, userId.uid)).setVisible(!itsCurrentUser))
 
   if (getSession.asInstanceOf[SocnetSession].userId == userId) {
     add(new Label("contactLevel", "To ty"))
