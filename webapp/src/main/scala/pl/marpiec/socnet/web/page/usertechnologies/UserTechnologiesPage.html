@@ -28,7 +28,7 @@
         }
 
         function getSelectedLevel() {
-            return jQuery(".knowledgeLevel").val()
+            return parseInt(jQuery(".knowledgeLevel").val()) + 1
         }
 
         function showLevelDescription(level) {
