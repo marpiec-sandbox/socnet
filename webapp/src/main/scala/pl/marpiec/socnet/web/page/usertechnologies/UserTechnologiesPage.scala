@@ -22,6 +22,7 @@ import userTechnologiesPage.TechnologySummaryPanel
 import pl.marpiec.socnet.web.component.wicket.recursiveList.RecursiveList
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.AutoCompleteTextField
 import pl.marpiec.socnet.web.component.wicket.autocomplete.BoldingAutoCompleteRenderer
+import pl.marpiec.util.OrderingUtil
 
 /**
  * @author Marcin Pieciukiewicz
@@ -147,16 +148,7 @@ class UserTechnologiesPage extends SecureWebPage(SocnetRoles.USER) {
 
       add(new RepeatingView("technologySummary") {
 
-        val technologiesNamesAlphabetic = loadedTechnologiesMap.keySet.toList.sorted(new Ordering[String] {
-          def compare(x: String, y: String) = {
-            val comparisonResult = x.toLowerCase.compareTo(y.toLowerCase)
-            if (comparisonResult == 0) {
-              x.compareTo(y)
-            } else {
-              comparisonResult
-            }
-          }
-        })
+        val technologiesNamesAlphabetic = loadedTechnologiesMap.keySet.toList.sorted(OrderingUtil.STRING_IGNORE_CASE_ORDERING)
 
         for (technologyName: String <- technologiesNamesAlphabetic) {
           val technology = loadedTechnologiesMap(technologyName)

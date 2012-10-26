@@ -18,12 +18,13 @@ import pl.marpiec.socnet.web.component.conversation.StartConversationPanel
 import pl.marpiec.socnet.web.page.profile.userProfilePreviewPage._
 import pl.marpiec.socnet.web.authorization.{AuthorizeUser, SecureWebPage}
 import pl.marpiec.socnet.web.component.contacts.{PersonContactLevelPanel, PersonContactInvitationPanel}
+import pl.marpiec.socnet.web.component.usertechnologies.UserTechnologiesPreviewPanel
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
-class UserProfilePreviewPage(parameters: PageParameters) extends SecureWebPage(SocnetRoles.NO_ROLES_REQUIRED) {
+class UserProfilePreviewPage(parameters: PageParameters) extends SecureWebPage(SocnetRoles.USER) {
 
   //dependencies
   @SpringBean private var userProfileDatabase: UserProfileDatabase = _
@@ -55,6 +56,8 @@ class UserProfilePreviewPage(parameters: PageParameters) extends SecureWebPage(S
   add(AuthorizeUser(new PersonContactLevelPanel("personContactLevelPanel", user.id, userContacts, session.userId, loggedInUserContacts)))
 
   add(new UserContactsPreviewPanel("userContactsPreviewPanel", userContacts, loggedInUserContacts))
+
+  add(new UserTechnologiesPreviewPanel("knownTechnologies", user.id))
 
   //methods
   def addJobExperienceList(jobExperienceList: List[JobExperience]) {
