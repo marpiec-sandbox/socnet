@@ -47,7 +47,10 @@ class StartConversationPage(parameters: PageParameters) extends SecureWebPage(So
 
   //build schema
 
-  add(new Label("contactFullName", user.fullName))
+  add(UserProfilePreviewPage.getLink("profileLink", user)
+    .add(new Label("contactFullName", user.fullName)))
+
+
 
   add(new StandardAjaxSecureForm[StartConversationFormModel]("startConversationForm") {
 
