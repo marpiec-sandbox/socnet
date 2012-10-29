@@ -25,9 +25,9 @@ object SocnetBookmakablePages {
     application.mountPageNoVersioning("edit/profile", classOf[EditUserProfilePage])
     application.mountPageNoVersioning("profile/${" + UserProfilePreviewPage.USER_ID_PARAM + "}/${" + UserProfilePreviewPage.USER_NAME_PARAM + "}", classOf[UserProfilePreviewPage])
 
-    application.mountPageNoVersioning("register", classOf[RegisterPage])
-    application.mountPageNoVersioning("confirm/registration", classOf[ConfirmRegistrationPage])
-    application.mountPageNoVersioning("cr/${" + TriggerUserRegistrationPage.TRIGGER_PARAM + "}", classOf[TriggerUserRegistrationPage])
+    application.mountPage("register", classOf[RegisterPage])
+    application.mountPage("confirm/registration", classOf[ConfirmRegistrationPage])
+    application.mountPage("cr/${" + TriggerUserRegistrationPage.TRIGGER_PARAM + "}", classOf[TriggerUserRegistrationPage])
 
 
     application.mountPageNoVersioning("forgot/password", classOf[ForgotPasswordPage])

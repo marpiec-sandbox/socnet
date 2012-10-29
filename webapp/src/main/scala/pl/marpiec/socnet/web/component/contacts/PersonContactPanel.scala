@@ -47,7 +47,7 @@ class PersonContactPanel(id: String, userId: UID, userContacts: UserContacts, lo
 
   private def usersHaveCommonContact(): Boolean = {
 
-    var haveCommonContacts = false;
+    var haveCommonContacts = false
 
     userContacts.contacts.foreach(contact => {
       loggedInUserContacts.contacts.foreach(loggedInUserContact => {

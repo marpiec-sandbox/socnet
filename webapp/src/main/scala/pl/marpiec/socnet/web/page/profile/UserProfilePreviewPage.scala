@@ -64,14 +64,14 @@ class UserProfilePreviewPage(parameters: PageParameters) extends SecureWebPage(S
   add(AuthorizeUser(new BookmarkablePageLink("editProfileLink", classOf[EditUserProfilePage])).setVisible(itsCurrentserProfile))
   add(AuthorizeUser(new BookmarkablePageLink("technologiesLink", classOf[UserTechnologiesPage]).setVisible(itsCurrentserProfile)))
 
-  add(new UserPreviewPanel("userPreviewPanel", user));
-  add(new PersonalSummaryPreviewPanel("personalSummaryPreview", userProfile));
+  add(new UserPreviewPanel("userPreviewPanel", user))
+  add(new PersonalSummaryPreviewPanel("personalSummaryPreview", userProfile))
 
   addJobExperienceList(userProfile.jobExperience)
   addEducationList(userProfile.education)
   addAdditionalInfoList(userProfile.additionalInfo)
 
-  add(AuthorizeUser(new PersonContactPanel("personContactPanel", user.id, loggedInUserContacts, loggedInUserContacts)))
+  add(AuthorizeUser(new PersonContactPanel("personContactPanel", user.id, userContacts, loggedInUserContacts)))
 
   add(new UserContactsPreviewPanel("userContactsPreviewPanel", userContacts, loggedInUserContacts, itsCurrentserProfile))
 
@@ -83,9 +83,9 @@ class UserProfilePreviewPage(parameters: PageParameters) extends SecureWebPage(S
       setVisible(jobExperienceList.size > 0)
 
       for (jobExperience <- jobExperienceList) {
-        val item: AbstractItem = new AbstractItem(newChildId());
+        val item: AbstractItem = new AbstractItem(newChildId())
         item.add(new JobExperiencePreviewPanel("content", jobExperience))
-        add(item);
+        add(item)
       }
     })
   }
@@ -96,9 +96,9 @@ class UserProfilePreviewPage(parameters: PageParameters) extends SecureWebPage(S
       setVisible(educationList.size > 0)
 
       for (education <- educationList) {
-        val item: AbstractItem = new AbstractItem(newChildId());
+        val item: AbstractItem = new AbstractItem(newChildId())
         item.add(new EducationPreviewPanel("content", education))
-        add(item);
+        add(item)
       }
     })
   }
@@ -109,9 +109,9 @@ class UserProfilePreviewPage(parameters: PageParameters) extends SecureWebPage(S
       setVisible(additionalInfoList.size > 0)
 
       for (additionalInfo <- additionalInfoList) {
-        val item: AbstractItem = new AbstractItem(newChildId());
+        val item: AbstractItem = new AbstractItem(newChildId())
         item.add(new AdditionalInfoPreviewPanel("content", additionalInfo))
-        add(item);
+        add(item)
       }
     })
   }
