@@ -2,21 +2,15 @@
 <html xmlns:wicket="http://wicket.apache.org">
 <wicket:panel>
 
-    <a wicket:id="bookPreviewLink" class="bookSummaryPreview">
+    <a wicket:id="bookPreviewLink" class="simpleBookSummaryPreview">
+        <div class="icon"></div>
         <div class="bookTitle">
             <span wicket:id="title">title</span>
         </div>
-
         <div class="author">
             <span wicket:id="author">author</span>
         </div>
-
-        <div class="icon"></div>
-
-        <div class="rating">
-            <div wicket:id="rating">rating</div>
-            <div>głosów: <span wicket:id="votesCount">votesCount</span></div>
-        </div>
+        <div wicket:id="rating" class="rating">rating</div>
     </a>
 
 </wicket:panel>

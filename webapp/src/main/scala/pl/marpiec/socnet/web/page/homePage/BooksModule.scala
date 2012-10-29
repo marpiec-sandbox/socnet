@@ -8,7 +8,7 @@ import pl.marpiec.socnet.readdatabase.{BookReviewsDatabase, BookDatabase}
 import org.apache.wicket.markup.repeater.RepeatingView
 import org.apache.wicket.markup.html.list.AbstractItem
 import pl.marpiec.socnet.web.page.books.{YourBooksPage, BooksPage}
-import pl.marpiec.socnet.web.component.book.{FindBookFormPanel, SimpleBookSummaryPreviewPanel}
+import pl.marpiec.socnet.web.component.book.{FindBookFormPanel, SimpleBookSummaryWithRatingPreviewPanel}
 import org.apache.wicket.markup.html.basic.Label
 import pl.marpiec.socnet.web.component.simplecomponent.RatingStarsPanel
 
@@ -36,8 +36,8 @@ class BooksModule(id: String) extends Panel(id) {
   add(new RepeatingView("bestBooks") {
     bestBooksSimpleInfo.foreach(bookSimpleInfo => {
       add(new AbstractItem(newChildId()) {
-        add(new SimpleBookSummaryPreviewPanel("simpleBookSummaryPreview", bestBooks.find(book => book.id == bookSimpleInfo.bookId).get))
-        add(new RatingStarsPanel("rating", bookSimpleInfo.averageRating))
+        add(new SimpleBookSummaryWithRatingPreviewPanel("simpleBookSummaryPreview",
+          bestBooks.find(book => book.id == bookSimpleInfo.bookId).get, bookSimpleInfo.averageRating))
       })
     })
   })

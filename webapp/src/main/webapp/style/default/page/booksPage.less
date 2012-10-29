@@ -7,6 +7,7 @@
 
            .standardContainer;
 
+           display: block;
            width: 249px;
            height: 240px;
            margin: 0 20px 20px 0;
@@ -26,6 +27,11 @@
                background-color: #eee;
            }
 
+       }
+
+       .bookSummaryPreview:hover {
+           background-color: #fbfaf3;
+           text-decoration: none;
        }
 
     }
@@ -275,8 +281,6 @@
         margin-right: 40px;
         width: 280px;
 
-
-
         .bookOwnership {
             margin-top: 10px;
 
@@ -285,11 +289,25 @@
                 text-align: center;
             }
         }
+
+        .simpleBookSummaryPreview {
+            border: none;
+        }
+        .simpleBookSummaryPreview:hover {
+            background-color: inherit;
+            text-decoration: inherit;
+        }
     }
 
 }
 
  .simpleBookSummaryPreview {
+    display: block;
+    border: 1px solid #DDDDDD;
+    border-radius: 5px 5px 5px 5px;
+    padding: 10px;
+    overflow: hidden;
+
     .icon {
         float:left;
         width: 37px;
@@ -303,6 +321,10 @@
     .bookTitle {
        font-weight: bold;
     }
+}
+.simpleBookSummaryPreview:hover {
+    text-decoration: none;
+    background-color: #fbfaf3;
 }
 
 
