@@ -1,7 +1,6 @@
 package pl.marpiec.socnet.web.application
 
 import org.apache.wicket.protocol.http.WebApplication
-import org.apache.wicket.Session
 import org.apache.wicket.request.{Response, Request}
 import pl.marpiec.socnet.web.page.HomePage
 import org.apache.wicket.authentication.strategy.NoOpAuthenticationStrategy
@@ -12,6 +11,9 @@ import pl.marpiec.cqrs._
 import pl.marpiec.socnet.service.user.UserQuery
 import org.springframework.web.context.support.WebApplicationContextUtils
 import pl.marpiec.socnet.readdatabase.UserRolesDatabase
+import org.apache.wicket.{Page, Session}
+import org.apache.wicket.request.mapper.MountedMapper
+import pl.marpiec.socnet.web.wicket.NoVersionMountedMapper
 
 class SocnetApplication extends WebApplication {
 
@@ -57,6 +59,10 @@ class SocnetApplication extends WebApplication {
 
   override def newSession(request: Request, response: Response): Session = {
     new SocnetSession(request, userQuery, userRolesDatabase)
+  }
+
+  def mountPageNoVersioning[T <: Page](path: String, pageClass:Class[T]) = {
+    mount(new NoVersionMountedMapper(path, pageClass))
   }
 
 }
