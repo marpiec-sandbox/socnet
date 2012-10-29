@@ -7,7 +7,6 @@ import org.apache.wicket.request.mapper.parameter.PageParameters
 import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.spring.injection.annot.SpringBean
 import pl.marpiec.socnet.readdatabase.UserDatabase
-import pl.marpiec.util.UID
 import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException
 import pl.marpiec.socnet.web.component.editor.BBCodeEditor
 import pl.marpiec.socnet.web.component.wicket.form.StandardAjaxSecureForm
@@ -19,6 +18,8 @@ import pl.marpiec.cqrs.UidGenerator
 import pl.marpiec.socnet.web.page.profile.UserProfilePreviewPage
 import org.apache.commons.lang.StringUtils
 import pl.marpiec.socnet.model.User
+import org.apache.wicket.markup.html.link.BookmarkablePageLink
+import pl.marpiec.util.{IdProtectionUtil, UID}
 
 /**
  * @author Marcin Pieciukiewicz
@@ -26,6 +27,11 @@ import pl.marpiec.socnet.model.User
 
 object StartConversationPage {
   val USER_ID_PARAM = "userId"
+  
+  def getLink(componentId: String, userId:UID):BookmarkablePageLink[_] = {
+    new BookmarkablePageLink(componentId, classOf[StartConversationPage],
+      new PageParameters().add(StartConversationPage.USER_ID_PARAM, IdProtectionUtil.encrypt(userId)))
+  }
 }
 
 class StartConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetRoles.USER) {
@@ -87,7 +93,7 @@ class StartConversationPage(parameters: PageParameters) extends SecureWebPage(So
 
 
   private def getUserOrThrow404: User = {
-    val userId = UID.parseOrZero(parameters.get(StartConversationPage.USER_ID_PARAM).toString)
+    val userId = IdProtectionUtil.decrypt(parameters.get(StartConversationPage.USER_ID_PARAM).toString)
 
     val userOption = userDatabase.getUserById(userId)
 

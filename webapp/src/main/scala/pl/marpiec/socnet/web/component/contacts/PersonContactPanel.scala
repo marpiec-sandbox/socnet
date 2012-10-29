@@ -16,11 +16,9 @@ import org.apache.wicket.markup.html.form.TextArea
 import org.apache.commons.lang.StringUtils
 import pl.marpiec.socnet.web.wicket.SecureFormModel
 import org.apache.wicket.markup.html.basic.Label
-import org.apache.wicket.markup.html.link.BookmarkablePageLink
 import pl.marpiec.socnet.web.page.conversation.StartConversationPage
-import org.apache.wicket.request.mapper.parameter.PageParameters
 import org.apache.wicket.markup.html.panel.{EmptyPanel, Fragment, Panel}
-import pl.marpiec.socnet.model.usercontacts.{Contact, Invitation}
+import pl.marpiec.socnet.model.usercontacts.Invitation
 
 /**
  * @author Marcin Pieciukiewicz
@@ -43,8 +41,7 @@ class PersonContactPanel(id: String, userId: UID, userContacts: UserContacts, lo
 
   setOutputMarkupId(true)
 
-  add(new BookmarkablePageLink("newConversationLink", classOf[StartConversationPage],
-    new PageParameters().add(StartConversationPage.USER_ID_PARAM, userId.uid)).setVisible(!itsCurrentUser))
+  add(StartConversationPage.getLink("newConversationLink", userId).setVisible(!itsCurrentUser))
 
   addOrReplaceContactLevel()
 
@@ -89,7 +86,7 @@ class PersonContactPanel(id: String, userId: UID, userContacts: UserContacts, lo
 
   def addOrReplaceInviteContact {
 
-    var inviteForm:Component = null
+    var inviteForm: Component = null
 
     addOrReplace(new Fragment("inviteFormHolder", "inviteContactForm", PersonContactPanel.this) {
 
