@@ -1,11 +1,13 @@
 .userPreviewSummary {
 
+   display: block;
    border: 1px solid #DDDDDD;
    border-radius: 5px 5px 5px 5px;
    margin: 10px;
    overflow: hidden;
    padding: 10px;
    width: 400px;
+   text-decoration: none;
 
     .icon {
         border: 1px solid gray;
@@ -19,4 +21,13 @@
         margin-bottom: 4px;
         font-weight: bold;
     }
+
+    .summary {
+        color: @defaultFontColor;
+    }
+}
+
+.userPreviewSummary:hover {
+    background-color: #fbfaf3;
+    text-decoration: none;
 }

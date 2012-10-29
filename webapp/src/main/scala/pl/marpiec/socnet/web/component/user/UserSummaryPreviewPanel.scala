@@ -11,7 +11,8 @@ import org.apache.wicket.markup.html.basic.Label
 
 class UserSummaryPreviewPanel(id:String, user:User) extends Panel(id) {
 
-  add(UserProfilePreviewPage.getLink("profileLink", user).add(new Label("userName", user.fullName)))
-  add(new Label("summary", user.summary))
+  add(UserProfilePreviewPage.getLink("profileLink", user)
+    .add(new Label("userName", user.fullName))
+    .add(new Label("summary", user.summary)))
 
 }

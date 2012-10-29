@@ -2,17 +2,17 @@
 <html xmlns:wicket="http://wicket.apache.org">
 <wicket:panel>
 
-    <div class="userPreviewSummary">
+    <a wicket:id="profileLink" class="userPreviewSummary">
         <div class="icon"></div>
 
         <div class="userName">
-            <a wicket:id="profileLink" class="profileLink"><span wicket:id="userName">fullName</span></a>
+            <span wicket:id="userName">fullName</span>
         </div>
 
         <div class="summary">
             <span wicket:id="summary">userName</span>
         </div>
-    </div>
+    </a>
 
 </wicket:panel>
 </html>
