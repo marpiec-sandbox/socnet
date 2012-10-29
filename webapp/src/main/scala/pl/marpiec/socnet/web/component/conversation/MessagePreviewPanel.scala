@@ -15,7 +15,7 @@ class MessagePreviewPanel(id: String, val message: Message, val user: User) exte
 
   val convertedMessage = BBCodeConverter.convert(message.messageText)
 
-  add(UserProfilePreviewPage.getLink(user).add(new Label("userName", user.fullName)))
+  add(UserProfilePreviewPage.getLink("profileLink", user).add(new Label("userName", user.fullName)))
   add(new Label("sentTime", StringFormattingUtil.printDateTime(message.sentTime)))
   add(new Label("messageText", convertedMessage).setEscapeModelStrings(false))
 

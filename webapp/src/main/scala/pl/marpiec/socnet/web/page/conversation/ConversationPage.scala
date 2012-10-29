@@ -137,7 +137,7 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
       add(new RepeatingView("participant") {
         participants.foreach(user => {
           add(new AbstractItem(newChildId()) {
-            add(UserProfilePreviewPage.getLink(user).add(new Label("userName", user.fullName)))
+            add(UserProfilePreviewPage.getLink("profileLink", user).add(new Label("userName", user.fullName)))
           })
         })
       })

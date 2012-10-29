@@ -29,7 +29,7 @@ class BookReviewPreviewPanel(id: String, review: BookReview, authorIsCurrentUser
 
     if (userOption.isDefined) {
       val user = userOption.get
-      add(UserProfilePreviewPage.getLink(user).add(new Label("userName", user.fullName)))
+      add(UserProfilePreviewPage.getLink("profileLink", user).add(new Label("userName", user.fullName)))
     } else {
       add(new WebMarkupContainer("profileLink").add(new EmptyPanel("userName")))
     }

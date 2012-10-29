@@ -30,7 +30,7 @@ class EditUserProfilePage extends SecureWebPage(SocnetRoles.USER) {
 
   //schema
   
-  add(UserProfilePreviewPage.getLink(session.user))
+  add(UserProfilePreviewPage.getLink("profileLink", session.user))
   add(AuthorizeUser(new BookmarkablePageLink("technologiesLink", classOf[UserTechnologiesPage])))
   
   add(new UserSummaryPanel("userSummaryPanel", session.user));

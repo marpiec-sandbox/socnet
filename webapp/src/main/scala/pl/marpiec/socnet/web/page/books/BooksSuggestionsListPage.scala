@@ -34,7 +34,7 @@ class BooksSuggestionsListPage extends SecureWebPage(SocnetRoles.USER) {
         val user = users.find(user => user.id == suggestion.userId).get
 
         add(BookSuggestionPreviewPage.getLink("bookSuggestionPreviewLink", suggestion.id).add(new Label("bookTitle", suggestion.title)))
-        add(UserProfilePreviewPage.getLink(user).add(new Label("userName", user.fullName)))
+        add(UserProfilePreviewPage.getLink("profileLink", user).add(new Label("userName", user.fullName)))
 
       })
     })

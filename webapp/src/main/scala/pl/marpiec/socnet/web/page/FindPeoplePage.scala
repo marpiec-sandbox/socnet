@@ -43,7 +43,7 @@ class FindPeoplePage(parameters: PageParameters) extends SecureWebPage(SocnetRol
       val userContacts = userContactsDatabase.getUserContactsByUserId(user.id).getOrElse(new UserContacts)
 
       add(new AbstractItem(newChildId()) {
-        add(UserProfilePreviewPage.getLink(user).add(new Label("userName", user.fullName)))
+        add(UserProfilePreviewPage.getLink("profileLink", user).add(new Label("userName", user.fullName)))
 
         val profileOption = userProfiles.get(user)
         if (profileOption.isDefined) {

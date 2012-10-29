@@ -1,6 +1,5 @@
 package pl.marpiec.socnet.web.page.profile
 
-import pl.marpiec.util.UID
 import org.apache.wicket.request.mapper.parameter.PageParameters
 import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException
 import org.apache.wicket.markup.repeater.RepeatingView
@@ -19,10 +18,25 @@ import pl.marpiec.socnet.web.authorization.{AuthorizeUser, SecureWebPage}
 import pl.marpiec.socnet.web.component.usertechnologies.UserTechnologiesPreviewPanel
 import pl.marpiec.socnet.web.page.usertechnologies.UserTechnologiesPage
 import pl.marpiec.socnet.web.component.contacts.PersonContactPanel
+import pl.marpiec.util.{IdProtectionUtil, UID}
 
 /**
  * @author Marcin Pieciukiewicz
  */
+
+object UserProfilePreviewPage {
+  val USER_ID_PARAM = "userId"
+  val USER_NAME_PARAM = "userName"
+
+  def getLink(componentId:String, user: User): BookmarkablePageLink[_] = {
+    new BookmarkablePageLink(componentId, classOf[UserProfilePreviewPage], getParametersForLink(user))
+  }
+
+  def getParametersForLink(user: User): PageParameters = {
+    new PageParameters().add(USER_ID_PARAM, IdProtectionUtil.encrypt(user.id)).add(USER_NAME_PARAM, user.fullNameForUrl)
+  }
+}
+
 
 class UserProfilePreviewPage(parameters: PageParameters) extends SecureWebPage(SocnetRoles.USER) {
 
@@ -33,7 +47,7 @@ class UserProfilePreviewPage(parameters: PageParameters) extends SecureWebPage(S
 
 
   //get data
-  val userId = UID.parseOrZero(parameters.get(UserProfilePreviewPage.USER_ID_PARAM).toString)
+  val userId = IdProtectionUtil.decrypt(parameters.get(UserProfilePreviewPage.USER_ID_PARAM).toString)
 
   val user = userDatabase.getUserById(userId).getOrElse(throw new AbortWithHttpErrorCodeException(404))
 
@@ -104,16 +118,3 @@ class UserProfilePreviewPage(parameters: PageParameters) extends SecureWebPage(S
 
 }
 
-
-object UserProfilePreviewPage {
-  val USER_ID_PARAM = "userId"
-  val USER_NAME_PARAM = "userName"
-
-  def getLink(user: User): BookmarkablePageLink[_] = {
-    new BookmarkablePageLink("profileLink", classOf[UserProfilePreviewPage], getParametersForLink(user))
-  }
-
-  def getParametersForLink(user: User): PageParameters = {
-    new PageParameters().add(USER_ID_PARAM, user.id).add(USER_NAME_PARAM, user.fullNameForUrl)
-  }
-}

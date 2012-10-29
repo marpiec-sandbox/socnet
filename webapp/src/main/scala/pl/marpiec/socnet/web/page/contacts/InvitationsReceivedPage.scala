@@ -52,7 +52,7 @@ class InvitationsReceivedPage extends SecureWebPage(SocnetRoles.USER) {
       add(new AbstractItem(newChildId()) {
 
         setOutputMarkupId(true)
-        add(UserProfilePreviewPage.getLink(user).add(new Label("userName", user.fullName)))
+        add(UserProfilePreviewPage.getLink("profileLink", user).add(new Label("userName", user.fullName)))
 
         if (invitation.accepted) {
           addOrReplaceAccepted

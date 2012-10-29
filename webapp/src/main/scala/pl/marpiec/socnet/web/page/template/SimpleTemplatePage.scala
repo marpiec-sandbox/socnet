@@ -34,7 +34,7 @@ class SimpleTemplatePage extends WebPage {
 
   if (session.isSignedIn) {
     add(new Fragment("userInfo", "loggedUser", this) {
-      add(UserProfilePreviewPage.getLink(session.user).add(new Label("userName", session.user.fullName)))
+      add(UserProfilePreviewPage.getLink("profileLink", session.user).add(new Label("userName", session.user.fullName)))
       add(new Label("userProfessionalTitle", session.user.summary))
       add(AuthorizeUser(new BookmarkablePageLink("signoutLink", classOf[SignOutPage])))
     })
