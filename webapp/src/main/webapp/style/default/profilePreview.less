@@ -28,6 +28,26 @@
            .inviteFormHolder {
 
 
+              .invitationHolder {
+                  position: relative;
+                  height: 50px;
+                  .cancelInvitationConfirmation {
+                      position: absolute;
+                      top: 0;
+                      left: 0;
+                      right: 0;
+                      bottom: 0;
+                      text-align: center;
+                      .confirmationQuestion {
+                          margin-bottom: 5px;
+                          margin-top: 14px;
+                      }
+                      button {
+                          margin-right: 30px;
+                      }
+
+                  }
+              }
 
               form, .invitationHolder {
                 display: block;
@@ -39,7 +59,15 @@
                 .invitationSentTitle {
                  font-weight: bold;
                  margin-bottom: 5px;
+                 margin-top: 15px;
                  text-align: center;
+              }
+
+              .cancelInvitationLinkHolder {
+                  text-align: right;
+                  a {
+                      font-size: @smallFontSize;
+                  }
               }
 
                 .invitationTitle {

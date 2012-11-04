@@ -13,4 +13,5 @@ trait ContactInvitationCommand {
   def acceptInvitation(userId: UID, id: UID, version: Int, senderUserId: UID, receiverUserId: UID)
 
   def declineInvitation(userId: UID, id: UID, version: Int)
+
 }

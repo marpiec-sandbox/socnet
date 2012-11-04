@@ -4,7 +4,6 @@ import model.InviteUserFormModel
 import pl.marpiec.util.UID
 import pl.marpiec.socnet.model.{ContactInvitation, UserContacts}
 import org.apache.wicket.spring.injection.annot.SpringBean
-import pl.marpiec.socnet.service.usercontacts.UserContactsCommand
 import pl.marpiec.cqrs.UidGenerator
 import pl.marpiec.socnet.web.application.SocnetSession
 import org.apache.wicket.Component
@@ -27,17 +26,19 @@ import pl.marpiec.socnet.service.contactinvitation.ContactInvitationCommand
 class PersonContactPanel(id: String, previewedUserId: UID,
                          previewedUserContacts: UserContacts,
                          loggedInUserContacts: UserContacts,
-                         invitationOption: Option[ContactInvitation]) extends Panel(id) {
+                         invitationOptionPassed: Option[ContactInvitation]) extends Panel(id) {
 
   @SpringBean private var contactInvitationCommand: ContactInvitationCommand = _
-  @SpringBean private var userContactsCommand: UserContactsCommand = _
   @SpringBean private var uidGenerator: UidGenerator = _
+
+  var invitationOption = invitationOptionPassed
 
   val currentUser = getSession.asInstanceOf[SocnetSession].user
 
   val currentUserIsPreviewedUserContact = previewedUserContacts.contactsIds.contains(currentUser.id)
   val invitationWasSent = userSentInvitation()
   val invitationWasReceived = userReceivedInvitation()
+
 
 
   val itsCurrentUser = previewedUserId == currentUser.id
@@ -113,9 +114,15 @@ class PersonContactPanel(id: String, previewedUserId: UID,
         def onSecureSubmit(target: AjaxRequestTarget, formModel: InviteUserFormModel) {
           if (StringUtils.isNotBlank(formModel.inviteMessage)) {
 
+            val newInvitationId = uidGenerator.nextUid
             contactInvitationCommand.sendInvitation(currentUser.id,
-              previewedUserId, formModel.inviteMessage, uidGenerator.nextUid)
+              previewedUserId, formModel.inviteMessage, newInvitationId)
             //TODO handle send invitation exceptions
+
+            val newInvitation = new ContactInvitation
+            newInvitation.version = 1
+            newInvitation.id = newInvitationId
+            invitationOption = Option(newInvitation)
 
             formModel.inviteMessage = ""
             formModel.warningMessage = ""
@@ -198,7 +205,20 @@ class PersonContactPanel(id: String, previewedUserId: UID,
   }
 
   def addOrReplaceInvitationSent {
-    addOrReplace(new Fragment("inviteFormHolder", "invitationSent", PersonContactPanel.this))
+    addOrReplace(new Fragment("inviteFormHolder", "invitationSent", PersonContactPanel.this) {
+      add(new AjaxLink("cancelInvitationLink") {
+
+        def onClick(target: AjaxRequestTarget) {
+
+          contactInvitationCommand.cancelInvitation(currentUser.id, invitationOption.get.id, invitationOption.get.version)
+
+          addOrReplaceInviteContact
+
+          target.add(PersonContactPanel.this)
+        }
+      })
+
+    })
     addOrReplace(new EmptyPanel("contactButtonHolder"))
   }
 

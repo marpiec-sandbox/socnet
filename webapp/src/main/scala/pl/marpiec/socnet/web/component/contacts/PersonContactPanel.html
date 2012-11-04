@@ -21,7 +21,19 @@
 
     </div>
 
+    <script type="text/javascript">
+        function cancelInvitationClicked() {
+            jQuery(".cancelInvitationConfirmation").css({display:"block"})
+            jQuery(".invitationSentTitle").css({display:"none"})
+            jQuery(".cancelInvitationLinkHolder").css({display:"none"})
+        }
 
+        function cancelInvitationCanceledClicked() {
+            jQuery(".cancelInvitationConfirmation").css({display:"none"})
+            jQuery(".invitationSentTitle").css({display:""})
+            jQuery(".cancelInvitationLinkHolder").css({display:""})
+        }
+    </script>
 
 
 
@@ -43,6 +55,17 @@
     <wicket:fragment wicket:id="invitationSent">
         <div class="invitationHolder">
             <div class="invitationSentTitle">Wysłano zaproszenie do kontaktu</div>
+            <div class="cancelInvitationLinkHolder">
+                <a href="#" onclick="cancelInvitationClicked();return false;">Cofnij zaproszenie</a>
+            </div>
+            <div class="cancelInvitationConfirmation hiddenByDefault">
+                <div class="confirmationQuestion">
+                    Czy na pewno chcesz cofnąć zaproszenie?
+                </div>
+                <button wicket:id="cancelInvitationLink">OK</button>
+                <a href="#" onclick="cancelInvitationCanceledClicked();return false;">anuluj</a>
+            </div>
+
         </div>
 
     </wicket:fragment>
