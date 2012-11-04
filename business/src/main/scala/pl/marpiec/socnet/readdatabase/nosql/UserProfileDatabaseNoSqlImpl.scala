@@ -7,7 +7,7 @@ import pl.marpiec.util.UID
 import pl.marpiec.socnet.mongodb.DatabaseConnectorImpl
 import pl.marpiec.socnet.model.{UserProfile, User}
 import scala.Predef._
-import com.mongodb.BasicDBObject
+import com.mongodb.{QueryBuilder, BasicDBObject}
 import pl.marpiec.socnet.readdatabase.UserProfileDatabase
 
 /**
@@ -38,7 +38,24 @@ class UserProfileDatabaseNoSqlImpl @Autowired()(dataStore: DataStore)
     connector.getAggregateById(id, classOf[UserProfile])
   }
 
-  def getUserProfiles(list: List[User]) = Map[User, UserProfile]()
+  def getUserProfiles(usersIds: List[UID]) = {
+    val queryBuilder = QueryBuilder.start("userId")
+
+    val idsArray = new Array[Long](usersIds.size)
+    for (i <- 0 until usersIds.size) {
+      idsArray(i) = usersIds(i).uid
+    }
+    queryBuilder.in(idsArray)
+    val query = queryBuilder.get()
+
+    val profiles = connector.findMultipleAggregatesByQuery(query, classOf[UserProfile]).asInstanceOf[List[UserProfile]]
+
+    var resultMap = Map[UID, UserProfile]()
+
+    profiles.foreach(profile => resultMap += profile.userId -> profile)
+    resultMap
+
+  }
 
   def onEntityChanged(userProfile: UserProfile) {
     connector.insertAggregate(userProfile)

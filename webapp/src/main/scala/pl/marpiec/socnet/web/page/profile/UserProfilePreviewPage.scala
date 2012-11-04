@@ -6,19 +6,18 @@ import org.apache.wicket.markup.repeater.RepeatingView
 import org.apache.wicket.markup.html.list.AbstractItem
 import pl.marpiec.socnet.model.userprofile.{Education, JobExperience}
 import pl.marpiec.socnet.model.userprofile.AdditionalInfo
-import pl.marpiec.socnet.readdatabase.{UserDatabase, UserProfileDatabase}
+import pl.marpiec.socnet.readdatabase.{ContactInvitationDatabase, UserDatabase, UserProfileDatabase, UserContactsDatabase}
 import org.apache.wicket.spring.injection.annot.SpringBean
 import org.apache.wicket.markup.html.link.BookmarkablePageLink
 import pl.marpiec.socnet.model.{User, UserProfile}
 import pl.marpiec.socnet.constant.SocnetRoles
 import pl.marpiec.socnet.model.UserContacts
-import pl.marpiec.socnet.readdatabase.UserContactsDatabase
 import pl.marpiec.socnet.web.page.profile.userProfilePreviewPage._
 import pl.marpiec.socnet.web.authorization.{AuthorizeUser, SecureWebPage}
 import pl.marpiec.socnet.web.component.usertechnologies.UserTechnologiesPreviewPanel
 import pl.marpiec.socnet.web.page.usertechnologies.UserTechnologiesPage
 import pl.marpiec.socnet.web.component.contacts.PersonContactPanel
-import pl.marpiec.util.{IdProtectionUtil, UID}
+import pl.marpiec.util.{IdProtectionUtil}
 
 /**
  * @author Marcin Pieciukiewicz
@@ -44,7 +43,7 @@ class UserProfilePreviewPage(parameters: PageParameters) extends SecureWebPage(S
   @SpringBean private var userProfileDatabase: UserProfileDatabase = _
   @SpringBean private var userDatabase: UserDatabase = _
   @SpringBean private var userContactsDatabase: UserContactsDatabase = _
-
+  @SpringBean private var contactInvitationDatabase: ContactInvitationDatabase = _
 
   //get data
   val userId = IdProtectionUtil.decrypt(parameters.get(UserProfilePreviewPage.USER_ID_PARAM).toString)
@@ -57,7 +56,9 @@ class UserProfilePreviewPage(parameters: PageParameters) extends SecureWebPage(S
   val loggedInUserContacts: UserContacts = userContactsDatabase.getUserContactsByUserId(session.userId).getOrElse(new UserContacts)
   val userContacts: UserContacts = userContactsDatabase.getUserContactsByUserId(userId).getOrElse(new UserContacts)
 
-  val itsCurrentserProfile = user.id == session.userId
+  val itsCurrentserProfile = userId == session.userId
+
+  val invitationOption = if(userContacts.contactsIds.contains(session.userId)) None else contactInvitationDatabase.getInvitation(session.userId, userId)
 
   //schema
 
@@ -71,7 +72,7 @@ class UserProfilePreviewPage(parameters: PageParameters) extends SecureWebPage(S
   addEducationList(userProfile.education)
   addAdditionalInfoList(userProfile.additionalInfo)
 
-  add(AuthorizeUser(new PersonContactPanel("personContactPanel", user.id, userContacts, loggedInUserContacts)))
+  add(AuthorizeUser(new PersonContactPanel("personContactPanel", user.id, userContacts, loggedInUserContacts, invitationOption)))
 
   add(new UserContactsPreviewPanel("userContactsPreviewPanel", userContacts, loggedInUserContacts, itsCurrentserProfile))
 

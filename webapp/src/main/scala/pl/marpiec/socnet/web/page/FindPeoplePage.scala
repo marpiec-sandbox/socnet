@@ -3,12 +3,11 @@ package pl.marpiec.socnet.web.page
 import pl.marpiec.socnet.constant.SocnetRoles
 import org.apache.wicket.request.mapper.parameter.PageParameters
 import org.apache.wicket.spring.injection.annot.SpringBean
-import pl.marpiec.socnet.readdatabase.{UserProfileDatabase, UserDatabase}
+import pl.marpiec.socnet.readdatabase.{ContactInvitationDatabase, UserProfileDatabase, UserDatabase, UserContactsDatabase}
 import org.apache.wicket.markup.repeater.RepeatingView
 import org.apache.wicket.markup.html.list.AbstractItem
 import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.markup.html.WebMarkupContainer
-import pl.marpiec.socnet.readdatabase.UserContactsDatabase
 import pl.marpiec.socnet.model.UserContacts
 import profile.UserProfilePreviewPage
 import pl.marpiec.socnet.web.authorization.{AuthorizeUser, SecureWebPage}
@@ -27,14 +26,19 @@ class FindPeoplePage(parameters: PageParameters) extends SecureWebPage(SocnetRol
   @SpringBean private var userDatabase: UserDatabase = _
   @SpringBean private var userProfileDatabase: UserProfileDatabase = _
   @SpringBean private var userContactsDatabase: UserContactsDatabase = _
+  @SpringBean private var contactInvitationDatabase: ContactInvitationDatabase = _
+
 
   val query = parameters.get(FindPeoplePage.QUERY_PARAM).toString
 
   val foundUsers = userDatabase.findUser(query)
+  val foundUsersIds = foundUsers.map(_.id)
 
   val loggedInUserContacts = userContactsDatabase.getUserContactsByUserId(session.userId).getOrElse(new UserContacts)
 
-  val userProfiles = userProfileDatabase.getUserProfiles(foundUsers)
+  val userProfiles = userProfileDatabase.getUserProfiles(foundUsersIds)
+
+  val invitationsMap = contactInvitationDatabase.getInvitationsForUsers(session.userId, foundUsersIds)
 
 
   add(new RepeatingView("foundUsers") {
@@ -45,7 +49,7 @@ class FindPeoplePage(parameters: PageParameters) extends SecureWebPage(SocnetRol
       add(new AbstractItem(newChildId()) {
         add(UserProfilePreviewPage.getLink("profileLink", user).add(new Label("userName", user.fullName)))
 
-        val profileOption = userProfiles.get(user)
+        val profileOption = userProfiles.get(user.id)
         if (profileOption.isDefined) {
           val profile = profileOption.get
           add(new WebMarkupContainer("profile") {
@@ -56,7 +60,7 @@ class FindPeoplePage(parameters: PageParameters) extends SecureWebPage(SocnetRol
         }
 
 
-        add(AuthorizeUser(new PersonContactPanel("personContactPanel", user.id, userContacts, loggedInUserContacts)))
+        add(AuthorizeUser(new PersonContactPanel("personContactPanel", user.id, userContacts, loggedInUserContacts, invitationsMap.get(user.id))))
 
 
       })

@@ -3,8 +3,7 @@ package pl.marpiec.socnet.web.page.contacts
 import pl.marpiec.socnet.web.authorization.SecureWebPage
 import pl.marpiec.socnet.constant.SocnetRoles
 import org.apache.wicket.spring.injection.annot.SpringBean
-import pl.marpiec.socnet.readdatabase.UserContactsDatabase
-import pl.marpiec.socnet.readdatabase.UserDatabase
+import pl.marpiec.socnet.readdatabase.{ContactInvitationDatabase, UserDatabase}
 import org.apache.wicket.markup.repeater.RepeatingView
 import org.apache.wicket.markup.html.list.AbstractItem
 import pl.marpiec.socnet.web.page.profile.UserProfilePreviewPage
@@ -13,12 +12,11 @@ import org.apache.wicket.markup.html.panel.Fragment
 import org.apache.wicket.ajax.AjaxRequestTarget
 import pl.marpiec.socnet.web.component.wicket.form.StandardAjaxSecureForm
 import pl.marpiec.socnet.web.component.contacts.model.InviteUserFormModel
-import pl.marpiec.socnet.service.usercontacts.UserContactsCommand
-import pl.marpiec.socnet.model.usercontacts.Invitation
 import org.apache.wicket.markup.html.WebMarkupContainer
 import pl.marpiec.socnet.web.wicket.SecureFormModel
 import org.apache.wicket.model.CompoundPropertyModel
-import org.apache.wicket.ajax.markup.html.AjaxLink
+import pl.marpiec.socnet.model.ContactInvitation
+import pl.marpiec.socnet.service.contactinvitation.ContactInvitationCommand
 
 /**
  * @author Marcin Pieciukiewicz
@@ -26,12 +24,11 @@ import org.apache.wicket.ajax.markup.html.AjaxLink
 
 class InvitationsReceivedPage extends SecureWebPage(SocnetRoles.USER) {
 
-  @SpringBean private var userContactsDatabase: UserContactsDatabase = _
-  @SpringBean private var userContactsCommand: UserContactsCommand = _
+  @SpringBean private var contactInvitationDatabase: ContactInvitationDatabase = _
+  @SpringBean private var contactInvitationCommand: ContactInvitationCommand = _
   @SpringBean private var userDatabase: UserDatabase = _
 
-  val userContacts = userContactsDatabase.getUserContactsByUserId(session.userId).get
-  val invitations = userContacts.notRemovedInvitationsReceived
+  val invitations = contactInvitationDatabase.getReceivedInvitations(session.userId)
 
   val currentUserId = session.userId
 
@@ -41,7 +38,7 @@ class InvitationsReceivedPage extends SecureWebPage(SocnetRoles.USER) {
 
     invitations.foreach(invitation => {
 
-      val userOption = userDatabase.getUserById(invitation.possibleContactUserId)
+      val userOption = userDatabase.getUserById(invitation.senderUserId)
 
       if (userOption.isEmpty) {
         throw new IllegalStateException("User invitation with incorrect userId")
@@ -54,25 +51,13 @@ class InvitationsReceivedPage extends SecureWebPage(SocnetRoles.USER) {
         setOutputMarkupId(true)
         add(UserProfilePreviewPage.getLink("profileLink", user).add(new Label("userName", user.fullName)))
 
-        if (invitation.accepted) {
+        if (invitation.isAccepted) {
           addOrReplaceAccepted
-        } else if (invitation.declined) {
+        } else if (invitation.isDeclined) {
           addOrReplaceDeclined
         } else {
           addOrReplaceWaitingForAcceptance(invitation, this)
         }
-
-        add(new AjaxLink("removeLink") {
-          def onClick(target: AjaxRequestTarget) {
-
-            userContactsCommand.removeReceivedInvitation(currentUserId, userContacts.id, invitation.id)
-
-            val parent = getParent
-            parent.setVisible(false)
-            target.add(parent)
-
-          }
-        })
 
 
         def addOrReplaceAccepted {
@@ -83,7 +68,7 @@ class InvitationsReceivedPage extends SecureWebPage(SocnetRoles.USER) {
           addOrReplace(new Fragment("invitationStatus", "declined", InvitationsReceivedPage.this))
         }
 
-        def addOrReplaceWaitingForAcceptance(invitation: Invitation, parent: WebMarkupContainer) {
+        def addOrReplaceWaitingForAcceptance(invitation: ContactInvitation, parent: WebMarkupContainer) {
           addOrReplace(new Fragment("invitationStatus", "waitingForAcceptance", InvitationsReceivedPage.this) {
 
             add(new StandardAjaxSecureForm[SecureFormModel]("inviteForm") {
@@ -94,13 +79,13 @@ class InvitationsReceivedPage extends SecureWebPage(SocnetRoles.USER) {
               def buildSchema = {} //do nothing
 
               def onSecureSubmit(target: AjaxRequestTarget, formModel: SecureFormModel) {
-                userContactsCommand.acceptInvitation(session.userId, userContacts.id, invitation.possibleContactUserId, invitation.id)
+                contactInvitationCommand.acceptInvitation(session.userId, invitation.id, invitation.version, invitation.senderUserId, invitation.receiverUserId)
                 addOrReplaceAccepted
                 target.add(parent)
               }
 
               def onSecureCancel(target: AjaxRequestTarget, formModel: SecureFormModel) {
-                userContactsCommand.declineInvitation(session.userId, userContacts.id, invitation.possibleContactUserId, invitation.id)
+                contactInvitationCommand.declineInvitation(session.userId, invitation.id, invitation.version)
                 addOrReplaceDeclined
                 target.add(parent)
               }

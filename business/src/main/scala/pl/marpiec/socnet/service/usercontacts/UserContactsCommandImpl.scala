@@ -20,48 +20,29 @@ class UserContactsCommandImpl @Autowired()(val eventStore: EventStore, val userC
     eventStore.addEventForNewAggregate(newUserContactId, new EventRow(userId, newUserContactId, 0, createUserContacts))
   }
 
-  def sendInvitation(userId: UID, id: UID, invitedUserId: UID, message: String, invitationId: UID) {
+  def markUsersAsContacts(userId: UID, invitationSenderUserId: UID, invitationReceiverUserId: UID) {
 
-    //sender
-    eventStore.addEventIgnoreVersion(new EventRow(userId, id, 0, new SendInvitationEvent(invitedUserId, message, invitationId)))
+    val senderContacts = userContactsDatabase.getUserContactsByUserId(invitationSenderUserId)
+      .getOrElse(throw new UserContactsNotExistsException)
 
-    //receiver
-    val contactContactsIdOption = userContactsDatabase.getUserContactsIdByUserId(invitedUserId)
+    val receiverContacts = userContactsDatabase.getUserContactsByUserId(invitationReceiverUserId)
+      .getOrElse(throw new UserContactsNotExistsException)
 
-    if (contactContactsIdOption.isEmpty) {
-      throw new UserContactsNotExistsException
-    }
+    eventStore.addEventIgnoreVersion(new EventRow(userId, senderContacts.id, senderContacts.version, new ContactCreatedEvent(invitationReceiverUserId)))
+    eventStore.addEventIgnoreVersion(new EventRow(userId, receiverContacts.id, receiverContacts.version, new ContactCreatedEvent(invitationSenderUserId)))
 
-    eventStore.addEventIgnoreVersion(new EventRow(userId, contactContactsIdOption.get, 0, new ReceivedInvitationEvent(userId, message, invitationId)))
   }
 
-  def acceptInvitation(userId: UID, id: UID, invitationSenderUserId: UID, invitationId: UID) {
-    eventStore.addEventIgnoreVersion(new EventRow(userId, id, 0, new ReceivedInvitationAcceptedEvent(invitationId)))
+  def removeContact(userId: UID, firstUserId: UID, secondUserId: UID) {
 
-    val senderContactsIdOption = userContactsDatabase.getUserContactsIdByUserId(invitationSenderUserId)
-    if (senderContactsIdOption.isEmpty) {
-      throw new UserContactsNotExistsException
-    }
+    val firstUserContacts = userContactsDatabase.getUserContactsByUserId(firstUserId)
+      .getOrElse(throw new UserContactsNotExistsException)
 
-    eventStore.addEventIgnoreVersion(new EventRow(userId, senderContactsIdOption.get, 0, new SentInvitationAcceptedEvent(invitationId)))
-  }
+    val secondUserContacts = userContactsDatabase.getUserContactsByUserId(secondUserId)
+      .getOrElse(throw new UserContactsNotExistsException)
 
-  def declineInvitation(userId: UID, id: UID, invitationSenderUserId: UID, invitationId: UID) {
-    eventStore.addEventIgnoreVersion(new EventRow(userId, id, 0, new ReceivedInvitationDeclinedEvent(invitationId)))
+    eventStore.addEventIgnoreVersion(new EventRow(userId, firstUserContacts.id, firstUserContacts.version, new ContactRemovedEvent(secondUserId)))
+    eventStore.addEventIgnoreVersion(new EventRow(userId, secondUserContacts.id, secondUserContacts.version, new ContactRemovedEvent(firstUserId)))
 
-    val senderContactsIdOption = userContactsDatabase.getUserContactsIdByUserId(invitationSenderUserId)
-    if (senderContactsIdOption.isEmpty) {
-      throw new UserContactsNotExistsException
-    }
-
-    eventStore.addEventIgnoreVersion(new EventRow(userId, senderContactsIdOption.get, 0, new SentInvitationDeclinedEvent(invitationId)))
-  }
-
-  def removeSentInvitation(userId: UID, id: UID, invitationId: UID) {
-    eventStore.addEventIgnoreVersion(new EventRow(userId, id, 0, new SentInvitationDeletedEvent(invitationId)))
-  }
-
-  def removeReceivedInvitation(userId: UID, id: UID, invitationId: UID) {
-    eventStore.addEventIgnoreVersion(new EventRow(userId, id, 0, new ReceivedInvitationDeletedEvent(invitationId)))
   }
 }

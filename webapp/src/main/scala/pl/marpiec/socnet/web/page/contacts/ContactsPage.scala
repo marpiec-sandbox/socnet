@@ -19,13 +19,13 @@ class ContactsPage extends SecureWebPage(SocnetRoles.USER) {
   @SpringBean var userDatabase: UserDatabase = _
 
   val userContacts = userContactsDatabase.getUserContactsByUserId(session.userId).get
-  val contacts = userContacts.contacts
+  val contacts = userContacts.contactsIds
 
   add(new RepeatingView("contact") {
 
-    contacts.foreach(contact => {
+    contacts.foreach(contactId => {
 
-      val userOption = userDatabase.getUserById(contact.contactUserId)
+      val userOption = userDatabase.getUserById(contactId)
 
       if (userOption.isEmpty) {
         throw new IllegalStateException("User contact with incorrect userId")

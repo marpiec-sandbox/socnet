@@ -7,16 +7,10 @@ import pl.marpiec.util.UID
  */
 
 trait UserContactsCommand {
+
   def createUserContacts(userId: UID, userAggregateId: UID, newUserContactId: UID)
 
-  def sendInvitation(userId: UID, id: UID, invitedUserId: UID, message: String, invitationId: UID)
+  def markUsersAsContacts(userId: UID, invitationSenderUserId: UID, invitationReceiverUserId: UID)
 
-  def acceptInvitation(userId: UID, id: UID, invitationSenderUserId: UID, invitationId: UID)
-
-  def declineInvitation(userId: UID, id: UID, invitationSenderUserId: UID, invitationId: UID)
-
-  def removeSentInvitation(userId: UID, id: UID, invitationId: UID)
-
-  def removeReceivedInvitation(userId: UID, id: UID, invitationId: UID)
-
+  def removeContact(userId: UID, firstUserId: UID, secondUserId: UID)
 }

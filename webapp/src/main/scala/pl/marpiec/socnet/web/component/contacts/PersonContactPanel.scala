@@ -2,7 +2,7 @@ package pl.marpiec.socnet.web.component.contacts
 
 import model.InviteUserFormModel
 import pl.marpiec.util.UID
-import pl.marpiec.socnet.model.UserContacts
+import pl.marpiec.socnet.model.{ContactInvitation, UserContacts}
 import org.apache.wicket.spring.injection.annot.SpringBean
 import pl.marpiec.socnet.service.usercontacts.UserContactsCommand
 import pl.marpiec.cqrs.UidGenerator
@@ -18,64 +18,73 @@ import pl.marpiec.socnet.web.wicket.SecureFormModel
 import org.apache.wicket.markup.html.basic.Label
 import pl.marpiec.socnet.web.page.conversation.StartConversationPage
 import org.apache.wicket.markup.html.panel.{EmptyPanel, Fragment, Panel}
-import pl.marpiec.socnet.model.usercontacts.Invitation
+import pl.marpiec.socnet.service.contactinvitation.ContactInvitationCommand
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
-class PersonContactPanel(id: String, userId: UID, userContacts: UserContacts, loggedInUserContacts: UserContacts) extends Panel(id) {
+class PersonContactPanel(id: String, previewedUserId: UID,
+                         previewedUserContacts: UserContacts,
+                         loggedInUserContacts: UserContacts,
+                         invitationOption: Option[ContactInvitation]) extends Panel(id) {
 
+  @SpringBean private var contactInvitationCommand: ContactInvitationCommand = _
   @SpringBean private var userContactsCommand: UserContactsCommand = _
   @SpringBean private var uidGenerator: UidGenerator = _
 
-  val contactOption = userContacts.contactByUserId(userId)
-  val invitationSentOption = userContacts.invitationSentByUserId(userId)
-  val invitationReceivedOption = userContacts.invitationReceivedByUserId(userId)
-
   val currentUser = getSession.asInstanceOf[SocnetSession].user
 
-  val itsCurrentUser = userId == currentUser.id
+  val currentUserIsPreviewedUserContact = previewedUserContacts.contactsIds.contains(currentUser.id)
+  val invitationWasSent = userSentInvitation()
+  val invitationWasReceived = userReceivedInvitation()
+
+
+  val itsCurrentUser = previewedUserId == currentUser.id
   var contactAcceptedOnThisPage = false
   var inviteLink: Component = null
 
   setOutputMarkupId(true)
 
-  add(StartConversationPage.getLink("newConversationLink", userId).setVisible(!itsCurrentUser))
-
+  add(StartConversationPage.getLink("newConversationLink", previewedUserId).setVisible(!itsCurrentUser))
   addOrReplaceContactLevel()
 
-  private def usersHaveCommonContact(): Boolean = {
-
-    var haveCommonContacts = false
-
-    userContacts.contacts.foreach(contact => {
-      loggedInUserContacts.contacts.foreach(loggedInUserContact => {
-        haveCommonContacts = haveCommonContacts || contact.contactUserId == loggedInUserContact.contactUserId
-      })
-    })
-
-    haveCommonContacts
-  }
-
-
-  if (userContacts.userId == userId) {
+  if (itsCurrentUser) {
     addOrReplaceYourself
-  } else if (contactOption.isDefined) {
+  } else if (currentUserIsPreviewedUserContact) {
     addOrReplaceUserIsContact
-  } else if (isInvitationReceivedAndWaitingForAcceptance(invitationReceivedOption)) {
+  } else if (invitationWasReceived) {
     addOrReplaceInvitationReceived
-  } else if (invitationSentOption.isDefined) {
+  } else if (invitationWasSent) {
     addOrReplaceInvitationSent
   } else {
     addOrReplaceInviteContact
   }
 
+  def usersHaveCommonContact(): Boolean = {
+    previewedUserContacts.contactsIds.filter(loggedInUserContacts.contactsIds.contains(_)).size > 0
+  }
+
+  def userSentInvitation(): Boolean = {
+    if (invitationOption.isDefined) {
+      invitationOption.get.senderUserId == currentUser.id
+    } else {
+      false
+    }
+  }
+
+  def userReceivedInvitation(): Boolean = {
+    if (invitationOption.isDefined) {
+      invitationOption.get.receiverUserId == currentUser.id
+    } else {
+      false
+    }
+  }
 
   private def addOrReplaceContactLevel() {
-    if (getSession.asInstanceOf[SocnetSession].userId == userId) {
+    if (getSession.asInstanceOf[SocnetSession].userId == previewedUserId) {
       addOrReplace(new Label("contactLevel", "Twój profil"))
-    } else if (loggedInUserContacts.contactByUserId(userId).isDefined || contactAcceptedOnThisPage) {
+    } else if (loggedInUserContacts.contactsIds.contains(previewedUserId) || contactAcceptedOnThisPage) {
       addOrReplace(new Label("contactLevel", "Twój kontakt"))
     } else if (usersHaveCommonContact) {
       addOrReplace(new Label("contactLevel", "Kontakt 2-go stopnia"))
@@ -104,8 +113,8 @@ class PersonContactPanel(id: String, userId: UID, userContacts: UserContacts, lo
         def onSecureSubmit(target: AjaxRequestTarget, formModel: InviteUserFormModel) {
           if (StringUtils.isNotBlank(formModel.inviteMessage)) {
 
-            userContactsCommand.sendInvitation(currentUser.id, userContacts.id,
-              userId, formModel.inviteMessage, uidGenerator.nextUid)
+            contactInvitationCommand.sendInvitation(currentUser.id,
+              previewedUserId, formModel.inviteMessage, uidGenerator.nextUid)
             //TODO handle send invitation exceptions
 
             formModel.inviteMessage = ""
@@ -117,9 +126,8 @@ class PersonContactPanel(id: String, userId: UID, userContacts: UserContacts, lo
 
             addOrReplaceInvitationSent
 
-
           } else {
-            formModel.warningMessage = "Wiadomosc nie moze byc pusta"
+            formModel.warningMessage = "Wiadomość nie może być pusta"
           }
           target.add(PersonContactPanel.this)
         }
@@ -156,7 +164,7 @@ class PersonContactPanel(id: String, userId: UID, userContacts: UserContacts, lo
   }
 
   def addOrReplaceInvitationReceived {
-    val invitationReceived = invitationReceivedOption.get
+    val invitationReceived = invitationOption.get
 
     addOrReplace(new Fragment("inviteFormHolder", "invitationReceivedForm", PersonContactPanel.this) {
 
@@ -168,7 +176,7 @@ class PersonContactPanel(id: String, userId: UID, userContacts: UserContacts, lo
         def buildSchema {} //do nothing
 
         def onSecureSubmit(target: AjaxRequestTarget, formModel: SecureFormModel) {
-          userContactsCommand.acceptInvitation(currentUser.id, userContacts.id, userId, invitationReceived.id)
+          contactInvitationCommand.acceptInvitation(currentUser.id, invitationReceived.id, invitationReceived.version, invitationReceived.senderUserId, invitationReceived.receiverUserId)
 
           contactAcceptedOnThisPage = true
           addOrReplaceUserIsContact
@@ -178,7 +186,7 @@ class PersonContactPanel(id: String, userId: UID, userContacts: UserContacts, lo
         }
 
         def onSecureCancel(target: AjaxRequestTarget, formModel: SecureFormModel) {
-          userContactsCommand.declineInvitation(currentUser.id, userContacts.id, userId, invitationReceived.id)
+          contactInvitationCommand.declineInvitation(currentUser.id, invitationReceived.id, invitationReceived.version)
 
           addOrReplaceInviteContact
 
@@ -204,12 +212,4 @@ class PersonContactPanel(id: String, userId: UID, userContacts: UserContacts, lo
     addOrReplace(new EmptyPanel("inviteFormHolder"))
   }
 
-  private def isInvitationReceivedAndWaitingForAcceptance(invitationReceivedOption: Option[Invitation]): Boolean = {
-    if (invitationReceivedOption.isDefined) {
-      val invitation = invitationReceivedOption.get
-      !invitation.declined
-    } else {
-      false
-    }
-  }
 }

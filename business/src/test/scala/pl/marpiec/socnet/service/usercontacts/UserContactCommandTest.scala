@@ -4,7 +4,9 @@ import org.testng.annotations.Test
 import org.testng.Assert._
 import pl.marpiec.cqrs._
 import pl.marpiec.socnet.model.UserContacts
-import pl.marpiec.socnet.readdatabase.mock.UserContactsDatabaseMockImpl
+import pl.marpiec.socnet.readdatabase.mock.{ContactInvitationDatabaseMockImpl, UserContactsDatabaseMockImpl}
+import pl.marpiec.socnet.service.contactinvitation.{ContactInvitationCommand, ContactInvitationCommandImpl}
+import pl.marpiec.socnet.readdatabase.{UserContactsDatabase, ContactInvitationDatabase}
 
 /**
  * @author Marcin Pieciukiewicz
@@ -18,8 +20,11 @@ class UserContactCommandTest {
     val aggregateCache: AggregateCache = new AggregateCacheSimpleImpl
 
     val dataStore: DataStore = new DataStoreImpl(eventStore, aggregateCache)
-    val userContactsDatabase = new UserContactsDatabaseMockImpl(dataStore)
-    val userContactsCommand = new UserContactsCommandImpl(eventStore, userContactsDatabase)
+    val userContactsDatabase:UserContactsDatabase = new UserContactsDatabaseMockImpl(dataStore)
+    val userContactsCommand:UserContactsCommand = new UserContactsCommandImpl(eventStore, userContactsDatabase)
+
+    val contactInvitationCommand:ContactInvitationCommand = new ContactInvitationCommandImpl(eventStore, userContactsCommand)
+    val contactInvitationDatabase: ContactInvitationDatabase = new ContactInvitationDatabaseMockImpl(dataStore)
 
     val uidGenerator: UidGenerator = new UidGeneratorMockImpl
 
@@ -33,51 +38,56 @@ class UserContactCommandTest {
     userContactsCommand.createUserContacts(userId, userId, userContactsId)
     userContactsCommand.createUserContacts(firstContactUserId, firstContactUserId, firstContactContactsId)
 
-    var userContacts = dataStore.getEntity(classOf[UserContacts], userContactsId).asInstanceOf[UserContacts]
-    var firstContactContacts = dataStore.getEntity(classOf[UserContacts], firstContactContactsId).asInstanceOf[UserContacts]
+    val userContactsOption = userContactsDatabase.getUserContactsByUserId(userId)
+    val firstContactContactsOption = userContactsDatabase.getUserContactsByUserId(firstContactUserId)
 
-    assertNotNull(userContacts)
-    assertNotNull(firstContactContacts)
+    assertTrue(userContactsOption.isDefined)
+    assertTrue(firstContactContactsOption.isDefined)
 
     val firstInvitationId = uidGenerator.nextUid
 
     //send invitation
 
-    userContactsCommand.sendInvitation(userId, userContacts.id, firstContactUserId, "Hello", firstInvitationId)
+    contactInvitationCommand.sendInvitation(userId, firstContactUserId, "Hello", firstInvitationId)
 
-    userContacts = dataStore.getEntity(classOf[UserContacts], userContactsId).asInstanceOf[UserContacts]
-    firstContactContacts = dataStore.getEntity(classOf[UserContacts], firstContactContactsId).asInstanceOf[UserContacts]
+    val userSentInvitations = contactInvitationDatabase.getSentInvitations(userId)
+    val userReceivedInvitations = contactInvitationDatabase.getReceivedInvitations(userId)
+    val firstContactSentInvitations = contactInvitationDatabase.getSentInvitations(firstContactUserId)
+    val firstContactReceivedInvitations = contactInvitationDatabase.getReceivedInvitations(firstContactUserId)
 
-    assertEquals(userContacts.invitationsSent.size, 1)
-    assertEquals(userContacts.invitationsReceived.size, 0)
-    assertEquals(userContacts.contacts.size, 0)
+    assertEquals(userSentInvitations.size, 1)
+    assertTrue(userReceivedInvitations.isEmpty)
+    assertTrue(firstContactSentInvitations.isEmpty)
+    assertEquals(firstContactReceivedInvitations.size, 1)
 
-    assertEquals(firstContactContacts.invitationsSent.size, 0)
-    assertEquals(firstContactContacts.invitationsReceived.size, 1)
-    assertEquals(firstContactContacts.contacts.size, 0)
-
-    assertEquals(userContacts.invitationsSent.head.possibleContactUserId, firstContactUserId)
-    assertEquals(firstContactContacts.invitationsReceived.head.possibleContactUserId, userId)
+    assertEquals(userSentInvitations.head.id, firstContactReceivedInvitations.head.id)
+    val firstInvitation = userSentInvitations.head
+    assertTrue(firstInvitation.isSent)
+    assertFalse(firstInvitation.isCanceled)
+    assertFalse(firstInvitation.isAccepted)
+    assertFalse(firstInvitation.isDeclined)
 
     // accept invitation
-    userContactsCommand.acceptInvitation(firstContactUserId, firstContactContacts.id, userId, firstInvitationId)
+    contactInvitationCommand.acceptInvitation(firstContactUserId, firstInvitation.id, firstInvitation.version, userId, firstContactUserId)
 
-    userContacts = dataStore.getEntity(classOf[UserContacts], userContactsId).asInstanceOf[UserContacts]
-    firstContactContacts = dataStore.getEntity(classOf[UserContacts], firstContactContactsId).asInstanceOf[UserContacts]
+    var userContacts = userContactsDatabase.getUserContactsByUserId(userId).get
+    var firstContactContacts = userContactsDatabase.getUserContactsByUserId(firstContactUserId).get
 
-    assertEquals(userContacts.invitationsSent.size, 1)
-    assertEquals(userContacts.invitationsReceived.size, 0)
-    assertEquals(userContacts.contacts.size, 1)
+    assertEquals(userContacts.contactsIds.size, 1)
+    assertEquals(firstContactContacts.contactsIds.size, 1)
 
-    assertEquals(firstContactContacts.invitationsSent.size, 0)
-    assertEquals(firstContactContacts.invitationsReceived.size, 1)
-    assertEquals(firstContactContacts.contacts.size, 1)
+    assertEquals(userContacts.contactsIds.head, firstContactUserId)
+    assertEquals(firstContactContacts.contactsIds.head, userId)
 
-    assertEquals(userContacts.invitationsSent.head.accepted, true)
-    assertEquals(userContacts.contacts.head.contactUserId, firstContactUserId)
 
-    assertEquals(firstContactContacts.invitationsReceived.head.accepted, true)
-    assertEquals(firstContactContacts.contacts.head.contactUserId, userId)
+    //remove contact
+    userContactsCommand.removeContact(userId, userId, firstContactUserId)
+
+    userContacts = userContactsDatabase.getUserContactsByUserId(userId).get
+    firstContactContacts = userContactsDatabase.getUserContactsByUserId(firstContactUserId).get
+
+    assertTrue(userContacts.contactsIds.isEmpty)
+    assertTrue(firstContactContacts.contactsIds.isEmpty)
 
   }
 }

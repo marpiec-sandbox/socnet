@@ -37,14 +37,14 @@ class UserProfileDatabaseMockImpl @Autowired()(dataStore: DataStore)
 
   def getUserProfileById(id: UID): Option[UserProfile] = getById(id)
 
-  def getUserProfiles(users: List[User]): Map[User, UserProfile] = {
-    var userProfileMap = Map[User, UserProfile]()
+  def getUserProfiles(usersIds: List[UID]): Map[UID, UserProfile] = {
+    var userProfileMap = Map[UID, UserProfile]()
 
-    users.foreach(user => {
-      val profile = getUserProfileByUserId(user.id)
+    usersIds.foreach(userId => {
+      val profile = getUserProfileByUserId(userId)
 
       if (profile.isDefined) {
-        userProfileMap += user -> profile.get
+        userProfileMap += userId -> profile.get
       }
     })
 

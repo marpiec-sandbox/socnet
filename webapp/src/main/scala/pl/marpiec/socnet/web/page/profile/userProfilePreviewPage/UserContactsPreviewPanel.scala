@@ -22,16 +22,15 @@ class UserContactsPreviewPanel(id:String, userContacts:UserContacts,
 
   @SpringBean private var userDatabase: UserDatabase = _
 
-  val contacts = userContacts.contacts
 
   add(AuthorizeUser(new BookmarkablePageLink("yourContactsLink", classOf[ContactsPage])).setVisible(itsCurrentUserProfile))
   add(AuthorizeUser(new BookmarkablePageLink("userContactsPreviewLink", classOf[ContactsPage])).setVisible(!itsCurrentUserProfile))//TODO zmienic na strone kontaktow
 
   add(new RepeatingView("contact") {
 
-    contacts.take(CONTACTS_COUNT_TO_DISPLAY).foreach(contact => {
+    userContacts.contactsIds.take(CONTACTS_COUNT_TO_DISPLAY).foreach(contactId => {
 
-      val userOption = userDatabase.getUserById(contact.contactUserId)
+      val userOption = userDatabase.getUserById(contactId)
 
       if (userOption.isEmpty) {
         throw new IllegalStateException("User contact with incorrect userId")

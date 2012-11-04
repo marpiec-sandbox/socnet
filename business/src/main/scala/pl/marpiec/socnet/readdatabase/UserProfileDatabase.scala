@@ -19,5 +19,5 @@ trait UserProfileDatabase {
 
   def getUserProfileById(id: UID): Option[UserProfile]
 
-  def getUserProfiles(list: List[User]): Map[User, UserProfile]
+  def getUserProfiles(usersIds: List[UID]): Map[UID, UserProfile]
 }
