@@ -5,9 +5,9 @@ import org.apache.wicket.spring.injection.annot.SpringBean
 import pl.marpiec.socnet.web.application.SocnetSession
 import org.apache.wicket.markup.html.link.BookmarkablePageLink
 import pl.marpiec.socnet.readdatabase.{ContactInvitationDatabase, UserActionsInfoDatabase}
-import pl.marpiec.socnet.web.page.contacts.InvitationsReceivedPage
 import org.apache.wicket.markup.html.basic.Label
 import pl.marpiec.socnet.web.text.PolishTextUtil
+import pl.marpiec.socnet.web.page.contacts.InvitationsPage
 
 /**
  * @author Marcin Pieciukiewicz
@@ -27,7 +27,7 @@ class SystemMessagesModule(id:String) extends Panel(id) {
 
     val unreadInvitationsCount = contactInvitationDatabase.getInvitationsCount(currentUserId, userActionsInfo.contactInvitationsReadTimeOption)
 
-    add(new BookmarkablePageLink("invitationsPageLink", classOf[InvitationsReceivedPage]).
+    add(new BookmarkablePageLink("invitationsPageLink", classOf[InvitationsPage]).
       add(new Label("linkLabel", PolishTextUtil.getInvitationsLinkMessage(unreadInvitationsCount)).setVisible(unreadInvitationsCount > 0)))
 
     setVisible(unreadInvitationsCount > 0)

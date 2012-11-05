@@ -7,12 +7,9 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink
 import pl.marpiec.socnet.web.application.SocnetSession
 import org.apache.wicket.markup.html.panel.Fragment
 import pl.marpiec.socnet.web.authorization.AuthorizeUser
-import org.apache.wicket.request.mapper.parameter.PageParameters
 import pl.marpiec.socnet.web.page.signin.SignInFormPanel
 import pl.marpiec.socnet.web.page._
-import contacts.{InvitationsReceivedPage, InvitationsSentPage, ContactsPage}
-import conversation.UserConversationsPage
-import profile.{UserProfilePreviewPage, EditUserProfilePage}
+import profile.UserProfilePreviewPage
 import org.apache.wicket.Component
 
 /**
@@ -61,12 +58,12 @@ class SimpleTemplatePage extends WebPage {
     titleLabelModel.setObject("Socnet " + title)
   }
 
-  protected def replaceAndReturn(component:Component):Component = {
+  protected def replaceAndReturn(component: Component): Component = {
     replace(component)
     component
   }
 
-  protected def addAndReturn(component:Component):Component = {
+  protected def addAndReturn(component: Component): Component = {
     add(component)
     component
   }

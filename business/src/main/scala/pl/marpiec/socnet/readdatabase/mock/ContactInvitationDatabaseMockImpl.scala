@@ -22,6 +22,10 @@ class ContactInvitationDatabaseMockImpl @Autowired()(dataStore: DataStore)
 
   def getReceivedInvitations(userId: UID) = getAll.filter(invitation => {invitation.receiverUserId == userId && invitation.isSent})
 
+  def getAllInvitations(userId: UID) = getAll.filter(invitation => {
+    (invitation.receiverUserId == userId || invitation.senderUserId == userId) && invitation.isSent
+  })
+
   def getInvitation(firstUserId: UID, secondUserId: UID) =
     getAll.find(invitation => {
       (invitation.senderUserId == firstUserId && invitation.receiverUserId == secondUserId ||

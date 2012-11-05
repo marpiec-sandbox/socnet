@@ -2,7 +2,7 @@ package pl.marpiec.socnet.web.application
 
 import pl.marpiec.socnet.web.page._
 import books._
-import contacts.{InvitationsReceivedPage, InvitationsSentPage, ContactsPage}
+import contacts.{InvitationsPage, ContactsPage}
 import conversation.{ConversationPage, UserConversationsPage, StartConversationPage}
 import forgotPassword.{PasswordHaveBeenChangedPage, ConfirmForgotPasswordPage, TriggerChangeForgottenPasswordPage, ForgotPasswordPage}
 import profile.{UserProfilePreviewPage, EditUserProfilePage}
@@ -38,8 +38,7 @@ object SocnetBookmakablePages {
     application.mountPageNoVersioning("find/people/${" + FindPeoplePage.QUERY_PARAM + "}", classOf[FindPeoplePage])
 
     application.mountPageNoVersioning("contacts", classOf[ContactsPage])
-    application.mountPageNoVersioning("invitations/sent", classOf[InvitationsSentPage])
-    application.mountPageNoVersioning("invitations/received", classOf[InvitationsReceivedPage])
+    application.mountPageNoVersioning("invitations", classOf[InvitationsPage])
 
     application.mountPageNoVersioning("conversations", classOf[UserConversationsPage])
     application.mountPageNoVersioning("conversation/${" + ConversationPage.CONVERSATION_ID_PARAM + "}", classOf[ConversationPage])
