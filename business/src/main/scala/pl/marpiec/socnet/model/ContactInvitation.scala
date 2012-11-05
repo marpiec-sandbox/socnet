@@ -3,11 +3,14 @@ package pl.marpiec.socnet.model
 import contactinvitation.ContactInvitationStatus
 import pl.marpiec.cqrs.Aggregate
 import pl.marpiec.util.{BeanUtil, UID}
+import org.joda.time.LocalDateTime
 
 /**
  * @author Marcin Pieciukiewicz
  */
 class ContactInvitation extends Aggregate(null, 0) {
+
+  var sendTime: LocalDateTime = _
 
   var senderUserId: UID = _
   var receiverUserId: UID = _

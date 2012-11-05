@@ -6,11 +6,8 @@
     <div>
         TODO:                                  <br />
         <br />
-        - anulowanie zaproszenia ze strony podglądu profilu użytkownika      <br />
-        - usuwanie zaakceptowanych, odrzuconych, anulowanych zaproszeń z listy zaproszeń   <br />
         - jedna strona z listą zaproszeń            <br />
         - informacja o przeczytaniu zaproszenia  <br />
-        - informacja o liczbie nowych zaproszeń   <br />
     </div>
 
     <div wicket:id="loginPanel" class="loginPanel">
@@ -73,6 +70,14 @@
 
 
         <div class="column columnC">
+
+            <wicket:enclosure child="systemMessagesModule">
+                <div class="mainPageModule systemMessages">
+                    <div class="content">
+                        <div wicket:id="systemMessagesModule">systemMessagesModule</div>
+                    </div>
+                </div>
+            </wicket:enclosure>
 
             <wicket:enclosure child="peopleModule">
                 <div class="mainPageModule contacts">

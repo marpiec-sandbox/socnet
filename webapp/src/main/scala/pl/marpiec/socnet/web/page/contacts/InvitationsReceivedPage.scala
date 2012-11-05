@@ -3,7 +3,6 @@ package pl.marpiec.socnet.web.page.contacts
 import pl.marpiec.socnet.web.authorization.SecureWebPage
 import pl.marpiec.socnet.constant.SocnetRoles
 import org.apache.wicket.spring.injection.annot.SpringBean
-import pl.marpiec.socnet.readdatabase.{ContactInvitationDatabase, UserDatabase}
 import org.apache.wicket.markup.repeater.RepeatingView
 import org.apache.wicket.markup.html.list.AbstractItem
 import pl.marpiec.socnet.web.page.profile.UserProfilePreviewPage
@@ -17,6 +16,9 @@ import pl.marpiec.socnet.web.wicket.SecureFormModel
 import org.apache.wicket.model.CompoundPropertyModel
 import pl.marpiec.socnet.model.ContactInvitation
 import pl.marpiec.socnet.service.contactinvitation.ContactInvitationCommand
+import pl.marpiec.socnet.service.useractionsinfo.UserActionsInfoCommand
+import pl.marpiec.socnet.readdatabase.{UserActionsInfoDatabase, ContactInvitationDatabase, UserDatabase}
+import org.joda.time.LocalDateTime
 
 /**
  * @author Marcin Pieciukiewicz
@@ -26,7 +28,14 @@ class InvitationsReceivedPage extends SecureWebPage(SocnetRoles.USER) {
 
   @SpringBean private var contactInvitationDatabase: ContactInvitationDatabase = _
   @SpringBean private var contactInvitationCommand: ContactInvitationCommand = _
+  @SpringBean private var userActionsInfoDatabase: UserActionsInfoDatabase = _
+  @SpringBean private var userActionsInfoCommand: UserActionsInfoCommand = _
   @SpringBean private var userDatabase: UserDatabase = _
+
+  val userActionsInfo = userActionsInfoDatabase.getUserActionsInfoByUserId(session.userId).
+    getOrElse(throw new IllegalStateException("No Actions Info defined for user, userId=" + session.userId))
+
+  userActionsInfoCommand.changeContactInvitationsReadTime(session.userId, userActionsInfo.id, new LocalDateTime())
 
   val invitations = contactInvitationDatabase.getReceivedInvitations(session.userId)
 

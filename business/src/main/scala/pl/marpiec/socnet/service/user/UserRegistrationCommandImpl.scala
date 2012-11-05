@@ -8,6 +8,7 @@ import pl.marpiec.socnet.service.usercontacts.UserContactsCommand
 import pl.marpiec.cqrs.UidGenerator
 import pl.marpiec.socnet.service.programmerprofile.ProgrammerProfileCommand
 import pl.marpiec.socnet.service.userroles.UserRolesCommand
+import pl.marpiec.socnet.service.useractionsinfo.UserActionsInfoCommand
 
 /**
  * @author Marcin Pieciukiewicz
@@ -25,6 +26,8 @@ class UserRegistrationCommandImpl extends UserRegistrationCommand {
   @Autowired
   var programmerProfileCommand: ProgrammerProfileCommand = _
   @Autowired
+  var userActionsInfoCommand: UserActionsInfoCommand = _
+  @Autowired
   var uidGenerator: UidGenerator = _
   @Autowired
   var userCommand: UserCommand = _
@@ -36,6 +39,7 @@ class UserRegistrationCommandImpl extends UserRegistrationCommand {
     userProfileCommand.createUserProfile(userId, userId, uidGenerator.nextUid)
     userContactsCommand.createUserContacts(userId, userId, uidGenerator.nextUid)
     programmerProfileCommand.createProgrammerProfile(userId, userId, uidGenerator.nextUid)
+    userActionsInfoCommand.createUserActionsInfo(userId, userId, uidGenerator.nextUid)
 
     userId
   }

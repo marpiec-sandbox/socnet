@@ -6,6 +6,7 @@ import pl.marpiec.socnet.model.ContactInvitation
 import pl.marpiec.socnet.readdatabase.ContactInvitationDatabase
 import pl.marpiec.util.UID
 import org.springframework.stereotype.Repository
+import org.joda.time.LocalDateTime
 
 /**
  * @author Marcin Pieciukiewicz
@@ -37,5 +38,15 @@ class ContactInvitationDatabaseMockImpl @Autowired()(dataStore: DataStore)
        }
     })
     resultMap
+  }
+
+  def getInvitationsCount(userId: UID, invitationsNewerThanTimeOption: Option[LocalDateTime]) = {
+    if(invitationsNewerThanTimeOption.isDefined) {
+      val invitationsNewerThanTime = invitationsNewerThanTimeOption.get
+      getReceivedInvitations(userId).count(_.sendTime.compareTo(invitationsNewerThanTime) > 0)
+    } else {
+      getReceivedInvitations(userId).size
+    }
+
   }
 }
