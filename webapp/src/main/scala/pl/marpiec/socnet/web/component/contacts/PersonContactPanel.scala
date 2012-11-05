@@ -180,7 +180,9 @@ class PersonContactPanel(id: String, previewedUserId: UID,
           setModel(new CompoundPropertyModel[SecureFormModel](new SecureFormModel))
         }
 
-        def buildSchema {} //do nothing
+        def buildSchema {
+          add(new Label("invitationMessage", invitationReceived.message))
+        }
 
         def onSecureSubmit(target: AjaxRequestTarget, formModel: SecureFormModel) {
           contactInvitationCommand.acceptInvitation(currentUser.id, invitationReceived.id, invitationReceived.version, invitationReceived.senderUserId, invitationReceived.receiverUserId)
