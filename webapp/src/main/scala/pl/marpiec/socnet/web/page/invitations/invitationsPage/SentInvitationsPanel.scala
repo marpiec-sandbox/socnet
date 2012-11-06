@@ -1,10 +1,10 @@
-package pl.marpiec.socnet.web.page.contacts.invitationsPage
+package pl.marpiec.socnet.web.page.invitations.invitationsPage
 
 import org.apache.wicket.markup.repeater.RepeatingView
 import org.apache.wicket.markup.html.list.AbstractItem
 import pl.marpiec.socnet.web.page.profile.UserProfilePreviewPage
 import org.apache.wicket.markup.html.basic.Label
-import org.apache.wicket.markup.html.panel.{Fragment, Panel}
+import org.apache.wicket.markup.html.panel.Panel
 import org.apache.wicket.ajax.markup.html.AjaxLink
 import org.apache.wicket.ajax.AjaxRequestTarget
 import pl.marpiec.util.UID
@@ -17,43 +17,38 @@ import pl.marpiec.socnet.web.application.SocnetSession
  * @author Marcin Pieciukiewicz
  */
 
-class SentInvitationsPanel(id: String, invitations: List[ContactInvitation], usersMap:Map[UID, User]) extends Panel(id) {
+class SentInvitationsPanel(id: String, invitations: List[ContactInvitation], usersMap: Map[UID, User]) extends Panel(id) {
 
   @SpringBean private var contactInvitationCommand: ContactInvitationCommand = _
 
   val currentUserId = getSession.asInstanceOf[SocnetSession].userId
+  var remainingInvitations = invitations.size
+
+  setVisible(invitations.nonEmpty)
 
   add(new RepeatingView("invitation") {
 
     invitations.foreach(invitation => {
 
-      val userOption = usersMap.get(invitation.receiverUserId)
-
-      if (userOption.isEmpty) {
-        throw new IllegalStateException("User invitation with incorrect userId")
-      }
-
-      val user = userOption.get
+      val user = usersMap.getOrElse(invitation.receiverUserId, throw new IllegalStateException("User invitation with incorrect userId"))
 
       add(new AbstractItem(newChildId()) {
-        setOutputMarkupId(true)
-        add(UserProfilePreviewPage.getLink("profileLink", user).add(new Label("userName", user.fullName)))
 
-        if (invitation.isAccepted) {
-          add(new Fragment("invitationStatus", "accepted", SentInvitationsPanel.this))
-        } else {
-          add(new Fragment("invitationStatus", "waitingForAcceptance", SentInvitationsPanel.this))
-        }
+        val thisElement = this
+
+        setOutputMarkupId(true)
+        setOutputMarkupPlaceholderTag(true)
+
+        add(UserProfilePreviewPage.getLink("profileLink", user).add(new Label("userName", user.fullName)))
 
         add(new AjaxLink("cancelLink") {
           def onClick(target: AjaxRequestTarget) {
 
             contactInvitationCommand.cancelInvitation(currentUserId, invitation.id, invitation.version)
 
-            val parent = getParent
-            parent.setVisible(false)
-            target.add(parent)
-
+            thisElement.setVisible(false)
+            target.add(thisElement)
+            
           }
         })
 

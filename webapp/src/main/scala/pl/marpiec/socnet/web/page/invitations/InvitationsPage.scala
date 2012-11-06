@@ -1,4 +1,4 @@
-package pl.marpiec.socnet.web.page.contacts
+package pl.marpiec.socnet.web.page.invitations
 
 import invitationsPage.{SentInvitationsPanel, ReceivedInvitationsPanel}
 import pl.marpiec.socnet.web.authorization.SecureWebPage

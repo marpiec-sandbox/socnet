@@ -1,4 +1,4 @@
-package pl.marpiec.socnet.web.page.contacts
+package pl.marpiec.socnet.web.page.invitations
 
 import pl.marpiec.socnet.web.authorization.SecureWebPage
 import pl.marpiec.socnet.constant.SocnetRoles

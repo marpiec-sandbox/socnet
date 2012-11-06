@@ -2,7 +2,7 @@ package pl.marpiec.socnet.web.application
 
 import pl.marpiec.socnet.web.page._
 import books._
-import contacts.{InvitationsPage, ContactsPage}
+import invitations.{InvitationsPage, ContactsPage}
 import conversation.{ConversationPage, UserConversationsPage, StartConversationPage}
 import forgotPassword.{PasswordHaveBeenChangedPage, ConfirmForgotPasswordPage, TriggerChangeForgottenPasswordPage, ForgotPasswordPage}
 import profile.{UserProfilePreviewPage, EditUserProfilePage}

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:wicket="http://wicket.apache.org">
+<wicket:panel>
+
+    <div class="sentInvitation" wicket:id="invitation">
+        <div class="invitationBody">
+            <div class="userName">
+                <a wicket:id="profileLink"><span wicket:id="userName">userName</span></a>
+            </div>
+            <div class="waitingForAcceptance">Zaproszenie oczekuje na akceptację</div>
+            <div class="cancelInvitationButton">
+                <a href="#" onclick="invitationCancelClicked(this);return false;">Cofnij zaproszenie</a>
+            </div>
+        </div>
+
+        <div class="cancelConfirmation hiddenByDefault">
+            <div class="confirmationQuestion">
+                Czy na pewno cofnąć to zaproszenie?
+            </div>
+            <div class="confirmationButtons">
+                <a href="#" onclick="invitationCancelCanceledClicked(this);return false;">Anuluj</a>
+                <button wicket:id="cancelLink">OK</button>
+            </div>
+        </div>
+    </div>
+
+
+</wicket:panel>
+</html>

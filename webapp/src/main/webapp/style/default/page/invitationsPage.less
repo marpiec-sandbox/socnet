@@ -1,0 +1,96 @@
+.invitationsPage {
+
+    .recivedInvitations, .sentInvitations {
+        .standardContainer;
+
+        overflow: hidden;
+
+        .invitationsTitle {
+            font-size: 16px;
+            color: @mainThemeFontColor;
+            font-weight: bold;
+            opacity: 0.81;
+            position: relative;
+            text-transform: uppercase;
+            top: -11px;
+            left: -8px;
+
+        }
+
+
+        .receivedInvitation, .sentInvitation {
+
+            border-radius: 8px;
+            background-color: white;
+            float: left;
+            margin: 20px;
+            padding: 10px;
+            border: 1px solid #aaa;
+            width: 314px;
+
+
+            .userName {
+                font-weight: bold;
+                margin-bottom: 5px;
+                font-size: 18px;
+            }
+
+            form {
+                display: block;
+            }
+
+            .confirmationButtons {
+                text-align: center;
+                button {
+                    margin-left: 50px;
+                }
+            }
+
+        }
+
+        .sentInvitation {
+            height: 100px;
+            .waitingForAcceptance {
+                font-weight: bold;
+                padding: 18px;
+                text-align: center;
+            }
+            .cancelInvitationButton {
+                text-align: right;
+                font-size: @smallFontSize;
+            }
+
+            .confirmationQuestion {
+                text-align: center;
+                padding: 17px;
+            }
+
+
+        }
+
+        .receivedInvitation {
+            height: 170px;
+            .invitationMessage {
+                padding: 10px;
+                font-style: italic;
+                height: 70px;
+                margin-bottom: 20px;
+                overflow: auto;
+            }
+            .invitationButtons {
+                text-align: center;
+                button {
+                    margin-left: 50px;
+                }
+            }
+            .confirmationQuestion {
+                padding-bottom: 30px;
+                padding-top: 45px;
+                text-align: center;
+            }
+
+        }
+
+    }
+
+}

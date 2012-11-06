@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
+<body>
+<wicket:extend>
+
+    <script type="text/javascript">
+
+        function invitationCancelClicked(button) {
+            var jqParent = jQuery(button).parents(".sentInvitation");
+            jqParent.find(".invitationBody").css({display:"none"});
+            jqParent.find(".cancelConfirmation").css({display:"block"});
+        }
+
+        function invitationCancelCanceledClicked(button) {
+            var jqParent = jQuery(button).parents(".sentInvitation");
+            jqParent.find(".invitationBody").css({display:"block"});
+            jqParent.find(".cancelConfirmation").css({display:"none"});
+        }
+
+        function ignoreInvitationButtonClicked(button) {
+            var jqParent = jQuery(button).parents(".receivedInvitation");
+            jqParent.find(".invitationBody").css({display:"none"});
+            jqParent.find(".invitationButtons").css({display:"none"});
+            jqParent.find(".ignoreInvitationConfirmation").css({display:"block"});
+        }
+
+        function ignoreInvitationCanceledClicked(button) {
+            var jqParent = jQuery(button).parents(".receivedInvitation");
+            jqParent.find(".invitationBody").css({display:"block"});
+            jqParent.find(".invitationButtons").css({display:"block"});
+            jqParent.find(".ignoreInvitationConfirmation").css({display:"none"});
+        }
+
+    </script>
+
+    <div class="invitationsPage">
+
+        <wicket:enclosure child="receivedInvitationsPanel">
+            <div class="recivedInvitations">
+
+                <div class="invitationsTitle">
+                    Otrzymane zaproszenia
+                </div>
+
+                <div wicket:id="receivedInvitationsPanel">receivedInvitationsPanel</div>
+
+            </div>
+        </wicket:enclosure>
+
+        <wicket:enclosure child="sentInvitationsPanel">
+            <div class="sentInvitations">
+
+                <div class="invitationsTitle">
+                    Wysłane zaproszenia
+                </div>
+
+                <div wicket:id="sentInvitationsPanel">sentInvitationsPanel</div>
+
+            </div>
+        </wicket:enclosure>
+
+    </div>
+
+
+
+
+</wicket:extend>
+</body>
+</html>

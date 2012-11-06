@@ -10,7 +10,7 @@ import org.apache.wicket.markup.repeater.RepeatingView
 import org.apache.wicket.markup.html.list.AbstractItem
 import pl.marpiec.socnet.web.component.user.UserSummaryPreviewPanel
 import org.apache.wicket.markup.html.link.BookmarkablePageLink
-import pl.marpiec.socnet.web.page.contacts.{InvitationsPage, ContactsPage}
+import pl.marpiec.socnet.web.page.invitations.{InvitationsPage, ContactsPage}
 
 /**
  * @author Marcin Pieciukiewicz

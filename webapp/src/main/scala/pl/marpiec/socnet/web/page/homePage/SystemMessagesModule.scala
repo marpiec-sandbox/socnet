@@ -7,7 +7,7 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink
 import pl.marpiec.socnet.readdatabase.{ContactInvitationDatabase, UserActionsInfoDatabase}
 import org.apache.wicket.markup.html.basic.Label
 import pl.marpiec.socnet.web.text.PolishTextUtil
-import pl.marpiec.socnet.web.page.contacts.InvitationsPage
+import pl.marpiec.socnet.web.page.invitations.InvitationsPage
 
 /**
  * @author Marcin Pieciukiewicz

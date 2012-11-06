@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:wicket="http://wicket.apache.org">
+<wicket:panel>
+
+    <div class="receivedInvitation" wicket:id="invitation">
+
+        <div class="invitationBody">
+
+
+            <div class="userName">
+                <a wicket:id="profileLink"><span wicket:id="userName">userName</span></a>
+            </div>
+
+            <div wicket:id="invitationMessage" class="invitationMessage"></div>
+        </div>
+        <form wicket:id="inviteForm">
+            <input type="hidden" wicket:id="sessionToken"/>
+            <span wicket:id="warningMessage"></span>
+
+            <div class="invitationButtons">
+                <a href="#" onclick="ignoreInvitationButtonClicked(this);return false;">Zignoruj</a>
+                <button wicket:id="submitButton">Zaakceptuj</button>
+            </div>
+            
+            <div class="ignoreInvitationConfirmation hiddenByDefault">
+                <div class="confirmationQuestion">
+                    Czy na pewno zignorować to zaproszenie?
+                </div>
+                <div class="confirmationButtons">
+                    <a href="#" onclick="ignoreInvitationCanceledClicked(this);return false;">Anuluj</a>
+                    <button wicket:id="cancelButton">OK</button>
+                </div>
+                
+            </div>
+            
+        </form>
+
+    </div>
+
+</wicket:panel>
+</html>
