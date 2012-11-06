@@ -3,11 +3,48 @@
 <wicket:panel>
 
 
+    <script type="text/javascript">
+
+        function cancelInvitationClicked() {
+            jQuery(".cancelInvitationConfirmation").css({display:"block"})
+            jQuery(".invitationSentTitle").css({display:"none"})
+            jQuery(".cancelInvitationLinkHolder").css({display:"none"})
+        }
+
+        function cancelInvitationCanceledClicked() {
+            jQuery(".cancelInvitationConfirmation").css({display:"none"})
+            jQuery(".invitationSentTitle").css({display:""})
+            jQuery(".cancelInvitationLinkHolder").css({display:""})
+        }
+
+        function showNewInvitationPanel(elementSelector) {
+            var jqElement = jQuery(elementSelector);
+            jqElement.css({opacity: 0});
+            jQuery(".inviteFormAnimationContainer").css({height:window.previousInviteFormHeight})
+            jQuery(".inviteFormAnimationContainer").animate({height: window.currentInviteFormHeight}, 300)
+            jqElement.animate({opacity:1}, 600)
+
+        }
+
+        jQuery(function() {
+
+
+            window.previousInviteFormHeight = window.currentInviteFormHeight
+            window.currentInviteFormHeight = jQuery(".inviteFormAnimationContainer").height();
+
+        })
+
+    </script>
+
+
     <div class="contactLevel">
         <span wicket:id="contactLevel"></span>
     </div>
 
-    <div wicket:id="inviteFormHolder" class="inviteFormHolder">inviteFormHolder</div>
+    <div class="inviteFormAnimationContainer">
+        <div wicket:id="inviteFormHolder" class="inviteFormHolder">inviteFormHolder</div>
+    </div>
+
 
     <div class="buttons">
 
@@ -21,19 +58,7 @@
 
     </div>
 
-    <script type="text/javascript">
-        function cancelInvitationClicked() {
-            jQuery(".cancelInvitationConfirmation").css({display:"block"})
-            jQuery(".invitationSentTitle").css({display:"none"})
-            jQuery(".cancelInvitationLinkHolder").css({display:"none"})
-        }
 
-        function cancelInvitationCanceledClicked() {
-            jQuery(".cancelInvitationConfirmation").css({display:"none"})
-            jQuery(".invitationSentTitle").css({display:""})
-            jQuery(".cancelInvitationLinkHolder").css({display:""})
-        }
-    </script>
 
 
 

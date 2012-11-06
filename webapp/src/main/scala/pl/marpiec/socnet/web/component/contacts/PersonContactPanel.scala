@@ -133,6 +133,8 @@ class PersonContactPanel(id: String, previewedUserId: UID,
 
             addOrReplaceInvitationSent
 
+            target.appendJavaScript("showNewInvitationPanel('.inviteFormHolder');")
+
           } else {
             formModel.warningMessage = "Wiadomość nie może być pusta"
           }
@@ -163,6 +165,7 @@ class PersonContactPanel(id: String, previewedUserId: UID,
           inviteLink.setVisible(false)
           inviteForm.setVisible(true)
           target.add(PersonContactPanel.this)
+          target.appendJavaScript("showNewInvitationPanel('.inviteFormHolder');")
         }
       }
       add(inviteLink)
@@ -217,6 +220,7 @@ class PersonContactPanel(id: String, previewedUserId: UID,
           addOrReplaceInviteContact
 
           target.add(PersonContactPanel.this)
+
         }
       })
 
