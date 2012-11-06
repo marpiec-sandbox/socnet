@@ -43,12 +43,8 @@ class SentInvitationsPanel(id: String, invitations: List[ContactInvitation], use
 
         add(new AjaxLink("cancelLink") {
           def onClick(target: AjaxRequestTarget) {
-
             contactInvitationCommand.cancelInvitation(currentUserId, invitation.id, invitation.version)
-
-            thisElement.setVisible(false)
-            target.add(thisElement)
-            
+            target.appendJavaScript("hideRemovedInvitation('"+thisElement.getMarkupId+"');")
           }
         })
 

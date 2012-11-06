@@ -55,14 +55,12 @@ class ReceivedInvitationsPanel(id: String, invitations: List[ContactInvitation],
 
           def onSecureSubmit(target: AjaxRequestTarget, formModel: SecureFormModel) {
             contactInvitationCommand.acceptInvitation(currentUserId, invitation.id, invitation.version, invitation.senderUserId, invitation.receiverUserId)
-            thisElement.setVisible(false)
-            target.add(thisElement)
+            target.appendJavaScript("hideRemovedInvitation('"+thisElement.getMarkupId+"');")
           }
 
           def onSecureCancel(target: AjaxRequestTarget, formModel: SecureFormModel) {
             contactInvitationCommand.declineInvitation(currentUserId, invitation.id, invitation.version)
-            thisElement.setVisible(false)
-            target.add(thisElement)
+            target.appendJavaScript("hideRemovedInvitation('"+thisElement.getMarkupId+"');")
           }
         })
 
