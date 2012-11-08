@@ -1,202 +1,198 @@
-.glassBox {
-   margin: 0 0 0 0;
-   padding: 0;
-   border: 1px solid rgba(0,0,0,0.5);
-   border-radius: 3px 10px 10px 10px;
-   background: rgba(0,0,0,0.25);
-  /* box-shadow: 0 2px 6px rgba(0,0,0,0.3), inset 0 1px rgba(255,255,255,0.3), inset 0 10px rgba(255,255,255,0.2), inset 0 10px 20px rgba(255,255,255,0.25), inset 0 -5px 10px rgba(0, 0, 0, 0.2);
-   -o-box-shadow: 0 2px 6px rgba(0,0,0,0.3), inset 0 1px rgba(255,255,255,0.3), inset 0 10px rgba(255,255,255,0.2), inset 0 10px 20px rgba(255,255,255,0.25), inset 0 -5px 10px rgba(0, 0, 0, 0.2);
-   -webkit-box-shadow: 0 2px 6px rgba(0,0,0,0.3), inset 0 1px rgba(255,255,255,0.3), inset 0 10px rgba(255,255,255,0.2), inset 0 10px 20px rgba(255,255,255,0.25), inset 0 -5px 10px rgba(0, 0, 0, 0.2);
-   -moz-box-shadow: 0 2px 6px rgba(0,0,0,0.3), inset 0 1px rgba(255,255,255,0.3), inset 0 10px rgba(255,255,255,0.2), inset 0 10px 20px rgba(255,255,255,0.25), inset 0 -5px 10px rgba(0, 0, 0, 0.2);
- */
-}
-
-.loginPanel {
-    float: right;
-    width: 300px;
-    border: 1px solid #ccc;
-    padding: 10px;
-    border-radius: 10px;
-}
 
 
 .homePageContent {
 
-    padding-top: 20px;
-    clear: both;
+    overflow: hidden;
+    padding-bottom: 60px;
 
-    .column {
+    .loginPanel {
+        float: right;
+        width: 300px;
+        border: 1px solid #ccc;
+        padding: 10px;
+        border-radius: 10px;
+    }
 
+    .columnA, .columnB, .columnC {
         float: left;
-        margin: 0 15px;
-
-        .articles, .links {
-            width: 500px;
-        }
-
-        .technologies, .books {
-            width: 270px;
-        }
-
-        .profile, .contacts, .messages {
-            width: 270px;
-        }
-
     }
 
     .columnA {
-        width: 500px;
-    }
-
-    .columnB, .columnC {
-        width: 270px;
-    }
-
-}
-
-
-
-.userProfileContent {
-    padding: 11px 16px;
-
-    .userName {
-        color: @mainThemeFontColor;
-        font-size: 18px;
-        font-weight: bold;
-        padding: 5px 0;
-    }
-}
-
-
-.articleList {
-    .articleSummary {
-
-        clear: both;
-        margin-bottom: 16px;
-        overflow: hidden;
-
-        .articleIcon {
-            float:left;
-            width: 50px;
-            height: 50px;
-            border: 1px solid black;
-            background-color: white;
-            margin: 0px 10px;
+        width: 418px;
+        margin-left: 15px;
+        .articles, .links {
+            width: 408px;
         }
-
-        .articleTitle {
-           font-weight: bold;
-           .articleAuthor {
-              font-weight: bold;
-           }
-        }
-
-        .articleSummaryText {
-
-        }
-
     }
 
-    .articleSummary:last-child {
-        margin-bottom: 0px;
+    .columnB {
+        width: 250px;
+        margin-left: 20px;
+        margin-right: 20px;
+        .technologies, .books {
+            width: 240px;
+        }
     }
-}
+    .columnC {
+        width: 250px;
+        margin-right: 15px;
+
+        .profile, .contacts, .messages {
+            width: 240px;
+        }
+    }
+
+    .articles, .links, .technologies, .books, .profile, .contacts, .messages {
+        .standardContainer;
+    }
 
 
-.technologiesModule {
-    .technologiesInfo {
-        margin-bottom: 15px;
-        .technologiesInfoTitle {
+
+
+
+
+    .userProfileContent {
+        padding: 11px 16px;
+
+        .userName {
+            color: @mainThemeFontColor;
+            font-size: 18px;
             font-weight: bold;
-            margin-bottom: 12px;
-        }
-        .bestTechnologiesEntry {
-             margin-top: 4px;
-            .technologyName {
-                font-weight: bold;
-                color: @mainThemeFontColor;
-                padding-left: 10px;
-                width: 130px;
-                display: inline-block;
-            }
-            .technologyRating {
-                display: inline-block;
-            }
-        }
-
-    }
-
-    .technologiesInfo:last-child {
-        margin-bottom: 0px;
-    }
-}
-
-
-
-.peopleModule {
-    .userPreviewSummary {
-        margin: 10px 0;
-        width: 230px;
-    }
-    .userPreviewSummary:last-child {
-        margin-bottom: 0px;
-    }
-}
-
-.recentMessages {
-    .conversation {
-        margin-bottom: 10px;
-        .conversationTitle {
-            margin-bottom: 2px;
-            .unreadMessagesCount {
-                font-weight: bold;
-            }
-        }
-        .additionalInfo {
-            font-size: small;
+            padding: 5px 0;
         }
     }
-    .conversation:last-child {
-        margin-bottom: 0px;
-    }
-}
 
-.booksModule {
-    .recentBooks {
-        margin-top: 25px;
-        margin-bottom: 10px;
-        .recentTitle {
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
 
-        .rating {
-            display: inline-block;
-            margin-top: 4px;
-        }
+    .articleList {
+        .articleSummary {
 
-        .bookSummaryIterated {
-            margin-bottom: 15px;
+            clear: both;
+            margin-bottom: 16px;
             overflow: hidden;
-            .bookTitle {
+
+            .articleIcon {
+                float:left;
+                width: 50px;
+                height: 50px;
+                border: 1px solid black;
+                background-color: white;
+                margin: 0px 10px;
+            }
+
+            .articleTitle {
+               font-weight: bold;
+               .articleAuthor {
+                  font-weight: bold;
+               }
+            }
+
+            .articleSummaryText {
+
+            }
+
+        }
+
+        .articleSummary:last-child {
+            margin-bottom: 0px;
+        }
+    }
+
+
+    .technologiesModule {
+        .technologiesInfo {
+            margin-bottom: 15px;
+            .technologiesInfoTitle {
                 font-weight: bold;
+                margin-bottom: 12px;
+            }
+            .bestTechnologiesEntry {
+                 margin-top: 4px;
+                .technologyName {
+                    font-weight: bold;
+                    color: @mainThemeFontColor;
+                    padding-left: 10px;
+                    width: 117px;
+                    display: inline-block;
+                }
+                .technologyRating {
+                    display: inline-block;
+                }
+            }
+
+        }
+
+        .technologiesInfo:last-child {
+            margin-bottom: 0px;
+        }
+    }
+
+
+
+    .peopleModule {
+        .userPreviewSummary {
+            margin: 10px 0;
+            width: 230px;
+        }
+        .userPreviewSummary:last-child {
+            margin-bottom: 0px;
+        }
+    }
+
+    .recentMessages {
+        .conversation {
+            margin-bottom: 10px;
+            .conversationTitle {
+                margin-bottom: 2px;
+                .unreadMessagesCount {
+                    font-weight: bold;
+                }
+            }
+            .additionalInfo {
+                font-size: small;
+            }
+        }
+        .conversation:last-child {
+            margin-bottom: 0px;
+        }
+    }
+
+    .booksModule {
+        .recentBooks {
+            margin-top: 25px;
+            margin-bottom: 10px;
+            .recentTitle {
+                font-weight: bold;
+                margin-bottom: 10px;
+            }
+
+            .rating {
+                display: inline-block;
+                margin-top: 4px;
+            }
+
+            .bookSummaryIterated {
+                margin-bottom: 15px;
+                overflow: hidden;
+                .bookTitle {
+                    font-weight: bold;
+                }
             }
         }
     }
-}
 
 
-.pageContent .mainPageModule.systemMessages {
+    .pageContent .mainPageModule.systemMessages {
 
-    padding-top: 0px;
-    .systemMessagesModule {
-        a {
-            font-size: 14px;
-            display: block;
-            font-weight: bold;
-            margin: 20px 0;
-            text-align: center;
-            color: #d4410c;
+        padding-top: 0px;
+        .systemMessagesModule {
+            a {
+                font-size: 14px;
+                display: block;
+                font-weight: bold;
+                margin: 20px 0;
+                text-align: center;
+                color: #d4410c;
+            }
         }
     }
 }

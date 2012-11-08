@@ -1,3 +1,138 @@
+body {
+    background-color: @defaultBackgroundColor;
+    background-image: url("../../graph/layout/main-header-background.png");
+    background-repeat: repeat-x;
+    margin: 0;
+    padding: 0;
+}
+
+
+
+.pageBody {
+    margin: auto;
+    width: 992px;
+    position: relative;
+
+    .mainHeaderBackground {
+        background-image: url("../../graph/layout/main-header.jpg");
+        height: 157px;
+        left: -218px;
+        position: absolute;
+        top: 0;
+        width: 1440px;
+    }
+
+    .mainHeader {
+        width: 992px;
+        height: 157px;
+        position: relative;
+
+        a.portalLogo {
+            background-image: url("../../graph/layout/portal-logo.png");
+            position: absolute;
+            height: 50px;
+            width: 166px;
+            left: 13px;
+            top: 6px;
+        }
+
+        .userInfo {
+            position: absolute;
+            right: 50px;
+            top: 0;
+            display: none;
+        }
+
+    }
+
+    .pageContent {
+
+        border-left: 1px solid #C3C3C3;
+        border-right: 1px solid #fff;
+
+        .pageContentBorder {
+            border-left: 1px solid #fff;
+            border-right: 1px solid #C3C3C3;
+            overflow: hidden;
+        }
+    }
+
+}
+
+
+
+.standardContainer {
+     background-color: @defaultContainerBackground;
+     border: 1px solid #c3c3c3;
+     margin-top: 60px;
+     position: relative;
+     padding: 10px 5px;
+
+
+     .title {
+        position: absolute;
+        height: 27px;
+        top: -27px;
+        left: 5px;
+        color: @mainThemeFontColor;
+        font-size: 14px;
+        letter-spacing: 2px;
+        .titleIcon {
+            display: inline-block;
+            width: 17px;
+            height: 17px;
+            background-color: @mainThemeComplementaryColor;
+            left: -6px;
+            position: relative;
+            top: 4px;
+        }
+     }
+
+
+     .buttons {
+          text-align: right;
+
+          .buttonHolder {
+              display: inline-block;
+              margin: 13px 11px 2px 0;
+          }
+
+      }
+
+      a.defaultButton {
+          color: @mainThemeFontColor;
+          background-color: #f1f1f1;
+          border: 1px solid #C3C3C3;
+          display: table-cell;
+          font-size: 12px;
+          height: 55px;
+          width: 72px;
+          font-weight: bold;
+          line-height: 21px;
+          padding: 5px 7px 6px;
+          text-align: right;
+          text-decoration: none;
+          vertical-align: bottom;
+          line-height: 16px;
+
+          &:hover {
+              background-color: #f1f1f1;
+              opacity: 0.8;
+          }
+
+          &:active {
+              background-color: #f1f1f1;
+          }
+
+      }
+
+}
+
+
+
+
+
+
 /*.pageHeader {
     height: 20px;
     padding-bottom: 3px;
@@ -85,7 +220,9 @@
 
     }
 
-}       */
+}
+
+
 
 
 .standardContainer {
@@ -141,10 +278,7 @@
      }
 }
 
-
-.pageContent {
-    padding: 10px 20px;
-    width: 1150px;
+.pageBody {
 
 
     .mainPageModule {
@@ -166,7 +300,6 @@
 
         .title {
             color: @mainThemeFontColor;
-            /*text-shadow: 1px 1px 0 #aaa;*/
             opacity: 0.77;
         }
 
@@ -258,3 +391,4 @@
 }
 
 
+        */

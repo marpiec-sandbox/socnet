@@ -21,8 +21,10 @@
             var jqElement = jQuery(elementSelector);
             jqElement.css({opacity: 0});
             jQuery(".inviteFormAnimationContainer").css({height:window.previousInviteFormHeight})
-            jQuery(".inviteFormAnimationContainer").animate({height: window.currentInviteFormHeight}, 300)
-            jqElement.animate({opacity:1}, 600)
+            jQuery(".inviteFormAnimationContainer").animate({height: window.currentInviteFormHeight}, 300, null, function(){
+                jqElement.animate({opacity:1}, 300)
+            })
+
 
         }
 
