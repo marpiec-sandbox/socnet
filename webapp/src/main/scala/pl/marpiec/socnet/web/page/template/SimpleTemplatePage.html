@@ -19,7 +19,7 @@
 
     <div class="mainHeaderBackground"></div>
     <div class="mainHeader">
-        <a wicket:id="homeLink" class="portalLogo">socnet.</a>
+        <a wicket:id="homeLink" class="portalLogo"></a>
         <div class="userInfo" wicket:id="userInfo"></div>
     </div>
 
@@ -34,18 +34,11 @@
 
 <wicket:fragment wicket:id="loggedUser">
 
-    <div class="userProfile">
-        <div class="userName">
-            <a wicket:id="profileLink" class="profileLink"><span wicket:id="userName">fullName</span></a>
-        </div>
-        <div class="professionalTitle">
-            <span wicket:id="userProfessionalTitle">userProfessionalTitle</span>
-        </div>
+    <div class="userName">
+        <a wicket:id="profileLink" class="profileLink"><span wicket:id="userName">fullName</span></a>
     </div>
 
-    <div class="accountOptions">
-        <button wicket:id="signoutLink">Wyloguj</button>
-    </div>
+    <button wicket:id="signoutLink" class="signOutButton">Wyloguj</button>
 
 </wicket:fragment>
 
