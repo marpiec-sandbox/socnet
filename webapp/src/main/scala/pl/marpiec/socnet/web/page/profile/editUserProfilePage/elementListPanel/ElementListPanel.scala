@@ -77,6 +77,7 @@ abstract class ElementListPanel[T <: Identifiable, TM <: SecureFormModel](id: St
         showAddElementForm()
         target.add(elementAdditionPanel)
         target.add(this)
+        target.appendJavaScript("showNewDisplayedElement('"+elementAdditionPanel.getMarkupId+"');")
       }
     })
   }

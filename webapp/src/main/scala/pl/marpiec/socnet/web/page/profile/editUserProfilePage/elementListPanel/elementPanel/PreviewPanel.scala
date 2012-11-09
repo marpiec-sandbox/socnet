@@ -22,6 +22,7 @@ class PreviewPanel[T <: Identifiable, TM <: SecureFormModel](id: String, mainLis
     def onClick(target: AjaxRequestTarget) {
       parent.switchToEditMode
       target.add(parent)
+      target.appendJavaScript("showNewDisplayedElement('"+parent.editForm.getMarkupId+"');")
     }
   })
 
