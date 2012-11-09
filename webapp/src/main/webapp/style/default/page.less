@@ -67,18 +67,44 @@ body {
 
         border-left: 1px solid #C3C3C3;
         border-right: 1px solid #fff;
+        min-height: 300px;
 
         .pageContentBorder {
             border-left: 1px solid #fff;
             border-right: 1px solid #C3C3C3;
-            overflow: hidden;
             padding: 15px 15px 30px 15px;
         }
     }
-
 }
 
+.mainFooter {
+    border-top: 1px solid #C3C3C3;
 
+    .mainFooterBorder {
+        border-top: 1px solid #fff;
+
+        .footerContent {
+            margin: auto;
+            overflow: hidden;
+            padding: 20px;
+            width: 918px;
+
+            .footerColumn {
+                float: left;
+                width: 200px;
+                color: #666;
+
+                .title {
+                   font-weight: bold;
+                }
+                .entry {
+                    margin-top: 10px;
+                    padding-left: 10px;
+                }
+            }
+        }
+    }
+}
 
 .standardContainer {
      background-color: @defaultContainerBackground;
