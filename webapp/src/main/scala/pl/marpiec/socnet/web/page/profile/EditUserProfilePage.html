@@ -5,37 +5,43 @@
 
     <script src="js/page/editProfile.js"></script>
 
-    <div class="userProfileEditPage">
+    <div class="userProfileEditPage twoColumnLayout">
 
-        <div class="userProfilePreview userProfileEdit">
+        <div class="columnA">
+            <div class="userProfileEdit">
 
-            <div class="title"><div class="titleIcon"></div>edytuj swój profil.</div>
+                <div class="title"><div class="titleIcon"></div>edytuj swój profil.</div>
 
-            <div wicket:id="userSummaryPanel">userSummaryPanel</div>
+                <div wicket:id="userSummaryPanel">userSummaryPanel</div>
 
-            <div wicket:id="personalSummaryPanel">personalSummaryPanel</div>
+                <div wicket:id="personalSummaryPanel">personalSummaryPanel</div>
 
-            <div wicket:id="jobExperienceListPanel">jobExperienceListPanel</div>
+                <div wicket:id="jobExperienceListPanel">jobExperienceListPanel</div>
 
-            <div wicket:id="educationListPanel">educationListPanel</div>
+                <div wicket:id="educationListPanel">educationListPanel</div>
 
-            <div wicket:id="additionalInfoListPanel">additionalInfoListPanel</div>
+                <div wicket:id="additionalInfoListPanel">additionalInfoListPanel</div>
+
+            </div>
 
         </div>
 
-        <div class="actionsContainer">
-            <wicket:enclosure child="technologiesLink">
-                <div class="buttons">
-                    <div class="buttonHolder">
-                        <a wicket:id="technologiesLink" class="defaultButton">Twoje technologie</a>
-                    </div>
+        <div class="columnB">
+            <div class="actionsContainer">
+                <wicket:enclosure child="technologiesLink">
+                    <div class="buttons">
+                        <div class="buttonHolder">
+                            <a wicket:id="technologiesLink" class="defaultButton">Twoje technologie</a>
+                        </div>
 
-                    <div class="buttonHolder">
-                        <a wicket:id="profileLink" class="defaultButton">Podgląd profilu</a>
+                        <div class="buttonHolder">
+                            <a wicket:id="profileLink" class="defaultButton">Podgląd profilu</a>
+                        </div>
                     </div>
-                </div>
-            </wicket:enclosure>
+                </wicket:enclosure>
+            </div>
         </div>
+
     </div>
 
 </wicket:extend>

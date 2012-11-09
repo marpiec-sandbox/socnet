@@ -2,76 +2,85 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
 <body>
 <wicket:extend>
-    <div class="userProfilePreviewPage">
+    <div class="userProfilePreviewPage twoColumnLayout">
 
-        <div class="userProfilePreview">
-            <div class="title"><div class="titleIcon"></div>profil użytkownika.</div>
+        <div class="columnA">
 
-            <div wicket:id="userPreviewPanel" class="userPreviewPanel">userPreviewPanel</div>
 
-            <div wicket:id="personalSummaryPreview" class="personalSummaryPreview">personalSummaryPreview</div>
 
-            <wicket:enclosure child="jobExperiencePreview">
-                <div class="jobExperienceTitle">
-                    Doświadczenie zawodowe
-                </div>
-                <div wicket:id="jobExperiencePreview">
-                    <div wicket:id="content">content</div>
-                </div>
-            </wicket:enclosure>
+            <div class="userProfilePreview">
+                <div class="title"><div class="titleIcon"></div>profil użytkownika.</div>
 
-            <wicket:enclosure child="educationPreview">
-                <div class="educationTitle">
-                    Wykształcenie
-                </div>
-                <div wicket:id="educationPreview">
-                    <div wicket:id="content">content</div>
-                </div>
-            </wicket:enclosure>
+                <div wicket:id="userPreviewPanel" class="userPreviewPanel">userPreviewPanel</div>
 
-            <wicket:enclosure child="additionalInfoPreview">
-                <div class="additionalInfoTitle">
-                    Dodatkowe informacje
-                </div>
-                <div wicket:id="additionalInfoPreview">
-                    <div wicket:id="content">content</div>
-                </div>
-            </wicket:enclosure>
+                <div wicket:id="personalSummaryPreview" class="personalSummaryPreview">personalSummaryPreview</div>
 
-            <wicket:enclosure child="knownTechnologies">
-                <div class="knownTechnologiesTitle">
-                    Technologie
-                </div>
-                <div wicket:id="knownTechnologies">knownTechnologies</div>
-            </wicket:enclosure>
+                <wicket:enclosure child="jobExperiencePreview">
+                    <div class="jobExperienceTitle">
+                        Doświadczenie zawodowe
+                    </div>
+                    <div wicket:id="jobExperiencePreview">
+                        <div wicket:id="content">content</div>
+                    </div>
+                </wicket:enclosure>
+
+                <wicket:enclosure child="educationPreview">
+                    <div class="educationTitle">
+                        Wykształcenie
+                    </div>
+                    <div wicket:id="educationPreview">
+                        <div wicket:id="content">content</div>
+                    </div>
+                </wicket:enclosure>
+
+                <wicket:enclosure child="additionalInfoPreview">
+                    <div class="additionalInfoTitle">
+                        Dodatkowe informacje
+                    </div>
+                    <div wicket:id="additionalInfoPreview">
+                        <div wicket:id="content">content</div>
+                    </div>
+                </wicket:enclosure>
+
+                <wicket:enclosure child="knownTechnologies">
+                    <div class="knownTechnologiesTitle">
+                        Technologie
+                    </div>
+                    <div wicket:id="knownTechnologies">knownTechnologies</div>
+                </wicket:enclosure>
+
+
+            </div>
 
 
         </div>
+        <div class="columnB">
 
 
 
-        <div class="contactInfo">
-            <div class="title"><div class="titleIcon"></div>aaa.</div>
-            <div wicket:id="personContactPanel">personContactPanel</div>
+            <div class="contactInfo">
+                <div class="title"><div class="titleIcon"></div>aaa.</div>
+                <div wicket:id="personContactPanel">personContactPanel</div>
 
 
-            <wicket:enclosure child="technologiesLink">
-                <div class="buttons">
-                    <div class="buttonHolder">
-                        <a wicket:id="technologiesLink" class="defaultButton">Twoje technologie</a>
+                <wicket:enclosure child="technologiesLink">
+                    <div class="buttons">
+                        <div class="buttonHolder">
+                            <a wicket:id="technologiesLink" class="defaultButton">Twoje technologie</a>
+                        </div>
+
+                        <div class="buttonHolder">
+                            <a wicket:id="editProfileLink" class="defaultButton">Edytuj profil</a>
+                        </div>
                     </div>
+                </wicket:enclosure>
 
-                    <div class="buttonHolder">
-                        <a wicket:id="editProfileLink" class="defaultButton">Edytuj profil</a>
-                    </div>
-                </div>
-            </wicket:enclosure>
+            </div>
+
+            <div wicket:id="userContactsPreviewPanel" class="userContactsPreviewPanel">userContactsPreviewPanel</div>
+
 
         </div>
-
-        <div wicket:id="userContactsPreviewPanel" class="userContactsPreviewPanel">userContactsPreviewPanel</div>
-
-
 
     </div>
 </wicket:extend>

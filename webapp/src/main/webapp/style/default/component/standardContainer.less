@@ -1,0 +1,66 @@
+.standardContainer {
+     background-color: @defaultContainerBackground;
+     border: 1px solid #c3c3c3;
+     margin-top: 40px;
+     margin-bottom: 60px;
+     position: relative;
+     padding: 10px 5px;
+
+     .title {
+        position: absolute;
+        height: 27px;
+        top: -27px;
+        left: 5px;
+        color: @mainThemeFontColor;
+        font-size: 14px;
+        letter-spacing: 2px;
+        .titleIcon {
+            display: inline-block;
+            width: 17px;
+            height: 17px;
+            background-color: @mainThemeComplementaryColor;
+            left: -6px;
+            position: relative;
+            top: 4px;
+        }
+     }
+
+
+     .buttons {
+          text-align: right;
+
+          .buttonHolder {
+              display: inline-block;
+              margin: 13px 11px 2px 0;
+          }
+
+      }
+
+      a.defaultButton {
+          color: @mainThemeFontColor;
+          background-color: #f1f1f1;
+          border: 1px solid #C3C3C3;
+          display: table-cell;
+          font-size: 12px;
+          height: 55px;
+          width: 72px;
+          font-weight: bold;
+          line-height: 21px;
+          padding: 5px 7px 6px;
+          text-align: right;
+          text-decoration: none;
+          vertical-align: bottom;
+          line-height: 16px;
+
+          &:hover {
+              background-color: #f1f1f1;
+              opacity: 0.8;
+          }
+
+          &:active {
+              background-color: #f1f1f1;
+          }
+
+      }
+
+}

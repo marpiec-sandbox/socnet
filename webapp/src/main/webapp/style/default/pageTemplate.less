@@ -1,0 +1,153 @@
+body {
+    background-color: @defaultBackgroundColor;
+    background-image: url("../../graph/layout/main-header-background.png");
+    background-repeat: repeat-x;
+    margin: 0;
+    padding: 0;
+}
+
+
+
+.pageBody {
+    margin: auto;
+    width: 992px;
+    position: relative;
+
+    .mainHeaderBackground {
+        background-image: url("../../graph/layout/main-header.jpg");
+        height: 157px;
+        left: -218px;
+        position: absolute;
+        top: 0;
+        width: 1440px;
+    }
+
+    .mainHeader {
+        width: 992px;
+        height: 157px;
+        position: relative;
+
+        a.portalLogo {
+            background-image: url("../../graph/layout/portal-logo.png");
+            position: absolute;
+            height: 50px;
+            width: 166px;
+            left: 13px;
+            top: 6px;
+        }
+
+        .userInfo {
+            position: absolute;
+            right: 18px;
+            top: 29px;
+            width: 400px;
+
+            .userName {
+                float: right;
+                a {
+                    color: white;
+                    white-space: nowrap;
+                    font-weight: bold;
+                    font-size: 18px;
+                }
+            }
+
+            .signOutButton {
+                float: right;
+                margin-right: 30px;
+                position: relative;
+                top: -3px;
+            }
+
+        }
+
+    }
+
+    .pageContent {
+
+        border-left: 1px solid #C3C3C3;
+        border-right: 1px solid #fff;
+        min-height: 300px;
+
+        .pageContentBorder {
+            border-left: 1px solid #fff;
+            border-right: 1px solid #C3C3C3;
+            padding: 15px 15px 30px 15px;
+
+
+            .twoColumnLayout {
+                .columnA, .columnB {
+                    float: left;
+                }
+                .columnA {
+                   width: 619px;
+                   .standardContainer {
+                       width: 607px;
+                   }
+                }
+                .columnB {
+                    width: 319px;
+                    margin-left: 20px;
+                    .standardContainer {
+                        width: 307px;
+                    }
+                }
+            }
+
+            .threeColumnLayout {
+                .columnA, .columnB, .columnC {
+                    float: left;
+                }
+                .columnA {
+                   width: 418px;
+                   .standardContainer {
+                        width: 406px;
+                   }
+                }
+                .columnB {
+                   width: 250px;
+                   margin-left: 20px;
+                   margin-right: 20px;
+                   .standardContainer {
+                       width: 238px;
+                  }
+                }
+                .columnC {
+                    width: 250px;
+                    .standardContainer {
+                        width: 238px;
+                   }
+                }
+            }
+        }
+    }
+}
+
+.mainFooter {
+    border-top: 1px solid #C3C3C3;
+
+    .mainFooterBorder {
+        border-top: 1px solid #fff;
+
+        .footerContent {
+            margin: auto;
+            overflow: hidden;
+            padding: 20px;
+            width: 918px;
+
+            .footerColumn {
+                float: left;
+                width: 200px;
+                color: #666;
+
+                .title {
+                   font-weight: bold;
+                }
+                .entry {
+                    margin-top: 10px;
+                    padding-left: 10px;
+                }
+            }
+        }
+    }
+}

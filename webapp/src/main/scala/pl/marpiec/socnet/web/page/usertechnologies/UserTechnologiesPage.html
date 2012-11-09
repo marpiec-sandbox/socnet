@@ -181,76 +181,80 @@
     </script>
 
 
-    <div class="userTechnologiesPage">
+    <div class="userTechnologiesPage twoColumnLayout">
 
-        <div wicket:id="technologyList" class="technologyListContainer">
-            <div class="title"><div class="titleIcon"></div>twoje technologie.</div>
+        <div class="columnA">
+            <div wicket:id="technologyList" class="technologyListContainer">
+                <div class="title"><div class="titleIcon"></div>twoje technologie.</div>
 
-            <div class="technologyList">
-                <div wicket:id="technologySummary">
-                    <div wicket:id="summaryPanel" class="technologySummary replacedByWicket" />
+                <div class="technologyList">
+                    <div wicket:id="technologySummary">
+                        <div wicket:id="summaryPanel" class="technologySummary replacedByWicket" />
+                    </div>
+
+                    <span wicket:id="addedTechnologiesList" />
+
                 </div>
-
-                <span wicket:id="addedTechnologiesList" />
+                <div class="clearFloats"></div>
 
             </div>
-
         </div>
 
-        <div class="addTechnologyContainer">
-            <div class="title"><div class="titleIcon"></div>dodaj technologię.</div>
-            <form wicket:id="addTechnologyForm">
-                <input type="hidden" wicket:id="sessionToken"/>
 
-                <div><span wicket:id="warningMessage"></span></div>
-                <div class="technologyNameLabel">
-                    Nazwa technologii:
-                    <input type="text" wicket:id="technologyName" class="technologyName"/>
-                </div>
-                <select wicket:id="knowledgeLevel" class="knowledgeLevel"/>
+        <div class="columnB">
+            <div class="addTechnologyContainer">
+                <div class="title"><div class="titleIcon"></div>dodaj technologię.</div>
+                <form wicket:id="addTechnologyForm">
+                    <input type="hidden" wicket:id="sessionToken"/>
 
-                <div>
-                    <span class="levelDescriptionLabel">Poziom znajomości:</span>
-
-                    <div class="levels">
-                        <div><a href="#" onclick="levelClicked(1); return false;" onmouseover="highlightLevels(1)"
-                           onfocus="highlightLevels(1)"
-                           onmouseout="highlightSelectedLevel()" onblur="highlightSelectedLevel()"><span>1</span></a>
-                        </div><div>
-                        <a href="#" onclick="levelClicked(2); return false;" onmouseover="highlightLevels(2)"
-                           onfocus="highlightLevels(2)"
-                           onmouseout="highlightSelectedLevel()" onblur="highlightSelectedLevel()"><span>2</span></a>
-                        </div><div>
-                        <a href="#" onclick="levelClicked(3); return false;" onmouseover="highlightLevels(3)"
-                           onfocus="highlightLevels(3)"
-                           onmouseout="highlightSelectedLevel()" onblur="highlightSelectedLevel()"><span>3</span></a>
-                        </div><div>
-                        <a href="#" onclick="levelClicked(4); return false;" onmouseover="highlightLevels(4)"
-                           onfocus="highlightLevels(4)"
-                           onmouseout="highlightSelectedLevel()" onblur="highlightSelectedLevel()"><span>4</span></a>
-                        </div><div>
-                        <a href="#" onclick="levelClicked(5); return false;" onmouseover="highlightLevels(5)"
-                           onfocus="highlightLevels(5)"
-                           onmouseout="highlightSelectedLevel()" onblur="highlightSelectedLevel()"><span>5</span></a></div>
+                    <div><span wicket:id="warningMessage"></span></div>
+                    <div class="technologyNameLabel">
+                        Nazwa technologii:
+                        <input type="text" wicket:id="technologyName" class="technologyName"/>
                     </div>
-                </div>
-                <div class="levelDescriptionContainer">
-                    <div class="levelDescription"></div>
-                </div>
+                    <select wicket:id="knowledgeLevel" class="knowledgeLevel"/>
 
-                <div class="buttons">
-                    <input type="submit" wicket:id="submitButton" value="Dodaj"/>
-                </div>
+                    <div>
+                        <span class="levelDescriptionLabel">Poziom znajomości:</span>
 
-            </form>
+                        <div class="levels">
+                            <div><a href="#" onclick="levelClicked(1); return false;" onmouseover="highlightLevels(1)"
+                               onfocus="highlightLevels(1)"
+                               onmouseout="highlightSelectedLevel()" onblur="highlightSelectedLevel()"><span>1</span></a>
+                            </div><div>
+                            <a href="#" onclick="levelClicked(2); return false;" onmouseover="highlightLevels(2)"
+                               onfocus="highlightLevels(2)"
+                               onmouseout="highlightSelectedLevel()" onblur="highlightSelectedLevel()"><span>2</span></a>
+                            </div><div>
+                            <a href="#" onclick="levelClicked(3); return false;" onmouseover="highlightLevels(3)"
+                               onfocus="highlightLevels(3)"
+                               onmouseout="highlightSelectedLevel()" onblur="highlightSelectedLevel()"><span>3</span></a>
+                            </div><div>
+                            <a href="#" onclick="levelClicked(4); return false;" onmouseover="highlightLevels(4)"
+                               onfocus="highlightLevels(4)"
+                               onmouseout="highlightSelectedLevel()" onblur="highlightSelectedLevel()"><span>4</span></a>
+                            </div><div>
+                            <a href="#" onclick="levelClicked(5); return false;" onmouseover="highlightLevels(5)"
+                               onfocus="highlightLevels(5)"
+                               onmouseout="highlightSelectedLevel()" onblur="highlightSelectedLevel()"><span>5</span></a></div>
+                        </div>
+                    </div>
+                    <div class="levelDescriptionContainer">
+                        <div class="levelDescription"></div>
+                    </div>
+
+                    <div class="buttons">
+                        <input type="submit" wicket:id="submitButton" value="Dodaj"/>
+                    </div>
+
+                </form>
+            </div>
+
+
+
+            <div wicket:id="saveChangesButton" class="saveChangesButton">saveChangesButton</div>
+
         </div>
-
-
-
-        <div wicket:id="saveChangesButton" class="saveChangesButton">saveChangesButton</div>
-
-        <div class="clearFloats"></div>
-
 
     </div>
 
