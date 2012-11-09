@@ -37,6 +37,7 @@ class SimpleTemplatePage extends WebPage {
   } else {
     add(new Fragment("userInfo", "userNotLoggedIn", this) {
       add(new SignInFormPanel("signInPanel"))
+      setVisible(isLoginFormVisible)
     })
   }
 
@@ -67,4 +68,5 @@ class SimpleTemplatePage extends WebPage {
     component
   }
 
+  protected def isLoginFormVisible = true
 }

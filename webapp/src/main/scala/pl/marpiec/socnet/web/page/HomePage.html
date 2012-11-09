@@ -3,20 +3,35 @@
 <body>
 <wicket:extend>
 
+    <div wicket:id="notLoggedInUserPageContent" class="homePageContent twoColumnLayout">
 
-    <div wicket:id="loginPanel" class="loginPanel">
-        <div>
-            <span wicket:id="signInPanel"></span>
+        <div class="columnA">&nbsp;</div>
+
+        <div class="columnB">
+
+            <div class="loginPanel">
+                <div class="title"><div class="titleIcon"></div>zaloguj się.</div>
+                <div>
+                    <span wicket:id="signInPanel"></span>
+                </div>
+
+            </div>
+
+            <div class="registerPanel">
+                <div class="title"><div class="titleIcon"></div>załóż nowe konto.</div>
+                <a wicket:id="registerLink">
+                    Zarejestruj się
+                </a>
+            </div>
         </div>
-        <div>
-            <a wicket:id="registerLink">
-                Załóż nowe konto
-            </a>
-        </div>
+
+
     </div>
 
 
-    <div class="homePageContent threeColumnLayout">
+
+
+    <div wicket:id="loggedInUserPageContent" class="homePageContent threeColumnLayout">
 
         <div class="columnA">
             <wicket:enclosure child="articlesModule">
