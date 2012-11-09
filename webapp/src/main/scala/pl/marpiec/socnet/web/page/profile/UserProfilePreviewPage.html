@@ -4,31 +4,8 @@
 <wicket:extend>
     <div class="userProfilePreviewPage">
 
-        <div class="column">
-
-
-            <div class="contactInfo">
-                <div wicket:id="personContactPanel">personContactPanel</div>
-
-
-                <wicket:enclosure child="technologiesLink">
-                    <div class="buttons">
-                        <div class="buttonHolder">
-                            <a wicket:id="technologiesLink" class="defaultButton">Twoje technologie</a>
-                        </div>
-
-                        <div class="buttonHolder">
-                            <a wicket:id="editProfileLink" class="defaultButton">Edytuj profil</a>
-                        </div>
-                    </div>
-                </wicket:enclosure>
-
-            </div>
-
-            <div wicket:id="userContactsPreviewPanel" class="userContactsPreviewPanel">userContactsPreviewPanel</div>
-
-        </div>
         <div class="userProfilePreview">
+            <div class="title"><div class="titleIcon"></div>profil użytkownika.</div>
 
             <div wicket:id="userPreviewPanel" class="userPreviewPanel">userPreviewPanel</div>
 
@@ -70,6 +47,30 @@
 
 
         </div>
+
+
+
+        <div class="contactInfo">
+            <div class="title"><div class="titleIcon"></div>aaa.</div>
+            <div wicket:id="personContactPanel">personContactPanel</div>
+
+
+            <wicket:enclosure child="technologiesLink">
+                <div class="buttons">
+                    <div class="buttonHolder">
+                        <a wicket:id="technologiesLink" class="defaultButton">Twoje technologie</a>
+                    </div>
+
+                    <div class="buttonHolder">
+                        <a wicket:id="editProfileLink" class="defaultButton">Edytuj profil</a>
+                    </div>
+                </div>
+            </wicket:enclosure>
+
+        </div>
+
+        <div wicket:id="userContactsPreviewPanel" class="userContactsPreviewPanel">userContactsPreviewPanel</div>
+
 
 
     </div>

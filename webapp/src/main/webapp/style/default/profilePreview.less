@@ -1,135 +1,13 @@
 .userProfilePreviewPage, .userProfileEditPage {
 
-    .standardContainer;
-
-    margin: 20px 33px 0 15px;
-    padding: 20px;
-    overflow: hidden;
-
-    .column {
-
-       float: right;
-       width: 350px;
-
-       .contactInfo {
-           margin-bottom: 40px;
-
-
-           .contactLevel {
-               border-bottom: 2px solid #444444;
-               color: #254F87;
-               display: block;
-               font-size: 18px;
-               font-weight: bold;
-               margin-bottom: 10px;
-               padding-bottom: 3px;
-           }
-
-            .inviteFormAnimationContainer {
-                overflow: hidden;
-
-               .inviteFormHolder {
-
-
-                  .invitationHolder {
-                      position: relative;
-                      height: 50px;
-                      .cancelInvitationConfirmation {
-                          position: absolute;
-                          top: 0;
-                          left: 0;
-                          right: 0;
-                          bottom: 0;
-                          text-align: center;
-                          .confirmationQuestion {
-                              margin-bottom: 5px;
-                              margin-top: 14px;
-                          }
-                          button {
-                              margin-right: 30px;
-                          }
-
-                      }
-                  }
-
-                  form, .invitationHolder {
-                    display: block;
-                    border: 1px solid #BBBBBB;
-                    border-radius: 8px 8px 8px 8px;
-                    margin-top: 20px;
-                    padding: 15px 10px 10px;
-
-                    .invitationSentTitle {
-                     font-weight: bold;
-                     margin-bottom: 5px;
-                     margin-top: 15px;
-                     text-align: center;
-                  }
-
-                  .cancelInvitationLinkHolder {
-                      text-align: right;
-                      a {
-                          font-size: @smallFontSize;
-                      }
-                  }
-
-                    .invitationTitle {
-                        font-weight: bold;
-                        margin-bottom: 5px;
-                    }
-                    .invitationReceivedTitle {
-                        font-weight: bold;
-                        text-align: center;
-                    }
-
-                    .invitationMessage {
-                        font-style: italic;
-                        padding: 20px;
-                    }
-
-                    .invitationContent {
-                        textarea {
-                            width: 320px;
-                            height: 50px;
-                            margin-bottom: 20px;
-                        }
-
-                    }
-                    .invitationButtons {
-                        margin-bottom: 10px;
-                        text-align: center;
-                        input {
-                            margin-right: 50px;
-                        }
-                    }
-                  }
-               }
-           }
-
-       }
-
-       .userContactsPreviewPanel {
-
-           .userPreviewSummary {
-               width: 300px;
-           }
-
-           .contactsListTitle {
-               border-bottom: 2px solid #444444;
-               color: #254F87;
-               font-size: 18px;
-               font-weight: bold;
-               margin-bottom: 10px;
-               padding-bottom: 3px;
-           }
-       }
-    }
-
-
-
     .userProfilePreview {
 
-        width: 600px;
+        .standardContainer;
+        float: left;
+        margin-top: 40px;
+        width: 607px;
+        margin-rigth: 20px;
+        min-height: 500px;
 
 
 
@@ -275,6 +153,130 @@
         }
 
     }
+
+   .contactInfo {
+       .standardContainer;
+        margin-top: 40px;
+        float: right;
+        width: 307px;
+
+
+       .contactLevel {
+           border-bottom: 2px solid #444444;
+           color: #254F87;
+           display: block;
+           font-size: 18px;
+           font-weight: bold;
+           margin-bottom: 10px;
+           padding-bottom: 3px;
+       }
+
+        .inviteFormAnimationContainer {
+            overflow: hidden;
+
+           .inviteFormHolder {
+
+
+              .invitationHolder {
+                  position: relative;
+                  height: 50px;
+                  .cancelInvitationConfirmation {
+                      position: absolute;
+                      top: 0;
+                      left: 0;
+                      right: 0;
+                      bottom: 0;
+                      text-align: center;
+                      .confirmationQuestion {
+                          margin-bottom: 5px;
+                          margin-top: 14px;
+                      }
+                      button {
+                          margin-right: 30px;
+                      }
+
+                  }
+              }
+
+              form, .invitationHolder {
+                display: block;
+                border: 1px solid #BBBBBB;
+                border-radius: 8px 8px 8px 8px;
+                margin-top: 20px;
+                padding: 15px 10px 10px;
+
+                .invitationSentTitle {
+                 font-weight: bold;
+                 margin-bottom: 5px;
+                 margin-top: 15px;
+                 text-align: center;
+              }
+
+              .cancelInvitationLinkHolder {
+                  text-align: right;
+                  a {
+                      font-size: @smallFontSize;
+                  }
+              }
+
+                .invitationTitle {
+                    font-weight: bold;
+                    margin-bottom: 5px;
+                }
+                .invitationReceivedTitle {
+                    font-weight: bold;
+                    text-align: center;
+                }
+
+                .invitationMessage {
+                    font-style: italic;
+                    padding: 20px;
+                }
+
+                .invitationContent {
+                    textarea {
+                        width: 320px;
+                        height: 50px;
+                        margin-bottom: 20px;
+                    }
+
+                }
+                .invitationButtons {
+                    margin-bottom: 10px;
+                    text-align: center;
+                    input {
+                        margin-right: 50px;
+                    }
+                }
+              }
+           }
+       }
+
+   }
+
+   .userContactsPreviewPanel {
+
+       .standardContainer;
+       float: right;
+       width: 307px;
+
+       .userPreviewSummary {
+           width: 280px;
+       }
+
+       .contactsListTitle {
+           border-bottom: 2px solid #444444;
+           color: #254F87;
+           font-size: 18px;
+           font-weight: bold;
+           margin-bottom: 10px;
+           padding-bottom: 3px;
+       }
+   }
+
+
+
+
 
 
     .userProfileEdit {
