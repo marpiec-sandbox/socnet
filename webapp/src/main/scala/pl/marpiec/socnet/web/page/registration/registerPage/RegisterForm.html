@@ -1,46 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <html xmlns:wicket="http://wicket.apache.org">
 <wicket:panel>
-    <form wicket:id="form" class="horizontalForm registerForm">
-        <span wicket:id="warningMessage" class="warningMessage"></span>
 
-        <div class="formRow">
-            <span class="label">First name</span>
-            <span class="validatorMessage"></span>
-            <input wicket:id="firstName" type="text" class="requiredValidator stringValidator"
-                   alt="{min:2, max:50, msg:'Imię jest wymagane (minimum 2 litery)'}"/>
-        </div>
-        <div class="formRow">
-            <span class="label">Last name</span>
-            <span class="validatorMessage"></span>
-            <input wicket:id="lastName" type="text" class="requiredValidator stringValidator"
-                   alt="{min:2, max:50, msg:'Nazwisko jest wymagane (minimum 2 litery)'}"/>
-        </div>
-        <div class="formRow">
-            <span class="label">Email</span>
-            <span class="validatorMessage"></span>
-            <input wicket:id="email" type="text" class="requiredValidator emailValidator"
-                   alt="{msg:'Wymagany jest poprawny adres email'}"/>
-        </div>
-        <div class="formRow">
-            <span class="label">Password</span>
-            <span class="validatorMessage"></span>
-            <input wicket:id="password" type="password" class="requiredValidator passwordValidator"/>
-        </div>
-        <div class="formRow">
-            <span class="label">Repeat password</span>
-            <span class="validatorMessage"></span>
-            <input wicket:id="repeatPassword" type="password"
-                   class="requiredValidator passwordRepeatValidator"/>
-        </div>
-        <div>
-            <a wicket:id="cancelLink">Anuluj</a>
-            <input type="submit" value="save"/>
-        </div>
-    </form>
+    <div class="registerFormPanel">
+
+        <div class="title"><div class="titleIcon"></div>Zarejestruj się</div>
+
+        <form wicket:id="form" class="horizontalForm registerForm">
+            <span wicket:id="warningMessage" class="warningMessage"></span>
+
+            <div class="formRow">
+                <span class="label">First name</span>
+                <span class="validatorMessage"></span>
+                <input wicket:id="firstName" type="text" class="requiredValidator stringValidator"
+                       alt="{min:2, max:50, msg:'Imię jest wymagane (minimum 2 litery)'}"/>
+            </div>
+            <div class="formRow">
+                <span class="label">Last name</span>
+                <span class="validatorMessage"></span>
+                <input wicket:id="lastName" type="text" class="requiredValidator stringValidator"
+                       alt="{min:2, max:50, msg:'Nazwisko jest wymagane (minimum 2 litery)'}"/>
+            </div>
+            <div class="formRow">
+                <span class="label">Email</span>
+                <span class="validatorMessage"></span>
+                <input wicket:id="email" type="text" class="requiredValidator emailValidator"
+                       alt="{msg:'Wymagany jest poprawny adres email'}"/>
+            </div>
+            <div class="formRow">
+                <span class="label">Password</span>
+                <span class="validatorMessage"></span>
+                <input wicket:id="password" type="password" class="requiredValidator passwordValidator"/>
+            </div>
+            <div class="formRow">
+                <span class="label">Repeat password</span>
+                <span class="validatorMessage"></span>
+                <input wicket:id="repeatPassword" type="password"
+                       class="requiredValidator passwordRepeatValidator"/>
+            </div>
+            <div>
+                <a wicket:id="cancelLink">Anuluj</a>
+                <input type="submit" value="save"/>
+            </div>
+        </form>
+    </div>
     <div id="feedbackPanel">
         <span wicket:id="feedback"></span>
     </div>
+
     <script type="text/javascript">
         initForm(".registerForm");
         initValidation(".registerForm");

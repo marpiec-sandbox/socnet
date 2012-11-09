@@ -3,36 +3,47 @@
 <body>
 <wicket:extend>
 
-    <div class="startConversationContainer">
+    <div class="startConversationPage twoColumnLayout">
 
-        <div class="startConversationTitle">
-            Nowa wiadomość do użytkownika: 
-            <a wicket:id="profileLink"><span wicket:id="contactFullName">contactFullName</span></a>
+        <div class="columnA">
+            <div class="startConversationContainer">
+
+                <div class="title">
+                    <div class="titleIcon"></div>
+                    Nowa wiadomość do:
+                    <a wicket:id="profileLink"><span wicket:id="contactFullName">contactFullName</span></a>
+                </div>
+
+                <form wicket:id="startConversationForm" onsubmit="doCheck()">
+                    <input type="hidden" wicket:id="sessionToken"/>
+                    <div><span wicket:id="warningMessage" class="warningMessage"></span></div>
+
+                    <div class="conversationTitle">
+                        Tytuł rozmowy
+                    </div>
+                    <input type="text" wicket:id="conversationTitle" class="conversationTitleInput"/>
+
+
+
+                    <div wicket:id="bbCodeEditor" class="contentEditor"></div>
+
+                    <div class="startConversationButtons">
+                        <input type="submit" wicket:id="submitButton" onclick="doCheck()" value="Wyślij"/>
+                        <a wicket:id="cancelButton">Anuluj</a>
+                    </div>
+
+
+                </form>
+
+            </div>
+
+
         </div>
 
-        <form wicket:id="startConversationForm" onsubmit="doCheck()">
-            <input type="hidden" wicket:id="sessionToken"/>
-
-            <div><span wicket:id="warningMessage"></span></div>
-
-            <div class="conversationTitle">
-                Tytuł rozmowy
-            </div>
-            <input type="text" wicket:id="conversationTitle" class="conversationTitleInput"/>
-
-
-
-            <div wicket:id="bbCodeEditor" class="contentEditor"></div>
-
-            <div class="startConversationButtons">
-                <input type="submit" wicket:id="submitButton" onclick="doCheck()" value="Wyślij"/>
-                <a wicket:id="cancelButton">Anuluj</a>
-            </div>
-
-
-        </form>
 
     </div>
+
+
 
 </wicket:extend>
 </body>

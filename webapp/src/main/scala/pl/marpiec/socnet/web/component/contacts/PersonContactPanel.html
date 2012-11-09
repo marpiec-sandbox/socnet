@@ -39,9 +39,7 @@
     </script>
 
 
-    <div class="contactLevel">
-        <span wicket:id="contactLevel"></span>
-    </div>
+    <div class="title"><div class="titleIcon"></div><span wicket:id="contactLevel"></span>.</div>
 
     <div class="inviteFormAnimationContainer">
         <div wicket:id="inviteFormHolder" class="inviteFormHolder">inviteFormHolder</div>
@@ -106,7 +104,7 @@
         <form wicket:id="inviteForm">
             <input type="hidden" wicket:id="sessionToken"/>
 
-            <div><span wicket:id="warningMessage"></span></div>
+            <div><span wicket:id="warningMessage" class="warningMessage"></span></div>
 
             <div class="invitationTitle">
                 Podaj treść zaproszenia:
