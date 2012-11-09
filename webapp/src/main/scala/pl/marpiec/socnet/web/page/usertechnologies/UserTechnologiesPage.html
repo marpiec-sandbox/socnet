@@ -183,14 +183,26 @@
 
     <div class="userTechnologiesPage">
 
+        <div wicket:id="technologyList" class="technologyListContainer">
+            <div class="title"><div class="titleIcon"></div>twoje technologie.</div>
+
+            <div class="technologyList">
+                <div wicket:id="technologySummary">
+                    <div wicket:id="summaryPanel" class="technologySummary replacedByWicket" />
+                </div>
+
+                <span wicket:id="addedTechnologiesList" />
+
+            </div>
+
+        </div>
+
         <div class="addTechnologyContainer">
+            <div class="title"><div class="titleIcon"></div>dodaj technologię.</div>
             <form wicket:id="addTechnologyForm">
                 <input type="hidden" wicket:id="sessionToken"/>
 
                 <div><span wicket:id="warningMessage"></span></div>
-                <div class="title">
-                    Dodaj technologię którą znasz
-                </div>
                 <div class="technologyNameLabel">
                     Nazwa technologii:
                     <input type="text" wicket:id="technologyName" class="technologyName"/>
@@ -233,18 +245,7 @@
             </form>
         </div>
 
-        <div wicket:id="technologyList" class="technologyListContainer">
 
-            <div class="technologyList">
-                <div wicket:id="technologySummary">
-                   <div wicket:id="summaryPanel" class="technologySummary replacedByWicket" />
-                </div>
-
-                <span wicket:id="addedTechnologiesList" />
-
-            </div>
-
-        </div>
 
         <div wicket:id="saveChangesButton" class="saveChangesButton">saveChangesButton</div>
 
