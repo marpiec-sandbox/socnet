@@ -10,13 +10,13 @@
             <span wicket:id="warningMessage" class="warningMessage"></span>
 
             <div class="formRow">
-                <span class="label">First name</span>
+                <span class="label">Imię</span>
                 <span class="validatorMessage"></span>
                 <input wicket:id="firstName" type="text" class="requiredValidator stringValidator"
                        alt="{min:2, max:50, msg:'Imię jest wymagane (minimum 2 litery)'}"/>
             </div>
             <div class="formRow">
-                <span class="label">Last name</span>
+                <span class="label">Nazwisko</span>
                 <span class="validatorMessage"></span>
                 <input wicket:id="lastName" type="text" class="requiredValidator stringValidator"
                        alt="{min:2, max:50, msg:'Nazwisko jest wymagane (minimum 2 litery)'}"/>
@@ -28,19 +28,19 @@
                        alt="{msg:'Wymagany jest poprawny adres email'}"/>
             </div>
             <div class="formRow">
-                <span class="label">Password</span>
+                <span class="label">Hasło</span>
                 <span class="validatorMessage"></span>
                 <input wicket:id="password" type="password" class="requiredValidator passwordValidator"/>
             </div>
             <div class="formRow">
-                <span class="label">Repeat password</span>
+                <span class="label">Powtórz hasło</span>
                 <span class="validatorMessage"></span>
                 <input wicket:id="repeatPassword" type="password"
                        class="requiredValidator passwordRepeatValidator"/>
             </div>
-            <div>
+            <div class="standardFormButtons">
+                <input type="submit" value="Zarejestruj się"/>
                 <a wicket:id="cancelLink">Anuluj</a>
-                <input type="submit" value="save"/>
             </div>
         </form>
     </div>

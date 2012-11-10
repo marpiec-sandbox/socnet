@@ -3,15 +3,17 @@
 <body>
 <wicket:extend>
 
-    <div class="suggestBookPage">
+    <div class="suggestBookPage twoColumnLayout">
 
-        <div wicket:id="booksLinksPanel" class="booksLinksPanel">booksLinksPanel</div>
-
-        <div class="suggestBookFormHolder">
-            <div class="standardContainerTitle">
-                Zasugeruj nową książkę
+        <div class="columnA">
+            <div class="suggestBookFormHolder">
+                <div class="title"><div class="titleIcon"></div>Zasugeruj nową książkę</div>
+                <div wicket:id="suggestBookForm">suggestBookForm</div>
             </div>
-            <div wicket:id="suggestBookForm">suggestBookForm</div>
+        </div>
+
+        <div class="columnB">
+            <div wicket:id="booksLinksPanel" class="booksLinksPanel">booksLinksPanel</div>
         </div>
 
     </div>

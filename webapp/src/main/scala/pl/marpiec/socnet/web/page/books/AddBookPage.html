@@ -3,14 +3,17 @@
 <body>
 <wicket:extend>
 
-    <div class="addBookPage">
-        <div wicket:id="booksLinksPanel" class="booksLinksPanel">booksLinksPanel</div>
+    <div class="addBookPage twoColumnLayout">
 
-        <div class="addBookFormContainer">
-            <div class="standardContainerTitle">
-                Dodaj książkę
+        <div class="columnA">
+            <div class="addBookFormContainer">
+                <div class="title"><div class="titleIcon"></div>Dodaj książkę.</div>
+                <div wicket:id="addBookForm">addBookForm</div>
             </div>
-            <div wicket:id="addBookForm">addBookForm</div>
+        </div>
+
+        <div class="columnB">
+            <div wicket:id="booksLinksPanel" class="booksLinksPanel">booksLinksPanel</div>
         </div>
 
     </div>

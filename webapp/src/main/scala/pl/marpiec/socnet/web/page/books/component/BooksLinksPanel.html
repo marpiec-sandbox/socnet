@@ -3,6 +3,7 @@
 <wicket:panel>
 
     <div class="booksLinksContainer">
+        <div class="title"><div class="titleIcon"></div>Książki.</div>
 
         <div wicket:id="findBookFormPanel">findBookFormPanel</div>
 
@@ -22,12 +23,10 @@
 
 
     <wicket:enclosure child="addBookVisibilitySwitch">
-        <div class="booksLinksContainer">
-            <span wicket:id="addBookVisibilitySwitch"/>
 
-            <div class="standardContainerTitle">
-                Brakuje ważnej książki?
-            </div>
+        <div class="booksLinksContainer">
+            <div class="title"><div class="titleIcon"></div>Brakuje ważnej książki?</div>
+            <span wicket:id="addBookVisibilitySwitch"/>
 
             <div class="buttons">
                 <wicket:enclosure child="suggestBookLink">

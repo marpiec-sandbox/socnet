@@ -65,10 +65,47 @@
 <wicket:fragment wicket:id="loggedUser">
 
     <div class="userName">
-        <a wicket:id="profileLink" class="profileLink"><span wicket:id="userName">fullName</span></a>
+        <div class="userNameBorder">
+            <a wicket:id="profileLink" class="profileLink"><span wicket:id="userName">fullName</span></a>
+
+            <button wicket:id="signoutLink" class="signOutButton">Wyloguj</button>
+        </div>
     </div>
 
-    <button wicket:id="signoutLink" class="signOutButton">Wyloguj</button>
+    <script type="text/javascript">
+
+        jQuery(function() {
+            var menu = jQuery(".mainHeader .userInfo .userName");
+
+            menu.mouseenter(function() {
+                showUserNameMenu();
+            });
+            menu.mouseleave(function() {
+                hideUserNameMenuTrigger();
+            });
+        });
+
+        function showUserNameMenu() {
+            var userNameContainer = jQuery(".userNameBorder");
+            if(userNameContainer.data("oldHeight") == undefined) {
+                userNameContainer.data("oldHeight", userNameContainer.height())
+            }
+            userNameContainer.css({height: 100});
+            clearTimeout(window.mainHeaderUserNameMenuTimeout)
+        }
+
+        function hideUserNameMenu() {
+            var userNameContainer = jQuery(".userNameBorder");
+            var oldHeight = userNameContainer.data("oldHeight")
+            userNameContainer.css({height: oldHeight});
+        }
+
+        function hideUserNameMenuTrigger() {
+            window.mainHeaderUserNameMenuTimeout = setTimeout(hideUserNameMenu, 500)
+        }
+
+    </script>
+
 
 </wicket:fragment>
 
