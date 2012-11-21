@@ -54,34 +54,22 @@
             width: 907px;
         }
 
-        .rightModule {
-            float: left;
-            border: 1px solid @formInputBorderColor;
-            border-radius: 5px;
-            width: 200px;
-            margin: 20px;
-            padding-bottom: 8x;
-
-            .title {
-                 padding: 4px 8px;
-                 background-color: #F5F8F8;
-                 border-bottom: 1px solid #EEEEEE;
-                 margin-bottom: 4px;
-            }
-
-            .element {
-                display: block;
-                padding: 4px 8px;
-            }
+        .participants, .conversationActions {
+            .standardContainer;
         }
 
 
         .messages {
-            float: left;
+
+            .standardContainer;
+
+            .title {
+                text-transform: none;
+            }
+
 
              .messageContainer {
 
-                 width: 700px;
                  border: 1px solid @formInputBorderColor;
                  border-radius: 5px;
                  margin: 20px 0px;
@@ -112,7 +100,6 @@
     }
 
     .conversationActionButtons {
-        width: 700px;
         clear: both;
         text-align: right;
         padding: 10px;
@@ -121,8 +108,10 @@
 
     .replyFormPanel {
         clear: both;
+        margin: 0 7px;
+
         .richeditor {
-           width: 700px;
+            width: 594px;
         }
 
         .button {

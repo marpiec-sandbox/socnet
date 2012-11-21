@@ -3,12 +3,19 @@
 <body>
 <wicket:extend>
 
-    <div class="userConversations">
-        <div class="userConversationsTitle">Wiadomości</div>
+    <div class="userConversations twoColumnLayout">
 
-        <div wicket:id="conversation" class="conversation">
-            <div wicket:id="conversationSummary">conversationSummary</div>
+        <div class="columnA">
+            <div class="conversationsListContainer">
+                <div class="title"><div class="titleIcon"></div>wszystkie rozmowy.</div>
+
+                <div wicket:id="conversation" class="conversation">
+                    <div wicket:id="conversationSummary">conversationSummary</div>
+                </div>
+            </div>
         </div>
+
+
 
     </div>
 

@@ -16,61 +16,70 @@
         }
     </script>
 
-    <div class="conversationPage">
+    <div class="conversationPage twoColumnLayout">
 
 
         <div wicket:id="conversationPreview" class="conversationPreview">
 
-            <div class="conversationTitle">
-                <span wicket:id="conversationTitle">conversationTitle</span>
-            </div>
-
-            <div class="messages">
-                <div wicket:id="message">
-                    <div wicket:id="messagePreview">messagePreview</div>
-                </div>
-            </div>
-
-            <div class="participants rightModule">
-                <div class="title">Uczestnicy</div>
-                <div wicket:id="participant" class="participant element">
-                    <a wicket:id="profileLink" class="profileLink"><span wicket:id="userName">fullName</span></a>
-                </div>
-            </div>
-
-            <div class="conversationActions rightModule">
-                <div class="title">Rozmowa</div>
-                <div wicket:id="exitConversationButton" class="element">exitConversationButton</div>
-                <div wicket:id="enterConversationButton" class="element">enterConversationButton</div>
-                <div wicket:id="deleteConversationButton" class="element">deleteConversationButton</div>
-            </div>
-
-        </div>
-
-        <div class="conversationActionButtons">
-            <a href="#" onclick="showReplyFormPanel()">Odpowiedz</a>
-        </div>
-
-        <div class="replyFormPanel hiddenByDefault">
-            <form wicket:id="replyForm" onsubmit="doCheck()">
-
-                <input type="hidden" wicket:id="sessionToken"/>
-
-                <div><span wicket:id="warningMessage"></span></div>
-
-                <div wicket:id="bbCodeEditor"></div>
-
-                <div class="buttons">
-                    <div class="button">
-                        <a onclick="hideReplyFormPanel();return false;">Anuluj</a>
+            <div class="columnA">
+                <div class="messages">
+                    <div class="title"><div class="titleIcon"></div><span wicket:id="conversationTitle">conversationTitle</span></div>
+                    <div wicket:id="message">
+                        <div wicket:id="messagePreview">messagePreview</div>
                     </div>
-                    <div class="button">
-                        <input type="submit" wicket:id="submitButton" onclick="doCheck()" value="Wyślij"/>
+
+
+                    <div class="replyFormPanel hiddenByDefault">
+                        <form wicket:id="replyForm" onsubmit="doCheck()">
+
+                            <input type="hidden" wicket:id="sessionToken"/>
+
+                            <div><span wicket:id="warningMessage"></span></div>
+
+                            <div wicket:id="bbCodeEditor"></div>
+
+                            <div class="buttons">
+                                <div class="button">
+                                    <a onclick="hideReplyFormPanel();return false;">Anuluj</a>
+                                </div>
+                                <div class="button">
+                                    <input type="submit" wicket:id="submitButton" onclick="doCheck()" value="Wyślij"/>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+
+                    <div class="buttons conversationActionButtons">
+                        <div class="buttonHolder">
+                            <a href="#" onclick="showReplyFormPanel();return false;" class="defaultButton">Odpowiedz</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="columnB">
+
+                <div class="participants">
+                    <div class="title"><div class="titleIcon"></div>uczestnicy.</div>
+                    <div wicket:id="participant" class="participant element">
+                        <a wicket:id="profileLink" class="profileLink"><span wicket:id="userName">fullName</span></a>
                     </div>
                 </div>
 
-            </form>
+                <div class="conversationActions">
+                    <div class="title"><div class="titleIcon"></div>rozmowa.</div>
+                    <div wicket:id="exitConversationButton" class="element">exitConversationButton</div>
+                    <div wicket:id="enterConversationButton" class="element">enterConversationButton</div>
+                    <div wicket:id="deleteConversationButton" class="element">deleteConversationButton</div>
+                </div>
+
+            </div>
+
         </div>
+
+
+
     </div>
 
 

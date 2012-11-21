@@ -66,9 +66,24 @@
 
     <div class="userName">
         <div class="userNameBorder">
-            <a wicket:id="profileLink" class="profileLink"><span wicket:id="userName">fullName</span></a>
+            <div class="userNameContent">
+                <span wicket:id="userName" class="userNameLabel">fullName</span>
 
-            <button wicket:id="signoutLink" class="signOutButton">Wyloguj</button>
+                <div class="defaultButtonsContainer">
+                    <div class="buttonHolder">
+                        <a wicket:id="profileLink" class="skinnedDefaultButton">Podgląd profilu</a>
+                    </div>
+                    <div class="buttonHolder">
+                        <a wicket:id="editProfileLink" class="skinnedDefaultButton">Edytuj profil</a>
+                    </div>
+
+                </div>
+
+                <div class="signOutButtonContainer">
+                    <a wicket:id="signoutLink" class="signOutButton">Wyloguj się</a>
+                </div>
+
+            </div>
         </div>
     </div>
 
@@ -90,7 +105,8 @@
             if(userNameContainer.data("oldHeight") == undefined) {
                 userNameContainer.data("oldHeight", userNameContainer.height())
             }
-            userNameContainer.css({height: 100});
+            var userNameContent = jQuery(".userNameContent");
+            userNameContainer.css({height: userNameContent.height()});
             clearTimeout(window.mainHeaderUserNameMenuTimeout)
         }
 

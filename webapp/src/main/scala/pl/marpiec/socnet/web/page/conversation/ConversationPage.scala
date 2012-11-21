@@ -64,59 +64,7 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
   var conversationPreviewPanel = addAndReturn(createConversationPreview)
 
 
-  // reply conversation form
-  add(new StandardAjaxSecureForm[ReplyConversationFormModel]("replyForm") {
 
-    var model: ReplyConversationFormModel = _
-
-    def initialize = {
-      model = new ReplyConversationFormModel
-      setModel(new CompoundPropertyModel[ReplyConversationFormModel](model))
-      standardCancelButton = false
-    }
-
-    def buildSchema = {
-      add(new BBCodeEditor("bbCodeEditor", new PropertyModel[String](model, "messageText")))
-    }
-
-    def onSecureSubmit(target: AjaxRequestTarget, formModel: ReplyConversationFormModel) {
-      try {
-
-        if (StringUtils.isNotBlank(formModel.messageText)) {
-
-          val messageId = uidGenerator.nextUid
-          conversationCommand.createMessage(session.userId, conversation.id, conversation.version, formModel.messageText, messageId)
-
-          formModel.warningMessage = ""
-          formModel.messageText = ""
-
-          reloadConversationFromDB
-
-          target.add(conversationPreviewPanel)
-          target.add(this.warningMessageLabel)
-          target.appendJavaScript("clearBBEditor()")
-
-        } else {
-
-          formModel.warningMessage = "Wiadomosc nie moze byc pusta"
-          target.add(warningMessageLabel)
-        }
-      } catch {
-        case e: ConcurrentAggregateModificationException => {
-          formModel.warningMessage = "Conversation has changed"
-
-          reloadConversationFromDB
-
-          target.add(conversationPreviewPanel)
-          target.add(this.warningMessageLabel)
-        }
-      }
-    }
-
-    def onSecureCancel(target: AjaxRequestTarget, formModel: ReplyConversationFormModel) {
-      //ignore, javascript will handle this
-    }
-  })
 
 
   private def reloadConversationFromDB {
@@ -164,6 +112,61 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
         conversationCommand.removeConversation(session.userId, conversationInfo.id, conversationInfo.version)
         setResponsePage(classOf[UserConversationsPage])
       }).setVisible(!conversationInfo.deleted))
+
+
+      // reply conversation form
+      add(new StandardAjaxSecureForm[ReplyConversationFormModel]("replyForm") {
+
+        var model: ReplyConversationFormModel = _
+
+        def initialize = {
+          model = new ReplyConversationFormModel
+          setModel(new CompoundPropertyModel[ReplyConversationFormModel](model))
+          standardCancelButton = false
+        }
+
+        def buildSchema = {
+          add(new BBCodeEditor("bbCodeEditor", new PropertyModel[String](model, "messageText")))
+        }
+
+        def onSecureSubmit(target: AjaxRequestTarget, formModel: ReplyConversationFormModel) {
+          try {
+
+            if (StringUtils.isNotBlank(formModel.messageText)) {
+
+              val messageId = uidGenerator.nextUid
+              conversationCommand.createMessage(session.userId, conversation.id, conversation.version, formModel.messageText, messageId)
+
+              formModel.warningMessage = ""
+              formModel.messageText = ""
+
+              reloadConversationFromDB
+
+              target.add(conversationPreviewPanel)
+              target.add(this.warningMessageLabel)
+              target.appendJavaScript("clearBBEditor()")
+
+            } else {
+
+              formModel.warningMessage = "Wiadomosc nie moze byc pusta"
+              target.add(warningMessageLabel)
+            }
+          } catch {
+            case e: ConcurrentAggregateModificationException => {
+              formModel.warningMessage = "Conversation has changed"
+
+              reloadConversationFromDB
+
+              target.add(conversationPreviewPanel)
+              target.add(this.warningMessageLabel)
+            }
+          }
+        }
+
+        def onSecureCancel(target: AjaxRequestTarget, formModel: ReplyConversationFormModel) {
+          //ignore, javascript will handle this
+        }
+      })
 
     }
   }

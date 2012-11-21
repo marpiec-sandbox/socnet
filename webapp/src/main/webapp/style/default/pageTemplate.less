@@ -41,6 +41,7 @@ body {
             right: 18px;
             top: 20px;
             width: 400px;
+            z-index: 1;
 
 
             .userName {
@@ -56,32 +57,39 @@ body {
                     border-left: 1px solid #204f83;
                     border-right: 1px solid #00275d;
                     border-bottom: 1px solid #00275d;
-                    width: 202px;
+                    min-width: 222px;
                     height: 32px;
                     overflow: hidden;
                     background: url(../../graph/layout/main-header-user-menu.png);
 
-                    a {
+                    .userNameLabel {
+                        text-align: center;
                         display: block;
                         padding: 5px 10px;
                         color: white;
                         white-space: nowrap;
                         font-weight: bold;
                         font-size: 18px;
+                        cursor: default;
                     }
 
-                    .signOutButton {
-                        margin-top: 20px;
+                    .signOutButtonContainer {
+                        border-top: 1px solid #00275d;
+                        margin-top: 10px;
+                        padding: 10px 11px;
+                        text-align: center;
+                        a {
+                            color: white;
+                            text-decoration: none;
+                            width: 88px;
+                            &:hover {
+                                text-decoration: underline;
+                            }
+                        }
                     }
+
                 }
 
-            }
-
-            .signOutButton {
-                float: right;
-                margin-right: 30px;
-                position: relative;
-                top: 4px;
             }
 
         }

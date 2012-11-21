@@ -9,8 +9,8 @@ import org.apache.wicket.markup.html.panel.Fragment
 import pl.marpiec.socnet.web.authorization.AuthorizeUser
 import pl.marpiec.socnet.web.page.signin.SignInFormPanel
 import pl.marpiec.socnet.web.page._
-import profile.UserProfilePreviewPage
 import org.apache.wicket.Component
+import profile.{EditUserProfilePage, UserProfilePreviewPage}
 
 /**
  * ...
@@ -30,10 +30,12 @@ class SimpleTemplatePage extends WebPage {
   add(new Label("pageTitle", titleLabelModel))
 
   if (session.isSignedIn) {
-    add(new Fragment("userInfo", "loggedUser", this) {
-      add(UserProfilePreviewPage.getLink("profileLink", session.user).add(new Label("userName", session.user.fullName)))
-      add(AuthorizeUser(new BookmarkablePageLink("signoutLink", classOf[SignOutPage])))
-    })
+    add(AuthorizeUser(new Fragment("userInfo", "loggedUser", this) {
+      add(new Label("userName", session.user.fullName))
+      add(UserProfilePreviewPage.getLink("profileLink", session.user))
+      add(new BookmarkablePageLink("editProfileLink", classOf[EditUserProfilePage]))
+      add(new BookmarkablePageLink("signoutLink", classOf[SignOutPage]))
+    }))
   } else {
     add(new Fragment("userInfo", "userNotLoggedIn", this) {
       add(new SignInFormPanel("signInPanel"))
