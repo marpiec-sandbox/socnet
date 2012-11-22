@@ -8,7 +8,7 @@ import pl.marpiec.util.UID
  * @author Marcin Pieciukiewicz
  */
 
-class CreateBookUserInfoEvent(userId:UID, bookId:UID) extends Event {
+class CreateBookUserInfoEvent(val userId:UID, val bookId:UID) extends Event {
 
   def entityClass = classOf[BookUserInfo]
 

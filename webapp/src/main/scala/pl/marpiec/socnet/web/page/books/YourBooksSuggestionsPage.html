@@ -3,18 +3,24 @@
 <body>
 <wicket:extend>
 
-    <div class="yourBooksSuggestionPage">
+    <div class="yourBooksSuggestionPage twoColumnLayout">
 
-        <div wicket:id="booksLinksPanel" class="booksLinksPanel">booksLinksPanel</div>
-
-        <div wicket:id="booksSuggestions">
-            <div class="bookSuggestionHolder">
-                <div wicket:id="bookTitle"></div>
-                <div wicket:id="status"></div>
-                <a wicket:id="bookPreviewLink">Tutaj możesz znaleźć tę książkę</a>
-                <div wicket:id="removeButton"></div>
+        <div class="columnA">
+            <div class="bookSuggestions">
+                <div wicket:id="booksSuggestions">
+                    <div class="bookSuggestionHolder">
+                        <div wicket:id="bookTitle"></div>
+                        <div wicket:id="status"></div>
+                        <a wicket:id="bookPreviewLink">Tutaj możesz znaleźć tę książkę</a>
+                        <div wicket:id="removeButton"></div>
+                    </div>
+                </div>
             </div>
         </div>
+        <div class="columnB">
+            <div wicket:id="booksLinksPanel" class="booksLinksPanel">booksLinksPanel</div>
+        </div>
+
     </div>
 
 

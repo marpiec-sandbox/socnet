@@ -4,57 +4,60 @@
 <wicket:extend>
 
 
-    <div class="bookPreview">
+    <div class="bookPreview twoColumnLayout">
 
-        <div class="bookDetailsPanel">
+        <div class="columnA">
+            <div class="bookDetailsPanel">
 
-            <div class="icon"></div>
-            <div class="buttons">
+                <div class="icon"></div>
+                <div class="buttons">
 
-                <div class="buttonHolder">
-                    <div wicket:id="bookRatingPreview">bookRatingPreview</div>
+                    <div class="buttonHolder">
+                        <div wicket:id="bookRatingPreview">bookRatingPreview</div>
+                    </div>
+
+                    <div class="buttonHolder">
+                        <a wicket:id="showEditReviewFormButton" class="defaultButton showWriteReviewButton">
+                            <span wicket:id="label">label</span>
+                        </a>
+                    </div>
+
+                    <div class="buttonHolder">
+                        <a wicket:id="editBookDesription" class="defaultButton">Edytuj książkę</a>
+                    </div>
+
+                </div>
+                <div wicket:id="bookTitle" class="bookTitle">title</div>
+                <div wicket:id="polishTitle" class="polishTitle">polishTitle</div>
+                <div wicket:id="authors" class="authors">authors</div>
+                <div class="isbn">
+                    ISBN: <span wicket:id="isbn">isbn</span>
                 </div>
 
-                <div class="buttonHolder">
-                    <a wicket:id="showEditReviewFormButton" class="defaultButton showWriteReviewButton">
-                        <span wicket:id="label">label</span>
-                    </a>
-                </div>
+                <div wicket:id="voteForBook">voteForBook</div>
 
-                <div class="buttonHolder">
-                    <a wicket:id="editBookDesription" class="defaultButton">Edytuj książkę</a>
-                </div>
-
+                <div wicket:id="description" class="description">description</div>
             </div>
-            <div wicket:id="bookTitle" class="bookTitle">title</div>
-            <div wicket:id="polishTitle" class="polishTitle">polishTitle</div>
-            <div wicket:id="authors" class="authors">authors</div>
-            <div class="isbn">
-                ISBN: <span wicket:id="isbn">isbn</span>
+
+            <div wicket:id="editReviewForm">editReviewForm</div>
+
+            <div class="reviews">
+                <div class="reviewsTitle">
+                    Recenzje:
+                </div>
+                <div class="yourReviewHolder">
+                    <div wicket:id="currentUserBookReview"></div>
+                </div>
+
+                <div class="usersReviews" wicket:id="bookReviews">
+                    <div wicket:id="bookReview">bookReview</div>
+                </div>
             </div>
-
-            <div wicket:id="voteForBook">voteForBook</div>
-
-            <div wicket:id="description" class="description">description</div>
         </div>
+        <div class="columnB">
+            <div wicket:id="bookOwnership">bookOwnership</div>
 
-        <div class="bookOwnershipContainer" wicket:id="bookOwnership">bookOwnership</div>
-
-        <div wicket:id="booksLinksPanel" class="booksLinksPanel">booksLinksPanel</div>
-
-        <div wicket:id="editReviewForm">editReviewForm</div>
-
-        <div class="reviews">
-            <div class="reviewsTitle">
-                Recenzje:
-            </div>
-            <div class="yourReviewHolder">
-                <div wicket:id="currentUserBookReview"></div>
-            </div>
-
-            <div class="usersReviews" wicket:id="bookReviews">
-                <div wicket:id="bookReview">bookReview</div>
-            </div>
+            <div wicket:id="booksLinksPanel" class="booksLinksPanel">booksLinksPanel</div>
         </div>
 
     </div>

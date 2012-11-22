@@ -11,7 +11,7 @@ import pl.marpiec.socnet.model.BookUserInfo
  * @author Marcin Pieciukiewicz
  */
 
-class AddOrUpdateReviewBookEvent(val reviewerUserId: UID, val description: String, val rating: Rating, reviewTime: LocalDateTime) extends Event {
+class AddOrUpdateReviewBookEvent(val reviewerUserId: UID, val description: String, val rating: Rating, val reviewTime: LocalDateTime) extends Event {
   def entityClass = classOf[BookUserInfo]
 
   def applyEvent(aggregate: Aggregate) {

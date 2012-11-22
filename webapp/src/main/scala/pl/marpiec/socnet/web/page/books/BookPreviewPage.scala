@@ -55,7 +55,7 @@ class BookPreviewPage(parameters: PageParameters) extends SecureWebPage(SocnetRo
   val bookOption = bookDatabase.getBookById(bookId)
   val book = bookOption.getOrElse(throw new AbortWithHttpErrorCodeException(404))
   val bookReviews = bookReviewsDatabase.getBookReviews(bookId).getOrElse(new BookReviews)
-  val bookUserInfo = bookUserInfoDatabase.getUserInfoByUserAndBook(session.userId, bookId).getOrElse(new BookUserInfo)
+  val bookUserInfo = bookUserInfoDatabase.getUserInfoByUserAndBook(session.userId, bookId).getOrElse(createNewBookUserInfo)
 
   val (notCurrentUserReviews, currentUserReviews) = bookReviews.userReviews.partition(bookReview => {
     bookReview.userId != session.userId
@@ -104,6 +104,13 @@ class BookPreviewPage(parameters: PageParameters) extends SecureWebPage(SocnetRo
       })
     })
   })
+  
+  def createNewBookUserInfo():BookUserInfo = {
+    val info = new BookUserInfo
+    info.userId = session.userId
+    info.bookId = bookId
+    info
+  }
 
   def putProperLabelInEditReviewButton(button: AjaxLink[_], currentUserReviewOption: Option[BookReview]) {
     if (currentUserReviewOption.isDefined) {
