@@ -25,6 +25,7 @@ import pl.marpiec.socnet.web.page.profile.UserProfilePreviewPage
 import pl.marpiec.socnet.readdatabase.{ConversationInfoDatabase, ConversationDatabase}
 import pl.marpiec.socnet.model.Conversation
 import pl.marpiec.socnet.web.component.wicket.form.{OneButtonAjaxForm, StandardAjaxSecureForm}
+import pl.marpiec.socnet.web.component.user.UserSummaryPreviewPanel
 
 /**
  * @author Marcin Pieciukiewicz
@@ -85,7 +86,7 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
       add(new RepeatingView("participant") {
         participants.foreach(user => {
           add(new AbstractItem(newChildId()) {
-            add(UserProfilePreviewPage.getLink("profileLink", user).add(new Label("userName", user.fullName)))
+            add(new UserSummaryPreviewPanel("userSummaryPreview", user))
           })
         })
       })
@@ -98,17 +99,17 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
         })
       })
 
-      add(new OneButtonAjaxForm("exitConversationButton", "Opusc rozmowe", (target: AjaxRequestTarget) => {
+      add(new OneButtonAjaxForm("exitConversationButton", "Opuść rozmowę", (target: AjaxRequestTarget) => {
         conversationCommand.exitConversation(session.userId, conversationInfo.id, conversationInfo.version)
         setResponsePage(classOf[ConversationPage], new PageParameters().add(ConversationPage.CONVERSATION_ID_PARAM, conversation.id))
       }).setVisible(conversationInfo.participating && !conversationInfo.deleted))
 
-      add(new OneButtonAjaxForm("enterConversationButton", "Dolacz do rozmowy", (target: AjaxRequestTarget) => {
+      add(new OneButtonAjaxForm("enterConversationButton", "Dołącz do rozmowy", (target: AjaxRequestTarget) => {
         conversationCommand.enterConversation(session.userId, conversationInfo.id, conversationInfo.version)
         setResponsePage(classOf[ConversationPage], new PageParameters().add(ConversationPage.CONVERSATION_ID_PARAM, conversation.id))
       }).setVisible(!conversationInfo.participating && !conversationInfo.deleted))
 
-      add(new OneButtonAjaxForm("deleteConversationButton", "Usun rozmowe", (target: AjaxRequestTarget) => {
+      add(new OneButtonAjaxForm("deleteConversationButton", "Usuń rozmowę", (target: AjaxRequestTarget) => {
         conversationCommand.removeConversation(session.userId, conversationInfo.id, conversationInfo.version)
         setResponsePage(classOf[UserConversationsPage])
       }).setVisible(!conversationInfo.deleted))

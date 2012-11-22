@@ -2,10 +2,10 @@
 <html xmlns:wicket="http://wicket.apache.org">
 <wicket:panel>
 
-    <div class="simpleConversationSummary">
+    <a wicket:id="conversationLink" class="simpleConversationSummary">
 
         <div class="conversationTitle">
-            <a wicket:id="conversationLink"><span wicket:id="conversationTitle">conversationTitle</span></a>
+            <span wicket:id="conversationTitle">conversationTitle</span>
             <wicket:enclosure child="unreadMessagesCount">
                 <span class="unreadMessagesCount">
                     (<span wicket:id="unreadMessagesCount">unreadMessagesCount</span>)
@@ -14,11 +14,12 @@
         </div>
 
         <div class="additionalInfo">
-            Ostatnia wiadomość: <span wicket:id="lastMessageUsername">lastMessageUsername</span>
+            <div>Ostatnia wiadomość:</div>
+            <span wicket:id="lastMessageUsername">lastMessageUsername</span>
             (<span wicket:id="lastMessageTime">lastMessageTime</span>)
         </div>
 
-    </div>
+    </a>
 
 </wicket:panel>
 </html>

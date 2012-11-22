@@ -3,15 +3,18 @@
 <body>
 <wicket:extend>
 
-    <div wicket:id="booksLinksPanel" class="booksLinksPanel">booksLinksPanel</div>
-
-    <div class="bookList">
-        <div wicket:id="book" class="bookSummaryIterated">
-            <div wicket:id="bookSummaryPreview">bookSummaryPreview</div>
+    <div class="twoColumnLayout">
+        <div class="columnA">
+            <div class="bookList">
+                <div wicket:id="book" class="bookSummaryIterated">
+                    <div wicket:id="bookSummaryPreview">bookSummaryPreview</div>
+                </div>
+            </div>
+        </div>
+        <div class="columnB">
+            <div wicket:id="booksLinksPanel" class="booksLinksPanel">booksLinksPanel</div>
         </div>
     </div>
-
-
 
 </wicket:extend>
 </body>
