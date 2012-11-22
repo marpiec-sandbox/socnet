@@ -69,19 +69,22 @@
             <div class="userNameContent">
                 <span wicket:id="userName" class="userNameLabel">fullName</span>
 
-                <div class="defaultButtonsContainer">
-                    <div class="buttonHolder">
-                        <a wicket:id="profileLink" class="skinnedDefaultButton">Podgląd profilu</a>
-                    </div>
-                    <div class="buttonHolder">
-                        <a wicket:id="editProfileLink" class="skinnedDefaultButton">Edytuj profil</a>
+                <div class="hiddenContent hiddenByDefault">
+                    <div class="defaultButtonsContainer">
+                        <div class="buttonHolder">
+                            <a wicket:id="profileLink" class="skinnedDefaultButton">Podgląd profilu</a>
+                        </div>
+                        <div class="buttonHolder">
+                            <a wicket:id="editProfileLink" class="skinnedDefaultButton">Edytuj profil</a>
+                        </div>
+
                     </div>
 
+                    <div class="signOutButtonContainer">
+                        <a wicket:id="signoutLink" class="signOutButton">Wyloguj się</a>
+                    </div>
                 </div>
 
-                <div class="signOutButtonContainer">
-                    <a wicket:id="signoutLink" class="signOutButton">Wyloguj się</a>
-                </div>
 
             </div>
         </div>
@@ -101,19 +104,15 @@
         });
 
         function showUserNameMenu() {
-            var userNameContainer = jQuery(".userNameBorder");
-            if(userNameContainer.data("oldHeight") == undefined) {
-                userNameContainer.data("oldHeight", userNameContainer.height())
-            }
-            var userNameContent = jQuery(".userNameContent");
-            userNameContainer.css({height: userNameContent.height()});
+
+            var hiddenContent = jQuery(".userNameContent .hiddenContent");
+            hiddenContent.css({display: "block"});
             clearTimeout(window.mainHeaderUserNameMenuTimeout)
         }
 
         function hideUserNameMenu() {
-            var userNameContainer = jQuery(".userNameBorder");
-            var oldHeight = userNameContainer.data("oldHeight")
-            userNameContainer.css({height: oldHeight});
+            var hiddenContent = jQuery(".userNameContent .hiddenContent");
+            hiddenContent.css({display: "none"});
         }
 
         function hideUserNameMenuTrigger() {

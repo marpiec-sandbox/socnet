@@ -8,25 +8,12 @@
 
         <div class="columnA">
             <div class="bookDetailsPanel">
+                <div class="title"><div class="titleIcon"></div>książka.</div>
 
                 <div class="icon"></div>
-                <div class="buttons">
 
-                    <div class="buttonHolder">
-                        <div wicket:id="bookRatingPreview">bookRatingPreview</div>
-                    </div>
+                <div wicket:id="bookRatingPreview">bookRatingPreview</div>
 
-                    <div class="buttonHolder">
-                        <a wicket:id="showEditReviewFormButton" class="defaultButton showWriteReviewButton">
-                            <span wicket:id="label">label</span>
-                        </a>
-                    </div>
-
-                    <div class="buttonHolder">
-                        <a wicket:id="editBookDesription" class="defaultButton">Edytuj książkę</a>
-                    </div>
-
-                </div>
                 <div wicket:id="bookTitle" class="bookTitle">title</div>
                 <div wicket:id="polishTitle" class="polishTitle">polishTitle</div>
                 <div wicket:id="authors" class="authors">authors</div>
@@ -37,14 +24,24 @@
                 <div wicket:id="voteForBook">voteForBook</div>
 
                 <div wicket:id="description" class="description">description</div>
+
+                <div class="buttons">
+                    <div class="buttonHolder">
+                        <a wicket:id="showEditReviewFormButton" class="defaultButton showWriteReviewButton">
+                            <span wicket:id="label">label</span>
+                        </a>
+                    </div>
+
+                    <div class="buttonHolder">
+                        <a wicket:id="editBookDesription" class="defaultButton">Edytuj książkę</a>
+                    </div>
+                </div>
             </div>
 
             <div wicket:id="editReviewForm">editReviewForm</div>
 
             <div class="reviews">
-                <div class="reviewsTitle">
-                    Recenzje:
-                </div>
+                <div class="title"><div class="titleIcon"></div>recenzje.</div>
                 <div class="yourReviewHolder">
                     <div wicket:id="currentUserBookReview"></div>
                 </div>

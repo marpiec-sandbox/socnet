@@ -47,6 +47,7 @@
    .bookDetailsPanel {
 
        .standardContainer;
+       min-height: 300px;
 
         .icon {
             background-color: white;
@@ -80,35 +81,26 @@
            margin-top: 20px;
         }
 
-        .buttons {
+
+        .ratingHolder {
             float: right;
-            .buttonHolder {
-                display: block;
-                margin-bottom: 15px;
+            margin-right: 10px;
+            text-align: center;
+
+            .ratingTitle {
+               font-weight: bold;
+               color: @mainThemeFontColor;
             }
-
-            .ratingHolder {
-                text-align: center;
-                left: -1px;
-                position: relative;
-
-                .ratingTitle {
-                   font-weight: bold;
-                   color: @mainThemeFontColor;
-                }
-                .rating {
-                    margin-bottom: 6px;
-                    margin-left: 7px;
-                    margin-top: 5px;
-                }
-                .ratingVotes {
-                    font-size: @smallFontSize;
-                }
+            .rating {
+                margin-bottom: 6px;
+                margin-left: 7px;
+                margin-top: 5px;
             }
-
-
-
+            .ratingVotes {
+                font-size: @smallFontSize;
+            }
         }
+
 
         .ratings {
             .voteLabel {
@@ -139,12 +131,6 @@
      .bookOwnership {
          .standardContainer;
 
-         height: 164px;
-
-         .title {
-             font-weight: bold;
-             margin-bottom: 10px;
-         }
      }
 
 
@@ -155,7 +141,7 @@
         position: relative;
 
         .reviewText {
-            width: 815px;
+            width: 580px;
             height: 270px;
         }
 
@@ -205,15 +191,12 @@
 
        .yourReviewHolder {
 
-           margin-top: 20px;
-
            .yourReviewTitle {
                font-size: 14px;
                font-weight: bold;
                border-bottom: 1px solid #444444;
                margin-bottom: 10px;
                padding-bottom: 5px;
-               width: 50%;
            }
        }
 
@@ -232,7 +215,6 @@
                border-bottom: 1px solid #444444;
                margin-bottom: 10px;
                padding-bottom: 3px;
-               width: 70%;
             }
 
             .bookRating {
