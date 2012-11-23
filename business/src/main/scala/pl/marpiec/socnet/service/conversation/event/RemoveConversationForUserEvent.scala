@@ -1,20 +1,23 @@
 package pl.marpiec.socnet.service.conversation.event
 
 import pl.marpiec.cqrs.{Aggregate, Event}
-import pl.marpiec.socnet.model.ConversationInfo
+import pl.marpiec.socnet.model.Conversation
+import pl.marpiec.util.UID
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
-class RemoveConversationForUserEvent() extends Event {
+class RemoveConversationForUserEvent(val userId: UID) extends Event {
 
   def applyEvent(aggregate: Aggregate) {
-    val conversationInfo = aggregate.asInstanceOf[ConversationInfo]
-    conversationInfo.deleted = true
-    conversationInfo.participating = false
+    val conversation = aggregate.asInstanceOf[Conversation]
+
+    conversation.invitedUserIds = conversation.invitedUserIds.filterNot(_ == userId)
+    conversation.participantsUserIds = conversation.participantsUserIds.filterNot(_ == userId)
+    conversation.previousUserIds ::= userId
   }
 
-  def entityClass = classOf[ConversationInfo]
+  def entityClass = classOf[Conversation]
 
 }

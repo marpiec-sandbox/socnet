@@ -39,6 +39,6 @@ class ConversationSummaryPanel(id: String, val conversation: Conversation, users
   }
 
   def createLinkToConversation: BookmarkablePageLink[_] = {
-    new BookmarkablePageLink("conversationLink", classOf[ConversationPage], new PageParameters().add(ConversationPage.CONVERSATION_ID_PARAM, conversation.id))
+    ConversationPage.getLink("conversationLink", conversation.id)
   }
 }

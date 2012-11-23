@@ -29,7 +29,7 @@ class RecentConversationsSummaryPanel(id: String) extends Panel(id) {
 
       userConversations.foreach(conversation => {
 
-        val users = userDatabase.getUsersByIds(conversation.participantsUserIds)
+        val users = userDatabase.getUsersByIds(conversation.participantsUserIds ::: conversation.invitedUserIds ::: conversation.previousUserIds)
 
         add(new AbstractItem(newChildId()) {
           add(new SimpleConversationSummaryPanel("conversationSummary", conversation, users, conversationInfoMap.get(conversation.id)))

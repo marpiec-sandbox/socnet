@@ -14,15 +14,15 @@ trait ConversationCommand {
 
   def createMessage(userId: UID, id: UID, version: Int, messageText: String, messageId: UID)
 
-  def addParticipant(userId: UID, id: UID, version: Int, message: String, addedParticipantUserId: UID)
+  def addParticipant(userId: UID, id: UID, version: Int, addedParticipantUserId: UID)
 
   def userHasReadConversation(userId: UID, conversationInfoId: UID, version: Int)
 
-  def removeConversation(userId: UID, conversationInfoId: UID, version: Int)
+  def removeConversationForUser(userId: UID, conversationId: UID, version: Int, removingUserId: UID)
 
-  def enterConversation(userId: UID, conversationInfoId: UID, version: Int)
+  def enterConversation(userId: UID, conversationId: UID, version: Int, enteringUserId: UID)
 
-  def exitConversation(userId: UID, conversationInfoId: UID, version: Int)
+  def exitConversation(userId: UID, conversationId: UID, version: Int, exitingUserId: UID)
 
 
 }

@@ -40,15 +40,16 @@ class ConversationCommandTest {
     assertNotNull(conversation)
     assertEquals(conversation.title, "Test conversation")
     assertEquals(conversation.creatorUserId, participantAUserId)
-    assertEquals(conversation.participantsUserIds.length, 3)
+    assertEquals(conversation.invitedUserIds.length, 2)
+    assertEquals(conversation.participantsUserIds.length, 1)
     assertEquals(conversation.messages.size, 1)
 
-    var conversationInfoForParticipantAOption = conversationInfoDatabase.getConversationInfo(participantAUserId, conversationId)
+    val conversationInfoForParticipantAOption = conversationInfoDatabase.getConversationInfo(participantAUserId, conversationId)
     assertTrue(conversationInfoForParticipantAOption.isDefined)
 
     // First User reads conversation
 
-    var conversationInfoForParticipantA = conversationInfoForParticipantAOption.get
+    val conversationInfoForParticipantA = conversationInfoForParticipantAOption.get
 
     conversationCommand.userHasReadConversation(participantAUserId, conversationInfoForParticipantA.id, conversationInfoForParticipantA.version)
 
@@ -69,6 +70,16 @@ class ConversationCommandTest {
 
     val thirdMessageId = uidGenerator.nextUid
 
+    // accepting invitation by participant B
+
+    conversationCommand.enterConversation(participantBUserId, conversationId, conversation.version, participantBUserId)
+    conversation = dataStore.getEntity(classOf[Conversation], conversationId).asInstanceOf[Conversation]
+
+    assertEquals(conversation.invitedUserIds.length, 1)
+    assertEquals(conversation.participantsUserIds.length, 2)
+    assertFalse(conversation.invitedUserIds.contains(participantBUserId))
+    assertTrue(conversation.participantsUserIds.contains(participantBUserId))
+
     // sending message by other participant
 
     conversationCommand.createMessage(participantBUserId, conversationId, conversation.version, "Hello first user", thirdMessageId)
@@ -85,37 +96,48 @@ class ConversationCommandTest {
     // Adding fourth participant
 
     val participantDUserId = uidGenerator.nextUid
-    conversationCommand.addParticipant(participantBUserId, conversationId, conversation.version, "Hi Marcin, join our discussion", participantDUserId)
+    conversationCommand.addParticipant(participantBUserId, conversationId, conversation.version, participantDUserId)
 
     conversation = dataStore.getEntity(classOf[Conversation], conversationId).asInstanceOf[Conversation]
-    assertEquals(conversation.participantsUserIds.length, 4)
+    assertEquals(conversation.invitedUserIds.length, 2)
+    assertEquals(conversation.participantsUserIds.length, 2)
 
     // Second participant removes conversation from his conversations
 
-    var participantBConversationInfo = conversationInfoDatabase.getConversationInfo(participantBUserId, conversationId).get
-    conversationCommand.removeConversation(participantBUserId, participantBConversationInfo.id, participantBConversationInfo.version)
-    conversation = dataStore.getEntity(classOf[Conversation], conversationId).asInstanceOf[Conversation]
-    assertEquals(conversation.participantsUserIds.length, 4)
 
-    participantBConversationInfo = conversationInfoDatabase.getConversationInfo(participantBUserId, conversationId).get
-    assertTrue(participantBConversationInfo.deleted)
-    assertFalse(participantBConversationInfo.participating)
-    
+    conversationCommand.removeConversationForUser(participantBUserId, conversationId, conversation.version, participantBUserId)
+    conversation = dataStore.getEntity(classOf[Conversation], conversationId).asInstanceOf[Conversation]
+    assertEquals(conversation.participantsUserIds.length, 1)
+    assertEquals(conversation.invitedUserIds.length, 2)
+
+    // Third participant enters conversation
+
+    conversationCommand.enterConversation(participantCUserId, conversationId, conversation.version, participantCUserId)
+    conversation = dataStore.getEntity(classOf[Conversation], conversationId).asInstanceOf[Conversation]
+
+    assertEquals(conversation.participantsUserIds.length, 2)
+    assertEquals(conversation.invitedUserIds.length, 1)
+    assertFalse(conversation.invitedUserIds.contains(participantCUserId))
+    assertTrue(conversation.participantsUserIds.contains(participantCUserId))
 
     // Third participant lefts conversation
-    var participantCConversationInfo = conversationInfoDatabase.getConversationInfo(participantCUserId, conversationId).get
-    conversationCommand.exitConversation(participantCUserId, participantCConversationInfo.id, participantCConversationInfo.version)
 
-    participantCConversationInfo = conversationInfoDatabase.getConversationInfo(participantCUserId, conversationId).get
-    assertFalse(participantCConversationInfo.deleted)
-    assertFalse(participantCConversationInfo.participating)
+    conversationCommand.exitConversation(participantCUserId, conversationId, conversation.version, participantCUserId)
+    conversation = dataStore.getEntity(classOf[Conversation], conversationId).asInstanceOf[Conversation]
+
+    assertEquals(conversation.participantsUserIds.length, 1)
+    assertEquals(conversation.invitedUserIds.length, 2)
+    assertTrue(conversation.invitedUserIds.contains(participantCUserId))
+    assertFalse(conversation.participantsUserIds.contains(participantCUserId))
 
 
     // Third participant comes back to conversation
-    conversationCommand.enterConversation(participantCUserId, participantCConversationInfo.id, participantCConversationInfo.version)
+    conversationCommand.enterConversation(participantCUserId, conversationId, conversation.version, participantCUserId)
+    conversation = dataStore.getEntity(classOf[Conversation], conversationId).asInstanceOf[Conversation]
 
-    participantCConversationInfo = conversationInfoDatabase.getConversationInfo(participantCUserId, conversationId).get
-    assertFalse(participantCConversationInfo.deleted)
-    assertTrue(participantCConversationInfo.participating)
+    assertEquals(conversation.participantsUserIds.length, 2)
+    assertEquals(conversation.invitedUserIds.length, 1)
+    assertFalse(conversation.invitedUserIds.contains(participantCUserId))
+    assertTrue(conversation.participantsUserIds.contains(participantCUserId))
   }
 }

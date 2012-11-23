@@ -19,7 +19,7 @@ class SimpleConversationSummaryPanel(id: String, val conversation: Conversation,
 
   val unreadMessageCount = conversation.calculateUnreadMessagesCount(conversationInfoOption)
 
-  add(new BookmarkablePageLink("conversationLink", classOf[ConversationPage], createParametersForLink) {
+  add(new BookmarkablePageLink("conversationLink", classOf[ConversationPage], ConversationPage.getParametersForLink(conversation.id)) {
     add(new Label("conversationTitle", conversation.title))
     add(new Label("lastMessageUsername", getUserById(conversation.messages.head.authorUserId).fullName))
     add(new Label("lastMessageTime", StringFormattingUtil.printDateTime(conversation.messages.head.sentTime)))
@@ -31,7 +31,4 @@ class SimpleConversationSummaryPanel(id: String, val conversation: Conversation,
     users.find(user => user.id == userId).get
   }
 
-  def createParametersForLink: PageParameters = {
-    new PageParameters().add(ConversationPage.CONVERSATION_ID_PARAM, conversation.id)
-  }
 }

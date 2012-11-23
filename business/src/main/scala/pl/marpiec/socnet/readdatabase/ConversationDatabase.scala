@@ -12,5 +12,5 @@ trait ConversationDatabase {
 
   def getConversationById(id: UID): Option[Conversation]
 
-  def getConversationsByParticipantUserId(id: UID): List[Conversation]
+  def getConversationsByParticipantOrInvitedUserId(id: UID): List[Conversation]
 }

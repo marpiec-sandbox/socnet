@@ -40,9 +40,9 @@ class ConversationDatabaseMockImplTest {
     assertEquals(conversationOption.get.id, conversationId)
     assertEquals(conversationOption.get.title, "Database test conversation")
 
-    val conversationsOfA = conversationDatabase.getConversationsByParticipantUserId(participantAUserId)
-    val conversationsOfB = conversationDatabase.getConversationsByParticipantUserId(participantBUserId)
-    val conversationsOfC = conversationDatabase.getConversationsByParticipantUserId(nonParticipantCUserId)
+    val conversationsOfA = conversationDatabase.getConversationsByParticipantOrInvitedUserId(participantAUserId)
+    val conversationsOfB = conversationDatabase.getConversationsByParticipantOrInvitedUserId(participantBUserId)
+    val conversationsOfC = conversationDatabase.getConversationsByParticipantOrInvitedUserId(nonParticipantCUserId)
 
     assertEquals(conversationsOfA.size, 1)
     assertEquals(conversationsOfB.size, 1)

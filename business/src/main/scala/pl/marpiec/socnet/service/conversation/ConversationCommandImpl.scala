@@ -35,24 +35,24 @@ class ConversationCommandImpl @Autowired()(val eventStore: EventStore, val uidGe
     eventStore.addEvent(new EventRow(userId, id, version, new CreateMessageEvent(userId, messageText, new LocalDateTime(), messageId)))
   }
 
-  def addParticipant(userId: UID, id: UID, version: Int, message: String, addedParticipantUserId: UID) {
-    eventStore.addEvent(new EventRow(userId, id, version, new AddParticipantEvent(userId, message, addedParticipantUserId)))
+  def addParticipant(userId: UID, id: UID, version: Int, addedParticipantUserId: UID) {
+    eventStore.addEvent(new EventRow(userId, id, version, new AddParticipantEvent(addedParticipantUserId)))
   }
 
   def userHasReadConversation(userId: UID, conversationInfoId: UID, version: Int) {
     eventStore.addEvent(new EventRow(userId, conversationInfoId, version, new UserHasReadConversationEvent(new LocalDateTime())))
   }
 
-  def removeConversation(userId: UID, conversationInfoId: UID, version: Int) {
-    eventStore.addEvent(new EventRow(userId, conversationInfoId, version, new RemoveConversationForUserEvent))
+  def removeConversationForUser(userId: UID, conversationId: UID, version: Int, removingUserId: UID) {
+    eventStore.addEvent(new EventRow(userId, conversationId, version, new RemoveConversationForUserEvent(removingUserId)))
   }
 
-  def enterConversation(userId: UID, conversationInfoId: UID, version: Int) {
-    eventStore.addEvent(new EventRow(userId, conversationInfoId, version, new EnterConversationForUserEvent))
+  def enterConversation(userId: UID, conversationId: UID, version: Int, enteringUserId: UID) {
+    eventStore.addEvent(new EventRow(userId, conversationId, version, new EnterConversationForUserEvent(enteringUserId)))
   }
 
-  def exitConversation(userId: UID, conversationInfoId: UID, version: Int) {
-    eventStore.addEvent(new EventRow(userId, conversationInfoId, version, new ExitConversationForUserEvent))
+  def exitConversation(userId: UID, conversationId: UID, version: Int, exitingUserId: UID) {
+    eventStore.addEvent(new EventRow(userId, conversationId, version, new ExitConversationForUserEvent(exitingUserId)))
   }
 
 

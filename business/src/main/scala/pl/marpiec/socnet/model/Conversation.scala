@@ -12,7 +12,10 @@ class Conversation extends Aggregate(null, 0) {
 
   var creatorUserId: UID = _
   var title: String = ""
-  var participantsUserIds: List[UID] = List()
+  var participantsUserIds = List[UID]()
+  var invitedUserIds = List[UID]()
+  var previousUserIds = List[UID]()
+
   var messages = List[Message]()
 
   def calculateUnreadMessagesCount(conversationInfoOption: Option[ConversationInfo]): Int = {
@@ -22,6 +25,10 @@ class Conversation extends Aggregate(null, 0) {
       messages.size
     }
   }
+
+  def userParticipating(userId:UID) = participantsUserIds.contains(userId)
+
+  def userInvited(userId:UID) = invitedUserIds.contains(userId)
 
   def copy = {
     BeanUtil.copyProperties(new Conversation, this)

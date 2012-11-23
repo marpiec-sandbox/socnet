@@ -77,7 +77,7 @@ class StartConversationPage(parameters: PageParameters) extends SecureWebPage(So
         conversationCommand.createConversation(session.userId, formModel.conversationTitle, createParticipantsList, conversationId,
           formModel.messageText, messageId)
 
-        setResponsePage(classOf[ConversationPage], new PageParameters().add(ConversationPage.CONVERSATION_ID_PARAM, conversationId))
+        setResponsePage(classOf[ConversationPage], ConversationPage.getParametersForLink(conversationId))
 
       } else {
         if (StringUtils.isBlank(formModel.messageText)) {

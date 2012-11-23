@@ -27,8 +27,10 @@ class ConversationDatabaseNoSqlImpl @Autowired()(dataStore: DataStore)
 
   def getConversationById(id: UID) = connector.getAggregateById(id, classOf[Conversation])
 
-  def getConversationsByParticipantUserId(id: UID): List[Conversation] = {
-    connector.findMultipleAggregatesByQuery(QueryBuilder.start("participantsUserIds").is(id.uid).get(), classOf[Conversation])
+  def getConversationsByParticipantOrInvitedUserId(id: UID): List[Conversation] = {
+    val participating = connector.findMultipleAggregatesByQuery(QueryBuilder.start("participantsUserIds").is(id.uid).get(), classOf[Conversation])
+    val invited = connector.findMultipleAggregatesByQuery(QueryBuilder.start("invitedUserIds").is(id.uid).get(), classOf[Conversation])
+    participating ::: invited
   }
 
   def onEntityChanged(conversation: Conversation) {

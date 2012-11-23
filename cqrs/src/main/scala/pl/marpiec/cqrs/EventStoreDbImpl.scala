@@ -79,7 +79,7 @@ class EventStoreDbImpl @Autowired()(val jdbcTemplate: JdbcTemplate) extends Even
       eventRow.expectedVersion = currentVersion
     }
 
-    if (currentVersion > eventRow.expectedVersion) {
+    if (currentVersion != eventRow.expectedVersion) {
       throw new ConcurrentAggregateModificationException("Expected " + eventRow.expectedVersion + " but is " + currentVersion)
     }
 

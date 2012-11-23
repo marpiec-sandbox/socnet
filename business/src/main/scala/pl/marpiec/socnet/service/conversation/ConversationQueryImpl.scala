@@ -15,7 +15,7 @@ class ConversationQueryImpl @Autowired()(val conversationDatabase: ConversationD
                                          conversationInfoDatabase: ConversationInfoDatabase) extends ConversationQuery {
 
   def loadConversationsOfUser(userId: UID): (List[Conversation], Map[UID, ConversationInfo]) = {
-    val userConversations: List[Conversation] = conversationDatabase.getConversationsByParticipantUserId(userId)
+    val userConversations: List[Conversation] = conversationDatabase.getConversationsByParticipantOrInvitedUserId(userId)
     val conversationInfoMap: Map[UID, ConversationInfo] = loadConversationInfo(userId, userConversations)
     (userConversations, conversationInfoMap)
   }

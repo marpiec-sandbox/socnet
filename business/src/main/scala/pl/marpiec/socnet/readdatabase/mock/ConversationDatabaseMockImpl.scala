@@ -22,9 +22,9 @@ class ConversationDatabaseMockImpl @Autowired()(dataStore: DataStore)
 
   def getConversationById(id: UID): Option[Conversation] = getById(id)
 
-  def getConversationsByParticipantUserId(id: UID): List[Conversation] = {
+  def getConversationsByParticipantOrInvitedUserId(id: UID): List[Conversation] = {
     getAll.filter(conversation => {
-      conversation.participantsUserIds.contains(id)
+      conversation.userParticipating(id) || conversation.userInvited(id)
     })
   }
 }

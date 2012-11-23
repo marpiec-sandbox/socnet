@@ -6,7 +6,6 @@ import pl.marpiec.socnet.web.authorization.SecureWebPage
 import pl.marpiec.socnet.constant.SocnetRoles
 import org.apache.wicket.spring.injection.annot.SpringBean
 import pl.marpiec.socnet.service.conversation.ConversationCommand
-import pl.marpiec.util.UID
 import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException
 import pl.marpiec.socnet.readdatabase.UserDatabase
 import org.apache.wicket.markup.repeater.RepeatingView
@@ -26,6 +25,8 @@ import pl.marpiec.socnet.readdatabase.{ConversationInfoDatabase, ConversationDat
 import pl.marpiec.socnet.model.Conversation
 import pl.marpiec.socnet.web.component.wicket.form.{OneButtonAjaxForm, StandardAjaxSecureForm}
 import pl.marpiec.socnet.web.component.user.UserSummaryPreviewPanel
+import org.apache.wicket.markup.html.link.BookmarkablePageLink
+import pl.marpiec.util.{IdProtectionUtil, UID}
 
 /**
  * @author Marcin Pieciukiewicz
@@ -34,6 +35,14 @@ import pl.marpiec.socnet.web.component.user.UserSummaryPreviewPanel
 
 object ConversationPage {
   val CONVERSATION_ID_PARAM = "conversationId"
+
+  def getLink(componentId:String, conversationId:UID): BookmarkablePageLink[_] = {
+    new BookmarkablePageLink(componentId, classOf[ConversationPage], getParametersForLink(conversationId))
+  }
+
+  def getParametersForLink(conversationId:UID): PageParameters = {
+    new PageParameters().add(CONVERSATION_ID_PARAM, IdProtectionUtil.encrypt(conversationId))
+  }
 }
 
 
@@ -50,8 +59,15 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
 
   // load data
   var conversation = getConversationOrThrow404
+  checkIfUserCanReadConversationOrThrow403
 
+
+
+  //TODO optimize
   var participants = userDatabase.getUsersByIds(conversation.participantsUserIds)
+  var invitedUsers = userDatabase.getUsersByIds(conversation.invitedUserIds)
+  var previousUsers = userDatabase.getUsersByIds(conversation.previousUserIds)
+  var allUsers = participants ::: invitedUsers ::: previousUsers
 
   val conversationInfo = conversationInfoDatabase.getConversationInfo(session.userId, conversation.id).
     getOrElse(throw new IllegalStateException("User has no defined info for conversation"))
@@ -64,13 +80,12 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
 
   var conversationPreviewPanel = addAndReturn(createConversationPreview)
 
-
-
-
-
   private def reloadConversationFromDB {
     conversation = conversationDatabase.getConversationById(conversation.id).get
     participants = userDatabase.getUsersByIds(conversation.participantsUserIds)
+    invitedUsers = userDatabase.getUsersByIds(conversation.invitedUserIds)
+    previousUsers = userDatabase.getUsersByIds(conversation.previousUserIds)
+    allUsers = participants ::: invitedUsers ::: previousUsers
     conversationPreviewPanel = createConversationPreview
     ConversationPage.this.addOrReplace(conversationPreviewPanel)
   }
@@ -91,6 +106,14 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
         })
       })
 
+      add(new RepeatingView("invitedUser") {
+        invitedUsers.foreach(user => {
+          add(new AbstractItem(newChildId()) {
+            add(new UserSummaryPreviewPanel("userSummaryPreview", user))
+          })
+        })
+      })
+
       add(new RepeatingView("message") {
         conversation.messages.reverse.foreach(message => {
           add(new AbstractItem(newChildId()) {
@@ -100,19 +123,19 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
       })
 
       add(new OneButtonAjaxForm("exitConversationButton", "Opuść rozmowę", (target: AjaxRequestTarget) => {
-        conversationCommand.exitConversation(session.userId, conversationInfo.id, conversationInfo.version)
-        setResponsePage(classOf[ConversationPage], new PageParameters().add(ConversationPage.CONVERSATION_ID_PARAM, conversation.id))
-      }).setVisible(conversationInfo.participating && !conversationInfo.deleted))
+        conversationCommand.exitConversation(session.userId, conversation.id, conversation.version, session.userId)
+        setResponsePage(classOf[ConversationPage], ConversationPage.getParametersForLink(conversation.id))
+      }).setVisible(conversation.userParticipating(session.userId)))
 
       add(new OneButtonAjaxForm("enterConversationButton", "Dołącz do rozmowy", (target: AjaxRequestTarget) => {
-        conversationCommand.enterConversation(session.userId, conversationInfo.id, conversationInfo.version)
-        setResponsePage(classOf[ConversationPage], new PageParameters().add(ConversationPage.CONVERSATION_ID_PARAM, conversation.id))
-      }).setVisible(!conversationInfo.participating && !conversationInfo.deleted))
+        conversationCommand.enterConversation(session.userId, conversation.id, conversation.version, session.userId)
+        setResponsePage(classOf[ConversationPage], ConversationPage.getParametersForLink(conversation.id))
+      }).setVisible(conversation.userInvited(session.userId)))
 
       add(new OneButtonAjaxForm("deleteConversationButton", "Usuń rozmowę", (target: AjaxRequestTarget) => {
-        conversationCommand.removeConversation(session.userId, conversationInfo.id, conversationInfo.version)
+        conversationCommand.removeConversationForUser(session.userId, conversation.id, conversation.version, session.userId)
         setResponsePage(classOf[UserConversationsPage])
-      }).setVisible(!conversationInfo.deleted))
+      }).setVisible(conversation.userInvited(session.userId) || conversation.userParticipating(session.userId)))
 
 
       // reply conversation form
@@ -173,19 +196,25 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
   }
 
   private def getConversationOrThrow404: Conversation = {
-    val conversationId = UID.parseOrZero(parameters.get(ConversationPage.CONVERSATION_ID_PARAM).toString)
+    val conversationId = IdProtectionUtil.decrypt(parameters.get(ConversationPage.CONVERSATION_ID_PARAM).toString)
 
     val conversationOption = conversationDatabase.getConversationById(conversationId)
 
-    if (conversationOption.isEmpty || !conversationOption.get.participantsUserIds.contains(session.userId)) {
+    if (conversationOption.isEmpty) {
       throw new AbortWithHttpErrorCodeException(404);
     }
     conversationOption.get
   }
 
   private def findUserInParticipants(userId: UID): User = {
-    participants.find(user => {
+    allUsers.find(user => {
       user.id == userId
     }).get
+  }
+
+  private def checkIfUserCanReadConversationOrThrow403() {
+    if(!conversation.userParticipating(session.userId) && !conversation.userInvited(session.userId)){
+      throw new AbortWithHttpErrorCodeException(403);
+    }
   }
 }

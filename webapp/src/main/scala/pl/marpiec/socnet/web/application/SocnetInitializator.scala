@@ -23,7 +23,14 @@ object SocnetInitializator {
     val start = System.currentTimeMillis
     print("Starting rebuilding read databases... ")
 
-    eventStore.callListenersForAllAggregates
+    try {
+      eventStore.callListenersForAllAggregates
+    } catch {
+      case e: Exception => {
+        println("REBUILDING DATABASE FAILED")
+        e.printStackTrace()
+      }
+    }
 
     val end = System.currentTimeMillis
     println("Done in " + (end - start) + " mills.")

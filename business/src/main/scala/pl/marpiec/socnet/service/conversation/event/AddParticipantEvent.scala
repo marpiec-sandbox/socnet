@@ -8,10 +8,11 @@ import pl.marpiec.socnet.model.Conversation
  * @author Marcin Pieciukiewicz
  */
 
-class AddParticipantEvent(val invitatingUserId: UID, val message: String, val addedParticipantUserId: UID) extends Event {
+class AddParticipantEvent(val addedParticipantUserId: UID) extends Event {
   def applyEvent(aggregate: Aggregate) {
     val conversation = aggregate.asInstanceOf[Conversation]
-    conversation.participantsUserIds ::= addedParticipantUserId
+    conversation.invitedUserIds ::= addedParticipantUserId
+    conversation.previousUserIds = conversation.previousUserIds.filterNot(_ == addedParticipantUserId)
   }
 
   def entityClass = classOf[Conversation]
