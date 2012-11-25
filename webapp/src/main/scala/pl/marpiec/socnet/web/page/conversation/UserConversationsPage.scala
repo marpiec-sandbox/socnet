@@ -26,7 +26,7 @@ class UserConversationsPage extends SecureWebPage(SocnetRoles.USER) {
 
     userConversations.foreach(conversation => {
 
-      val users = userDatabase.getUsersByIds(conversation.participantsUserIds)
+      val users = userDatabase.getUsersByIds(conversation.getAllUsersList)
 
       add(new AbstractItem(newChildId()) {
         add(new ConversationSummaryPanel("conversationSummary", conversation, users, conversationInfoMap.get(conversation.id)))

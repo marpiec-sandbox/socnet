@@ -30,6 +30,8 @@ class Conversation extends Aggregate(null, 0) {
 
   def userInvited(userId:UID) = invitedUserIds.contains(userId)
 
+  def getAllUsersList = participantsUserIds ::: invitedUserIds ::: previousUserIds
+
   def copy = {
     BeanUtil.copyProperties(new Conversation, this)
   }

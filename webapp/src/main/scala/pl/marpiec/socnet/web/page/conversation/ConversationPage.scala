@@ -63,22 +63,28 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
 
 
 
-  //TODO optimize
+  //TODO optimize loading of all users
   var participants = userDatabase.getUsersByIds(conversation.participantsUserIds)
   var invitedUsers = userDatabase.getUsersByIds(conversation.invitedUserIds)
   var previousUsers = userDatabase.getUsersByIds(conversation.previousUserIds)
   var allUsers = participants ::: invitedUsers ::: previousUsers
 
-  val conversationInfo = conversationInfoDatabase.getConversationInfo(session.userId, conversation.id).
-    getOrElse(throw new IllegalStateException("User has no defined info for conversation"))
-
-  conversationCommand.userHasReadConversation(session.userId, conversationInfo.id, conversationInfo.version)
-  conversationInfo.version = conversationInfo.version + 1
+  var lastReadTime = updateConversationReadTIme()
 
 
   // build schema
 
   var conversationPreviewPanel = addAndReturn(createConversationPreview)
+
+  private def updateConversationReadTIme() = {
+    val conversationInfo = conversationInfoDatabase.getConversationInfo(session.userId, conversation.id).
+      getOrElse(throw new IllegalStateException("User has no defined info for conversation"))
+    val previousReadTime = conversationInfo.lastReadTime
+    conversationCommand.userHasReadConversation(session.userId, conversationInfo.id, conversationInfo.version)
+    conversationInfo.version = conversationInfo.version + 1
+    previousReadTime
+  }
+
 
   private def reloadConversationFromDB {
     conversation = conversationDatabase.getConversationById(conversation.id).get
@@ -86,6 +92,9 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
     invitedUsers = userDatabase.getUsersByIds(conversation.invitedUserIds)
     previousUsers = userDatabase.getUsersByIds(conversation.previousUserIds)
     allUsers = participants ::: invitedUsers ::: previousUsers
+
+    lastReadTime = updateConversationReadTIme()
+
     conversationPreviewPanel = createConversationPreview
     ConversationPage.this.addOrReplace(conversationPreviewPanel)
   }
@@ -117,7 +126,9 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
       add(new RepeatingView("message") {
         conversation.messages.reverse.foreach(message => {
           add(new AbstractItem(newChildId()) {
-            add(new MessagePreviewPanel("messagePreview", message, findUserInParticipants(message.authorUserId)))
+            add(new MessagePreviewPanel(
+              "messagePreview", message,
+              findUserInParticipants(message.authorUserId), message.sentTime.isAfter(lastReadTime)))
           })
         })
       })
