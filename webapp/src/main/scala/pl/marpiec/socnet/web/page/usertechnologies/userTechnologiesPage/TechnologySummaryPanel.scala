@@ -8,7 +8,7 @@ import org.apache.wicket.markup.html.form.{ChoiceRenderer, DropDownChoice}
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior
 import org.apache.wicket.ajax.AjaxRequestTarget
 import pl.marpiec.socnet.constant.{TechnologyCurrentUsage, TechnologyLikeLevel, TechnologyKnowledgeLevel}
-import pl.marpiec.socnet.web.component.wicket.form.OneButtonAjaxForm
+import pl.marpiec.socnet.web.component.wicket.form.OneLinkAjaxForm
 import pl.marpiec.socnet.model.programmerprofile.KnownTechnology
 import org.apache.wicket.{Component, AttributeModifier}
 import pl.marpiec.socnet.web.page.usertechnologies.UserTechnologiesPage
@@ -64,7 +64,7 @@ class TechnologySummaryPanel(id: String, technologyName: String, knownTechnology
     }
   }))
 
-  add(new OneButtonAjaxForm("removeTechnologyButton", "OK", (target: AjaxRequestTarget) => {
+  add(new OneLinkAjaxForm("removeTechnologyButton", "OK", (target: AjaxRequestTarget) => {
 
     parent.correctTechnologyListsAfterRemoval(technologyName)
 

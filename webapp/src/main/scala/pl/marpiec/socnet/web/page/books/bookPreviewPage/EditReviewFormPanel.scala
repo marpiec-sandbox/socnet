@@ -15,7 +15,7 @@ import pl.marpiec.socnet.model.bookuserinfo.BookReview
 import pl.marpiec.socnet.service.bookuserinfo.BookUserInfoCommand
 import pl.marpiec.socnet.model.{BookUserInfo, Book}
 import pl.marpiec.cqrs.AggregatesUtil
-import pl.marpiec.socnet.web.component.wicket.form.{OneButtonAjaxForm, StandardAjaxSecureForm}
+import pl.marpiec.socnet.web.component.wicket.form.{OneLinkAjaxForm, StandardAjaxSecureForm}
 import org.apache.wicket.markup.html.WebMarkupContainer
 
 /**
@@ -30,7 +30,7 @@ class EditReviewFormPanel(id: String, book: Book, bookUserInfo: BookUserInfo, pa
 
   val currentUserId = getSession.asInstanceOf[SocnetSession].userId
 
-  add(new OneButtonAjaxForm("removeReviewButton", "Usuń recenzję", target => {
+  add(new OneLinkAjaxForm("removeReviewButton", "Usuń recenzję", target => {
 
     bookUserInfoCommand.removeBookReview(currentUserId, bookUserInfo.id, bookUserInfo.version)
 

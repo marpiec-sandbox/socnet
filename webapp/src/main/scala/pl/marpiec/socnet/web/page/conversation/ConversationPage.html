@@ -62,45 +62,30 @@
 
             <div class="columnB">
 
-                <div class="conversationActions">
-                    <div class="title">
-                        <div class="titleIcon"></div>
-                        rozmowa.
-                    </div>
+                <wicket:enclosure child="enterConversationButton">
+                    <div class="conversationInvitationAction">
+                        <div class="title">
+                            <div class="titleIcon"></div>
+                            zaproszenie.
+                        </div>
+                        <div class="invitationMessage">
+                            Masz zaproszenie do tej rozmowy.
+                        </div>
 
-                    <div class="buttons">
-                        <wicket:enclosure child="exitConversationButton">
-                            <div class="buttonHolder">
-                                <div wicket:id="exitConversationButton" class="element">exitConversationButton</div>
-                            </div>
-                        </wicket:enclosure>
-
-                        <wicket:enclosure child="enterConversationButton">
-                            <div class="buttonHolder">
-                                <div wicket:id="enterConversationButton" class="element">enterConversationButton</div>
-                            </div>
-                        </wicket:enclosure>
-                        <wicket:enclosure child="deleteConversationButton">
-                            <div class="buttonHolder">
-                                <div wicket:id="deleteConversationButton" class="element">deleteConversationButton</div>
-                            </div>
-                        </wicket:enclosure>
-
+                        <div wicket:id="enterConversationButton" class="invitationButton">enterConversationButton</div>
 
                     </div>
-
-                </div>
+                </wicket:enclosure>
 
                 <div class="participants">
                     <div class="title">
                         <div class="titleIcon"></div>
                         uczestnicy.
                     </div>
-
+                    <div wicket:id="noParticipantsLabel" class="noParticipantsLabel">Aktualnie nikt nie uczestniczy w tej rozmowie.</div>
                     <div wicket:id="participant">
                         <div wicket:id="userSummaryPreview">userSummaryPreview</div>
                     </div>
-
                 </div>
 
                 <div class="participants">
@@ -117,6 +102,20 @@
                         <div class="buttonHolder">
                             <a class="defaultButton">Zaproś nową osobę</a>
                         </div>
+                    </div>
+
+                </div>
+
+
+                <div class="conversationActions">
+                    <div class="title">
+                        <div class="titleIcon"></div>
+                        rozmowa.
+                    </div>
+
+                    <div class="buttons">
+                        <div wicket:id="exitConversationButton" class="element">exitConversationButton</div>
+                        <div wicket:id="deleteConversationButton" class="element">deleteConversationButton</div>
                     </div>
 
                 </div>

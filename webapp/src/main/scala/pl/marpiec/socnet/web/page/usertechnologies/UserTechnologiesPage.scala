@@ -12,7 +12,7 @@ import pl.marpiec.socnet.service.programmerprofile.ProgrammerProfileCommand
 import org.apache.wicket.markup.repeater.RepeatingView
 import org.apache.wicket.markup.html.list.AbstractItem
 import org.apache.wicket.markup.html.form.{ChoiceRenderer, DropDownChoice, TextField}
-import pl.marpiec.socnet.web.component.wicket.form.{OneButtonAjaxForm, StandardAjaxSecureForm}
+import pl.marpiec.socnet.web.component.wicket.form.{OneLinkAjaxForm, StandardAjaxSecureForm}
 import org.apache.commons.lang.StringUtils
 import pl.marpiec.socnet.model.ProgrammerProfile
 import org.apache.wicket.Component
@@ -49,7 +49,7 @@ class UserTechnologiesPage extends SecureWebPage(SocnetRoles.USER) {
   add(createTechnologyList)
 
 
-  val saveButton = addAndReturn(new OneButtonAjaxForm("saveChangesButton", "Zapisz zmiany", (target: AjaxRequestTarget) => {
+  val saveButton = addAndReturn(new OneLinkAjaxForm("saveChangesButton", "Zapisz zmiany", (target: AjaxRequestTarget) => {
 
     programmerProfileCommand.changeTechnologies(session.userId, programmerProfile.id, programmerProfile.version, addedOrChangedTechnologies, removedTechnologies)
     setResponsePage(classOf[UserTechnologiesPage])

@@ -54,8 +54,31 @@
             width: 907px;
         }
 
+        .noParticipantsLabel {
+            text-align: center;
+            margin: 20px 0;
+        }
+
         .participants, .conversationActions {
             .standardContainer;
+        }
+
+        .conversationActions {
+            button {
+                background-color: @mainThemeComplementaryColor;
+                color: white;
+            }
+        }
+
+        .conversationInvitationAction {
+            .standardContainer;
+            .invitationMessage {
+                text-align: center;
+            }
+            .invitationButton{
+                text-align: center;
+                margin-top: 20px;
+            }
         }
 
 

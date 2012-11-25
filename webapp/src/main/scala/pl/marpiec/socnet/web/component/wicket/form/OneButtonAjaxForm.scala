@@ -12,31 +12,6 @@ import org.apache.wicket.markup.html.basic.Label
  * @author Marcin Pieciukiewicz
  */
 
-class OneButtonAjaxForm(id: String, buttonLabel: String, onClick: (AjaxRequestTarget) => Unit) extends Panel(id) {
-
-  add(new Form[SecureFormModel]("form") {
-
-    setModel(new CompoundPropertyModel[SecureFormModel](new SecureFormModel))
-
-    add(new HiddenField[String]("sessionToken"))
-
-    override def onInitialize() {
-      super.onInitialize()
-
-      getModel.asInstanceOf[CompoundPropertyModel[SecureFormModel]].getObject.sessionToken =
-        getSession.asInstanceOf[SocnetSession].sessionToken
-    }
-
-    add(new SecureAjaxButton[SecureFormModel]("button") {
-      add(new Label("label", buttonLabel))
-
-      def onSecureSubmit(target: AjaxRequestTarget, formModel: SecureFormModel) {
-        onClick(target)
-      }
-    })
-
-
-  })
-
-}
+class OneButtonAjaxForm(id: String, buttonLabel: String, onClick: (AjaxRequestTarget) => Unit)
+  extends OneLinkAjaxForm(id, buttonLabel, onClick)
 

@@ -23,7 +23,7 @@ import pl.marpiec.socnet.model.User
 import pl.marpiec.socnet.web.page.profile.UserProfilePreviewPage
 import pl.marpiec.socnet.readdatabase.{ConversationInfoDatabase, ConversationDatabase}
 import pl.marpiec.socnet.model.Conversation
-import pl.marpiec.socnet.web.component.wicket.form.{OneButtonAjaxForm, StandardAjaxSecureForm}
+import pl.marpiec.socnet.web.component.wicket.form.{OneButtonAjaxForm, OneLinkAjaxForm, StandardAjaxSecureForm}
 import pl.marpiec.socnet.web.component.user.UserSummaryPreviewPanel
 import org.apache.wicket.markup.html.link.BookmarkablePageLink
 import pl.marpiec.util.{IdProtectionUtil, UID}
@@ -107,6 +107,8 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
 
       add(new Label("conversationTitle", conversation.title))
 
+      add(new WebMarkupContainer("noParticipantsLabel").setVisible(participants.isEmpty))
+
       add(new RepeatingView("participant") {
         participants.foreach(user => {
           add(new AbstractItem(newChildId()) {
@@ -143,10 +145,10 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
         setResponsePage(classOf[ConversationPage], ConversationPage.getParametersForLink(conversation.id))
       }).setVisible(conversation.userInvited(session.userId)))
 
-      add(new OneButtonAjaxForm("deleteConversationButton", "Usuń rozmowę", (target: AjaxRequestTarget) => {
+      add(new OneButtonAjaxForm("deleteConversationButton", "Zrezygnuj z zaproszenia", (target: AjaxRequestTarget) => {
         conversationCommand.removeConversationForUser(session.userId, conversation.id, conversation.version, session.userId)
         setResponsePage(classOf[UserConversationsPage])
-      }).setVisible(conversation.userInvited(session.userId) || conversation.userParticipating(session.userId)))
+      }).setVisible(conversation.userInvited(session.userId) || !conversation.userParticipating(session.userId)))
 
 
       // reply conversation form
