@@ -14,19 +14,19 @@ import org.apache.wicket.markup.html.basic.Label
 import pl.marpiec.socnet.web.component.conversation.MessagePreviewPanel
 import pl.marpiec.socnet.web.component.editor.BBCodeEditor
 import org.apache.wicket.model.{PropertyModel, CompoundPropertyModel}
-import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.commons.lang.StringUtils
 import pl.marpiec.cqrs.UidGenerator
 import pl.marpiec.cqrs.exception.ConcurrentAggregateModificationException
 import org.apache.wicket.markup.html.WebMarkupContainer
 import pl.marpiec.socnet.model.User
-import pl.marpiec.socnet.web.page.profile.UserProfilePreviewPage
 import pl.marpiec.socnet.readdatabase.{ConversationInfoDatabase, ConversationDatabase}
 import pl.marpiec.socnet.model.Conversation
-import pl.marpiec.socnet.web.component.wicket.form.{OneButtonAjaxForm, OneLinkAjaxForm, StandardAjaxSecureForm}
+import pl.marpiec.socnet.web.component.wicket.form.{OneButtonAjaxForm, StandardAjaxSecureForm}
 import pl.marpiec.socnet.web.component.user.UserSummaryPreviewPanel
 import org.apache.wicket.markup.html.link.BookmarkablePageLink
 import pl.marpiec.util.{IdProtectionUtil, UID}
+import org.apache.wicket.util.time.Duration
+import org.apache.wicket.ajax.{AbstractAjaxTimerBehavior, AjaxRequestTarget}
 
 /**
  * @author Marcin Pieciukiewicz
@@ -36,11 +36,11 @@ import pl.marpiec.util.{IdProtectionUtil, UID}
 object ConversationPage {
   val CONVERSATION_ID_PARAM = "conversationId"
 
-  def getLink(componentId:String, conversationId:UID): BookmarkablePageLink[_] = {
+  def getLink(componentId: String, conversationId: UID): BookmarkablePageLink[_] = {
     new BookmarkablePageLink(componentId, classOf[ConversationPage], getParametersForLink(conversationId))
   }
 
-  def getParametersForLink(conversationId:UID): PageParameters = {
+  def getParametersForLink(conversationId: UID): PageParameters = {
     new PageParameters().add(CONVERSATION_ID_PARAM, IdProtectionUtil.encrypt(conversationId))
   }
 }
@@ -62,7 +62,6 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
   checkIfUserCanReadConversationOrThrow403
 
 
-
   //TODO optimize loading of all users
   var participants = userDatabase.getUsersByIds(conversation.participantsUserIds)
   var invitedUsers = userDatabase.getUsersByIds(conversation.invitedUserIds)
@@ -82,6 +81,19 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
   var conversationInfoPanel = addAndReturn(createConversationInfoPanel)
 
   add(new WebMarkupContainer("replyButton").setVisible(conversation.userParticipating(session.userId)))
+
+
+  add(new AbstractAjaxTimerBehavior(Duration.seconds(15)) {
+    def onTimer(target: AjaxRequestTarget) {
+      val previousConversationVersion = conversation.version
+      reloadConversationFromDB
+      if (conversation.version > previousConversationVersion) {
+        target.add(conversationInfoPanel)
+        target.add(conversationMessagesPreviewPanel)
+      }
+
+    }
+  })
 
   // reply conversation form
   add(new StandardAjaxSecureForm[ReplyConversationFormModel]("replyForm") {
@@ -156,7 +168,7 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
     conversationMessagesPreviewPanel = ConversationPage.this.addOrReplaceAndReturn(createConversationMessagesPreviewPanel)
   }
 
-  
+
   private def createConversationMessagesPreviewPanel = {
     new WebMarkupContainer("messagesContainer") {
       setOutputMarkupId(true)
@@ -242,7 +254,7 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
   }
 
   private def checkIfUserCanReadConversationOrThrow403() {
-    if(!conversation.userParticipating(session.userId) && !conversation.userInvited(session.userId)){
+    if (!conversation.userParticipating(session.userId) && !conversation.userInvited(session.userId)) {
       throw new AbortWithHttpErrorCodeException(403);
     }
   }
