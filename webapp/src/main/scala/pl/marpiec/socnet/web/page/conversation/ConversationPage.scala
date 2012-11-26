@@ -35,6 +35,7 @@ import org.apache.wicket.ajax.{AbstractAjaxTimerBehavior, AjaxRequestTarget}
 
 object ConversationPage {
   val CONVERSATION_ID_PARAM = "conversationId"
+  val CONVERSATION_REFRESH_PERIOD = 5
 
   def getLink(componentId: String, conversationId: UID): BookmarkablePageLink[_] = {
     new BookmarkablePageLink(componentId, classOf[ConversationPage], getParametersForLink(conversationId))
@@ -46,7 +47,7 @@ object ConversationPage {
 }
 
 
-class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetRoles.USER) {
+class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetRoles.USER) with ConversationListener {
 
   // dependencies
 
@@ -83,17 +84,37 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
   add(new WebMarkupContainer("replyButton").setVisible(conversation.userParticipating(session.userId)))
 
 
-  add(new AbstractAjaxTimerBehavior(Duration.seconds(15)) {
-    def onTimer(target: AjaxRequestTarget) {
-      val previousConversationVersion = conversation.version
-      reloadConversationFromDB
-      if (conversation.version > previousConversationVersion) {
-        target.add(conversationInfoPanel)
-        target.add(conversationMessagesPreviewPanel)
-      }
+  var conversationHasChanged = false
 
+  def onConversationChanged() {
+    conversationHasChanged = true
+  }
+
+
+
+  ConversationsListenerCenter.addListener(conversation.id, this)
+
+  add(new AbstractAjaxTimerBehavior(Duration.seconds(ConversationPage.CONVERSATION_REFRESH_PERIOD)) {
+    def onTimer(target: AjaxRequestTarget) {
+      if(conversationHasChanged) {
+        updateConversationData(target)
+      }
     }
   })
+
+
+  override def onRemove() {
+    ConversationsListenerCenter.removeListener(conversation.id, this)
+    super.onRemove()
+  }
+
+  def updateConversationData(target:AjaxRequestTarget) {
+    conversationHasChanged = false
+    ConversationsListenerCenter.addListener(conversation.id, ConversationPage.this)
+    reloadConversationFromDB
+    target.add(conversationInfoPanel)
+    target.add(conversationMessagesPreviewPanel)
+  }
 
   // reply conversation form
   add(new StandardAjaxSecureForm[ReplyConversationFormModel]("replyForm") {
@@ -122,11 +143,12 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
           formModel.warningMessage = ""
           formModel.messageText = ""
 
-          reloadConversationFromDB
-
-          target.add(conversationMessagesPreviewPanel)
           target.add(this.warningMessageLabel)
           target.appendJavaScript("clearBBEditor()")
+
+          ConversationsListenerCenter.conversationChanged(conversation.id)
+          updateConversationData(target)
+
 
         } else {
 
@@ -138,7 +160,6 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
           formModel.warningMessage = "Conversation has changed"
 
           reloadConversationFromDB
-
 
           target.add(conversationInfoPanel)
           target.add(conversationMessagesPreviewPanel)
@@ -154,6 +175,7 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
 
 
   //Methods
+
 
   private def reloadConversationFromDB {
     conversation = conversationDatabase.getConversationById(conversation.id).get
@@ -210,16 +232,19 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
       add(new OneButtonAjaxForm("enterConversationButton", "Dołącz do rozmowy", (target: AjaxRequestTarget) => {
         conversationCommand.enterConversation(session.userId, conversation.id, conversation.version, session.userId)
         setResponsePage(classOf[ConversationPage], ConversationPage.getParametersForLink(conversation.id))
+        ConversationsListenerCenter.conversationChanged(conversation.id)
       }).setVisible(conversation.userInvited(session.userId)))
 
       add(new OneButtonAjaxForm("exitConversationButton", "OK", (target: AjaxRequestTarget) => {
         conversationCommand.exitConversation(session.userId, conversation.id, conversation.version, session.userId)
         setResponsePage(classOf[ConversationPage], ConversationPage.getParametersForLink(conversation.id))
+        ConversationsListenerCenter.conversationChanged(conversation.id)
       }).setVisible(conversation.userParticipating(session.userId)))
 
       add(new OneButtonAjaxForm("deleteConversationButton", "OK", (target: AjaxRequestTarget) => {
         conversationCommand.removeConversationForUser(session.userId, conversation.id, conversation.version, session.userId)
         setResponsePage(classOf[UserConversationsPage])
+        ConversationsListenerCenter.conversationChanged(conversation.id)
       }).setVisible(conversation.userInvited(session.userId) || !conversation.userParticipating(session.userId)))
 
     }
