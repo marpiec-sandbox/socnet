@@ -35,7 +35,7 @@ import org.apache.wicket.ajax.{AbstractAjaxTimerBehavior, AjaxRequestTarget}
 
 object ConversationPage {
   val CONVERSATION_ID_PARAM = "conversationId"
-  val CONVERSATION_REFRESH_PERIOD = 5
+  val CONVERSATION_REFRESH_PERIOD = 30
 
   def getLink(componentId: String, conversationId: UID): BookmarkablePageLink[_] = {
     new BookmarkablePageLink(componentId, classOf[ConversationPage], getParametersForLink(conversationId))
