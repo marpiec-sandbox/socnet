@@ -64,18 +64,41 @@
         }
 
         .conversationActions {
-            button {
-                background-color: #F9E7CC;
-                border: 1px solid #F9B857;
-                color: @defaultFontColor;
-                cursor: pointer;
-                margin: 5px 10px;
 
-                &:hover {
-                    opacity: 0.8;
+            .confirmationBox {
+                margin: 10px 0;
+                text-align: center;
+                .confirmationMessage {
+                    .explanation {
+                        margin-top: 5px;
+                        color: @lightFontColor;
+                    }
+                }
+                .confirmationButtons {
+                    margin-top: 10px;
+                    .confirmButton {
+                        display: inline-block;
+                        margin-right: 30%;
+                    }
+
+                }
+            }
+
+            .buttons {
+                button {
+                    background-color: #F9E7CC;
+                    border: 1px solid #F9B857;
+                    color: @defaultFontColor;
+                    cursor: pointer;
+                    margin: 5px 10px;
+
+                    &:hover {
+                        opacity: 0.8;
+                    }
                 }
             }
         }
+
 
         .conversationInvitationAction {
             .standardContainer;

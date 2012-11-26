@@ -69,22 +69,79 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
   var previousUsers = userDatabase.getUsersByIds(conversation.previousUserIds)
   var allUsers = participants ::: invitedUsers ::: previousUsers
 
-  var lastReadTime = updateConversationReadTIme()
+  var lastReadTime = updateConversationReadTime()
 
 
   // build schema
 
-  var conversationPreviewPanel = addAndReturn(createConversationPreview)
+  add(new Label("conversationTitle", conversation.title))
 
-  private def updateConversationReadTIme() = {
-    val conversationInfo = conversationInfoDatabase.getConversationInfo(session.userId, conversation.id).
-      getOrElse(throw new IllegalStateException("User has no defined info for conversation"))
-    val previousReadTime = conversationInfo.lastReadTime
-    conversationCommand.userHasReadConversation(session.userId, conversationInfo.id, conversationInfo.version)
-    conversationInfo.version = conversationInfo.version + 1
-    previousReadTime
-  }
 
+  var conversationMessagesPreviewPanel = addAndReturn(createConversationMessagesPreviewPanel)
+
+  var conversationInfoPanel = addAndReturn(createConversationInfoPanel)
+
+  add(new WebMarkupContainer("replyButton").setVisible(conversation.userParticipating(session.userId)))
+
+  // reply conversation form
+  add(new StandardAjaxSecureForm[ReplyConversationFormModel]("replyForm") {
+
+    var model: ReplyConversationFormModel = _
+
+    def initialize = {
+      model = new ReplyConversationFormModel
+      setModel(new CompoundPropertyModel[ReplyConversationFormModel](model))
+      standardCancelButton = false
+      setVisible(conversation.userParticipating(session.userId))
+    }
+
+    def buildSchema = {
+      add(new BBCodeEditor("bbCodeEditor", new PropertyModel[String](model, "messageText")))
+    }
+
+    def onSecureSubmit(target: AjaxRequestTarget, formModel: ReplyConversationFormModel) {
+      try {
+
+        if (StringUtils.isNotBlank(formModel.messageText)) {
+
+          val messageId = uidGenerator.nextUid
+          conversationCommand.createMessage(session.userId, conversation.id, conversation.version, formModel.messageText, messageId)
+
+          formModel.warningMessage = ""
+          formModel.messageText = ""
+
+          reloadConversationFromDB
+
+          target.add(conversationMessagesPreviewPanel)
+          target.add(this.warningMessageLabel)
+          target.appendJavaScript("clearBBEditor()")
+
+        } else {
+
+          formModel.warningMessage = "Wiadomosc nie moze byc pusta"
+          target.add(warningMessageLabel)
+        }
+      } catch {
+        case e: ConcurrentAggregateModificationException => {
+          formModel.warningMessage = "Conversation has changed"
+
+          reloadConversationFromDB
+
+
+          target.add(conversationInfoPanel)
+          target.add(conversationMessagesPreviewPanel)
+          target.add(this.warningMessageLabel)
+        }
+      }
+    }
+
+    def onSecureCancel(target: AjaxRequestTarget, formModel: ReplyConversationFormModel) {
+      //ignore, javascript will handle this
+    }
+  })
+
+
+  //Methods
 
   private def reloadConversationFromDB {
     conversation = conversationDatabase.getConversationById(conversation.id).get
@@ -93,19 +150,32 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
     previousUsers = userDatabase.getUsersByIds(conversation.previousUserIds)
     allUsers = participants ::: invitedUsers ::: previousUsers
 
-    lastReadTime = updateConversationReadTIme()
+    lastReadTime = updateConversationReadTime()
 
-    conversationPreviewPanel = createConversationPreview
-    ConversationPage.this.addOrReplace(conversationPreviewPanel)
+    conversationInfoPanel = ConversationPage.this.addOrReplaceAndReturn(createConversationInfoPanel)
+    conversationMessagesPreviewPanel = ConversationPage.this.addOrReplaceAndReturn(createConversationMessagesPreviewPanel)
   }
 
+  
+  private def createConversationMessagesPreviewPanel = {
+    new WebMarkupContainer("messagesContainer") {
+      setOutputMarkupId(true)
+      add(new RepeatingView("message") {
+        conversation.messages.reverse.foreach(message => {
+          add(new AbstractItem(newChildId()) {
+            add(new MessagePreviewPanel(
+              "messagePreview", message,
+              findUserInParticipants(message.authorUserId), message.sentTime.isAfter(lastReadTime)))
+          })
+        })
+      })
+    }
+  }
 
-  private def createConversationPreview: WebMarkupContainer = {
-    new WebMarkupContainer("conversationPreview") {
+  private def createConversationInfoPanel = {
+    new WebMarkupContainer("conversationInfo") {
 
       setOutputMarkupId(true)
-
-      add(new Label("conversationTitle", conversation.title))
 
       add(new WebMarkupContainer("noParticipantsLabel").setVisible(participants.isEmpty))
 
@@ -125,88 +195,34 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
         })
       })
 
-      add(new RepeatingView("message") {
-        conversation.messages.reverse.foreach(message => {
-          add(new AbstractItem(newChildId()) {
-            add(new MessagePreviewPanel(
-              "messagePreview", message,
-              findUserInParticipants(message.authorUserId), message.sentTime.isAfter(lastReadTime)))
-          })
-        })
-      })
-
-      add(new OneButtonAjaxForm("exitConversationButton", "Opuść rozmowę", (target: AjaxRequestTarget) => {
-        conversationCommand.exitConversation(session.userId, conversation.id, conversation.version, session.userId)
-        setResponsePage(classOf[ConversationPage], ConversationPage.getParametersForLink(conversation.id))
-      }).setVisible(conversation.userParticipating(session.userId)))
-
       add(new OneButtonAjaxForm("enterConversationButton", "Dołącz do rozmowy", (target: AjaxRequestTarget) => {
         conversationCommand.enterConversation(session.userId, conversation.id, conversation.version, session.userId)
         setResponsePage(classOf[ConversationPage], ConversationPage.getParametersForLink(conversation.id))
       }).setVisible(conversation.userInvited(session.userId)))
 
-      add(new OneButtonAjaxForm("deleteConversationButton", "Zrezygnuj z zaproszenia", (target: AjaxRequestTarget) => {
+      add(new OneButtonAjaxForm("exitConversationButton", "OK", (target: AjaxRequestTarget) => {
+        conversationCommand.exitConversation(session.userId, conversation.id, conversation.version, session.userId)
+        setResponsePage(classOf[ConversationPage], ConversationPage.getParametersForLink(conversation.id))
+      }).setVisible(conversation.userParticipating(session.userId)))
+
+      add(new OneButtonAjaxForm("deleteConversationButton", "OK", (target: AjaxRequestTarget) => {
         conversationCommand.removeConversationForUser(session.userId, conversation.id, conversation.version, session.userId)
         setResponsePage(classOf[UserConversationsPage])
       }).setVisible(conversation.userInvited(session.userId) || !conversation.userParticipating(session.userId)))
 
-
-      // reply conversation form
-      add(new StandardAjaxSecureForm[ReplyConversationFormModel]("replyForm") {
-
-        var model: ReplyConversationFormModel = _
-
-        def initialize = {
-          model = new ReplyConversationFormModel
-          setModel(new CompoundPropertyModel[ReplyConversationFormModel](model))
-          standardCancelButton = false
-        }
-
-        def buildSchema = {
-          add(new BBCodeEditor("bbCodeEditor", new PropertyModel[String](model, "messageText")))
-        }
-
-        def onSecureSubmit(target: AjaxRequestTarget, formModel: ReplyConversationFormModel) {
-          try {
-
-            if (StringUtils.isNotBlank(formModel.messageText)) {
-
-              val messageId = uidGenerator.nextUid
-              conversationCommand.createMessage(session.userId, conversation.id, conversation.version, formModel.messageText, messageId)
-
-              formModel.warningMessage = ""
-              formModel.messageText = ""
-
-              reloadConversationFromDB
-
-              target.add(conversationPreviewPanel)
-              target.add(this.warningMessageLabel)
-              target.appendJavaScript("clearBBEditor()")
-
-            } else {
-
-              formModel.warningMessage = "Wiadomosc nie moze byc pusta"
-              target.add(warningMessageLabel)
-            }
-          } catch {
-            case e: ConcurrentAggregateModificationException => {
-              formModel.warningMessage = "Conversation has changed"
-
-              reloadConversationFromDB
-
-              target.add(conversationPreviewPanel)
-              target.add(this.warningMessageLabel)
-            }
-          }
-        }
-
-        def onSecureCancel(target: AjaxRequestTarget, formModel: ReplyConversationFormModel) {
-          //ignore, javascript will handle this
-        }
-      })
-
     }
   }
+
+
+  private def updateConversationReadTime() = {
+    val conversationInfo = conversationInfoDatabase.getConversationInfo(session.userId, conversation.id).
+      getOrElse(throw new IllegalStateException("User has no defined info for conversation"))
+    val previousReadTime = conversationInfo.lastReadTime
+    conversationCommand.userHasReadConversation(session.userId, conversationInfo.id, conversationInfo.version)
+    conversationInfo.version = conversationInfo.version + 1
+    previousReadTime
+  }
+
 
   private def getConversationOrThrow404: Conversation = {
     val conversationId = IdProtectionUtil.decrypt(parameters.get(ConversationPage.CONVERSATION_ID_PARAM).toString)
