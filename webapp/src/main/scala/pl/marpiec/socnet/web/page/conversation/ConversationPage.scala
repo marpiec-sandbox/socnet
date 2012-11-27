@@ -7,7 +7,6 @@ import pl.marpiec.socnet.constant.SocnetRoles
 import org.apache.wicket.spring.injection.annot.SpringBean
 import pl.marpiec.socnet.service.conversation.ConversationCommand
 import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException
-import pl.marpiec.socnet.readdatabase.UserDatabase
 import org.apache.wicket.markup.repeater.RepeatingView
 import org.apache.wicket.markup.html.list.AbstractItem
 import org.apache.wicket.markup.html.basic.Label
@@ -19,14 +18,14 @@ import pl.marpiec.cqrs.UidGenerator
 import pl.marpiec.cqrs.exception.ConcurrentAggregateModificationException
 import org.apache.wicket.markup.html.WebMarkupContainer
 import pl.marpiec.socnet.model.User
-import pl.marpiec.socnet.readdatabase.{ConversationInfoDatabase, ConversationDatabase}
 import pl.marpiec.socnet.model.Conversation
 import pl.marpiec.socnet.web.component.wicket.form.{OneButtonAjaxForm, StandardAjaxSecureForm}
-import pl.marpiec.socnet.web.component.user.UserSummaryPreviewPanel
 import org.apache.wicket.markup.html.link.BookmarkablePageLink
 import pl.marpiec.util.{IdProtectionUtil, UID}
 import org.apache.wicket.util.time.Duration
 import org.apache.wicket.ajax.{AbstractAjaxTimerBehavior, AjaxRequestTarget}
+import pl.marpiec.socnet.web.component.user.{UserSummaryPreviewNoLinkPanel, UserSummaryPreviewPanel}
+import pl.marpiec.socnet.readdatabase.{UserContactsDatabase, UserDatabase, ConversationInfoDatabase, ConversationDatabase}
 
 /**
  * @author Marcin Pieciukiewicz
@@ -54,6 +53,7 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
   @SpringBean private var conversationCommand: ConversationCommand = _
   @SpringBean private var conversationDatabase: ConversationDatabase = _
   @SpringBean private var conversationInfoDatabase: ConversationInfoDatabase = _
+  @SpringBean private var userContactsDatabase: UserContactsDatabase = _
   @SpringBean private var userDatabase: UserDatabase = _
   @SpringBean private var uidGenerator: UidGenerator = _
 
@@ -171,6 +171,22 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
     def onSecureCancel(target: AjaxRequestTarget, formModel: ReplyConversationFormModel) {
       //ignore, javascript will handle this
     }
+  })
+
+
+
+  val userContactsIds = userContactsDatabase.getUserContactsByUserId(session.userId).getOrElse(
+    throw new IllegalStateException("User contacts not created for user " + session.userId)
+  )
+  val userContacts = userDatabase.getUsersByIds(userContactsIds.contactsIds.toList)
+
+
+  add(new RepeatingView("contact") {
+    userContacts.foreach(user => {
+      add(new AbstractItem(newChildId()) {
+        add(new UserSummaryPreviewNoLinkPanel("userSummaryPreview", user))
+      })
+    })
   })
 
 

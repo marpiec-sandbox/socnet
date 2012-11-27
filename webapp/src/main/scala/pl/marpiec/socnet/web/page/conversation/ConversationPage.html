@@ -35,6 +35,57 @@
             jQuery(".confirmDelete").css({display:"none"});
         }
 
+        function showInviteNewPersonPopup() {
+            jQuery(".pageCurtain").css({display:"block"});
+            jQuery(".invitePeoplePopup").css({display:"block"});
+        }
+
+        function hideInviteNewPersonPopup() {
+            jQuery(".pageCurtain").css({display:"none"});
+            jQuery(".invitePeoplePopup").css({display:"none"});
+        }
+
+        window.selectedNewInvitedUsers = {}
+
+        function selectNewInvitedContact(link) {
+            var contactHolder = jQuery(link).parents(".contact");
+            if (contactHolder.parents(".userContactsPanel").size() == 1) { // it is contact
+                var k = contactHolder.find("input.k").val();
+                if (!window.selectedNewInvitedUsers[k]) {
+                    addContactToSelectedUsers(k);
+                } else {
+                    removeContactFromSelectedUsers(k);
+                }
+            } else { // it is invited user
+                var k = contactHolder.find("input.k").val();
+                removeContactFromSelectedUsers(k);
+            }
+
+        }
+
+        function addContactToSelectedUsers(k) {
+            var contactHolder = jQuery(".userContactsPanel").find("input[value=\""+k+"\"]").parents(".contact");
+            var contactHolderCloned = contactHolder.clone();
+            contactHolderCloned.css({opacity:0})
+
+            var invitedList = jQuery(".invitedPeoplePanel .invitationContent").append(contactHolderCloned);
+            window.selectedNewInvitedUsers[k] = true
+            contactHolder.stop().animate({opacity: 0.3}, 500);
+
+            contactHolderCloned.animate({opacity: 1}, 500)
+
+        }
+
+        function removeContactFromSelectedUsers(k) {
+            var contactToRemove = jQuery(".invitedPeoplePanel").find("input[value=\""+k+"\"]").parents(".contact");
+            contactToRemove.animate({opacity:0}, 250).animate({height:0}, 250, null, function() {
+                jQuery(this).remove();
+            })
+            delete window.selectedNewInvitedUsers[k]
+
+            var contactHolder = jQuery(".userContactsPanel").find("input[value=\""+k+"\"]").parents(".contact");
+            contactHolder.stop().animate({opacity: 1}, 500)
+        }
 
     </script>
 
@@ -129,7 +180,7 @@
 
                         <div class="buttons">
                             <div class="buttonHolder">
-                                <a class="defaultButton">Zaproś nową osobę</a>
+                                <a href="#" onclick="showInviteNewPersonPopup();return false;" class="defaultButton">Zaproś nową osobę</a>
                             </div>
                         </div>
 
@@ -185,6 +236,41 @@
 
 
             </div>
+
+
+            <div class="invitePeoplePopup hiddenByDefault">
+
+                <div class="userContactsPanel">
+                    <div class="inviteTitle"><div class="titleIcon"></div>twoi znajomi.</div>
+
+                    <div class="invitationContent">
+
+                        <div wicket:id="contact" class="contact">
+                            <a href="#" onclick="selectNewInvitedContact(this);return false;">
+                                <div wicket:id="userSummaryPreview">userSummaryPreview</div>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="invitedPeoplePanel">
+                    <div class="inviteTitle"><div class="titleIcon"></div>zaproszeni do rozmowy.</div>
+
+                    <div class="invitationContent">
+
+
+                    </div>
+                </div>
+                
+                <div class="inviteButtons">
+                    <button onclick="hideInviteNewPersonPopup()">OK</button>
+                    <a href="#" onclick="hideInviteNewPersonPopup();return false;">Anuluj</a>
+                </div>
+
+
+            </div>
+
 
         </div>
 
