@@ -4,11 +4,12 @@ import org.apache.wicket.markup.html.panel.Panel
 import org.apache.wicket.spring.injection.annot.SpringBean
 import pl.marpiec.socnet.readdatabase.UserDatabase
 import pl.marpiec.util.UID
-import pl.marpiec.socnet.model.{ConversationInfo, Conversation}
+import pl.marpiec.socnet.model.{Conversation}
 import org.apache.wicket.markup.repeater.RepeatingView
 import org.apache.wicket.markup.html.list.AbstractItem
 import pl.marpiec.socnet.web.application.SocnetSession
 import pl.marpiec.socnet.service.conversation.ConversationQuery
+import pl.marpiec.socnet.sql.entity.ConversationInfo
 
 /**
  * @author Marcin Pieciukiewicz

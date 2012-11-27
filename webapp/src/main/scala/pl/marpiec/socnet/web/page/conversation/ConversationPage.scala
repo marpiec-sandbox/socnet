@@ -23,13 +23,13 @@ import pl.marpiec.util.{IdProtectionUtil, UID}
 import org.apache.wicket.util.time.Duration
 import org.apache.wicket.ajax.{AbstractAjaxTimerBehavior, AjaxRequestTarget}
 import pl.marpiec.socnet.web.component.user.{UserSummaryPreviewNoLinkPanel, UserSummaryPreviewPanel}
-import pl.marpiec.socnet.readdatabase.{UserContactsDatabase, UserDatabase, ConversationInfoDatabase, ConversationDatabase}
-import pl.marpiec.socnet.web.wicket.SecureForm
-import pl.marpiec.socnet.web.page.books.bookSuggestionPreviewPage.model.SuggestionFormModel
+import pl.marpiec.socnet.readdatabase.{UserContactsDatabase, UserDatabase, ConversationDatabase}
 import org.apache.wicket.markup.html.form.HiddenField
 import org.apache.wicket.AttributeModifier
 import org.apache.wicket.model.{Model, PropertyModel, CompoundPropertyModel}
-import org.apache.wicket.markup.html.link.{AbstractLink, Link, BookmarkablePageLink}
+import org.apache.wicket.markup.html.link.{AbstractLink, BookmarkablePageLink}
+import pl.marpiec.socnet.sql.dao.ConversationInfoDao
+import org.joda.time.LocalDateTime
 
 /**
  * @author Marcin Pieciukiewicz
@@ -56,7 +56,8 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
 
   @SpringBean private var conversationCommand: ConversationCommand = _
   @SpringBean private var conversationDatabase: ConversationDatabase = _
-  @SpringBean private var conversationInfoDatabase: ConversationInfoDatabase = _
+  @SpringBean private var conversationInfoDao: ConversationInfoDao = _
+
   @SpringBean private var userContactsDatabase: UserContactsDatabase = _
   @SpringBean private var userDatabase: UserDatabase = _
   @SpringBean private var uidGenerator: UidGenerator = _
@@ -338,11 +339,10 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
 
 
   private def updateConversationReadTime() = {
-    val conversationInfo = conversationInfoDatabase.getConversationInfo(session.userId, conversation.id).
-      getOrElse(throw new IllegalStateException("User has no defined info for conversation"))
+    val conversationInfo = conversationInfoDao.readOrCreate(session.userId, conversation.id)
     val previousReadTime = conversationInfo.lastReadTime
-    conversationCommand.userHasReadConversation(session.userId, conversationInfo.id, conversationInfo.version)
-    conversationInfo.version = conversationInfo.version + 1
+    conversationInfo.lastReadTime = new LocalDateTime
+    conversationInfoDao.update(conversationInfo)
     previousReadTime
   }
 

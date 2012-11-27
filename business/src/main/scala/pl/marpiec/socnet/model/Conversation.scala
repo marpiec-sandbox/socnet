@@ -3,6 +3,7 @@ package pl.marpiec.socnet.model
 import conversation.Message
 import pl.marpiec.cqrs.Aggregate
 import pl.marpiec.util.{BeanUtil, UID}
+import pl.marpiec.socnet.sql.entity.ConversationInfo
 
 /**
  * @author Marcin Pieciukiewicz

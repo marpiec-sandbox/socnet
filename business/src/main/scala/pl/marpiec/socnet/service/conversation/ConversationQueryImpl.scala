@@ -2,17 +2,18 @@ package pl.marpiec.socnet.service.conversation
 
 import org.springframework.stereotype.Service
 import pl.marpiec.util.UID
-import pl.marpiec.socnet.model.{ConversationInfo, Conversation}
-import pl.marpiec.socnet.readdatabase.{ConversationInfoDatabase, ConversationDatabase}
+import pl.marpiec.socnet.model.{Conversation}
+import pl.marpiec.socnet.readdatabase.{ConversationDatabase}
 import org.springframework.beans.factory.annotation.Autowired
+import pl.marpiec.socnet.sql.dao.ConversationInfoDao
+import pl.marpiec.socnet.sql.entity.ConversationInfo
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
 @Service("conversationQuery")
-class ConversationQueryImpl @Autowired()(val conversationDatabase: ConversationDatabase,
-                                         conversationInfoDatabase: ConversationInfoDatabase) extends ConversationQuery {
+class ConversationQueryImpl @Autowired()(val conversationDatabase: ConversationDatabase, val conversationInfoDao: ConversationInfoDao) extends ConversationQuery {
 
   def loadConversationsOfUser(userId: UID): (List[Conversation], Map[UID, ConversationInfo]) = {
     val userConversations: List[Conversation] = conversationDatabase.getConversationsByParticipantOrInvitedUserId(userId)
@@ -24,7 +25,7 @@ class ConversationQueryImpl @Autowired()(val conversationDatabase: ConversationD
   private def loadConversationInfo(userId: UID, conversations: List[Conversation]): Map[UID, ConversationInfo] = {
 
     val conversationIdList: List[UID] = prepareConversationIdsList(conversations, userId)
-    val conversationInfoList: List[ConversationInfo] = conversationInfoDatabase.getConversationInfoList(userId, conversationIdList)
+    val conversationInfoList: List[ConversationInfo] = conversationInfoDao.readMany(userId, conversationIdList)
     createConversationInfoMapFromList(conversationInfoList)
 
   }

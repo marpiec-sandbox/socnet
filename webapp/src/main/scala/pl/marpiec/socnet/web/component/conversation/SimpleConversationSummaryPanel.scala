@@ -7,7 +7,8 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink
 import pl.marpiec.socnet.web.page.conversation.ConversationPage
 import org.apache.wicket.request.mapper.parameter.PageParameters
 import pl.marpiec.util.{UID, StringFormattingUtil}
-import pl.marpiec.socnet.model.{ConversationInfo, Conversation}
+import pl.marpiec.socnet.model.{Conversation}
+import pl.marpiec.socnet.sql.entity.ConversationInfo
 
 /**
  * @author Marcin Pieciukiewicz

@@ -16,8 +16,6 @@ trait ConversationCommand {
 
   def addParticipants(userId: UID, id: UID, version: Int, addedParticipantsUserIds: List[UID])
 
-  def userHasReadConversation(userId: UID, conversationInfoId: UID, version: Int)
-
   def removeConversationForUser(userId: UID, conversationId: UID, version: Int, removingUserId: UID)
 
   def enterConversation(userId: UID, conversationId: UID, version: Int, enteringUserId: UID)

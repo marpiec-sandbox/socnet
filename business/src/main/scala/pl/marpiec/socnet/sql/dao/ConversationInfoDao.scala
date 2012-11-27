@@ -10,6 +10,7 @@ import pl.marpiec.util.UID
 trait ConversationInfoDao {
 
   def read(userId:UID, conversationId:UID):Option[ConversationInfo]
+  def readMany(userId:UID, conversationIds:List[UID]):List[ConversationInfo]
   def readOrCreate(userId:UID, conversationId:UID):ConversationInfo
   def update(conversationInfo: ConversationInfo)
   

@@ -1,7 +1,8 @@
 package pl.marpiec.socnet.service.conversation
 
 import pl.marpiec.util.UID
-import pl.marpiec.socnet.model.{ConversationInfo, Conversation}
+import pl.marpiec.socnet.model.{Conversation}
+import pl.marpiec.socnet.sql.entity.ConversationInfo
 
 /**
  * @author Marcin Pieciukiewicz

@@ -7,3 +7,7 @@ CREATE SEQUENCE IF NOT EXISTS uids_seq;
 CREATE SEQUENCE IF NOT EXISTS events_seq;
 CREATE SEQUENCE IF NOT EXISTS aggregates_seq;
 CREATE SEQUENCE IF NOT EXISTS trigger_events_seq;
+
+
+CREATE TABLE IF NOT EXISTS conversation_info(id INT NOT NULL PRIMARY KEY, user_id BIGINT, conversation_id BIGINT, last_read_time VARCHAR(24));
+CREATE SEQUENCE IF NOT EXISTS conversation_info_seq;

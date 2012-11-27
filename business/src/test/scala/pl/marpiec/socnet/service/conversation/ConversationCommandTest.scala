@@ -4,8 +4,6 @@ import org.testng.annotations.Test
 import pl.marpiec.cqrs._
 import pl.marpiec.socnet.model.Conversation
 import org.testng.Assert._
-import pl.marpiec.socnet.readdatabase.mock.ConversationInfoDatabaseMockImpl
-import pl.marpiec.socnet.readdatabase.ConversationInfoDatabase
 
 /**
  * @author Marcin Pieciukiewicz
@@ -19,7 +17,6 @@ class ConversationCommandTest {
     val dataStore: DataStore = new DataStoreImpl(eventStore, entityCache)
     val uidGenerator: UidGenerator = new UidGeneratorMockImpl
     val conversationCommand: ConversationCommand = new ConversationCommandImpl(eventStore, uidGenerator)
-    val conversationInfoDatabase: ConversationInfoDatabase = new ConversationInfoDatabaseMockImpl(dataStore);
 
     val conversationId = uidGenerator.nextUid
     val participantAUserId = uidGenerator.nextUid
@@ -44,14 +41,8 @@ class ConversationCommandTest {
     assertEquals(conversation.participantsUserIds.size, 1)
     assertEquals(conversation.messages.size, 1)
 
-    val conversationInfoForParticipantAOption = conversationInfoDatabase.getConversationInfo(participantAUserId, conversationId)
-    assertTrue(conversationInfoForParticipantAOption.isDefined)
 
     // First User reads conversation
-
-    val conversationInfoForParticipantA = conversationInfoForParticipantAOption.get
-
-    conversationCommand.userHasReadConversation(participantAUserId, conversationInfoForParticipantA.id, conversationInfoForParticipantA.version)
 
     val secondMessageId = uidGenerator.nextUid
 

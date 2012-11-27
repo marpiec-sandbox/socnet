@@ -7,9 +7,10 @@ import org.apache.wicket.markup.repeater.RepeatingView
 import pl.marpiec.socnet.readdatabase.UserDatabase
 import org.apache.wicket.markup.html.list.AbstractItem
 import pl.marpiec.socnet.web.component.conversation.ConversationSummaryPanel
-import pl.marpiec.socnet.model.{ConversationInfo, Conversation}
+import pl.marpiec.socnet.model.{Conversation}
 import pl.marpiec.util.UID
 import pl.marpiec.socnet.service.conversation.ConversationQuery
+import pl.marpiec.socnet.sql.entity.ConversationInfo
 
 /**
  * @author Marcin Pieciukiewicz
