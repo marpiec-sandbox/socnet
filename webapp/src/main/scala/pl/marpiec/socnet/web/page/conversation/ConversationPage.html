@@ -53,19 +53,24 @@
 
         function selectNewInvitedContact(link) {
             var contactHolder = jQuery(link).parents(".contact");
-            if (contactHolder.parents(".userContactsPanel").size() == 1) { // it is contact
-                var k = contactHolder.find("input.k").val();
-                if (!window.selectedNewInvitedUsers[k]) {
-                    addContactToSelectedUsers(k);
-                } else {
+            if(!contactHolder.hasClass("disabled")) {
+                if (contactHolder.parents(".userContactsPanel").size() == 1) { // it is contact
+                    var k = contactHolder.find("input.k").val();
+                    if (!window.selectedNewInvitedUsers[k]) {
+                        addContactToSelectedUsers(k);
+                    } else {
+                        removeContactFromSelectedUsers(k);
+                    }
+                } else { // it is invited user
+                    var k = contactHolder.find("input.k").val();
                     removeContactFromSelectedUsers(k);
                 }
-            } else { // it is invited user
-                var k = contactHolder.find("input.k").val();
-                removeContactFromSelectedUsers(k);
+
+                jQuery(".inviteUsersForm .users").val(selectedNewInvitedUsersAsString())
             }
 
-            jQuery(".inviteUsersForm .users").val(selectedNewInvitedUsersAsString())
+            jQuery(link).delay(500).blur();
+
 
         }
 
@@ -264,8 +269,9 @@
 
                     <div class="invitationContent">
 
-                        <div wicket:id="contact" class="contact">
-                            <a href="#" onclick="selectNewInvitedContact(this);return false;">
+                        <div wicket:id="contact" class="class-set-in-controller">
+                            <a wicket:id="link" onclick="selectNewInvitedContact(this);return false;">
+                                <input type="hidden" wicket:id="k" class="k" />
                                 <div wicket:id="userSummaryPreview">userSummaryPreview</div>
                             </a>
                         </div>

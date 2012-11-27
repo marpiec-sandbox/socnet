@@ -37,6 +37,8 @@ class ConversationCommandImpl @Autowired()(val eventStore: EventStore, val uidGe
 
   def addParticipants(userId: UID, id: UID, version: Int, addedParticipantsUserIds: List[UID]) {
     eventStore.addEvent(new EventRow(userId, id, version, new AddParticipantsEvent(addedParticipantsUserIds)))
+    //TODO to nie powinno byc dla kazdego uzytkownika, tylko tych co tego nie maja
+    addedParticipantsUserIds.foreach(participantId => addConversationInfoForUser(participantId, id))
   }
 
   def userHasReadConversation(userId: UID, conversationInfoId: UID, version: Int) {

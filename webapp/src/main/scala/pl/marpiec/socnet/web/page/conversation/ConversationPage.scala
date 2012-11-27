@@ -12,7 +12,6 @@ import org.apache.wicket.markup.html.list.AbstractItem
 import org.apache.wicket.markup.html.basic.Label
 import pl.marpiec.socnet.web.component.conversation.MessagePreviewPanel
 import pl.marpiec.socnet.web.component.editor.BBCodeEditor
-import org.apache.wicket.model.{PropertyModel, CompoundPropertyModel}
 import org.apache.commons.lang.StringUtils
 import pl.marpiec.cqrs.UidGenerator
 import pl.marpiec.cqrs.exception.ConcurrentAggregateModificationException
@@ -20,7 +19,6 @@ import org.apache.wicket.markup.html.WebMarkupContainer
 import pl.marpiec.socnet.model.User
 import pl.marpiec.socnet.model.Conversation
 import pl.marpiec.socnet.web.component.wicket.form.{OneButtonAjaxForm, StandardAjaxSecureForm}
-import org.apache.wicket.markup.html.link.BookmarkablePageLink
 import pl.marpiec.util.{IdProtectionUtil, UID}
 import org.apache.wicket.util.time.Duration
 import org.apache.wicket.ajax.{AbstractAjaxTimerBehavior, AjaxRequestTarget}
@@ -29,6 +27,9 @@ import pl.marpiec.socnet.readdatabase.{UserContactsDatabase, UserDatabase, Conve
 import pl.marpiec.socnet.web.wicket.SecureForm
 import pl.marpiec.socnet.web.page.books.bookSuggestionPreviewPage.model.SuggestionFormModel
 import org.apache.wicket.markup.html.form.HiddenField
+import org.apache.wicket.AttributeModifier
+import org.apache.wicket.model.{Model, PropertyModel, CompoundPropertyModel}
+import org.apache.wicket.markup.html.link.{AbstractLink, Link, BookmarkablePageLink}
 
 /**
  * @author Marcin Pieciukiewicz
@@ -192,11 +193,33 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
 
   add(new RepeatingView("contact") {
     for ((id,user) <- userContactsMap) {
+
+
       add(new AbstractItem(newChildId()) {
-        add(new UserSummaryPreviewNoLinkPanel("userSummaryPreview", user, id.toString))
+        val disabled = userIsInvitedOrParticipating(user.id)
+        if(disabled) {
+          add(new AttributeModifier("class", "contact disabled"))
+        } else {
+          add(new AttributeModifier("class", "contact"))
+        }
+        add(new AbstractLink("link") {
+          if(!disabled) {
+            add(new AttributeModifier("href", "#"))
+          }
+          add(new HiddenField[String]("k", new Model(id.toString)) {
+            override def getInputName = ""
+          })
+          add(new UserSummaryPreviewNoLinkPanel("userSummaryPreview", user))  
+        })
+        
+        
       })
     }
   })
+
+  private def userIsInvitedOrParticipating(userId:UID):Boolean = {
+    conversation.userParticipating(userId) || conversation.userInvited(userId)
+  }
   
   add(new StandardAjaxSecureForm[InviteUsersFormModel]("inviteUsersForm") {
     def initialize = {
