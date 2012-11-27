@@ -14,7 +14,7 @@ class EnterConversationForUserEvent(val userId: UID) extends Event {
     val conversation = aggregate.asInstanceOf[Conversation]
 
     conversation.invitedUserIds = conversation.invitedUserIds.filterNot(_ == userId)
-    conversation.participantsUserIds ::= userId
+    conversation.participantsUserIds += userId
   }
 
   def entityClass = classOf[Conversation]

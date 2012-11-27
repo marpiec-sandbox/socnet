@@ -40,8 +40,8 @@ class ConversationCommandTest {
     assertNotNull(conversation)
     assertEquals(conversation.title, "Test conversation")
     assertEquals(conversation.creatorUserId, participantAUserId)
-    assertEquals(conversation.invitedUserIds.length, 2)
-    assertEquals(conversation.participantsUserIds.length, 1)
+    assertEquals(conversation.invitedUserIds.size, 2)
+    assertEquals(conversation.participantsUserIds.size, 1)
     assertEquals(conversation.messages.size, 1)
 
     val conversationInfoForParticipantAOption = conversationInfoDatabase.getConversationInfo(participantAUserId, conversationId)
@@ -75,8 +75,8 @@ class ConversationCommandTest {
     conversationCommand.enterConversation(participantBUserId, conversationId, conversation.version, participantBUserId)
     conversation = dataStore.getEntity(classOf[Conversation], conversationId).asInstanceOf[Conversation]
 
-    assertEquals(conversation.invitedUserIds.length, 1)
-    assertEquals(conversation.participantsUserIds.length, 2)
+    assertEquals(conversation.invitedUserIds.size, 1)
+    assertEquals(conversation.participantsUserIds.size, 2)
     assertFalse(conversation.invitedUserIds.contains(participantBUserId))
     assertTrue(conversation.participantsUserIds.contains(participantBUserId))
 
@@ -96,27 +96,27 @@ class ConversationCommandTest {
     // Adding fourth participant
 
     val participantDUserId = uidGenerator.nextUid
-    conversationCommand.addParticipant(participantBUserId, conversationId, conversation.version, participantDUserId)
+    conversationCommand.addParticipants(participantBUserId, conversationId, conversation.version, List(participantDUserId))
 
     conversation = dataStore.getEntity(classOf[Conversation], conversationId).asInstanceOf[Conversation]
-    assertEquals(conversation.invitedUserIds.length, 2)
-    assertEquals(conversation.participantsUserIds.length, 2)
+    assertEquals(conversation.invitedUserIds.size, 2)
+    assertEquals(conversation.participantsUserIds.size, 2)
 
     // Second participant removes conversation from his conversations
 
 
     conversationCommand.removeConversationForUser(participantBUserId, conversationId, conversation.version, participantBUserId)
     conversation = dataStore.getEntity(classOf[Conversation], conversationId).asInstanceOf[Conversation]
-    assertEquals(conversation.participantsUserIds.length, 1)
-    assertEquals(conversation.invitedUserIds.length, 2)
+    assertEquals(conversation.participantsUserIds.size, 1)
+    assertEquals(conversation.invitedUserIds.size, 2)
 
     // Third participant enters conversation
 
     conversationCommand.enterConversation(participantCUserId, conversationId, conversation.version, participantCUserId)
     conversation = dataStore.getEntity(classOf[Conversation], conversationId).asInstanceOf[Conversation]
 
-    assertEquals(conversation.participantsUserIds.length, 2)
-    assertEquals(conversation.invitedUserIds.length, 1)
+    assertEquals(conversation.participantsUserIds.size, 2)
+    assertEquals(conversation.invitedUserIds.size, 1)
     assertFalse(conversation.invitedUserIds.contains(participantCUserId))
     assertTrue(conversation.participantsUserIds.contains(participantCUserId))
 
@@ -125,8 +125,8 @@ class ConversationCommandTest {
     conversationCommand.exitConversation(participantCUserId, conversationId, conversation.version, participantCUserId)
     conversation = dataStore.getEntity(classOf[Conversation], conversationId).asInstanceOf[Conversation]
 
-    assertEquals(conversation.participantsUserIds.length, 1)
-    assertEquals(conversation.invitedUserIds.length, 2)
+    assertEquals(conversation.participantsUserIds.size, 1)
+    assertEquals(conversation.invitedUserIds.size, 2)
     assertTrue(conversation.invitedUserIds.contains(participantCUserId))
     assertFalse(conversation.participantsUserIds.contains(participantCUserId))
 
@@ -135,8 +135,8 @@ class ConversationCommandTest {
     conversationCommand.enterConversation(participantCUserId, conversationId, conversation.version, participantCUserId)
     conversation = dataStore.getEntity(classOf[Conversation], conversationId).asInstanceOf[Conversation]
 
-    assertEquals(conversation.participantsUserIds.length, 2)
-    assertEquals(conversation.invitedUserIds.length, 1)
+    assertEquals(conversation.participantsUserIds.size, 2)
+    assertEquals(conversation.invitedUserIds.size, 1)
     assertFalse(conversation.invitedUserIds.contains(participantCUserId))
     assertTrue(conversation.participantsUserIds.contains(participantCUserId))
   }

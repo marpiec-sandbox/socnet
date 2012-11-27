@@ -35,8 +35,8 @@ class ConversationCommandImpl @Autowired()(val eventStore: EventStore, val uidGe
     eventStore.addEvent(new EventRow(userId, id, version, new CreateMessageEvent(userId, messageText, new LocalDateTime(), messageId)))
   }
 
-  def addParticipant(userId: UID, id: UID, version: Int, addedParticipantUserId: UID) {
-    eventStore.addEvent(new EventRow(userId, id, version, new AddParticipantEvent(addedParticipantUserId)))
+  def addParticipants(userId: UID, id: UID, version: Int, addedParticipantsUserIds: List[UID]) {
+    eventStore.addEvent(new EventRow(userId, id, version, new AddParticipantsEvent(addedParticipantsUserIds)))
   }
 
   def userHasReadConversation(userId: UID, conversationInfoId: UID, version: Int) {

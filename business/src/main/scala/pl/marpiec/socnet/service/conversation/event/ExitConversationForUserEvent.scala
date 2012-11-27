@@ -13,7 +13,7 @@ class ExitConversationForUserEvent(val userId: UID) extends Event {
   def applyEvent(aggregate: Aggregate) {
     val conversation = aggregate.asInstanceOf[Conversation]
 
-    conversation.invitedUserIds ::= userId
+    conversation.invitedUserIds += userId
     conversation.participantsUserIds = conversation.participantsUserIds.filterNot(_ == userId)
   }
 

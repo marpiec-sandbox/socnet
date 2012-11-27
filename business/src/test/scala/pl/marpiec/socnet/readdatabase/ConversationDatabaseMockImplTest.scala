@@ -30,7 +30,7 @@ class ConversationDatabaseMockImplTest {
     val conversation = new Conversation
     conversation.id = conversationId
     conversation.title = "Database test conversation"
-    conversation.participantsUserIds = participantAUserId :: participantBUserId :: Nil
+    conversation.participantsUserIds = Set(participantAUserId, participantBUserId)
     conversation.creatorUserId = participantAUserId
 
     conversationDatabase.addConversation(conversation)

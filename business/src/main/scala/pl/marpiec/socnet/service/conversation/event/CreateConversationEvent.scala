@@ -17,11 +17,11 @@ class CreateConversationEvent(val creatorUserId: UID, val title: String, val par
     val conversation = aggregate.asInstanceOf[Conversation]
     conversation.creatorUserId = creatorUserId;
     conversation.title = title
-    conversation.invitedUserIds = participantsUserIds
+    conversation.invitedUserIds = participantsUserIds.toSet
 
     if (conversation.invitedUserIds.contains(creatorUserId)) {
       conversation.invitedUserIds = conversation.invitedUserIds.filterNot(_ == creatorUserId)
-      conversation.participantsUserIds ::= creatorUserId
+      conversation.participantsUserIds += creatorUserId
     }
 
     val message = new Message(firstMessageId, firstMessageText, creationTime, creatorUserId)

@@ -15,7 +15,7 @@ class RemoveConversationForUserEvent(val userId: UID) extends Event {
 
     conversation.invitedUserIds = conversation.invitedUserIds.filterNot(_ == userId)
     conversation.participantsUserIds = conversation.participantsUserIds.filterNot(_ == userId)
-    conversation.previousUserIds ::= userId
+    conversation.previousUserIds += userId
   }
 
   def entityClass = classOf[Conversation]

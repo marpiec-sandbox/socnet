@@ -1,6 +1,6 @@
 package pl.marpiec.socnet.web.page.conversation
 
-import model.ReplyConversationFormModel
+import model.{InviteUsersFormModel, ReplyConversationFormModel}
 import org.apache.wicket.request.mapper.parameter.PageParameters
 import pl.marpiec.socnet.web.authorization.SecureWebPage
 import pl.marpiec.socnet.constant.SocnetRoles
@@ -26,6 +26,9 @@ import org.apache.wicket.util.time.Duration
 import org.apache.wicket.ajax.{AbstractAjaxTimerBehavior, AjaxRequestTarget}
 import pl.marpiec.socnet.web.component.user.{UserSummaryPreviewNoLinkPanel, UserSummaryPreviewPanel}
 import pl.marpiec.socnet.readdatabase.{UserContactsDatabase, UserDatabase, ConversationInfoDatabase, ConversationDatabase}
+import pl.marpiec.socnet.web.wicket.SecureForm
+import pl.marpiec.socnet.web.page.books.bookSuggestionPreviewPage.model.SuggestionFormModel
+import org.apache.wicket.markup.html.form.HiddenField
 
 /**
  * @author Marcin Pieciukiewicz
@@ -64,9 +67,9 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
 
 
   //TODO optimize loading of all users
-  var participants = userDatabase.getUsersByIds(conversation.participantsUserIds)
-  var invitedUsers = userDatabase.getUsersByIds(conversation.invitedUserIds)
-  var previousUsers = userDatabase.getUsersByIds(conversation.previousUserIds)
+  var participants = userDatabase.getUsersByIds(conversation.participantsUserIds.toList)
+  var invitedUsers = userDatabase.getUsersByIds(conversation.invitedUserIds.toList)
+  var previousUsers = userDatabase.getUsersByIds(conversation.previousUserIds.toList)
   var allUsers = participants ::: invitedUsers ::: previousUsers
 
   var lastReadTime = updateConversationReadTime()
@@ -178,15 +181,59 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
   val userContactsIds = userContactsDatabase.getUserContactsByUserId(session.userId).getOrElse(
     throw new IllegalStateException("User contacts not created for user " + session.userId)
   )
-  val userContacts = userDatabase.getUsersByIds(userContactsIds.contactsIds.toList)
 
+  val userContacts = userDatabase.getUsersByIds(userContactsIds.contactsIds.toList)
+  var counter = 0
+  val userContactsMap = userContacts.map(user => {
+    val mapEntry = (counter, user)
+    counter += 1
+    mapEntry
+  }).toMap
 
   add(new RepeatingView("contact") {
-    userContacts.foreach(user => {
+    for ((id,user) <- userContactsMap) {
       add(new AbstractItem(newChildId()) {
-        add(new UserSummaryPreviewNoLinkPanel("userSummaryPreview", user))
+        add(new UserSummaryPreviewNoLinkPanel("userSummaryPreview", user, id.toString))
       })
-    })
+    }
+  })
+  
+  add(new StandardAjaxSecureForm[InviteUsersFormModel]("inviteUsersForm") {
+    def initialize = {
+      standardCancelButton = false
+      setModel(new CompoundPropertyModel[InviteUsersFormModel](new InviteUsersFormModel))
+    }
+
+    def buildSchema = {
+      add(new HiddenField[String]("users"))
+    }
+
+    def onSecureSubmit(target: AjaxRequestTarget, formModel: InviteUsersFormModel) {
+
+      val users = formModel.parseUsers
+      
+      var usersIds = List[UID]()
+      
+      users.foreach(userIdentifier => {
+        val userOption = userContactsMap.get(userIdentifier)
+        if (userOption.isDefined) {
+          usersIds ::= userOption.get.id
+        }
+      })
+      
+      if (usersIds.nonEmpty) {
+        conversationCommand.addParticipants(session.userId, conversation.id, conversation.version, usersIds)
+      }
+
+      ConversationsListenerCenter.conversationChanged(conversation.id)
+      updateConversationData(target)
+
+      target.appendJavaScript("hideInviteNewPersonPopup();")
+      
+
+    }
+
+    def onSecureCancel(target: AjaxRequestTarget, formModel: InviteUsersFormModel) {} //handled by JavaScript
   })
 
 
@@ -195,9 +242,9 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
 
   private def reloadConversationFromDB {
     conversation = conversationDatabase.getConversationById(conversation.id).get
-    participants = userDatabase.getUsersByIds(conversation.participantsUserIds)
-    invitedUsers = userDatabase.getUsersByIds(conversation.invitedUserIds)
-    previousUsers = userDatabase.getUsersByIds(conversation.previousUserIds)
+    participants = userDatabase.getUsersByIds(conversation.participantsUserIds.toList)
+    invitedUsers = userDatabase.getUsersByIds(conversation.invitedUserIds.toList)
+    previousUsers = userDatabase.getUsersByIds(conversation.previousUserIds.toList)
     allUsers = participants ::: invitedUsers ::: previousUsers
 
     lastReadTime = updateConversationReadTime()

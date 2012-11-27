@@ -14,7 +14,7 @@ trait ConversationCommand {
 
   def createMessage(userId: UID, id: UID, version: Int, messageText: String, messageId: UID)
 
-  def addParticipant(userId: UID, id: UID, version: Int, addedParticipantUserId: UID)
+  def addParticipants(userId: UID, id: UID, version: Int, addedParticipantsUserIds: List[UID])
 
   def userHasReadConversation(userId: UID, conversationInfoId: UID, version: Int)
 

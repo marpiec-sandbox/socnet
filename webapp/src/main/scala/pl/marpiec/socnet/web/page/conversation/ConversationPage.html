@@ -43,6 +43,10 @@
         function hideInviteNewPersonPopup() {
             jQuery(".pageCurtain").css({display:"none"});
             jQuery(".invitePeoplePopup").css({display:"none"});
+
+            window.selectedNewInvitedUsers = {};
+            jQuery(".invitedPeoplePanel .invitationContent").html("");
+            jQuery(".userContactsPanel .contact").stop().css({opacity: 1});
         }
 
         window.selectedNewInvitedUsers = {}
@@ -60,6 +64,8 @@
                 var k = contactHolder.find("input.k").val();
                 removeContactFromSelectedUsers(k);
             }
+
+            jQuery(".inviteUsersForm .users").val(selectedNewInvitedUsersAsString())
 
         }
 
@@ -85,6 +91,19 @@
 
             var contactHolder = jQuery(".userContactsPanel").find("input[value=\""+k+"\"]").parents(".contact");
             contactHolder.stop().animate({opacity: 1}, 500)
+        }
+
+        function selectedNewInvitedUsersAsString() {
+            var notFirst = false;
+            var output = ""
+            for (var id in window.selectedNewInvitedUsers) {
+                if (notFirst) {
+                    output += ",";
+                }
+                notFirst = true;
+                output += id;
+            }
+            return output;
         }
 
     </script>
@@ -262,11 +281,17 @@
 
                     </div>
                 </div>
-                
-                <div class="inviteButtons">
-                    <button onclick="hideInviteNewPersonPopup()">OK</button>
-                    <a href="#" onclick="hideInviteNewPersonPopup();return false;">Anuluj</a>
-                </div>
+
+                <form wicket:id="inviteUsersForm" class="inviteUsersForm">
+                    <input type="hidden" wicket:id="sessionToken"/>
+                    <div><span wicket:id="warningMessage"></span></div>
+                    <input type="hidden" wicket:id="users" class="users"/>
+                    <div class="inviteButtons">
+                        <input type="submit" wicket:id="submitButton" class="submitButton" value="OK"/>
+                        <a href="#" onclick="hideInviteNewPersonPopup();return false;">Anuluj</a>
+                    </div>
+                </form>
+
 
 
             </div>
