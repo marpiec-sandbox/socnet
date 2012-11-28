@@ -9,15 +9,23 @@
         function showInviteNewPersonPopup() {
             jQuery(".pageCurtain").css({display:"block"});
             jQuery(".invitePeoplePopup").css({display:"block"});
+
+            jQuery(".lazyLoadUserContactsButton a").click();
+
+            jQuery(".userContactsPanel .invitationContent").css({opacity:0}).animate({opacity:1}, 200)
+            clearInvitedUsers();
         }
 
         function hideInviteNewPersonPopup() {
             jQuery(".pageCurtain").css({display:"none"});
             jQuery(".invitePeoplePopup").css({display:"none"});
 
+            clearInvitedUsers();
+        }
+
+        function clearInvitedUsers() {
             window.selectedNewInvitedUsers = {};
             jQuery(".invitedPeoplePanel .invitationContent").html("");
-            jQuery(".userContactsPanel .contact").stop().css({opacity: 1});
         }
 
         function selectNewInvitedContact(link) {
@@ -81,18 +89,23 @@
         }
     </script>
 
+
+
     <div class="invitePeoplePopup hiddenByDefault">
+
+        <div wicket:id="lazyLoadUserContactsButton" class="lazyLoadUserContactsButton hiddenByDefault"></div>
 
         <div class="userContactsPanel">
             <div class="inviteTitle"><div class="titleIcon"></div>twoi znajomi.</div>
 
             <div class="invitationContent">
-
-                <div wicket:id="contact" class="class-set-in-controller">
-                    <a wicket:id="link" onclick="selectNewInvitedContact(this);return false;">
-                        <input type="hidden" wicket:id="k" class="k" />
-                        <div wicket:id="userSummaryPreview">userSummaryPreview</div>
-                    </a>
+                <div wicket:id="contactsPanel">
+                    <div wicket:id="contact" class="class-set-in-controller">
+                        <a wicket:id="link" onclick="selectNewInvitedContact(this);return false;">
+                            <input type="hidden" wicket:id="k" class="k" />
+                            <div wicket:id="userSummaryPreview">userSummaryPreview</div>
+                        </a>
+                    </div>
                 </div>
 
             </div>
