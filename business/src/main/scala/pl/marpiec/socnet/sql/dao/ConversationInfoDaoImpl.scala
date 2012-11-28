@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.JdbcTemplate
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.LocalDateTime
+import org.springframework.jdbc.support.rowset.SqlRowSet
 
 /**
  * @author Marcin Pieciukiewicz
@@ -24,28 +25,49 @@ class ConversationInfoDaoImpl @Autowired()(val jdbcTemplate: JdbcTemplate) exten
       Array(Long.box(userId.uid), Long.box(conversationId.uid)): _*)
 
     if (rowSet.next()) {
-      val lastReadTime = DateTimeFormat.forPattern(PATTERN).parseDateTime(rowSet.getString(1)).toLocalDateTime
-      val conversationInfo = new ConversationInfo
-      conversationInfo.conversationId = conversationId
-      conversationInfo.userId = userId
-      conversationInfo.lastReadTime = lastReadTime
-      Option(conversationInfo)
+      Option(mapRowSet(userId, conversationId, rowSet))
     } else {
       None
     }
   }
-
+  
+  private def mapRowSet(userId: UID, conversationId: UID, rowSet:SqlRowSet):ConversationInfo = {
+    val conversationInfo = new ConversationInfo
+    val lastReadTime = DateTimeFormat.forPattern(PATTERN).parseDateTime(rowSet.getString(1)).toLocalDateTime
+    conversationInfo.conversationId = conversationId
+    conversationInfo.userId = userId
+    conversationInfo.lastReadTime = lastReadTime
+    conversationInfo
+  }
 
   def readMany(userId: UID, conversationIds: List[UID]) = {
-    //TODO!!!!
-    var conversationInfoList = List[ConversationInfo]()
-    conversationIds.foreach(conversationId => {
-      val conversationInfoOption = read(userId, conversationId)
-      if(conversationInfoOption.isDefined) {
-        conversationInfoList ::= conversationInfoOption.get
+
+    if(conversationIds.nonEmpty) {
+      val comaSeparatedUids = conversationIds.map(_.uid).mkString(",")
+      val rowSet = jdbcTemplate.queryForRowSet(
+        "SELECT conversation_id, last_read_time FROM conversation_info WHERE user_id = ? AND conversation_id IN ("+comaSeparatedUids+")",
+        Array(Long.box(userId.uid)): _*)
+
+      var conversationInfoList = List[ConversationInfo]()
+
+      while (rowSet.next()) {
+        conversationInfoList ::= mapRowSetWithConversationId(userId, rowSet)
       }
-    })
-    conversationInfoList
+
+      conversationInfoList
+    } else {
+      List[ConversationInfo]()
+    }
+  }
+
+
+  private def mapRowSetWithConversationId(userId: UID, rowSet:SqlRowSet):ConversationInfo = {
+    val conversationInfo = new ConversationInfo
+    val lastReadTime = DateTimeFormat.forPattern(PATTERN).parseDateTime(rowSet.getString(2)).toLocalDateTime
+    conversationInfo.conversationId = new UID(rowSet.getLong(1))
+    conversationInfo.userId = userId
+    conversationInfo.lastReadTime = lastReadTime
+    conversationInfo
   }
 
   def readOrCreate(userId: UID, conversationId: UID) = {
@@ -58,6 +80,7 @@ class ConversationInfoDaoImpl @Autowired()(val jdbcTemplate: JdbcTemplate) exten
       conversation.conversationId = conversationId
       jdbcTemplate.update("INSERT INTO conversation_info (id, user_id, conversation_id, last_read_time) VALUES (NEXTVAL('conversation_info_seq'), ?, ?, ?)",
         Array(Long.box(userId.uid), Long.box(conversationId.uid), new LocalDateTime(0).toString(PATTERN)): _*)
+      //TODO ignore situation when row is already in
       conversation
     }
   }
