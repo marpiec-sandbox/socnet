@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:wicket="http://wicket.apache.org">
+<wicket:panel>
+
+    <script type="text/javascript">
+
+        window.selectedNewInvitedUsers = {}
+
+        function showInviteNewPersonPopup() {
+            jQuery(".pageCurtain").css({display:"block"});
+            jQuery(".invitePeoplePopup").css({display:"block"});
+        }
+
+        function hideInviteNewPersonPopup() {
+            jQuery(".pageCurtain").css({display:"none"});
+            jQuery(".invitePeoplePopup").css({display:"none"});
+
+            window.selectedNewInvitedUsers = {};
+            jQuery(".invitedPeoplePanel .invitationContent").html("");
+            jQuery(".userContactsPanel .contact").stop().css({opacity: 1});
+        }
+
+        function selectNewInvitedContact(link) {
+            var contactHolder = jQuery(link).parents(".contact");
+            if(!contactHolder.hasClass("disabled")) {
+                if (contactHolder.parents(".userContactsPanel").size() == 1) { // it is contact
+                    var k = contactHolder.find("input.k").val();
+                    if (!window.selectedNewInvitedUsers[k]) {
+                        addContactToSelectedUsers(k);
+                    } else {
+                        removeContactFromSelectedUsers(k);
+                    }
+                } else { // it is invited user
+                    var k = contactHolder.find("input.k").val();
+                    removeContactFromSelectedUsers(k);
+                }
+
+                jQuery(".inviteUsersForm .users").val(selectedNewInvitedUsersAsString())
+            }
+
+            jQuery(link).delay(500).blur();
+
+
+        }
+
+        function addContactToSelectedUsers(k) {
+            var contactHolder = jQuery(".userContactsPanel").find("input[value=\""+k+"\"]").parents(".contact");
+            var contactHolderCloned = contactHolder.clone();
+            contactHolderCloned.css({opacity:0})
+
+            var invitedList = jQuery(".invitedPeoplePanel .invitationContent").append(contactHolderCloned);
+            window.selectedNewInvitedUsers[k] = true
+            contactHolder.stop().animate({opacity: 0.3}, 500);
+
+            contactHolderCloned.animate({opacity: 1}, 500)
+
+        }
+
+        function removeContactFromSelectedUsers(k) {
+            var contactToRemove = jQuery(".invitedPeoplePanel").find("input[value=\""+k+"\"]").parents(".contact");
+            contactToRemove.animate({opacity:0}, 250).animate({height:0}, 250, null, function() {
+                jQuery(this).remove();
+            })
+            delete window.selectedNewInvitedUsers[k]
+
+            var contactHolder = jQuery(".userContactsPanel").find("input[value=\""+k+"\"]").parents(".contact");
+            contactHolder.stop().animate({opacity: 1}, 500)
+        }
+
+        function selectedNewInvitedUsersAsString() {
+            var notFirst = false;
+            var output = ""
+            for (var id in window.selectedNewInvitedUsers) {
+                if (notFirst) {
+                    output += ",";
+                }
+                notFirst = true;
+                output += id;
+            }
+            return output;
+        }
+    </script>
+
+    <div class="invitePeoplePopup hiddenByDefault">
+
+        <div class="userContactsPanel">
+            <div class="inviteTitle"><div class="titleIcon"></div>twoi znajomi.</div>
+
+            <div class="invitationContent">
+
+                <div wicket:id="contact" class="class-set-in-controller">
+                    <a wicket:id="link" onclick="selectNewInvitedContact(this);return false;">
+                        <input type="hidden" wicket:id="k" class="k" />
+                        <div wicket:id="userSummaryPreview">userSummaryPreview</div>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="invitedPeoplePanel">
+            <div class="inviteTitle"><div class="titleIcon"></div>zaproszeni do rozmowy.</div>
+
+            <div class="invitationContent">
+
+
+            </div>
+        </div>
+
+        <form wicket:id="inviteUsersForm" class="inviteUsersForm">
+            <input type="hidden" wicket:id="sessionToken"/>
+            <div><span wicket:id="warningMessage"></span></div>
+            <input type="hidden" wicket:id="users" class="users"/>
+            <div class="inviteButtons">
+                <input type="submit" wicket:id="submitButton" class="submitButton" value="OK"/>
+                <a href="#" onclick="hideInviteNewPersonPopup();return false;">Anuluj</a>
+            </div>
+        </form>
+
+
+
+    </div>
+
+
+</wicket:panel>
+</html>

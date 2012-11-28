@@ -1,5 +1,6 @@
 package pl.marpiec.socnet.web.page.conversation
 
+import conversationPage.InvitePeoplePopupPanel
 import model.{InviteUsersFormModel, ReplyConversationFormModel}
 import org.apache.wicket.request.mapper.parameter.PageParameters
 import pl.marpiec.socnet.web.authorization.SecureWebPage
@@ -58,7 +59,7 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
   @SpringBean private var conversationDatabase: ConversationDatabase = _
   @SpringBean private var conversationInfoDao: ConversationInfoDao = _
 
-  @SpringBean private var userContactsDatabase: UserContactsDatabase = _
+
   @SpringBean private var userDatabase: UserDatabase = _
   @SpringBean private var uidGenerator: UidGenerator = _
 
@@ -88,6 +89,8 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
 
   add(new WebMarkupContainer("replyButton").setVisible(conversation.userParticipating(session.userId)))
 
+
+  add(new InvitePeoplePopupPanel("invitePeoplePopupPanel", this, conversation))
 
   var conversationHasChanged = false
 
@@ -179,86 +182,11 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
   })
 
 
-
-  val userContactsIds = userContactsDatabase.getUserContactsByUserId(session.userId).getOrElse(
-    throw new IllegalStateException("User contacts not created for user " + session.userId)
-  )
-
-  val userContacts = userDatabase.getUsersByIds(userContactsIds.contactsIds.toList)
-  var counter = 0
-  val userContactsMap = userContacts.map(user => {
-    val mapEntry = (counter, user)
-    counter += 1
-    mapEntry
-  }).toMap
-
-  add(new RepeatingView("contact") {
-    for ((id,user) <- userContactsMap) {
-
-
-      add(new AbstractItem(newChildId()) {
-        val disabled = userIsInvitedOrParticipating(user.id)
-        if(disabled) {
-          add(new AttributeModifier("class", "contact disabled"))
-        } else {
-          add(new AttributeModifier("class", "contact"))
-        }
-        add(new AbstractLink("link") {
-          if(!disabled) {
-            add(new AttributeModifier("href", "#"))
-          }
-          add(new HiddenField[String]("k", new Model(id.toString)) {
-            override def getInputName = ""
-          })
-          add(new UserSummaryPreviewNoLinkPanel("userSummaryPreview", user))  
-        })
-        
-        
-      })
-    }
-  })
-
-  private def userIsInvitedOrParticipating(userId:UID):Boolean = {
+  def userIsInvitedOrParticipating(userId:UID):Boolean = {
     conversation.userParticipating(userId) || conversation.userInvited(userId)
   }
   
-  add(new StandardAjaxSecureForm[InviteUsersFormModel]("inviteUsersForm") {
-    def initialize = {
-      standardCancelButton = false
-      setModel(new CompoundPropertyModel[InviteUsersFormModel](new InviteUsersFormModel))
-    }
 
-    def buildSchema = {
-      add(new HiddenField[String]("users"))
-    }
-
-    def onSecureSubmit(target: AjaxRequestTarget, formModel: InviteUsersFormModel) {
-
-      val users = formModel.parseUsers
-      
-      var usersIds = List[UID]()
-      
-      users.foreach(userIdentifier => {
-        val userOption = userContactsMap.get(userIdentifier)
-        if (userOption.isDefined) {
-          usersIds ::= userOption.get.id
-        }
-      })
-      
-      if (usersIds.nonEmpty) {
-        conversationCommand.addParticipants(session.userId, conversation.id, conversation.version, usersIds)
-      }
-
-      ConversationsListenerCenter.conversationChanged(conversation.id)
-      updateConversationData(target)
-
-      target.appendJavaScript("hideInviteNewPersonPopup();")
-      
-
-    }
-
-    def onSecureCancel(target: AjaxRequestTarget, formModel: InviteUsersFormModel) {} //handled by JavaScript
-  })
 
 
   //Methods
