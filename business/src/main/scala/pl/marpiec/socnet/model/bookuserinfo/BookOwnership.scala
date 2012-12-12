@@ -9,6 +9,7 @@ import pl.marpiec.util.UID
 class BookOwnership {
 
   var userId: UID = _
+  var knowThisBook = false
   var owner = false
   var description: String = _
   var willingToSell = false
@@ -17,7 +18,7 @@ class BookOwnership {
   var wantToBorrow = false
 
   def isInterestedInBook: Boolean = {
-    owner || willingToSell || willingToLend || wantToBuy || wantToBorrow
+    knowThisBook || owner || willingToSell || willingToLend || wantToBuy || wantToBorrow
   }
 
 }

@@ -22,6 +22,10 @@
         <form wicket:id="bookOwnershipForm">
             <input type="hidden" wicket:id="sessionToken"/>
             <div><span wicket:id="warningMessage"></span></div>
+            <div class="option knowThisBook">
+                <input wicket:id="knowThisBook" type="checkbox" onclick="bookOwnerFlagChanged(this, 'knowThisBook')" />
+                <label onclick="labelForInputClicked(this)">Znam tę książkę</label>
+            </div>
             <div class="option owner">
                 <input wicket:id="owner" type="checkbox" onclick="bookOwnerFlagChanged(this, 'owner')" />
                 <label onclick="labelForInputClicked(this)">Posiadam tę książkę</label>

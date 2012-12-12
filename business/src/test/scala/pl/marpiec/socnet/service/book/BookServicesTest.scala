@@ -213,6 +213,7 @@ class BookServicesTest {
 
     val bookOwnership = new BookOwnershipInput
 
+    bookOwnership.knowThisBook = true
     bookOwnership.owner = true
     bookOwnership.description = "Wydanie polskie"
     bookOwnership.willingToLend = true
@@ -226,6 +227,7 @@ class BookServicesTest {
     ownerBookUserInfo = bookUserInfoDatabase.getUserInfoByUserAndBook(bookOwnerUserId, bookId).get
 
     val ownership = ownerBookUserInfo.ownershipOption.get
+    assertEquals(ownership.knowThisBook, true)
     assertEquals(ownership.owner, true)
     assertEquals(ownership.description, "Wydanie polskie")
     assertEquals(ownership.willingToLend, true)

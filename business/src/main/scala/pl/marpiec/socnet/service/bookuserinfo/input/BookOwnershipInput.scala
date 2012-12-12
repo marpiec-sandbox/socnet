@@ -5,6 +5,7 @@ package pl.marpiec.socnet.service.bookuserinfo.input
  */
 
 class BookOwnershipInput {
+  var knowThisBook = false
   var owner = false
   var description:String = _
   var willingToSell = false

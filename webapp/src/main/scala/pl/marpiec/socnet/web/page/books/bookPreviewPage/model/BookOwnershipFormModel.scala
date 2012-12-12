@@ -10,6 +10,7 @@ import pl.marpiec.socnet.service.bookuserinfo.input.BookOwnershipInput
  */
 
 class BookOwnershipFormModel extends SecureFormModel {
+  var knowThisBook = false
   var owner = false
   var willingToSell = false
   var willingToLend = false

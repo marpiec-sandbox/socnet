@@ -37,6 +37,7 @@ class BookOwnershipPanel(id: String, bookId:UID, bookUserInfo: BookUserInfo) ext
     }
 
     def buildSchema = {
+      add(new CheckBox("knowThisBook"))
       add(new CheckBox("owner"))
       add(new CheckBox("wantToBuy"))
       add(new CheckBox("willingToSell"))
