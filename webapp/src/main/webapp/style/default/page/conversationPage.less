@@ -1,163 +1,174 @@
-.startConversationContainer {
-    .standardContainer;
+.startConversationPage {
+    .startConversationContainer {
+        .standardContainer;
 
-    padding-left: 15px;
-    padding-right: 15px;
+        padding-left: 15px;
+        padding-right: 15px;
 
-    .title {
-        a {
-          text-transform: none;
-          font-weight: bold;
+        .title {
+            a {
+                text-transform: none;
+                font-weight: bold;
+            }
         }
-    }
 
-    .conversationTitle {
-        font-weight: bold;
-        margin-bottom: 5px;
-    }
+        .conversationTitle {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
 
-    .conversationTitleInput {
-        width: 579px;
-    }
+        .conversationTitleInput {
+            font-size: 16px;
+            padding: 6px;
+            width: 573px;
+        }
 
-    .contentEditor {
-        width: 587px;
-        margin-bottom: 30px;
-        .container {
-            iframe {
-                height: 600px;
+        .contentEditor {
+            width: 587px;
+            margin-bottom: 30px;
+            .container {
+                iframe {
+                    height: 350px !important;
+                }
+            }
+        }
+
+        .startConversationButtons {
+            text-align: center;
+            margin-bottom: 30px;
+            input {
+                margin-right: 200px;
             }
         }
     }
 
-    .startConversationButtons {
-        text-align: center;
-        margin-bottom: 30px;
-        input {
-            margin-right: 200px;
+    .invitedUserPreview {
+        position: relative;
+        .removeUserButton {
+            display: none;
+            left: 70px;
+            position: absolute;
+            top: 20px;
         }
     }
 
 }
 
+
 .conversationPage {
 
-    .conversationPreview {
+    .conversationTitle {
+        background-color: #F5F8F8;
+        border: 1px solid @formInputBorderColor;
+        color: #254F87;
+        font-size: 15px;
+        font-weight: bold;
+        padding: 8px;
+        width: 907px;
+    }
 
-        .conversationTitle {
-            background-color: #F5F8F8;
-            border: 1px solid @formInputBorderColor;
-            color: #254F87;
-            font-size: 15px;
-            font-weight: bold;
-            padding: 8px;
-            width: 907px;
-        }
+    .noParticipantsLabel {
+        text-align: center;
+        margin: 20px 0;
+    }
 
-        .noParticipantsLabel {
+    .participants, .conversationActions {
+        .standardContainer;
+    }
+
+    .conversationActions {
+
+        .confirmationBox {
+            margin: 10px 0;
             text-align: center;
-            margin: 20px 0;
-        }
-
-        .participants, .conversationActions {
-            .standardContainer;
-        }
-
-        .conversationActions {
-
-            .confirmationBox {
-                margin: 10px 0;
-                text-align: center;
-                .confirmationMessage {
-                    .explanation {
-                        margin-top: 5px;
-                        color: @lightFontColor;
-                    }
-                }
-                .confirmationButtons {
-                    margin-top: 10px;
-                    .confirmButton {
-                        display: inline-block;
-                        margin-right: 30%;
-                    }
-
+            .confirmationMessage {
+                .explanation {
+                    margin-top: 5px;
+                    color: @lightFontColor;
                 }
             }
+            .confirmationButtons {
+                margin-top: 10px;
+                .confirmButton {
+                    display: inline-block;
+                    margin-right: 30%;
+                }
 
-            .buttons {
-                button {
-                    background-color: #F9E7CC;
-                    border: 1px solid #F9B857;
-                    color: @defaultFontColor;
-                    cursor: pointer;
-                    margin: 5px 10px;
+            }
+        }
 
-                    &:hover {
-                        opacity: 0.8;
-                    }
+        .buttons {
+            button {
+                background-color: #F9E7CC;
+                border: 1px solid #F9B857;
+                color: @defaultFontColor;
+                cursor: pointer;
+                margin: 5px 10px;
+
+                &:hover {
+                    opacity: 0.8;
                 }
             }
         }
+    }
 
 
-        .conversationInvitationAction {
-            .standardContainer;
-            .invitationMessage {
-                text-align: center;
-            }
-            .invitationButton{
-                text-align: center;
-                margin-bottom: 6px;
-                margin-top: 12px;
-            }
+    .conversationInvitationAction {
+        .standardContainer;
+        .invitationMessage {
+            text-align: center;
+        }
+        .invitationButton{
+            text-align: center;
+            margin-bottom: 6px;
+            margin-top: 12px;
+        }
+    }
+
+
+    .messages {
+
+        .standardContainer;
+        padding: 0 0 10px 0;
+
+        .title {
+            text-transform: none;
         }
 
 
-        .messages {
+         .messageContainer {
 
-            .standardContainer;
-            padding: 0 0 10px 0;
+             margin: 0 0 20px 0;
 
-            .title {
-                text-transform: none;
+
+            .messageTitle {
+                padding: 4px 8px;
+                background-color: #F1F1F1;
+                border-bottom: 1px solid #E8E8E8;
+                border-right: 1px solid #E8E8E8;
+
+                .profileLink {
+                    font-size: 12px;
+                }
+                .sentTime {
+                    font-size: @smallFontSize;
+                    float: right;
+                    color: @lightFontColor;
+                }
             }
 
+            .messageContent {
+               padding: 8px;
+            }
+         }
 
-             .messageContainer {
-
-                 margin: 0 0 20px 0;
-
-
+        .notYetRead {
+            .messageContainer {
                 .messageTitle {
-                    padding: 4px 8px;
-                    background-color: #F1F1F1;
-                    border-bottom: 1px solid #E8E8E8;
-                    border-right: 1px solid #E8E8E8;
-
-                    .profileLink {
-                        font-size: 12px;
-                    }
-                    .sentTime {
-                        font-size: @smallFontSize;
-                        float: right;
-                        color: @lightFontColor;
-                    }
-                }
-
-                .messageContent {
-                   padding: 8px;
-                }
-             }
-
-            .notYetRead {
-                .messageContainer {
-                    .messageTitle {
-                        background-color: #f9e7cc;
-                    }
+                    background-color: #f9e7cc;
                 }
             }
         }
-
     }
 
     .conversationActionButtons {

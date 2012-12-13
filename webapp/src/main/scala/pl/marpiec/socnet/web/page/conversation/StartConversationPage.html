@@ -3,27 +3,39 @@
 <body>
 <wicket:extend>
 
-    <div class="startConversationPage twoColumnLayout">
+    <script type="text/javascript">
+
+        function initInvitedUserRemoval() {
+            jQuery(".invitedUserPreview").mouseenter(function() {
+                var jqThis = jQuery(this);
+                jqThis.find(".userPreviewSummary").css({opacity: 0.3});
+                jqThis.find(".removeUserButton").css({display:"block"});
+            });
+
+            jQuery(".invitedUserPreview").mouseleave(function() {
+                var jqThis = jQuery(this);
+                jqThis.find(".userPreviewSummary").css({opacity: 1});
+                jqThis.find(".removeUserButton").css({display:"none"});
+            });
+        }
+
+    </script>
+
+    <div class="conversationPage startConversationPage twoColumnLayout">
 
         <div class="columnA">
-            <div class="startConversationContainer">
 
+            <div class="startConversationContainer">
                 <div class="title">
                     <div class="titleIcon"></div>
-                    Nowa wiadomość do:
-                    <a wicket:id="profileLink"><span wicket:id="contactFullName">contactFullName</span></a>
+                    Nowa wiadomość
                 </div>
 
                 <form wicket:id="startConversationForm" onsubmit="doCheck()">
                     <input type="hidden" wicket:id="sessionToken"/>
                     <div><span wicket:id="warningMessage" class="warningMessage"></span></div>
 
-                    <div class="conversationTitle">
-                        Tytuł rozmowy
-                    </div>
                     <input type="text" wicket:id="conversationTitle" class="conversationTitleInput"/>
-
-
 
                     <div wicket:id="bbCodeEditor" class="contentEditor"></div>
 
@@ -37,11 +49,47 @@
 
             </div>
 
-
         </div>
 
+        <div class="columnB">
+
+            <div class="participants">
+                <div class="title">
+                    <div class="titleIcon"></div>
+                    zaproszeni.
+                </div>
+
+                <div wicket:id="invitedUsersPanel">
+                    <div wicket:id="invitedUser">
+                        <div class="invitedUserPreview">
+                            <div wicket:id="userSummaryPreview" >userSummaryPreview</div>
+                            <div wicket:id="removeInvitedUserButton" class="removeUserButton"></div>
+                        </div>
+                        <script type="text/javascript">
+                            initInvitedUserRemoval();
+                        </script>
+                    </div>
+                </div>
+
+
+                <div class="buttons">
+                    <div class="buttonHolder">
+                        <a href="#" onclick="showInviteNewPersonPopup();return false;" class="defaultButton">Zaproś nową osobę</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div wicket:id="invitePeoplePopupPanel"></div>
 
     </div>
+
+    <script type="text/javascript">
+
+        createAutolabeledInput(".conversationTitleInput", "Podaj tytuł rozmowy")
+
+    </script>
 
 
 

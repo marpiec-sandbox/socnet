@@ -13,22 +13,17 @@ import pl.marpiec.socnet.web.page.conversation.model.InviteUsersFormModel
 import org.apache.wicket.model.{CompoundPropertyModel, Model}
 import org.apache.wicket.ajax.AjaxRequestTarget
 import pl.marpiec.util.UID
-import pl.marpiec.socnet.web.page.conversation.{ConversationsListenerCenter, ConversationPage}
-import pl.marpiec.socnet.service.conversation.ConversationCommand
 import org.apache.wicket.markup.html.WebMarkupContainer
-import pl.marpiec.socnet.model.{User, Conversation}
-import org.apache.wicket.ajax.markup.html.form.AjaxButton
-import org.apache.wicket.markup.html.form.{Form, HiddenField}
-import pl.marpiec.socnet.web.wicket.SecureAjaxButton
+import pl.marpiec.socnet.model.User
+import org.apache.wicket.markup.html.form.HiddenField
 import pl.marpiec.socnet.web.component.wicket.form.{OneLinkAjaxForm, StandardAjaxSecureForm}
 
 /**
  * @author Marcin Pieciukiewicz
  */
 
-class InvitePeoplePopupPanel(id: String, parentPage: ConversationPage, conversation: Conversation) extends Panel(id) {
+class InvitePeoplePopupPanel(id: String, parentPage: PageWithInvitingPeopleSupport) extends Panel(id) {
 
-  @SpringBean private var conversationCommand: ConversationCommand = _
   @SpringBean private var userContactsDatabase: UserContactsDatabase = _
   @SpringBean private var userDatabase: UserDatabase = _
 
@@ -46,7 +41,7 @@ class InvitePeoplePopupPanel(id: String, parentPage: ConversationPage, conversat
     target.add(contactsPanel)
   }))
 
-  private def addOrReplaceContactsPanel():WebMarkupContainer = {
+  private def addOrReplaceContactsPanel(): WebMarkupContainer = {
     val contactsPanel = new WebMarkupContainer("contactsPanel") {
       setOutputMarkupId(true)
       add(new RepeatingView("contact") {
@@ -77,7 +72,6 @@ class InvitePeoplePopupPanel(id: String, parentPage: ConversationPage, conversat
   }
 
 
-
   private def addInviteUsersForm() {
     add(new StandardAjaxSecureForm[InviteUsersFormModel]("inviteUsersForm") {
       def initialize = {
@@ -91,15 +85,11 @@ class InvitePeoplePopupPanel(id: String, parentPage: ConversationPage, conversat
 
       def onSecureSubmit(target: AjaxRequestTarget, formModel: InviteUsersFormModel) {
 
-        val usersIds: List[UID] = getUserContactsIdsFromUsersMap(formModel.parseUsers)
+        val users: List[User] = getUserContactsFromUsersMap(formModel.parseUsers)
 
-        if (usersIds.nonEmpty) {
-          conversationCommand.addParticipants(currentUserId, conversation.id, conversation.version, usersIds)
-        }
+        parentPage.newInvitedPeopleAdded(users)
 
-        ConversationsListenerCenter.conversationChanged(conversation.id)
         parentPage.updateConversationData(target)
-
         target.appendJavaScript("hideInviteNewPersonPopup();")
 
       }
@@ -108,7 +98,7 @@ class InvitePeoplePopupPanel(id: String, parentPage: ConversationPage, conversat
     })
   }
 
-  
+
   private def loadUserContactsData() {
     userContactsIds = userContactsDatabase.getUserContactsByUserId(currentUserId).getOrElse(
       throw new IllegalStateException("User contacts not created for user " + currentUserId)
@@ -125,23 +115,23 @@ class InvitePeoplePopupPanel(id: String, parentPage: ConversationPage, conversat
         val mapEntry = (counter, user)
         counter += 1
         mapEntry
-      }).toMap  
+      }).toMap
     } else {
       Map[Int, User]()
     }
-    
+
   }
 
-  private def getUserContactsIdsFromUsersMap(users: List[Int]): List[UID] = {
-    var usersIds = List[UID]()
+  private def getUserContactsFromUsersMap(usersIdentifiers: List[Int]): List[User] = {
+    var users = List[User]()
 
-    users.foreach(userIdentifier => {
+    usersIdentifiers.foreach(userIdentifier => {
       val userOption = userContactsMap.get(userIdentifier)
       if (userOption.isDefined) {
-        usersIds ::= userOption.get.id
+        users ::= userOption.get
       }
     })
-    usersIds
+    users
   }
 
 

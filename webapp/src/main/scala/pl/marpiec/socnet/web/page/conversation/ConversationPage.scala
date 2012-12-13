@@ -1,6 +1,6 @@
 package pl.marpiec.socnet.web.page.conversation
 
-import conversationPage.InvitePeoplePopupPanel
+import conversationPage.{PageWithInvitingPeopleSupport, InvitePeoplePopupPanel}
 import model.{InviteUsersFormModel, ReplyConversationFormModel}
 import org.apache.wicket.request.mapper.parameter.PageParameters
 import pl.marpiec.socnet.web.authorization.SecureWebPage
@@ -51,7 +51,8 @@ object ConversationPage {
 }
 
 
-class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetRoles.USER) with ConversationListener {
+class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetRoles.USER)
+  with ConversationListener with PageWithInvitingPeopleSupport {
 
   // dependencies
 
@@ -90,7 +91,7 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
   add(new WebMarkupContainer("replyButton").setVisible(conversation.userParticipating(session.userId)))
 
 
-  add(new InvitePeoplePopupPanel("invitePeoplePopupPanel", this, conversation))
+  add(new InvitePeoplePopupPanel("invitePeoplePopupPanel", this))
 
   var conversationHasChanged = false
 
@@ -116,7 +117,7 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
     super.onRemove()
   }
 
-  def updateConversationData(target:AjaxRequestTarget) {
+  override def updateConversationData(target:AjaxRequestTarget) {
     conversationHasChanged = false
     ConversationsListenerCenter.addListener(conversation.id, ConversationPage.this)
     reloadConversationFromDB
@@ -182,7 +183,7 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
   })
 
 
-  def userIsInvitedOrParticipating(userId:UID):Boolean = {
+  override def userIsInvitedOrParticipating(userId:UID):Boolean = {
     conversation.userParticipating(userId) || conversation.userInvited(userId)
   }
   
@@ -296,5 +297,12 @@ class ConversationPage(parameters: PageParameters) extends SecureWebPage(SocnetR
     if (!conversation.userParticipating(session.userId) && !conversation.userInvited(session.userId)) {
       throw new AbortWithHttpErrorCodeException(403);
     }
+  }
+
+  override def newInvitedPeopleAdded(users: List[User]) {
+    if (users.nonEmpty) {
+      conversationCommand.addParticipants(session.userId, conversation.id, conversation.version, users.map(_.id))
+    }
+    ConversationsListenerCenter.conversationChanged(conversation.id)
   }
 }

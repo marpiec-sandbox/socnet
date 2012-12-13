@@ -40,156 +40,150 @@
     <div class="conversationPage twoColumnLayout">
 
 
-        <div class="conversationPreview">
+        <div class="columnA">
+            <div class="messages">
+                <div class="title">
+                    <div class="titleIcon"></div>
+                    <span wicket:id="conversationTitle">conversationTitle</span>
+                </div>
 
-            <div class="columnA">
-                <div class="messages">
-                    <div class="title">
-                        <div class="titleIcon"></div>
-                        <span wicket:id="conversationTitle">conversationTitle</span>
+                <div wicket:id="messagesContainer">
+                    <div wicket:id="message">
+                        <div wicket:id="messagePreview">messagePreview</div>
                     </div>
-
-                    <div wicket:id="messagesContainer">
-                        <div wicket:id="message">
-                            <div wicket:id="messagePreview">messagePreview</div>
-                        </div>
-                    </div>
+                </div>
 
 
 
-                    <div class="replyFormPanel hiddenByDefault">
-                        <form wicket:id="replyForm" onsubmit="doCheck()">
+                <div class="replyFormPanel hiddenByDefault">
+                    <form wicket:id="replyForm" onsubmit="doCheck()">
 
-                            <input type="hidden" wicket:id="sessionToken"/>
+                        <input type="hidden" wicket:id="sessionToken"/>
 
-                            <div><span wicket:id="warningMessage"></span></div>
+                        <div><span wicket:id="warningMessage"></span></div>
 
-                            <div wicket:id="bbCodeEditor"></div>
+                        <div wicket:id="bbCodeEditor"></div>
 
-                            <div class="buttons">
-                                <div class="button">
-                                    <a onclick="hideReplyFormPanel();return false;">Anuluj</a>
-                                </div>
-                                <div class="button">
-                                    <input type="submit" wicket:id="submitButton" onclick="doCheck()" value="Wyślij"/>
-                                </div>
+                        <div class="buttons">
+                            <div class="button">
+                                <a onclick="hideReplyFormPanel();return false;">Anuluj</a>
                             </div>
-
-                        </form>
-                    </div>
-
-                    <div class="buttons conversationActionButtons">
-                        <div wicket:id="replyButton" class="buttonHolder">
-                            <a href="#" onclick="showReplyFormPanel();return false;" class="defaultButton">Odpowiedz</a>
+                            <div class="button">
+                                <input type="submit" wicket:id="submitButton" onclick="doCheck()" value="Wyślij"/>
+                            </div>
                         </div>
+
+                    </form>
+                </div>
+
+                <div class="buttons conversationActionButtons">
+                    <div wicket:id="replyButton" class="buttonHolder">
+                        <a href="#" onclick="showReplyFormPanel();return false;" class="defaultButton">Odpowiedz</a>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div class="columnB">
+        <div class="columnB">
 
-                <div wicket:id="conversationInfo">
+            <div wicket:id="conversationInfo">
 
-                    <wicket:enclosure child="enterConversationButton">
-                        <div class="conversationInvitationAction">
-                            <div class="title">
-                                <div class="titleIcon"></div>
-                                zaproszenie.
+                <wicket:enclosure child="enterConversationButton">
+                    <div class="conversationInvitationAction">
+                        <div class="title">
+                            <div class="titleIcon"></div>
+                            zaproszenie.
+                        </div>
+                        <div class="invitationMessage">
+                            Masz zaproszenie do tej rozmowy.
+                        </div>
+
+                        <div wicket:id="enterConversationButton" class="invitationButton">enterConversationButton</div>
+
+                    </div>
+                </wicket:enclosure>
+
+                <div class="participants">
+                    <div class="title">
+                        <div class="titleIcon"></div>
+                        uczestnicy.
+                    </div>
+                    <div wicket:id="noParticipantsLabel" class="noParticipantsLabel">Aktualnie nikt nie uczestniczy w tej rozmowie.</div>
+                    <div wicket:id="participant">
+                        <div wicket:id="userSummaryPreview">userSummaryPreview</div>
+                    </div>
+                </div>
+
+                <div class="participants">
+                    <div class="title">
+                        <div class="titleIcon"></div>
+                        zaproszeni.
+                    </div>
+
+                    <div wicket:id="invitedUser">
+                        <div wicket:id="userSummaryPreview">userSummaryPreview</div>
+                    </div>
+
+                    <div class="buttons">
+                        <div class="buttonHolder">
+                            <a href="#" onclick="showInviteNewPersonPopup();return false;" class="defaultButton">Zaproś nową osobę</a>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="conversationActions">
+                    <div class="title">
+                        <div class="titleIcon"></div>
+                        rozmowa.
+                    </div>
+
+
+                    <wicket:enclosure child="exitConversationButton">
+                        <div class="confirmExit confirmationBox hiddenByDefault">
+                            <div class="confirmationMessage">
+                                Czy na pewno chcesz opuścić rozmowę?
+                                <div class="explanation">
+                                    Później możesz do niej wrócić.
+                                </div>
                             </div>
-                            <div class="invitationMessage">
-                                Masz zaproszenie do tej rozmowy.
+                            <div class="confirmationButtons">
+                                <div wicket:id="exitConversationButton" class="confirmButton">exitConversationButton</div>
+                                <a href="#" onclick="hideExitConfirmation();return false;">Anuluj</a>
                             </div>
-
-                            <div wicket:id="enterConversationButton" class="invitationButton">enterConversationButton</div>
-
+                        </div>
+                        <div class="buttons">
+                            <button onclick="showExitConfirmation();" class="exitConversationButton">Opuść rozmowę</button>
                         </div>
                     </wicket:enclosure>
 
-                    <div class="participants">
-                        <div class="title">
-                            <div class="titleIcon"></div>
-                            uczestnicy.
+                    <wicket:enclosure child="deleteConversationButton">
+                        <div class="confirmDelete confirmationBox hiddenByDefault">
+                            <div class="confirmationMessage">
+                                Czy na pewno chcesz zrezygnować z zaproszenia?
+                                <div class="explanation">
+                                    Nie będziesz mógł poźniej przeglądać ani uczestniczyć w tej rozmowie.
+                                </div>
+                            </div>
+                            <div class="confirmationButtons">
+                                <div wicket:id="deleteConversationButton" class="confirmButton">deleteConversationButton</div>
+                                <a href="#" onclick="hideDeleteConfirmation();return false;">Anuluj</a>
+                            </div>
                         </div>
-                        <div wicket:id="noParticipantsLabel" class="noParticipantsLabel">Aktualnie nikt nie uczestniczy w tej rozmowie.</div>
-                        <div wicket:id="participant">
-                            <div wicket:id="userSummaryPreview">userSummaryPreview</div>
-                        </div>
-                    </div>
-
-                    <div class="participants">
-                        <div class="title">
-                            <div class="titleIcon"></div>
-                            zaproszeni.
-                        </div>
-
-                        <div wicket:id="invitedUser">
-                            <div wicket:id="userSummaryPreview">userSummaryPreview</div>
-                        </div>
-
                         <div class="buttons">
-                            <div class="buttonHolder">
-                                <a href="#" onclick="showInviteNewPersonPopup();return false;" class="defaultButton">Zaproś nową osobę</a>
-                            </div>
+                            <button onclick="showDeleteConfirmation();" class="deleteConversationButton">Zrezygnuj z zaproszenia</button>
                         </div>
-
-                    </div>
-
-
-                    <div class="conversationActions">
-                        <div class="title">
-                            <div class="titleIcon"></div>
-                            rozmowa.
-                        </div>
-
-
-                        <wicket:enclosure child="exitConversationButton">
-                            <div class="confirmExit confirmationBox hiddenByDefault">
-                                <div class="confirmationMessage">
-                                    Czy na pewno chcesz opuścić rozmowę?
-                                    <div class="explanation">
-                                        Później możesz do niej wrócić.
-                                    </div>
-                                </div>
-                                <div class="confirmationButtons">
-                                    <div wicket:id="exitConversationButton" class="confirmButton">exitConversationButton</div>
-                                    <a href="#" onclick="hideExitConfirmation();return false;">Anuluj</a>
-                                </div>
-                            </div>
-                            <div class="buttons">
-                                <button onclick="showExitConfirmation();" class="exitConversationButton">Opuść rozmowę</button>
-                            </div>
-                        </wicket:enclosure>
-
-                        <wicket:enclosure child="deleteConversationButton">
-                            <div class="confirmDelete confirmationBox hiddenByDefault">
-                                <div class="confirmationMessage">
-                                    Czy na pewno chcesz zrezygnować z zaproszenia?
-                                    <div class="explanation">
-                                        Nie będziesz mógł poźniej przeglądać ani uczestniczyć w tej rozmowie.
-                                    </div>
-                                </div>
-                                <div class="confirmationButtons">
-                                    <div wicket:id="deleteConversationButton" class="confirmButton">deleteConversationButton</div>
-                                    <a href="#" onclick="hideDeleteConfirmation();return false;">Anuluj</a>
-                                </div>
-                            </div>
-                            <div class="buttons">
-                                <button onclick="showDeleteConfirmation();" class="deleteConversationButton">Zrezygnuj z zaproszenia</button>
-                            </div>
-                        </wicket:enclosure>
-
-                    </div>
+                    </wicket:enclosure>
 
                 </div>
 
-
             </div>
-
-            <div wicket:id="invitePeoplePopupPanel"></div>
 
 
         </div>
 
+        <div wicket:id="invitePeoplePopupPanel"></div>
 
     </div>
 

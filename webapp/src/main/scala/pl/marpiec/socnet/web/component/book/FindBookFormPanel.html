@@ -10,25 +10,7 @@
 
     <script type="text/javascript">
 
-        var findBookQueryInputInitText = "Znajdź książkę";
-
-        var jQueryInput = jQuery(".findBookQueryInput")
-
-        jQueryInput.val(findBookQueryInputInitText);
-        jQueryInput.addClass("inputLabel")
-        jQueryInput.focus(function() {
-            if(jQuery(this).val() == findBookQueryInputInitText) {
-                jQuery(this).removeClass("inputLabel")
-                jQuery(this).val("")
-            }
-        })
-        jQueryInput.blur(function() {
-            if(jQuery(this).val() == "") {
-                jQuery(this).addClass("inputLabel")
-                jQuery(this).val(findBookQueryInputInitText)
-            }
-        })
-
+        createAutolabeledInput(".findBookQueryInput", "Znajdź książkę")
 
     </script>
 
