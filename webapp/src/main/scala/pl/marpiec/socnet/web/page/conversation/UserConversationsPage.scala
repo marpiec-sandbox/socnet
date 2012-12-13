@@ -11,6 +11,7 @@ import pl.marpiec.socnet.model.{Conversation}
 import pl.marpiec.util.UID
 import pl.marpiec.socnet.service.conversation.ConversationQuery
 import pl.marpiec.socnet.sql.entity.ConversationInfo
+import org.apache.wicket.markup.html.link.BookmarkablePageLink
 
 /**
  * @author Marcin Pieciukiewicz
@@ -22,6 +23,8 @@ class UserConversationsPage extends SecureWebPage(SocnetRoles.USER) {
   @SpringBean private var conversationQuery: ConversationQuery = _
 
   val (userConversations: List[Conversation], conversationInfoMap: Map[UID, ConversationInfo]) = conversationQuery.loadConversationsOfUser(session.userId)
+
+  add(new BookmarkablePageLink("newConversationLink", classOf[StartConversationPage]))
 
   add(new RepeatingView("conversation") {
 
