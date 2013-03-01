@@ -1,9 +1,9 @@
 package pl.marpiec.util.mpjsoncustom
 
 import pl.marpiec.util.senum.SEnum
-import pl.marpiec.util.mpjson.{StringIterator, JsonTypeConverter}
+import pl.marpiec.mpjsons.{StringIterator, JsonTypeConverter}
 import java.lang.reflect.Field
-import pl.marpiec.util.mpjson.deserializer.{StringDeserializer, IdentifierDeserializer}
+import pl.marpiec.mpjsons.impl.deserializer.StringDeserializer
 
 /**
  * @author Marcin Pieciukiewicz

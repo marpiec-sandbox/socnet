@@ -1,10 +1,10 @@
 package pl.marpiec.util.mpjsoncustom
 
 import org.joda.time.LocalDateTime
-import pl.marpiec.util.mpjson.{JsonTypeConverter, StringIterator}
+import pl.marpiec.mpjsons.{JsonTypeConverter, StringIterator}
 import java.lang.reflect.Field
 import org.joda.time.format.DateTimeFormat
-import pl.marpiec.util.mpjson.deserializer.StringDeserializer
+import pl.marpiec.mpjsons.impl.deserializer.StringDeserializer
 
 /**
  * @author Marcin Pieciukiewicz

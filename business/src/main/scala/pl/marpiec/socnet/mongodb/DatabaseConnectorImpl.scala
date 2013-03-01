@@ -1,10 +1,10 @@
 package pl.marpiec.socnet.mongodb
 
 import com.mongodb.util.JSON
-import pl.marpiec.util.mpjson.MPJson
 import pl.marpiec.util.{UID, JsonSerializer}
 import pl.marpiec.cqrs.Aggregate
 import com.mongodb.{QueryBuilder, DBObject, Mongo, BasicDBObject}
+import pl.marpiec.mpjsons.MPJson
 
 /**
  * @author Marcin Pieciukiewicz

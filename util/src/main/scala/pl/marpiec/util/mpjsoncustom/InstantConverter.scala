@@ -1,9 +1,9 @@
 package pl.marpiec.util.mpjsoncustom
 
-import pl.marpiec.util.mpjson.{StringIterator, JsonTypeConverter}
+import pl.marpiec.mpjsons.{StringIterator, JsonTypeConverter}
 import java.lang.reflect.Field
 import org.joda.time.Instant
-import pl.marpiec.util.mpjson.deserializer.primitives.LongDeserializer
+import pl.marpiec.mpjsons.impl.deserializer.primitives.LongDeserializer
 
 /**
  * @author Marcin Pieciukiewicz

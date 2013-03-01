@@ -3,8 +3,8 @@ package pl.marpiec.socnet.mongodb
 import model.TextIndex
 import pl.marpiec.util.{UID, JsonSerializer}
 import com.mongodb.util.JSON
-import pl.marpiec.util.mpjson.MPJson
 import com.mongodb.{QueryBuilder, BasicDBObject, Mongo}
+import pl.marpiec.mpjsons.MPJson
 
 /**
  * @author Marcin Pieciukiewicz

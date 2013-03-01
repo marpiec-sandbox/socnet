@@ -1,9 +1,9 @@
 package pl.marpiec.util
 
-import mpjson.MPJson
 import mpjsoncustom._
 import org.joda.time.{Instant, LocalDate, LocalDateTime}
 import senum.SEnum
+import pl.marpiec.mpjsons.MPJson
 
 /**
  * @author Marcin Pieciukiewicz
